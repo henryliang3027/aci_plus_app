@@ -1,4 +1,5 @@
 import 'package:aci_plus_app/core/data_key.dart';
+import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_graph_view/setting18_graph_view_bloc.dart';
@@ -16,6 +17,7 @@ class Setting18GraphView extends StatelessWidget {
     setFullScreenOrientation();
     HomeState homeState = context.read<HomeBloc>().state;
     String partId = homeState.characteristicData[DataKey.partId] ?? '';
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -59,35 +61,75 @@ class _GraphInteractor extends StatelessWidget {
         // 讀取 SVG 圖, 放在 stack 的最下層
         final Widget svgGraph = SvgPicture.asset(state.graphFilePath);
 
-        return PopScope(
-          onPopInvoked: (didPop) async {
-            setPreferredOrientation();
-          },
-          child: InteractiveViewer(
-            child: Stack(
-              alignment: AlignmentDirectional.center,
-              children: [
-                svgGraph,
-                SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
-                  child: CanvasTouchDetector(
-                    builder: (context) => CustomPaint(
-                        painter: CircuitPainter(
-                      context: context,
-                      svgImage: state.svgImage,
-                      partId: partId,
-                      onDone: () => context
-                          .read<Setting18GraphViewBloc>()
-                          .add(const ValueTextUpdated()),
-                    )),
-                    gesturesToOverride: const [GestureType.onTapUp],
+        if (state.formStatus.isRequestInProgress) {
+          return PopScope(
+            onPopInvoked: (didPop) async {
+              setPreferredOrientation();
+            },
+            child: InteractiveViewer(
+              child: Stack(
+                alignment: AlignmentDirectional.center,
+                children: [
+                  svgGraph,
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                    child: CanvasTouchDetector(
+                      builder: (context) => CustomPaint(
+                          painter: CircuitPainter(
+                        context: context,
+                        svgImage: state.svgImage,
+                        partId: partId,
+                        onDone: () => context
+                            .read<Setting18GraphViewBloc>()
+                            .add(const ValueTextUpdated()),
+                      )),
+                      gesturesToOverride: const [GestureType.onTapUp],
+                    ),
                   ),
-                ),
-              ],
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                    color: const Color.fromARGB(52, 158, 158, 158),
+                    child: const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        );
+          );
+        } else {
+          return PopScope(
+            onPopInvoked: (didPop) async {
+              setPreferredOrientation();
+            },
+            child: InteractiveViewer(
+              child: Stack(
+                alignment: AlignmentDirectional.center,
+                children: [
+                  svgGraph,
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                    child: CanvasTouchDetector(
+                      builder: (context) => CustomPaint(
+                          painter: CircuitPainter(
+                        context: context,
+                        svgImage: state.svgImage,
+                        partId: partId,
+                        onDone: () => context
+                            .read<Setting18GraphViewBloc>()
+                            .add(const ValueTextUpdated()),
+                      )),
+                      gesturesToOverride: const [GestureType.onTapUp],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
       },
     );
   }

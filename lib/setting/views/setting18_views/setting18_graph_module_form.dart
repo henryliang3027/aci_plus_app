@@ -53,7 +53,6 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
     HomeState homeState = context.read<HomeBloc>().state;
     String partId = homeState.characteristicData[DataKey.partId] ?? '';
     String agcMode = homeState.characteristicData[DataKey.agcMode] ?? '0';
-    String alcMode = homeState.characteristicData[DataKey.alcMode] ?? '0';
     String currentInputAttenuation =
         homeState.characteristicData[DataKey.currentDSVVA1] ?? '';
     String currentInputEqualizer =
@@ -66,6 +65,11 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
 
     String pilotFrequencyMode =
         homeState.characteristicData[DataKey.pilotFrequencyMode] ?? '0';
+
+    bool isEnableForwardSetting = getForwardSettingEditable(
+      pilotFrequencyMode: pilotFrequencyMode,
+      agcMode: agcMode,
+    );
 
     // Map<String, List<Widget>> isolatedSettingWidgetsMap = {
     //   DataKey.splitOption.name: [const _SplitOption()],
@@ -95,50 +99,68 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
       ],
       DataKey.dsVVA1.name: [
         _ForwardInputAttenuation1(
-          alcMode: alcMode,
+          isEnableForwardSetting: isEnableForwardSetting,
+          pilotFrequencyMode: pilotFrequencyMode,
           agcMode: agcMode,
           currentInputAttenuation: currentInputAttenuation,
         ),
       ],
       DataKey.dsVVA4.name: [
         if (partId == '5' || partId == '6') ...[
-          const _ForwardOutputAttenuation2And3()
+          _ForwardOutputAttenuation2And3(
+            isEnableForwardSetting: isEnableForwardSetting,
+          )
         ] else if (partId == '8') ...[
-          const _ForwardOutputAttenuation3()
+          _ForwardOutputAttenuation3(
+            isEnableForwardSetting: isEnableForwardSetting,
+          )
         ] else ...[
-          const _ForwardOutputAttenuation3And4()
+          _ForwardOutputAttenuation3And4(
+            isEnableForwardSetting: isEnableForwardSetting,
+          )
         ]
       ],
       DataKey.dsVVA5.name: [
         if (partId == '5' || partId == '6') ...[
           _ForwardOutputAttenuation5And6(
-            pilotFrequencyMode: pilotFrequencyMode,
+            isEnableForwardSetting: isEnableForwardSetting,
           ),
         ] else ...[
           // SDAT
-          const _ForwardOutputAttenuation4()
+          _ForwardOutputAttenuation4(
+            isEnableForwardSetting: isEnableForwardSetting,
+          )
         ]
       ],
       DataKey.dsSlope1.name: [
         _ForwardInputEqualizer1(
+          isEnableForwardSetting: isEnableForwardSetting,
           forwardCEQIndex: forwardCEQIndex,
-          alcMode: alcMode,
+          pilotFrequencyMode: pilotFrequencyMode,
           agcMode: agcMode,
           currentInputEqualizer: currentInputEqualizer,
         ),
       ],
       DataKey.dsSlope3.name: [
         if (partId == '5' || partId == '6') ...[
-          const _ForwardOutputEqualizer2And3(),
+          _ForwardOutputEqualizer2And3(
+            isEnableForwardSetting: isEnableForwardSetting,
+          ),
         ] else ...[
-          const _ForwardOutputEqualizer3()
+          _ForwardOutputEqualizer3(
+            isEnableForwardSetting: isEnableForwardSetting,
+          )
         ]
       ],
       DataKey.dsSlope4.name: [
         if (partId == '5' || partId == '6') ...[
-          const _ForwardOutputEqualizer5And6(),
+          _ForwardOutputEqualizer5And6(
+            isEnableForwardSetting: isEnableForwardSetting,
+          ),
         ] else ...[
-          const _ForwardOutputEqualizer4()
+          _ForwardOutputEqualizer4(
+            isEnableForwardSetting: isEnableForwardSetting,
+          )
         ]
       ]
     };
@@ -358,12 +380,14 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
 
 class _ForwardInputAttenuation1 extends StatelessWidget {
   const _ForwardInputAttenuation1({
-    required this.alcMode,
+    required this.isEnableForwardSetting,
+    required this.pilotFrequencyMode,
     required this.agcMode,
     required this.currentInputAttenuation,
   });
 
-  final String alcMode;
+  final bool isEnableForwardSetting;
+  final String pilotFrequencyMode;
   final String agcMode;
   final String currentInputAttenuation;
 
@@ -380,7 +404,8 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
         double minValue = state.targetValues[DataKey.dsVVA1]?.minValue ?? 0.0;
         double maxValue = state.targetValues[DataKey.dsVVA1]?.maxValue ?? 10.0;
         String inputAttenuation = getInputAttenuation(
-          alcMode: alcMode,
+          pilotFrequencyMode: pilotFrequencyMode,
+          agcMode: agcMode,
           inputAttenuation: state.targetValues[DataKey.dsVVA1]?.value ?? '0.0',
           currentInputAttenuation: currentInputAttenuation,
         );
@@ -388,7 +413,7 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
           children: [
             controlTextSlider(
               context: context,
-              editMode: state.editMode && alcMode == '0',
+              editMode: isEnableForwardSetting,
               title:
                   '${AppLocalizations.of(context)!.forwardInputAttenuation1} (${CustomStyle.dB}):',
               minValue: minValue,
@@ -406,17 +431,17 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
               elevation: CustomStyle.graphSettingCardElevation,
               color: CustomStyle.graphSettingCardColor,
             ),
-            Row(
-              children: [
-                Text(
-                  '${AppLocalizations.of(context)!.agcMode}: ${agcModeText[agcMode]}',
-                  style: const TextStyle(
-                    fontSize: CustomStyle.sizeXL,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
+            // Row(
+            //   children: [
+            //     Text(
+            //       '${AppLocalizations.of(context)!.agcMode}: ${agcModeText[agcMode]}',
+            //       style: const TextStyle(
+            //         fontSize: CustomStyle.sizeXL,
+            //         fontWeight: FontWeight.w500,
+            //       ),
+            //     ),
+            //   ],
+            // ),
           ],
         );
       },
@@ -426,14 +451,16 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
 
 class _ForwardInputEqualizer1 extends StatelessWidget {
   const _ForwardInputEqualizer1({
+    required this.isEnableForwardSetting,
     required this.forwardCEQIndex,
-    required this.alcMode,
+    required this.pilotFrequencyMode,
     required this.agcMode,
     required this.currentInputEqualizer,
   });
 
+  final bool isEnableForwardSetting;
   final String forwardCEQIndex;
-  final String alcMode;
+  final String pilotFrequencyMode;
   final String agcMode;
   final String currentInputEqualizer;
 
@@ -450,7 +477,7 @@ class _ForwardInputEqualizer1 extends StatelessWidget {
         double maxValue =
             state.targetValues[DataKey.dsSlope1]?.maxValue ?? 10.0;
         String inputEqualizer = getInputEqualizer(
-          alcMode: alcMode,
+          pilotFrequencyMode: pilotFrequencyMode,
           agcMode: agcMode,
           inputEqualizer: state.targetValues[DataKey.dsSlope1]?.value ?? '0.0',
           currentInputEqualizer: currentInputEqualizer,
@@ -459,7 +486,7 @@ class _ForwardInputEqualizer1 extends StatelessWidget {
           children: [
             controlTextSlider(
               context: context,
-              editMode: state.editMode && alcMode == '0' && agcMode == '0',
+              editMode: isEnableForwardSetting,
               title:
                   '${AppLocalizations.of(context)!.forwardInputEqualizer1} (${CustomStyle.dB}):',
               subTitle: getForwardCEQText(forwardCEQIndex),
@@ -479,17 +506,17 @@ class _ForwardInputEqualizer1 extends StatelessWidget {
               elevation: CustomStyle.graphSettingCardElevation,
               color: CustomStyle.graphSettingCardColor,
             ),
-            Row(
-              children: [
-                Text(
-                  '${AppLocalizations.of(context)!.agcMode}: ${agcModeText[agcMode]}',
-                  style: const TextStyle(
-                    fontSize: CustomStyle.sizeXL,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
+            // Row(
+            //   children: [
+            //     Text(
+            //       '${AppLocalizations.of(context)!.agcMode}: ${agcModeText[agcMode]}',
+            //       style: const TextStyle(
+            //         fontSize: CustomStyle.sizeXL,
+            //         fontWeight: FontWeight.w500,
+            //       ),
+            //     ),
+            //   ],
+            // ),
           ],
         );
       },
@@ -498,7 +525,11 @@ class _ForwardInputEqualizer1 extends StatelessWidget {
 }
 
 class _ForwardOutputEqualizer3 extends StatelessWidget {
-  const _ForwardOutputEqualizer3();
+  const _ForwardOutputEqualizer3({
+    required this.isEnableForwardSetting,
+  });
+
+  final bool isEnableForwardSetting;
 
   @override
   Widget build(BuildContext context) {
@@ -509,7 +540,7 @@ class _ForwardOutputEqualizer3 extends StatelessWidget {
             state.targetValues[DataKey.dsSlope3]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
-          editMode: state.editMode,
+          editMode: isEnableForwardSetting,
           title:
               '${AppLocalizations.of(context)!.forwardOutputEqualizer3} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -533,7 +564,11 @@ class _ForwardOutputEqualizer3 extends StatelessWidget {
 }
 
 class _ForwardOutputEqualizer4 extends StatelessWidget {
-  const _ForwardOutputEqualizer4();
+  const _ForwardOutputEqualizer4({
+    required this.isEnableForwardSetting,
+  });
+
+  final bool isEnableForwardSetting;
 
   @override
   Widget build(BuildContext context) {
@@ -544,7 +579,7 @@ class _ForwardOutputEqualizer4 extends StatelessWidget {
             state.targetValues[DataKey.dsSlope4]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
-          editMode: state.editMode,
+          editMode: isEnableForwardSetting,
           title:
               '${AppLocalizations.of(context)!.forwardOutputEqualizer4} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -568,7 +603,11 @@ class _ForwardOutputEqualizer4 extends StatelessWidget {
 }
 
 class _ForwardOutputAttenuation3 extends StatelessWidget {
-  const _ForwardOutputAttenuation3();
+  const _ForwardOutputAttenuation3({
+    required this.isEnableForwardSetting,
+  });
+
+  final bool isEnableForwardSetting;
 
   @override
   Widget build(BuildContext context) {
@@ -578,7 +617,7 @@ class _ForwardOutputAttenuation3 extends StatelessWidget {
         double maxValue = state.targetValues[DataKey.dsVVA4]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
-          editMode: state.editMode,
+          editMode: isEnableForwardSetting,
           title:
               '${AppLocalizations.of(context)!.forwardOutputAttenuation3} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -602,7 +641,11 @@ class _ForwardOutputAttenuation3 extends StatelessWidget {
 }
 
 class _ForwardOutputAttenuation4 extends StatelessWidget {
-  const _ForwardOutputAttenuation4();
+  const _ForwardOutputAttenuation4({
+    required this.isEnableForwardSetting,
+  });
+
+  final bool isEnableForwardSetting;
 
   @override
   Widget build(BuildContext context) {
@@ -612,7 +655,7 @@ class _ForwardOutputAttenuation4 extends StatelessWidget {
         double maxValue = state.targetValues[DataKey.dsVVA5]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
-          editMode: state.editMode,
+          editMode: isEnableForwardSetting,
           title:
               '${AppLocalizations.of(context)!.forwardOutputAttenuation4} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -636,8 +679,11 @@ class _ForwardOutputAttenuation4 extends StatelessWidget {
 }
 
 class _ForwardOutputAttenuation2And3 extends StatelessWidget {
-  const _ForwardOutputAttenuation2And3();
+  const _ForwardOutputAttenuation2And3({
+    required this.isEnableForwardSetting,
+  });
 
+  final bool isEnableForwardSetting;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
@@ -646,7 +692,7 @@ class _ForwardOutputAttenuation2And3 extends StatelessWidget {
         double maxValue = state.targetValues[DataKey.dsVVA4]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
-          editMode: state.editMode,
+          editMode: isEnableForwardSetting,
           title:
               '${AppLocalizations.of(context)!.forwardOutputAttenuation2And3} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -670,7 +716,10 @@ class _ForwardOutputAttenuation2And3 extends StatelessWidget {
 }
 
 class _ForwardOutputAttenuation3And4 extends StatelessWidget {
-  const _ForwardOutputAttenuation3And4();
+  const _ForwardOutputAttenuation3And4({
+    required this.isEnableForwardSetting,
+  });
+  final bool isEnableForwardSetting;
 
   @override
   Widget build(BuildContext context) {
@@ -680,7 +729,7 @@ class _ForwardOutputAttenuation3And4 extends StatelessWidget {
         double maxValue = state.targetValues[DataKey.dsVVA4]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
-          editMode: state.editMode,
+          editMode: isEnableForwardSetting,
           title:
               '${AppLocalizations.of(context)!.forwardOutputAttenuation3And4} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -704,9 +753,9 @@ class _ForwardOutputAttenuation3And4 extends StatelessWidget {
 }
 
 class _ForwardOutputAttenuation5And6 extends StatelessWidget {
-  const _ForwardOutputAttenuation5And6({required this.pilotFrequencyMode});
+  const _ForwardOutputAttenuation5And6({required this.isEnableForwardSetting});
 
-  final String pilotFrequencyMode;
+  final bool isEnableForwardSetting;
 
   @override
   Widget build(BuildContext context) {
@@ -714,9 +763,10 @@ class _ForwardOutputAttenuation5And6 extends StatelessWidget {
       builder: (context, state) {
         double minValue = state.targetValues[DataKey.dsVVA5]?.minValue ?? 0.0;
         double maxValue = state.targetValues[DataKey.dsVVA5]?.maxValue ?? 10.0;
+
         return controlTextSlider(
           context: context,
-          editMode: pilotFrequencyMode == '3' ? state.editMode : false,
+          editMode: isEnableForwardSetting,
           title:
               '${AppLocalizations.of(context)!.forwardOutputAttenuation5And6} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -740,7 +790,8 @@ class _ForwardOutputAttenuation5And6 extends StatelessWidget {
 }
 
 class _ForwardOutputEqualizer2And3 extends StatelessWidget {
-  const _ForwardOutputEqualizer2And3();
+  const _ForwardOutputEqualizer2And3({required this.isEnableForwardSetting});
+  final bool isEnableForwardSetting;
 
   @override
   Widget build(BuildContext context) {
@@ -751,7 +802,7 @@ class _ForwardOutputEqualizer2And3 extends StatelessWidget {
             state.targetValues[DataKey.dsSlope3]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
-          editMode: state.editMode,
+          editMode: isEnableForwardSetting,
           title:
               '${AppLocalizations.of(context)!.forwardOutputEqualizer2And3} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -775,7 +826,8 @@ class _ForwardOutputEqualizer2And3 extends StatelessWidget {
 }
 
 class _ForwardOutputEqualizer5And6 extends StatelessWidget {
-  const _ForwardOutputEqualizer5And6();
+  const _ForwardOutputEqualizer5And6({required this.isEnableForwardSetting});
+  final bool isEnableForwardSetting;
 
   @override
   Widget build(BuildContext context) {
@@ -786,7 +838,7 @@ class _ForwardOutputEqualizer5And6 extends StatelessWidget {
             state.targetValues[DataKey.dsSlope4]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
-          editMode: state.editMode,
+          editMode: isEnableForwardSetting,
           title:
               '${AppLocalizations.of(context)!.forwardOutputEqualizer5And6} (${CustomStyle.dB}):',
           minValue: minValue,

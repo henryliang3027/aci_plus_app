@@ -184,7 +184,7 @@
     "bluetooth": "Bluetooth",
     "shortcut": "Acceso Directo",
     "loadPreset": "Cargar Preset",
-    "load": "Carga",
+    "align": "Alinear",
     "blockDiagram": "Diagrama de Bloques",
     "showDiagram": "Mostrar diagrama",
     "show": "Mostrar",
@@ -473,6 +473,13 @@
     "dialogMessageGPSServiceDisabled": "Servicios de ubicación desactivados. Actívelos.",
     "dialogMessageGPSPermissionDenied": "Permisos de ubicación denegados. Por favor, otorgue permiso.",
     "dialogMessageAutoSettingLogIntervalFailed": "Error al inicializar el intervalo de registro.",
+
+    "dialogMessageTemperatureAlarmDescription": "Alarma de temperatura",
+    "dialogMessageVoltageAlarmDescription": "Alarma de voltaje",
+    "dialogMessageVoltageRippleAlarmDescription": "Alarma de Ondulación Voltaje",
+    "dialogMessageRFOutputPowerAlarmDescription": "Alarma de potencia salida TCP",
+    "dialogMessageRFOutputPilotLowFrequencyDescription": "Alarma de estado salida baja frecuencia",
+    "dialogMessageRFOutputPilotHighFrequencyDescription": "Alarma de estado salida alta frecuencia",
 
     "dialogMessageTechnicianIDSetting": "Ajuste ID del técnico",
     "dialogMessageInputSignalLevelSetting": "Ajuste niveles de entrada",

@@ -1,5 +1,6 @@
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
+import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/setting/model/setting_widgets.dart';
 import 'package:aci_plus_app/setting/model/svg_image.dart';
@@ -37,16 +38,20 @@ class Setting18GraphViewBloc
     String value = characteristicDataCache[dataKey] ?? '';
     String valueText = '';
     if (value.isNotEmpty) {
+      valueText = value;
       if (moduleName == DataKey.dsVVA1.name) {
         valueText = getInputAttenuation(
-          alcMode: characteristicDataCache[DataKey.alcMode] ?? '',
+          pilotFrequencyMode:
+              characteristicDataCache[DataKey.pilotFrequencyMode] ?? '',
+          agcMode: characteristicDataCache[DataKey.agcMode] ?? '',
           inputAttenuation: value,
           currentInputAttenuation:
               characteristicDataCache[DataKey.currentDSVVA1] ?? '',
         );
       } else if (moduleName == DataKey.dsSlope1.name) {
         valueText = getInputEqualizer(
-          alcMode: characteristicDataCache[DataKey.alcMode] ?? '',
+          pilotFrequencyMode:
+              characteristicDataCache[DataKey.pilotFrequencyMode] ?? '',
           agcMode: characteristicDataCache[DataKey.agcMode] ?? '',
           inputEqualizer: value,
           currentInputEqualizer:
@@ -66,6 +71,12 @@ class Setting18GraphViewBloc
     LoadGraphRequested event,
     Emitter<Setting18GraphViewState> emit,
   ) async {
+    emit(state.copyWith(
+      formStatus: FormStatus.requestInProgress,
+    ));
+
+    await Future.delayed(const Duration(seconds: 5));
+
     Map<DataKey, String> characteristicDataCache =
         _amp18Repository.characteristicDataCache;
 
@@ -152,6 +163,7 @@ class Setting18GraphViewBloc
     );
 
     emit(state.copyWith(
+      formStatus: FormStatus.requestSuccess,
       svgImage: svgImage,
     ));
   }

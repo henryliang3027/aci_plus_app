@@ -476,7 +476,7 @@ class _LoadPresetButton extends StatelessWidget {
                   : null,
           style: Theme.of(context).elevatedButtonTheme.style,
           child: Text(
-            AppLocalizations.of(context)!.load,
+            AppLocalizations.of(context)!.align,
             style: const TextStyle(
               fontSize: CustomStyle.sizeL,
             ),

@@ -375,6 +375,24 @@ Future<void> handleUpdateAction({
   }
 }
 
+// 檢查 forward setting 是否可以編輯
+// pilotFrequencyMode == '3' 時, forward setting 可以編輯, 不論 agcMode 有沒有開啟
+// pilotFrequencyMode != '3' 時
+// agcMode 開啟的話 forward setting 不可以編輯
+// agcMode 關閉的話 forward setting 可以編輯
+bool getForwardSettingEditable({
+  required String pilotFrequencyMode,
+  required String agcMode,
+}) {
+  bool isEnableEdit = pilotFrequencyMode == '3'
+      ? true
+      : agcMode == '0'
+          ? true
+          : false;
+
+  return isEnableEdit;
+}
+
 int getDelayByRSSI(int rssi) {
   // baud rate = 115200 bit/s = 14400 byte/s
 

@@ -11,6 +11,7 @@
     "alarm": "    Alarme    ",
     "balance": "  Équilibre  ",
     "advanced": "Avancé",
+
    
     "attribute": "Attribut",
     "regulation": "Réglement",
@@ -157,7 +158,7 @@
     "currentVoltage": "Courant",
     "minVoltage": "Minimum",
     "maxVoltage": "Maximum",
-    "voltageRipple": "Ripple Tension",
+    "voltageRipple": "Ondulation Tension",
     "currentVoltageRipple": "Courant",
     "minVoltageRipple": "Minimum",
     "maxVoltageRipple": "Maximum",
@@ -184,7 +185,7 @@
     "bluetooth": "Bluetooth",
     "shortcut": "Raccourci",
     "loadPreset": "Charger Préréglage",
-    "load": "Charger",
+    "align": "Aligner",
     "blockDiagram": "Diagramme de blocs",
     "showDiagram": "Montrer le diagramme",
     "show": "Montrer",
@@ -413,7 +414,7 @@
     "dialogMessageMaxRFOutputPower6Setting": "Réglage puissance sortie max port 6",
     "dialogMessageMinRFOutputPower6Setting": "Réglage puissance sortie min port 6",
     "dialogMessageTemperatureAlarmStateSetting": "Réglage alarme température",
-    "dialogMessageVoltageAlarmStateSetting": "Réglage alarme tension",
+    "dialogMessageVoltageAlarmStateSetting": "Réglage alarme ondulation tension",
     "dialogMessageVoltageRippleAlarmStateSetting": "Réglage alarme ondulation tension",
     "dialogMessageRFOutputPowerAlarmStateSetting": "Réglage alarme puissance sortie TCP",
     "dialogMessageRFOutputPower1AlarmStateSetting": "Réglage alarme puissance sortie port 1",
@@ -475,6 +476,13 @@
     "dialogMessageGPSServiceDisabled": "Services de localisation désactivés. Veuillez les activer.",
     "dialogMessageGPSPermissionDenied": "Autorisations de localisation refusées. Veuillez autoriser.",
     "dialogMessageAutoSettingLogIntervalFailed": "Échec d'initialisation de l'intervalle de journalisation",
+
+    "dialogMessageTemperatureAlarmDescription": "Alarme de température",
+    "dialogMessageVoltageAlarmDescription": "Alarme de voltaje",
+    "dialogMessageVoltageRippleAlarmDescription": "Alarme de ondulation tension",
+    "dialogMessageRFOutputPowerAlarmDescription": "Alarme de puissance sortie TCP",
+    "dialogMessageRFOutputPilotLowFrequencyDescription": "Alarme statut sortie basse fréquence",
+    "dialogMessageRFOutputPilotHighFrequencyDescription": "Alarme statut sortie haute fréquence",
 
     "dialogMessageTechnicianIDSetting": "Réglage ID technicien",
     "dialogMessageInputSignalLevelSetting": "Réglage niveaux d'entrée",

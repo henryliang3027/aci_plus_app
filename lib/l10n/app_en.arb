@@ -186,7 +186,7 @@
     "bluetooth": "Bluetooth",
     "shortcut": "Shortcut",
     "loadPreset": "Load Preset",
-    "load": "Load",
+    "align": "Align",
     "blockDiagram": "Block Diagram",
     "showDiagram": "Show Diagram",
     "show": "Show",
@@ -478,6 +478,13 @@
     "dialogMessageGPSServiceDisabled": "Location services are disabled. Please enable location services.",
     "dialogMessageGPSPermissionDenied": "Location permissions are denied. Please provide permission.",
     "dialogMessageAutoSettingLogIntervalFailed": "Failed to initialize the log interval.",
+
+    "dialogMessageTemperatureAlarmDescription": "Temperature alarm",
+    "dialogMessageVoltageAlarmDescription": "Voltage alarm",
+    "dialogMessageVoltageRippleAlarmDescription": "Voltage ripple alarm",
+    "dialogMessageRFOutputPowerAlarmDescription": "TCP output power alarm",
+    "dialogMessageRFOutputPilotLowFrequencyDescription": "Low pilot output status alarm",
+    "dialogMessageRFOutputPilotHighFrequencyDescription": "High pilot output status alarm",
 
     "dialogMessageTechnicianIDSetting": "Tech ID setting",
     "dialogMessageInputSignalLevelSetting": "Input signal levels setting",

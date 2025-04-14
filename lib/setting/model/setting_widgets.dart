@@ -88,22 +88,29 @@ double getSlope1MaxValue(String index) {
 }
 
 String getInputAttenuation({
-  required String alcMode,
+  required String pilotFrequencyMode,
+  required String agcMode,
   required String inputAttenuation,
   required String currentInputAttenuation,
 }) {
-  return alcMode == '0' ? inputAttenuation : currentInputAttenuation;
+  return pilotFrequencyMode == '3'
+      ? inputAttenuation
+      : agcMode == '0'
+          ? inputAttenuation
+          : currentInputAttenuation;
 }
 
 String getInputEqualizer({
-  required String alcMode,
+  required String pilotFrequencyMode,
   required String agcMode,
   required String inputEqualizer,
   required String currentInputEqualizer,
 }) {
-  return alcMode == '0' && agcMode == '0'
+  return pilotFrequencyMode == '3'
       ? inputEqualizer
-      : currentInputEqualizer;
+      : agcMode == '0'
+          ? inputEqualizer
+          : currentInputEqualizer;
 }
 
 class FineTuneSlider extends StatefulWidget {

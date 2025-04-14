@@ -16,6 +16,7 @@ class Setting18CCorNodeGraphView extends StatelessWidget {
     setFullScreenOrientation();
     HomeState homeState = context.read<HomeBloc>().state;
     String partId = homeState.characteristicData[DataKey.partId] ?? '';
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(

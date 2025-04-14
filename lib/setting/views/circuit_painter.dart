@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/setting/model/svg_image.dart';
 import 'package:aci_plus_app/setting/views/setting18_ccor_node_views/setting18_ccor_node_graph_module_page.dart';
 import 'package:aci_plus_app/setting/views/setting18_views/setting18_graph_module_page.dart';

@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
@@ -13,7 +10,6 @@ import 'package:aci_plus_app/setting/model/card_color.dart';
 import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
 import 'package:aci_plus_app/setting/model/setting18_result_text.dart';
 import 'package:aci_plus_app/setting/model/setting_widgets.dart';
-import 'package:aci_plus_app/setting/shared/utils.dart';
 import 'package:aci_plus_app/setting/views/custom_setting_dialog.dart';
 import 'package:aci_plus_app/setting/views/setting18_views/setting18_graph_page.dart';
 import 'package:flutter/foundation.dart';
@@ -32,7 +28,6 @@ class Setting18ForwardControlView extends StatelessWidget {
     // String currentDetectedSplitOption =
     //     homeState.characteristicData[DataKey.currentDetectedSplitOption] ?? '0';
     String agcMode = homeState.characteristicData[DataKey.agcMode] ?? '0';
-    String alcMode = homeState.characteristicData[DataKey.alcMode] ?? '0';
     String currentInputAttenuation =
         homeState.characteristicData[DataKey.currentDSVVA1] ?? '';
     String currentInputEqualizer =
@@ -74,7 +69,8 @@ class Setting18ForwardControlView extends StatelessWidget {
           case SettingControl.forwardInputAttenuation1:
             widgets.add(
               _ForwardInputAttenuation1(
-                alcMode: alcMode,
+                pilotFrequencyMode: pilotFrequencyMode,
+                agcMode: agcMode,
                 currentInputAttenuation: currentInputAttenuation,
               ),
             );
@@ -83,7 +79,7 @@ class Setting18ForwardControlView extends StatelessWidget {
             widgets.add(
               _ForwardInputEqualizer1(
                 forwardCEQIndex: forwardCEQIndex,
-                alcMode: alcMode,
+                pilotFrequencyMode: pilotFrequencyMode,
                 agcMode: agcMode,
                 currentInputEqualizer: currentInputEqualizer,
               ),
@@ -144,12 +140,13 @@ class Setting18ForwardControlView extends StatelessWidget {
           ? widgets
           : [
               _ForwardInputAttenuation1(
-                alcMode: alcMode,
+                pilotFrequencyMode: pilotFrequencyMode,
+                agcMode: agcMode,
                 currentInputAttenuation: currentInputAttenuation,
               ),
               _ForwardInputEqualizer1(
                 forwardCEQIndex: forwardCEQIndex,
-                alcMode: alcMode,
+                pilotFrequencyMode: pilotFrequencyMode,
                 agcMode: agcMode,
                 currentInputEqualizer: currentInputEqualizer,
               ),
@@ -396,11 +393,13 @@ class _ForwardControlHeader extends StatelessWidget {
 
 class _ForwardInputAttenuation1 extends StatelessWidget {
   const _ForwardInputAttenuation1({
-    required this.alcMode,
+    required this.pilotFrequencyMode,
+    required this.agcMode,
     required this.currentInputAttenuation,
   });
 
-  final String alcMode;
+  final String pilotFrequencyMode;
+  final String agcMode;
   final String currentInputAttenuation;
 
   @override
@@ -420,13 +419,14 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
         double minValue = state.targetValues[DataKey.dsVVA1]?.minValue ?? 0.0;
         double maxValue = state.targetValues[DataKey.dsVVA1]?.maxValue ?? 10.0;
         String inputAttenuation = getInputAttenuation(
-          alcMode: alcMode,
+          pilotFrequencyMode: pilotFrequencyMode,
+          agcMode: agcMode,
           inputAttenuation: state.targetValues[DataKey.dsVVA1]?.value ?? '0.0',
           currentInputAttenuation: currentInputAttenuation,
         );
         return controlTextSlider(
           context: context,
-          editMode: state.editMode && alcMode == '0',
+          editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardInputAttenuation1} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -454,13 +454,13 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
 class _ForwardInputEqualizer1 extends StatelessWidget {
   const _ForwardInputEqualizer1({
     required this.forwardCEQIndex,
-    required this.alcMode,
+    required this.pilotFrequencyMode,
     required this.agcMode,
     required this.currentInputEqualizer,
   });
 
   final String forwardCEQIndex;
-  final String alcMode;
+  final String pilotFrequencyMode;
   final String agcMode;
   final String currentInputEqualizer;
 
@@ -483,14 +483,14 @@ class _ForwardInputEqualizer1 extends StatelessWidget {
         double maxValue =
             state.targetValues[DataKey.dsSlope1]?.maxValue ?? 10.0;
         String inputEqualizer = getInputEqualizer(
-          alcMode: alcMode,
+          pilotFrequencyMode: pilotFrequencyMode,
           agcMode: agcMode,
           inputEqualizer: state.targetValues[DataKey.dsSlope1]?.value ?? '0.0',
           currentInputEqualizer: currentInputEqualizer,
         );
         return controlTextSlider(
           context: context,
-          editMode: state.editMode && alcMode == '0' && agcMode == '0',
+          editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardInputEqualizer1} (${CustomStyle.dB}):',
           subTitle: getForwardCEQText(forwardCEQIndex),
@@ -782,7 +782,7 @@ class _ForwardOutputAttenuation5And6 extends StatelessWidget {
         double maxValue = state.targetValues[DataKey.dsVVA5]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
-          editMode: pilotFrequencyMode == '3' ? state.editMode : false,
+          editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardOutputAttenuation5And6} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -1041,8 +1041,17 @@ class _SettingFloatingActionButton extends StatelessWidget {
       );
     }
 
-    Widget getDisabledEditModeTools() {
+    Widget getDisabledEditModeTools({
+      required String pilotFrequencyMode,
+      required String agcMode,
+    }) {
       String graphFilePath = settingGraphFilePath[partId] ?? '';
+
+      bool isEnableEdit = getForwardSettingEditable(
+        pilotFrequencyMode: pilotFrequencyMode,
+        agcMode: agcMode,
+      );
+
       return SingleChildScrollView(
         clipBehavior: Clip.none,
         child: Column(
@@ -1092,17 +1101,20 @@ class _SettingFloatingActionButton extends StatelessWidget {
               shape: const CircleBorder(
                 side: BorderSide.none,
               ),
-              backgroundColor:
-                  Theme.of(context).colorScheme.primary.withAlpha(200),
+              backgroundColor: isEnableEdit
+                  ? Theme.of(context).colorScheme.primary.withAlpha(200)
+                  : Colors.grey,
               child: Icon(
                 Icons.edit,
                 color: Theme.of(context).colorScheme.onPrimary,
               ),
-              onPressed: () {
-                context
-                    .read<Setting18ForwardControlBloc>()
-                    .add(const EditModeEnabled());
-              },
+              onPressed: isEnableEdit
+                  ? () {
+                      context
+                          .read<Setting18ForwardControlBloc>()
+                          .add(const EditModeEnabled());
+                    }
+                  : null,
             ),
           ],
         ),
@@ -1153,12 +1165,17 @@ class _SettingFloatingActionButton extends StatelessWidget {
     Widget getFloatingActionButtons({
       required bool editMode,
       required bool enableSubmission,
+      required String pilotFrequencyMode,
+      required String agcMode,
     }) {
       return editMode
           ? getEnabledEditModeTools(
               enableSubmission: enableSubmission,
             )
-          : getDisabledEditModeTools();
+          : getDisabledEditModeTools(
+              pilotFrequencyMode: pilotFrequencyMode,
+              agcMode: agcMode,
+            );
     }
 
     bool getEditable({
@@ -1186,6 +1203,11 @@ class _SettingFloatingActionButton extends StatelessWidget {
       final Setting18ForwardControlState setting18ForwardControlState =
           context.watch<Setting18ForwardControlBloc>().state;
 
+      final String pilotFrequencyMode =
+          homeState.characteristicData[DataKey.pilotFrequencyMode] ?? '';
+
+      final String agc = homeState.characteristicData[DataKey.agcMode] ?? '';
+
       bool editable = getEditable(
         loadingStatus: homeState.loadingStatus,
       );
@@ -1193,6 +1215,8 @@ class _SettingFloatingActionButton extends StatelessWidget {
           ? getFloatingActionButtons(
               editMode: setting18ForwardControlState.editMode,
               enableSubmission: setting18ForwardControlState.enableSubmission,
+              pilotFrequencyMode: pilotFrequencyMode,
+              agcMode: agc,
             )
           : getDisabledFloatingActionButtons();
     });

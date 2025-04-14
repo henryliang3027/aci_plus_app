@@ -486,12 +486,14 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
       String controlName = controlItemTexts[key] ?? '';
       String controlValue = characteristicData[value] ?? '';
 
-      String alcMode = characteristicData[DataKey.alcMode]!;
       String agcMode = characteristicData[DataKey.agcMode]!;
+      String pilotFrequencyMode =
+          characteristicData[DataKey.pilotFrequencyMode]!;
 
       if (key.name == SettingControl.forwardInputAttenuation1.name) {
         controlValue = getInputAttenuation(
-          alcMode: alcMode,
+          pilotFrequencyMode: pilotFrequencyMode,
+          agcMode: agcMode,
           inputAttenuation: controlValue,
           currentInputAttenuation:
               characteristicData[DataKey.currentDSVVA1] ?? '',
@@ -500,7 +502,7 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
 
       if (key.name == SettingControl.forwardInputEqualizer1.name) {
         controlValue = getInputEqualizer(
-          alcMode: alcMode,
+          pilotFrequencyMode: pilotFrequencyMode,
           agcMode: agcMode,
           inputEqualizer: controlValue,
           currentInputEqualizer:
