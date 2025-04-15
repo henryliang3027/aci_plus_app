@@ -266,7 +266,7 @@ class Setting18FirmwareUpdateForm extends StatelessWidget {
               ),
             ),
           ),
-          floatingActionButton: const _Setting18FirmwareFloatingActionButton(),
+          // floatingActionButton: const _Setting18FirmwareFloatingActionButton(),
         ),
       ),
     );
@@ -893,34 +893,34 @@ class _StartButton extends StatelessWidget {
   }
 }
 
-class _Setting18FirmwareFloatingActionButton extends StatelessWidget {
-  const _Setting18FirmwareFloatingActionButton();
+// class _Setting18FirmwareFloatingActionButton extends StatelessWidget {
+//   const _Setting18FirmwareFloatingActionButton();
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
-      buildWhen: (previous, current) =>
-          previous.loadingStatus != current.loadingStatus,
-      builder: (context, state) {
-        return FloatingActionButton(
-          heroTag: null,
-          shape: const CircleBorder(
-            side: BorderSide.none,
-          ),
-          backgroundColor: Theme.of(context).colorScheme.primary.withAlpha(200),
-          onPressed: () {
-            showSetupWizardDialog(
-              context: context,
-              functionDescriptionType: FunctionDescriptionType.firmwareUpdate,
-              aciDeviceType: ACIDeviceType.amp1P8G,
-            );
-          },
-          child: Icon(
-            CustomIcons.information,
-            color: Theme.of(context).colorScheme.onPrimary,
-          ),
-        );
-      },
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<HomeBloc, HomeState>(
+//       buildWhen: (previous, current) =>
+//           previous.loadingStatus != current.loadingStatus,
+//       builder: (context, state) {
+//         return FloatingActionButton(
+//           heroTag: null,
+//           shape: const CircleBorder(
+//             side: BorderSide.none,
+//           ),
+//           backgroundColor: Theme.of(context).colorScheme.primary.withAlpha(200),
+//           onPressed: () {
+//             showSetupWizardDialog(
+//               context: context,
+//               functionDescriptionType: FunctionDescriptionType.firmwareUpdate,
+//               aciDeviceType: ACIDeviceType.amp1P8G,
+//             );
+//           },
+//           child: Icon(
+//             CustomIcons.information,
+//             color: Theme.of(context).colorScheme.onPrimary,
+//           ),
+//         );
+//       },
+//     );
+//   }
+// }
