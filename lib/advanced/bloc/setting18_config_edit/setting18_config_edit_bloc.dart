@@ -63,10 +63,10 @@ class Setting18ConfigEditBloc
     String groupId = _groupId;
     String rawName = '';
     // String splitOption = '1';
-    String rawFirstChannelLoadingFrequency = '258';
-    String rawFirstChannelLoadingLevel = '34.0';
-    String rawLastChannelLoadingFrequency = '1794';
-    String rawLastChannelLoadingLevel = '51.1';
+    String rawFirstChannelLoadingFrequency = '261';
+    String rawFirstChannelLoadingLevel = '35.0';
+    String rawLastChannelLoadingFrequency = '1791';
+    String rawLastChannelLoadingLevel = '55.0';
 
     if (_config != null) {
       rawName = _config.name;

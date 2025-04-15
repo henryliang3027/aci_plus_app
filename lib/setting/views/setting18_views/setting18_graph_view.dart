@@ -90,7 +90,7 @@ class _GraphInteractor extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height,
-                    color: const Color.fromARGB(52, 158, 158, 158),
+                    color: Colors.transparent,
                     child: const Center(
                       child: CircularProgressIndicator(),
                     ),

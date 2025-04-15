@@ -5,6 +5,7 @@ import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/notice_dialog.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
+import 'package:aci_plus_app/setting/model/custom_input.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -258,7 +259,7 @@ Future<String> getAppVersion() async {
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
   // 給部門內測試的版本會加 -beta版本文字, 例如V 2.1.2-beta2
-  String appVersion = 'V ${packageInfo.version}';
+  String appVersion = 'V ${packageInfo.version}-beta6';
   return appVersion;
 }
 
@@ -391,6 +392,28 @@ bool getForwardSettingEditable({
           : false;
 
   return isEnableEdit;
+}
+
+// 判斷在不同 pilotFrequencyMode 下要顯示哪些 error text,
+// 只要有其中一個不符合, 所有相關的 frequency 欄位都會顯示 error text
+bool isNotValidFrequency({
+  required String pilotFrequencyMode,
+  required RangeIntegerInput firstChannelLoadingFrequency,
+  required RangeIntegerInput lastChannelLoadingFrequency,
+  required RangeIntegerInput pilotFrequency1,
+  required RangeIntegerInput pilotFrequency2,
+}) {
+  if (pilotFrequencyMode == '0' || pilotFrequencyMode == '3') {
+    return firstChannelLoadingFrequency.isNotValid ||
+        lastChannelLoadingFrequency.isNotValid;
+  } else if (pilotFrequencyMode == '1') {
+    return firstChannelLoadingFrequency.isNotValid ||
+        lastChannelLoadingFrequency.isNotValid ||
+        pilotFrequency1.isNotValid ||
+        pilotFrequency2.isNotValid;
+  } else {
+    return false;
+  }
 }
 
 int getDelayByRSSI(int rssi) {

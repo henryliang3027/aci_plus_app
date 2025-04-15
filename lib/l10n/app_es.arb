@@ -311,6 +311,7 @@
     "userActivityLogPageSetupWizard2": "Se pueden seleccionar un máximo de 30 días de registros, y se pueden mostrar 500 registros con un clic",
     "userActivityLogPageSetupWizard3": "Descargar y compartir datos (formato Excel)",
 
+    "dialogTitleAlarmDescription": "Descripción",
     "dialogTitleAskBeforeExitApp": "¿Desea salir de la aplicación?",
     "dialogTitleDownloading": "Descargando...",
     "dialogTitleProcessing": "configurando...",

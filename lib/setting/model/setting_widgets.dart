@@ -546,6 +546,7 @@ class FineTuneInput extends StatefulWidget {
     required this.labelText,
     required this.initialValue,
     required this.step,
+    required this.maxDigit,
     required this.enabled,
     required this.onChanged,
     required this.onIncreased,
@@ -557,6 +558,7 @@ class FineTuneInput extends StatefulWidget {
   final String labelText;
   final String initialValue;
   final double step;
+  final int maxDigit;
   final bool enabled;
   final ValueChanged<String> onChanged;
   final ValueChanged<String> onIncreased;
@@ -678,10 +680,13 @@ class _FineTuneInputState extends State<FineTuneInput> {
                         // ^：表示從起始開始匹配第一個符合的數字
                         // \d{1,3}：\d 表示匹配任何一個數字。{1,3} 表示前面的數字字符必須出現 1~3 次
                         // (\.\d?)?：匹配一個小數點後跟著 0 到 1 位數字
-                        FilteringTextInputFormatter.allow(
-                            RegExp(r'^\d{1,3}(\.\d?)?'))
+                        FilteringTextInputFormatter.allow(RegExp(r'^\d{1,' +
+                            widget.maxDigit.toString() +
+                            r'}(\.\d?)?'))
                       else
-                        FilteringTextInputFormatter.allow(RegExp(r'^\d{1,3}'))
+                        FilteringTextInputFormatter.allow(RegExp(r'^\d{1,' +
+                            widget.maxDigit.toString() +
+                            r'}(\.\d?)?'))
                     ],
                     decoration: InputDecoration(
                       floatingLabelAlignment: FloatingLabelAlignment.center,
@@ -1143,6 +1148,7 @@ Widget frequencyRFTextField({
                 '${AppLocalizations.of(context)!.frequency} (${CustomStyle.mHz})',
             initialValue: currentValue1,
             step: step1,
+            maxDigit: 4,
             enabled: editMode1,
             onChanged: onChanged1,
             onIncreased: onIncreased1,
@@ -1211,6 +1217,7 @@ Widget frequencyRFTextField({
                 '${AppLocalizations.of(context)!.level} (${CustomStyle.dBmV})',
             initialValue: currentValue2,
             step: step2,
+            maxDigit: 3,
             enabled: editMode2,
             onChanged: onChanged2,
             onIncreased: onIncreased2,

@@ -333,6 +333,7 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
     Map<String, String> pilotFrequencyModeTexts = {
       '0': appLocalizations.pilotFrequencyBandwidthSettings,
       '1': appLocalizations.pilotFrequencyUserSettings,
+      '3': appLocalizations.pilotFrequencyBenchMode,
       //  appLocalizations.pilotFrequencySmartSettings,
     };
 
@@ -406,11 +407,11 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
         _amp18Repository.characteristicDataCache;
 
     Map<String, String> ingressSettingTexts = {
-      '0': appLocalizations.ingressDefault('0 ${CustomStyle.dB}'),
-      '1': appLocalizations.ingressTemporary('-3 ${CustomStyle.dB}'),
-      '2': appLocalizations.ingressTemporary('-6 ${CustomStyle.dB}'),
-      '4': appLocalizations.ingressOpenTemporary,
-      '5': appLocalizations.ingressOpenPermanent,
+      '0': '0 ${CustomStyle.dB}',
+      // '1': appLocalizations.ingressTemporary('-3 ${CustomStyle.dB}'),
+      '2': '-6 ${CustomStyle.dB}',
+      // '4': appLocalizations.ingressOpenTemporary,
+      // '5': appLocalizations.ingressOpenPermanent,
     };
 
     Map<Enum, String> controlItemTexts = {

@@ -75,8 +75,6 @@ class Setting18GraphViewBloc
       formStatus: FormStatus.requestInProgress,
     ));
 
-    await Future.delayed(const Duration(seconds: 5));
-
     Map<DataKey, String> characteristicDataCache =
         _amp18Repository.characteristicDataCache;
 

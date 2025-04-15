@@ -314,6 +314,7 @@
     "userActivityLogPageSetupWizard2": "Un maximum de 30 jours d'enregistrements peut être sélectionné, et 500 enregistrements peuvent être affichés d'un clic",
     "userActivityLogPageSetupWizard3": "Télécharger et partager des données (format Excel)",
     
+    "dialogTitleAlarmDescription": "Description",
     "dialogTitleAskBeforeExitApp": "Voulez-vous quitter l’application ?",
     "dialogTitleDownloading": "Téléchargement...",
     "dialogTitleProcessing": "Configuration...",

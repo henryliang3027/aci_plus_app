@@ -316,6 +316,7 @@
     "userActivityLogPageSetupWizard2": "最大選取 30 天內的紀錄, 一次點選顯示 500 筆紀錄",
     "userActivityLogPageSetupWizard3": "可下載 與 分享資料 ( Excel 格式 )",
     
+    "dialogTitleAlarmDescription": "描述",
     "dialogTitleAskBeforeExitApp": "您確定要退出應用程式嗎？",
     "dialogTitleDownloading": "下載中...",
     "dialogTitleProcessing": "設定中...",

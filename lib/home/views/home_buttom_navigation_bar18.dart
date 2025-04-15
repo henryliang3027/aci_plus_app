@@ -231,7 +231,7 @@ class Indicator extends StatelessWidget {
 
           return Center(
             child: Container(
-              width: 380,
+              width: 350,
               child: Dialog(
                 insetPadding: EdgeInsets.all(0),
                 child: Column(
@@ -249,7 +249,7 @@ class Indicator extends StatelessWidget {
                       ),
                       child: Text(
                         AppLocalizations.of(context)!
-                            .setupWizardFunctionDescription,
+                            .dialogTitleAlarmDescription,
                         style: TextStyle(
                           fontSize: CustomStyle.sizeXL,
                           color: Theme.of(context).colorScheme.onPrimary,
