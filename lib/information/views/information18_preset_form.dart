@@ -469,8 +469,7 @@ class _StartLevel extends StatelessWidget {
       builder: (context, state) {
         return buildCard(
           context: context,
-          title:
-              '${AppLocalizations.of(context)!.startFrequencyRFLevel} (${CustomStyle.dBmV})',
+          title: '${AppLocalizations.of(context)!.level} (${CustomStyle.dBmV})',
           content: state.config.firstChannelLoadingLevel,
         );
       },
@@ -505,7 +504,7 @@ class _StopLevel extends StatelessWidget {
       builder: (context, state) {
         return buildCard(
           context: context,
-          title: '${AppLocalizations.of(context)!.slope} (${CustomStyle.dBmV})',
+          title: '${AppLocalizations.of(context)!.level} (${CustomStyle.dBmV})',
           content: state.config.lastChannelLoadingLevel,
         );
       },

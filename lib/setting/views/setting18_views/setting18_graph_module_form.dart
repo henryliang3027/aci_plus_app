@@ -5,7 +5,7 @@ import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_graph_module/setting18_graph_module_bloc.dart';
-import 'package:aci_plus_app/setting/model/custom_input.dart';
+import 'package:aci_plus_app/setting/model/card_color.dart';
 import 'package:aci_plus_app/setting/model/graph_module_form_color.dart';
 import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
 import 'package:aci_plus_app/setting/model/setting18_result_text.dart';
@@ -82,6 +82,9 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
           currentDetectedSplitOption: currentDetectedSplitOption,
         ),
         const _LastChannelLoading(),
+
+        const _RFLevelFineTuner(),
+
         _PilotFrequency1(
           pilotFrequency1TextEditingController:
               pilotFrequency1TextEditingController,
@@ -393,11 +396,6 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Map<String, String> agcModeText = {
-      '0': AppLocalizations.of(context)!.off,
-      '1': AppLocalizations.of(context)!.on,
-    };
-
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
         // forwardInputAttenuation1TextEditingController.text = state.dsVVA1;
@@ -431,17 +429,6 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
               elevation: CustomStyle.graphSettingCardElevation,
               color: CustomStyle.graphSettingCardColor,
             ),
-            // Row(
-            //   children: [
-            //     Text(
-            //       '${AppLocalizations.of(context)!.agcMode}: ${agcModeText[agcMode]}',
-            //       style: const TextStyle(
-            //         fontSize: CustomStyle.sizeXL,
-            //         fontWeight: FontWeight.w500,
-            //       ),
-            //     ),
-            //   ],
-            // ),
           ],
         );
       },
@@ -466,11 +453,6 @@ class _ForwardInputEqualizer1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Map<String, String> agcModeText = {
-      '0': AppLocalizations.of(context)!.off,
-      '1': AppLocalizations.of(context)!.on,
-    };
-
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
         double minValue = state.targetValues[DataKey.dsSlope1]?.minValue ?? 0.0;
@@ -506,17 +488,6 @@ class _ForwardInputEqualizer1 extends StatelessWidget {
               elevation: CustomStyle.graphSettingCardElevation,
               color: CustomStyle.graphSettingCardColor,
             ),
-            // Row(
-            //   children: [
-            //     Text(
-            //       '${AppLocalizations.of(context)!.agcMode}: ${agcModeText[agcMode]}',
-            //       style: const TextStyle(
-            //         fontSize: CustomStyle.sizeXL,
-            //         fontWeight: FontWeight.w500,
-            //       ),
-            //     ),
-            //   ],
-            // ),
           ],
         );
       },
@@ -1202,39 +1173,15 @@ class _FirstChannelLoading extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
-        double step1 = 6.0;
-        double step2 = 5.0;
-        return frequencyRFTextField(
-          context: context,
-          title1: '${AppLocalizations.of(context)!.startFrequency}:',
-          title2: '${AppLocalizations.of(context)!.startFrequencyRFLevel}:',
+        return TwoInputs(
+          title: '${AppLocalizations.of(context)!.startFrequency}:',
           editMode1: state.editMode && state.pilotFrequencyMode != '2',
           editMode2: state.editMode && state.pilotFrequencyMode != '2',
-          textEditingControllerName1:
-              'setting18Form_firstChannelLoadingFrequencyInput_textField',
-          textEditingControllerName2:
-              'setting18Form_firstChannelLoadingLevelInput_textField',
-          currentValue1: state.firstChannelLoadingFrequency.value,
-          currentValue2: state.firstChannelLoadingLevel.value,
-          step1: step1,
-          step2: step2,
+          readOnly1: true,
+          readOnly2: true,
+          initialValue1: state.firstChannelLoadingFrequency.value,
+          initialValue2: state.firstChannelLoadingLevel.value,
           onChanged1: (firstChannelLoadingFrequency) {
-            context
-                .read<Setting18GraphModuleBloc>()
-                .add(FirstChannelLoadingFrequencyChanged(
-                  firstChannelLoadingFrequency: firstChannelLoadingFrequency,
-                  currentDetectedSplitOption: currentDetectedSplitOption,
-                ));
-          },
-          onIncreased1: (firstChannelLoadingFrequency) {
-            context
-                .read<Setting18GraphModuleBloc>()
-                .add(FirstChannelLoadingFrequencyChanged(
-                  firstChannelLoadingFrequency: firstChannelLoadingFrequency,
-                  currentDetectedSplitOption: currentDetectedSplitOption,
-                ));
-          },
-          onDecreased1: (firstChannelLoadingFrequency) {
             context
                 .read<Setting18GraphModuleBloc>()
                 .add(FirstChannelLoadingFrequencyChanged(
@@ -1246,32 +1193,6 @@ class _FirstChannelLoading extends StatelessWidget {
             context.read<Setting18GraphModuleBloc>().add(
                 FirstChannelLoadingLevelChanged(
                     firstChannelLoadingLevel: firstChannelLoadingLevel));
-          },
-          onIncreased2: (firstChannelLoadingLevel) {
-            context.read<Setting18GraphModuleBloc>().add(
-                FirstChannelLoadingLevelChanged(
-                    firstChannelLoadingLevel: firstChannelLoadingLevel));
-
-            // convert to double
-            double lastChannelLoadingLevel =
-                double.parse(state.lastChannelLoadingLevel.value) - step2;
-            context.read<Setting18GraphModuleBloc>().add(
-                LastChannelLoadingLevelChanged(
-                    lastChannelLoadingLevel:
-                        lastChannelLoadingLevel.toStringAsFixed(1)));
-          },
-          onDecreased2: (firstChannelLoadingLevel) {
-            context.read<Setting18GraphModuleBloc>().add(
-                FirstChannelLoadingLevelChanged(
-                    firstChannelLoadingLevel: firstChannelLoadingLevel));
-
-            // convert to double
-            double lastChannelLoadingLevel =
-                double.parse(state.lastChannelLoadingLevel.value) + step2;
-            context.read<Setting18GraphModuleBloc>().add(
-                LastChannelLoadingLevelChanged(
-                    lastChannelLoadingLevel:
-                        lastChannelLoadingLevel.toStringAsFixed(1)));
           },
           errorText1: isNotValidFrequency(
             pilotFrequencyMode: state.pilotFrequencyMode,
@@ -1288,6 +1209,91 @@ class _FirstChannelLoading extends StatelessWidget {
           elevation: CustomStyle.graphSettingCardElevation,
           color: CustomStyle.graphSettingCardColor,
         );
+
+        // frequencyRFTextField(
+        //   context: context,
+        //   title1: '${AppLocalizations.of(context)!.startFrequency}:',
+        //   title2: '${AppLocalizations.of(context)!.startFrequencyRFLevel}:',
+        //   editMode1: state.editMode && state.pilotFrequencyMode != '2',
+        //   editMode2: state.editMode && state.pilotFrequencyMode != '2',
+        //   textEditingControllerName1:
+        //       'setting18Form_firstChannelLoadingFrequencyInput_textField',
+        //   textEditingControllerName2:
+        //       'setting18Form_firstChannelLoadingLevelInput_textField',
+        //   currentValue1: state.firstChannelLoadingFrequency.value,
+        //   currentValue2: state.firstChannelLoadingLevel.value,
+        //   step1: step1,
+        //   step2: step2,
+        //   onChanged1: (firstChannelLoadingFrequency) {
+        //     context
+        //         .read<Setting18GraphModuleBloc>()
+        //         .add(FirstChannelLoadingFrequencyChanged(
+        //           firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+        //           currentDetectedSplitOption: currentDetectedSplitOption,
+        //         ));
+        //   },
+        //   onIncreased1: (firstChannelLoadingFrequency) {
+        //     context
+        //         .read<Setting18GraphModuleBloc>()
+        //         .add(FirstChannelLoadingFrequencyChanged(
+        //           firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+        //           currentDetectedSplitOption: currentDetectedSplitOption,
+        //         ));
+        //   },
+        //   onDecreased1: (firstChannelLoadingFrequency) {
+        //     context
+        //         .read<Setting18GraphModuleBloc>()
+        //         .add(FirstChannelLoadingFrequencyChanged(
+        //           firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+        //           currentDetectedSplitOption: currentDetectedSplitOption,
+        //         ));
+        //   },
+        //   onChanged2: (firstChannelLoadingLevel) {
+        //     context.read<Setting18GraphModuleBloc>().add(
+        //         FirstChannelLoadingLevelChanged(
+        //             firstChannelLoadingLevel: firstChannelLoadingLevel));
+        //   },
+        //   onIncreased2: (firstChannelLoadingLevel) {
+        //     context.read<Setting18GraphModuleBloc>().add(
+        //         FirstChannelLoadingLevelChanged(
+        //             firstChannelLoadingLevel: firstChannelLoadingLevel));
+
+        //     // convert to double
+        //     double lastChannelLoadingLevel =
+        //         double.parse(state.lastChannelLoadingLevel.value) + step2;
+        //     context.read<Setting18GraphModuleBloc>().add(
+        //         LastChannelLoadingLevelChanged(
+        //             lastChannelLoadingLevel:
+        //                 lastChannelLoadingLevel.toStringAsFixed(1)));
+        //   },
+        //   onDecreased2: (firstChannelLoadingLevel) {
+        //     context.read<Setting18GraphModuleBloc>().add(
+        //         FirstChannelLoadingLevelChanged(
+        //             firstChannelLoadingLevel: firstChannelLoadingLevel));
+
+        //     // convert to double
+        //     double lastChannelLoadingLevel =
+        //         double.parse(state.lastChannelLoadingLevel.value) - step2;
+        //     context.read<Setting18GraphModuleBloc>().add(
+        //         LastChannelLoadingLevelChanged(
+        //             lastChannelLoadingLevel:
+        //                 lastChannelLoadingLevel.toStringAsFixed(1)));
+        //   },
+        //   errorText1: isNotValidFrequency(
+        //     pilotFrequencyMode: state.pilotFrequencyMode,
+        //     firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        //     lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        //     pilotFrequency1: state.pilotFrequency1,
+        //     pilotFrequency2: state.pilotFrequency2,
+        //   )
+        //       ? AppLocalizations.of(context)!.textFieldErrorMessage
+        //       : null,
+        //   errorText2: state.firstChannelLoadingLevel.isNotValid
+        //       ? AppLocalizations.of(context)!.textFieldErrorMessage
+        //       : null,
+        //   elevation: CustomStyle.graphSettingCardElevation,
+        //   color: CustomStyle.graphSettingCardColor,
+        // );
       },
     );
   }
@@ -1301,47 +1307,19 @@ class _LastChannelLoading extends StatelessWidget {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
         double step1 = 6.0;
-        double step2 = 5.0;
-        return frequencyRFTextField(
-          context: context,
-          title1: '${AppLocalizations.of(context)!.stopFrequency}:',
-          title2: '${AppLocalizations.of(context)!.slope}:',
+        double step2 = 0.5;
+        return TwoInputs(
+          title: '${AppLocalizations.of(context)!.stopFrequency}:',
           editMode1: state.editMode && state.pilotFrequencyMode != '2',
           editMode2: state.editMode && state.pilotFrequencyMode != '2',
-          textEditingControllerName1:
-              'setting18Form_lastChannelLoadingFrequencyInput_textField',
-          textEditingControllerName2:
-              'setting18Form_lastChannelLoadingLevelInput_textField',
-          currentValue1: state.lastChannelLoadingFrequency.value,
-          currentValue2: state.lastChannelLoadingLevel.value,
-          step1: step1,
-          step2: step2,
+          initialValue1: state.lastChannelLoadingFrequency.value,
+          initialValue2: state.lastChannelLoadingLevel.value,
           onChanged1: (lastChannelLoadingFrequency) {
             context.read<Setting18GraphModuleBloc>().add(
                 LastChannelLoadingFrequencyChanged(
                     lastChannelLoadingFrequency: lastChannelLoadingFrequency));
           },
-          onIncreased1: (lastChannelLoadingFrequency) {
-            context.read<Setting18GraphModuleBloc>().add(
-                LastChannelLoadingFrequencyChanged(
-                    lastChannelLoadingFrequency: lastChannelLoadingFrequency));
-          },
-          onDecreased1: (lastChannelLoadingFrequency) {
-            context.read<Setting18GraphModuleBloc>().add(
-                LastChannelLoadingFrequencyChanged(
-                    lastChannelLoadingFrequency: lastChannelLoadingFrequency));
-          },
           onChanged2: (lastChannelLoadingLevel) {
-            context.read<Setting18GraphModuleBloc>().add(
-                LastChannelLoadingLevelChanged(
-                    lastChannelLoadingLevel: lastChannelLoadingLevel));
-          },
-          onIncreased2: (lastChannelLoadingLevel) {
-            context.read<Setting18GraphModuleBloc>().add(
-                LastChannelLoadingLevelChanged(
-                    lastChannelLoadingLevel: lastChannelLoadingLevel));
-          },
-          onDecreased2: (lastChannelLoadingLevel) {
             context.read<Setting18GraphModuleBloc>().add(
                 LastChannelLoadingLevelChanged(
                     lastChannelLoadingLevel: lastChannelLoadingLevel));
@@ -1361,8 +1339,141 @@ class _LastChannelLoading extends StatelessWidget {
           elevation: CustomStyle.graphSettingCardElevation,
           color: CustomStyle.graphSettingCardColor,
         );
+
+        // frequencyRFTextField(
+        //   context: context,
+        //   title1: '${AppLocalizations.of(context)!.stopFrequency}:',
+        //   title2: '${AppLocalizations.of(context)!.slope}:',
+        //   editMode1: state.editMode && state.pilotFrequencyMode != '2',
+        //   editMode2: state.editMode && state.pilotFrequencyMode != '2',
+        //   textEditingControllerName1:
+        //       'setting18Form_lastChannelLoadingFrequencyInput_textField',
+        //   textEditingControllerName2:
+        //       'setting18Form_lastChannelLoadingLevelInput_textField',
+        //   currentValue1: state.lastChannelLoadingFrequency.value,
+        //   currentValue2: state.lastChannelLoadingLevel.value,
+        //   step1: step1,
+        //   step2: step2,
+        //   onChanged1: (lastChannelLoadingFrequency) {
+        //     context.read<Setting18GraphModuleBloc>().add(
+        //         LastChannelLoadingFrequencyChanged(
+        //             lastChannelLoadingFrequency: lastChannelLoadingFrequency));
+        //   },
+        //   onIncreased1: (lastChannelLoadingFrequency) {
+        //     context.read<Setting18GraphModuleBloc>().add(
+        //         LastChannelLoadingFrequencyChanged(
+        //             lastChannelLoadingFrequency: lastChannelLoadingFrequency));
+        //   },
+        //   onDecreased1: (lastChannelLoadingFrequency) {
+        //     context.read<Setting18GraphModuleBloc>().add(
+        //         LastChannelLoadingFrequencyChanged(
+        //             lastChannelLoadingFrequency: lastChannelLoadingFrequency));
+        //   },
+        //   onChanged2: (lastChannelLoadingLevel) {
+        //     context.read<Setting18GraphModuleBloc>().add(
+        //         LastChannelLoadingLevelChanged(
+        //             lastChannelLoadingLevel: lastChannelLoadingLevel));
+        //   },
+        //   onIncreased2: (lastChannelLoadingLevel) {
+        //     context.read<Setting18GraphModuleBloc>().add(
+        //         LastChannelLoadingLevelChanged(
+        //             lastChannelLoadingLevel: lastChannelLoadingLevel));
+        //   },
+        //   onDecreased2: (lastChannelLoadingLevel) {
+        //     context.read<Setting18GraphModuleBloc>().add(
+        //         LastChannelLoadingLevelChanged(
+        //             lastChannelLoadingLevel: lastChannelLoadingLevel));
+        //   },
+        //   errorText1: isNotValidFrequency(
+        //     pilotFrequencyMode: state.pilotFrequencyMode,
+        //     firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        //     lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        //     pilotFrequency1: state.pilotFrequency1,
+        //     pilotFrequency2: state.pilotFrequency2,
+        //   )
+        //       ? AppLocalizations.of(context)!.textFieldErrorMessage
+        //       : null,
+        //   errorText2: state.lastChannelLoadingLevel.isNotValid
+        //       ? AppLocalizations.of(context)!.textFieldErrorMessage
+        //       : null,
+        //   elevation: CustomStyle.graphSettingCardElevation,
+        //   color: CustomStyle.graphSettingCardColor,
+        // );
       },
     );
+  }
+}
+
+class _RFLevelFineTuner extends StatelessWidget {
+  const _RFLevelFineTuner({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
+        builder: (context, state) {
+      double step = 0.5;
+      return rfSlopeFinetune(
+        context: context,
+        title1: AppLocalizations.of(context)!.startFrequencyRFLevel,
+        title2: AppLocalizations.of(context)!.slope,
+        editMode1: state.editMode && state.pilotFrequencyMode != '2',
+        editMode2: state.editMode && state.pilotFrequencyMode != '2',
+        step1: step,
+        step2: step,
+        onIncreased1: () {
+          // convert to double
+          double firstChannelLoadingLevel =
+              double.parse(state.firstChannelLoadingLevel.value) + step;
+          context.read<Setting18GraphModuleBloc>().add(
+              FirstChannelLoadingLevelChanged(
+                  firstChannelLoadingLevel:
+                      firstChannelLoadingLevel.toStringAsFixed(1)));
+
+          double lastChannelLoadingLevel =
+              double.parse(state.lastChannelLoadingLevel.value) + step;
+          context.read<Setting18GraphModuleBloc>().add(
+              LastChannelLoadingLevelChanged(
+                  lastChannelLoadingLevel:
+                      lastChannelLoadingLevel.toStringAsFixed(1)));
+        },
+        onDecreased1: () {
+          // convert to double
+          double firstChannelLoadingLevel =
+              double.parse(state.firstChannelLoadingLevel.value) - step;
+          context.read<Setting18GraphModuleBloc>().add(
+              FirstChannelLoadingLevelChanged(
+                  firstChannelLoadingLevel:
+                      firstChannelLoadingLevel.toStringAsFixed(1)));
+
+          double lastChannelLoadingLevel =
+              double.parse(state.lastChannelLoadingLevel.value) - step;
+          context.read<Setting18GraphModuleBloc>().add(
+              LastChannelLoadingLevelChanged(
+                  lastChannelLoadingLevel:
+                      lastChannelLoadingLevel.toStringAsFixed(1)));
+        },
+        onIncreased2: () {
+          // convert to double
+          double firstChannelLoadingLevel =
+              double.parse(state.firstChannelLoadingLevel.value) - step;
+          context.read<Setting18GraphModuleBloc>().add(
+              FirstChannelLoadingLevelChanged(
+                  firstChannelLoadingLevel:
+                      firstChannelLoadingLevel.toStringAsFixed(1)));
+        },
+        onDecreased2: () {
+          // convert to double
+          double firstChannelLoadingLevel =
+              double.parse(state.firstChannelLoadingLevel.value) + step;
+          context.read<Setting18GraphModuleBloc>().add(
+              FirstChannelLoadingLevelChanged(
+                  firstChannelLoadingLevel:
+                      firstChannelLoadingLevel.toStringAsFixed(1)));
+        },
+        elevation: CustomStyle.graphSettingCardElevation,
+        color: CustomStyle.graphSettingCardColor,
+      );
+    });
   }
 }
 

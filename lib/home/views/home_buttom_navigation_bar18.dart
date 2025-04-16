@@ -332,54 +332,6 @@ class Indicator extends StatelessWidget {
       );
     }
 
-    Widget getPulsator({
-      required Color color,
-      required List<String> alarmDescriptions,
-      required IconData iconData,
-      bool animationEnabled = true,
-    }) {
-      return GestureDetector(
-        onTap: alarmDescriptions.isNotEmpty
-            ? () {
-                showAlarmDescriptionDialog(
-                  context: context,
-                  alarmDescriptions: alarmDescriptions,
-                );
-              }
-            : null,
-        child: SizedBox(
-          width: 44,
-          height: 22,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: Pulsator(
-              iconData: iconData,
-              size: 24, // Circle size
-              color: color,
-              duration: const Duration(
-                seconds: 2,
-              ), //  animationEnabled = false 時 Ripple duration 可以忽略
-              rippleCount: animationEnabled ? 1 : 0,
-              // animationEnabled = false 時關閉動畫
-              // title: name,
-            ),
-          ),
-        ),
-      );
-    }
-
-    Color getPulsatorColor({
-      required Alarm alarm,
-    }) {
-      return CustomStyle.alarmColor[alarm.name]!; // Ripple color
-    }
-
-    bool getPulsatorAnimationEnabled({
-      required Alarm alarm,
-    }) {
-      return alarm == Alarm.success ? false : true;
-    }
-
     Widget getSetupWizardButton({bool enabled = false}) {
       return IconButton(
         visualDensity: const VisualDensity(horizontal: -4.0, vertical: -4.0),
@@ -399,6 +351,69 @@ class Indicator extends StatelessWidget {
           size: 30,
         ),
       );
+    }
+
+    Widget getPulsator({
+      required Color color,
+      required List<String> alarmDescriptions,
+      required IconData iconData,
+      bool animationEnabled = true,
+    }) {
+      return Pulsator(
+        enableTap: alarmDescriptions.isNotEmpty,
+        onTap: () {
+          showAlarmDescriptionDialog(
+            context: context,
+            alarmDescriptions: alarmDescriptions,
+          );
+        },
+        iconData: iconData,
+        size: 30, // Circle size
+        color: color,
+        duration: const Duration(
+          seconds: 2,
+        ), //  animationEnabled = false 時 Ripple duration 可以忽略
+        rippleCount: animationEnabled ? 1 : 0,
+        // animationEnabled = false 時關閉動畫
+        // title: name,
+      );
+
+      // GestureDetector(
+      //   onTap: alarmDescriptions.isNotEmpty
+      //       ? () {
+      //           showAlarmDescriptionDialog(
+      //             context: context,
+      //             alarmDescriptions: alarmDescriptions,
+      //           );
+      //         }
+      //       : null,
+      //   child: Padding(
+      //     padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      //     child: Pulsator(
+      //       iconData: iconData,
+      //       size: 30, // Circle size
+      //       color: color,
+      //       duration: const Duration(
+      //         seconds: 2,
+      //       ), //  animationEnabled = false 時 Ripple duration 可以忽略
+      //       rippleCount: animationEnabled ? 1 : 0,
+      //       // animationEnabled = false 時關閉動畫
+      //       // title: name,
+      //     ),
+      //   ),
+      // );
+    }
+
+    Color getPulsatorColor({
+      required Alarm alarm,
+    }) {
+      return CustomStyle.alarmColor[alarm.name]!; // Ripple color
+    }
+
+    bool getPulsatorAnimationEnabled({
+      required Alarm alarm,
+    }) {
+      return alarm == Alarm.success ? false : true;
     }
 
     return BlocBuilder<HomeBloc, HomeState>(
@@ -553,11 +568,9 @@ class Indicator extends StatelessWidget {
                   : [];
 
           return Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 8,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 getPulsator(
                   color: getPulsatorColor(
@@ -604,9 +617,9 @@ class Indicator extends StatelessWidget {
           );
         } else {
           return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 getPulsator(
                   color: const Color(0xff6c757d),

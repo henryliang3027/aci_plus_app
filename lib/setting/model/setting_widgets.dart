@@ -1091,6 +1091,268 @@ Widget ingressGridViewButton({
   );
 }
 
+class FineTuner extends StatefulWidget {
+  const FineTuner({
+    super.key,
+    required this.labelText,
+    required this.step,
+    required this.enabled,
+    required this.onIncreased,
+    required this.onDecreased,
+    required this.errorText,
+  });
+
+  final String labelText;
+  final double step;
+  final bool enabled;
+  final VoidCallback onIncreased;
+  final VoidCallback onDecreased;
+  final String? errorText;
+
+  @override
+  State<FineTuner> createState() => _FineTunerState();
+}
+
+class _FineTunerState extends State<FineTuner> {
+  // late double _value;
+  late TextEditingController _textEditingController;
+
+  @override
+  void initState() {
+    // _value = _stringToDecimal(value: widget.initialValue);
+
+    _textEditingController = TextEditingController()..text = widget.labelText;
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant FineTuner oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget != widget) {
+      setState(() {
+        _textEditingController = TextEditingController()
+          ..text = widget.labelText;
+        // _value = _stringToDecimal(value: widget.initialValue);
+
+        // _textEditingController.value = TextEditingValue(
+        //   text: widget.initialValue,
+        //   selection: _textEditingController.selection,
+        // );
+      });
+    }
+  }
+
+  // void _increaseValue() {
+  //   setState(() {
+  //     _value = _value + widget.step;
+
+  //     _textEditingController.text =
+  //         _value.toStringAsFixed(widget.textPrecision);
+  //   });
+  // }
+
+  // void _decreasedValue() {
+  //   setState(() {
+  //     _value = _value - widget.step;
+
+  //     _textEditingController.text =
+  //         _value.toStringAsFixed(widget.textPrecision);
+  //   });
+  // }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(
+            bottom: CustomStyle.sizeXS,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Flexible(
+                flex: 1,
+                child: IconButton.filled(
+                  visualDensity: const VisualDensity(horizontal: -4.0),
+                  icon: const Icon(
+                    Icons.remove,
+                  ),
+                  onPressed: widget.enabled
+                      ? () {
+                          // _decreasedValue();
+
+                          widget.onDecreased();
+                        }
+                      : null,
+                ),
+              ),
+              Flexible(
+                flex: 4,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 0.0,
+                  ),
+                  child: Container(
+                    width: double.maxFinite,
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.secondaryContainer,
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(4.0)),
+                      border: Border.all(
+                        color: widget.enabled
+                            ? Theme.of(context).colorScheme.outline
+                            : Colors.grey,
+                      ),
+                    ),
+                    child: Text(
+                      widget.labelText,
+                      style: TextStyle(
+                        fontSize: CustomStyle.sizeXL,
+                        color: widget.enabled
+                            ? Theme.of(context).textTheme.bodyLarge?.color
+                            : Colors.grey,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+
+                  // TextField(
+                  //   controller: _textEditingController,
+                  //   // key: Key(textEditingControllerName1),
+                  //   style: const TextStyle(
+                  //     fontSize: CustomStyle.sizeXXL,
+                  //   ),
+
+                  //   textAlign: TextAlign.center,
+
+                  //   enabled: widget.enabled,
+                  //   textInputAction: TextInputAction.done,
+                  //   onChanged: (value) {
+                  //     // _adjustTextFieldValue(value: value);
+                  //     // widget.onChanged(value);
+                  //   },
+                  //   onTapOutside: (event) {
+                  //     // 點擊其他區域關閉螢幕鍵盤
+                  //     FocusManager.instance.primaryFocus?.unfocus();
+                  //   },
+                  //   maxLength: 40,
+                  //   keyboardType: const TextInputType.numberWithOptions(
+                  //     decimal: true,
+                  //   ),
+                  //   // inputFormatters: [
+                  //   //   if (widget.textPrecision == 1)
+                  //   //     // ^：表示從起始開始匹配第一個符合的數字
+                  //   //     // \d{1,3}：\d 表示匹配任何一個數字。{1,3} 表示前面的數字字符必須出現 1~3 次
+                  //   //     // (\.\d?)?：匹配一個小數點後跟著 0 到 1 位數字
+                  //   //     FilteringTextInputFormatter.allow(RegExp(r'^\d{1,' +
+                  //   //         widget.maxDigit.toString() +
+                  //   //         r'}(\.\d?)?'))
+                  //   //   else
+                  //   //     FilteringTextInputFormatter.allow(RegExp(r'^\d{1,' +
+                  //   //         widget.maxDigit.toString() +
+                  //   //         r'}(\.\d?)?'))
+                  //   // ],
+                  //   decoration: InputDecoration(
+                  //     floatingLabelAlignment: FloatingLabelAlignment.center,
+                  //     // label: Text(widget.labelText),
+                  //     border: const OutlineInputBorder(
+                  //         borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                  //     contentPadding: const EdgeInsets.all(8.0),
+                  //     isDense: true,
+                  //     filled: true,
+                  //     fillColor:
+                  //         Theme.of(context).colorScheme.secondaryContainer,
+                  //     counterText: '',
+                  //     errorMaxLines: 2,
+                  //     error: widget.enabled
+                  //         ? _validateText(
+                  //             context: context,
+                  //             errorText: widget.errorText,
+                  //           )
+                  //         : null,
+                  //   ),
+                  // ),
+                ),
+              ),
+              Flexible(
+                flex: 1,
+                child: IconButton.filled(
+                  visualDensity: const VisualDensity(horizontal: -4.0),
+                  icon: const Icon(
+                    Icons.add,
+                  ),
+                  onPressed: widget.enabled
+                      ? () {
+                          // _increaseValue();
+                          widget.onIncreased();
+                        }
+                      : null,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+Widget rfSlopeFinetune({
+  required BuildContext context,
+  required String title1,
+  required String title2,
+  required bool editMode1,
+  required bool editMode2,
+  required VoidCallback onIncreased1,
+  required VoidCallback onDecreased1,
+  required double step1,
+  required VoidCallback onIncreased2,
+  required VoidCallback onDecreased2,
+  required double step2,
+  bool reaOnly1 = false,
+  bool reaOnly2 = false,
+  String? errorText1,
+  String? errorText2,
+  double padding = CustomStyle.sizeXL,
+  double elevation = 1.0,
+  Color? color,
+}) {
+  return Card(
+    elevation: elevation,
+    color: color,
+    child: Padding(
+      padding: EdgeInsets.all(padding),
+      child: Column(
+        children: [
+          FineTuner(
+            labelText: title1,
+            step: step1,
+            enabled: editMode1,
+            onIncreased: onIncreased1,
+            onDecreased: onDecreased1,
+            errorText: errorText1,
+          ),
+          const SizedBox(
+            height: 0,
+          ),
+          FineTuner(
+            labelText: title2,
+            step: step2,
+            enabled: editMode2,
+            onIncreased: onIncreased2,
+            onDecreased: onDecreased2,
+            errorText: errorText2,
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
 Widget frequencyRFTextField({
   required BuildContext context,
   required String title1,
@@ -1262,6 +1524,200 @@ Widget frequencyRFTextField({
       ),
     ),
   );
+}
+
+class TwoInputs extends StatefulWidget {
+  const TwoInputs({
+    super.key,
+    required this.title,
+    required this.editMode1,
+    required this.editMode2,
+    required this.initialValue1,
+    required this.initialValue2,
+    required this.onChanged1,
+    required this.onChanged2,
+    this.readOnly1 = false,
+    this.readOnly2 = false,
+    this.errorText1,
+    this.errorText2,
+    this.padding = CustomStyle.sizeXL,
+    this.elevation = 1.0,
+    this.color,
+  });
+
+  final String title;
+  final bool editMode1;
+  final bool editMode2;
+  final String initialValue1;
+  final String initialValue2;
+  final ValueChanged onChanged1;
+  final ValueChanged onChanged2;
+  final bool readOnly1;
+  final bool readOnly2;
+  final String? errorText1;
+  final String? errorText2;
+  final double padding;
+  final double elevation;
+  final Color? color;
+
+  @override
+  State<TwoInputs> createState() => _TwoInputsState();
+}
+
+class _TwoInputsState extends State<TwoInputs> {
+  late TextEditingController _textEditingController1;
+  late TextEditingController _textEditingController2;
+
+  @override
+  void initState() {
+    _textEditingController1 = TextEditingController()
+      ..text = widget.initialValue1;
+    _textEditingController2 = TextEditingController()
+      ..text = widget.initialValue2;
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant TwoInputs oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget != widget) {
+      setState(() {
+        _textEditingController1.value = TextEditingValue(
+          text: widget.initialValue1,
+          selection: _textEditingController1.selection,
+        );
+        _textEditingController2.value = TextEditingValue(
+          text: widget.initialValue2,
+          selection: _textEditingController2.selection,
+        );
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: widget.elevation,
+      color: widget.color,
+      child: Padding(
+        padding: EdgeInsets.all(widget.padding),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                bottom: CustomStyle.sizeL,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    child: Text(
+                      widget.title,
+                      style: const TextStyle(
+                        fontSize: CustomStyle.sizeXL,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                bottom: CustomStyle.sizeXS,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Flexible(
+                    flex: 2,
+                    child: TextField(
+                      controller: _textEditingController1,
+                      key: const Key('textEditingControllerName1'),
+                      style: const TextStyle(
+                        fontSize: CustomStyle.sizeXL,
+                      ),
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
+                      enabled: widget.editMode1,
+                      textInputAction: TextInputAction.done,
+                      onChanged: widget.onChanged1,
+                      onTapOutside: (event) {
+                        // 點擊其他區域關閉螢幕鍵盤
+                        FocusManager.instance.primaryFocus?.unfocus();
+                      },
+                      maxLength: 40,
+                      decoration: InputDecoration(
+                        label: Text(
+                            '${AppLocalizations.of(context)!.frequency} (${CustomStyle.mHz})'),
+                        border: const OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(4.0))),
+                        contentPadding: const EdgeInsets.all(8.0),
+                        isDense: true,
+                        filled: true,
+                        fillColor:
+                            Theme.of(context).colorScheme.secondaryContainer,
+                        counterText: '',
+                        errorMaxLines: 2,
+                        errorStyle:
+                            const TextStyle(fontSize: CustomStyle.sizeS),
+                        errorText: widget.editMode1 ? widget.errorText1 : null,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  Flexible(
+                    flex: 2,
+                    child: TextField(
+                      controller: _textEditingController2,
+                      key: const Key('textEditingControllerName2'),
+                      style: const TextStyle(
+                        fontSize: CustomStyle.sizeXL,
+                      ),
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
+                      enabled: widget.editMode2,
+                      textInputAction: TextInputAction.done,
+                      onChanged: widget.onChanged2,
+                      onTapOutside: (event) {
+                        // 點擊其他區域關閉螢幕鍵盤
+                        FocusManager.instance.primaryFocus?.unfocus();
+                      },
+                      maxLength: 40,
+                      decoration: InputDecoration(
+                        label: Text(
+                            '${AppLocalizations.of(context)!.level} (${CustomStyle.dBmV})'),
+                        border: const OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(4.0))),
+                        contentPadding: const EdgeInsets.all(8.0),
+                        isDense: true,
+                        filled: true,
+                        fillColor:
+                            Theme.of(context).colorScheme.secondaryContainer,
+                        counterText: '',
+                        errorMaxLines: 2,
+                        errorStyle:
+                            const TextStyle(fontSize: CustomStyle.sizeS),
+                        errorText: widget.editMode2 ? widget.errorText2 : null,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 Widget twoTextField({

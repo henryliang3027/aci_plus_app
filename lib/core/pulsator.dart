@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 class Pulsator extends StatefulWidget {
   const Pulsator({
     Key? key,
-    // required this.title,
+    required this.enableTap,
+    required this.onTap,
     required this.iconData,
     this.size = 24.0,
     this.color = Colors.blue,
@@ -12,7 +13,8 @@ class Pulsator extends StatefulWidget {
     this.rippleCount = 1, // Number of simultaneous ripples
   }) : super(key: key);
 
-  // final String title;
+  final bool enableTap;
+  final VoidCallback onTap;
   final IconData iconData;
   final double size; // Size of the circle
   final Color color; // Color of the ripple
@@ -38,66 +40,67 @@ class _PulsatorState extends State<Pulsator>
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Stack(
+      alignment: Alignment.center,
       children: [
-        SizedBox(
-          width: widget.size,
-          height: widget.size,
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              ...List.generate(widget.rippleCount, (index) {
-                final delay =
-                    widget.rippleCount > 0 ? index / widget.rippleCount : 0;
-                return AnimatedBuilder(
-                  animation: _controller,
-                  builder: (context, child) {
-                    double progress = (_controller.value + delay) % 1.0;
-                    double scale = 1.0 + progress * 4; // Controls expansion
-                    double opacity =
-                        (0.8 - progress).clamp(0.0, 0.8); // Fades out
+        ...List.generate(widget.rippleCount, (index) {
+          final delay = widget.rippleCount > 0 ? index / widget.rippleCount : 0;
+          return AnimatedBuilder(
+            animation: _controller,
+            builder: (context, child) {
+              double progress = (_controller.value + delay) % 1.0;
+              double scale = 1.0 + progress * 4; // Controls expansion
+              double opacity = (0.8 - progress).clamp(0.0, 0.8); // Fades out
 
-                    return Opacity(
-                      opacity: opacity,
-                      child: Transform.scale(
-                          scale: scale,
-                          child: Container(
-                            width: widget.size,
-                            height: widget.size,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: widget.color,
-                            ),
-                          )),
-                    );
-                  },
-                );
-              }),
-              // Container(
-              //   width: widget.size,
-              //   height: widget.size,
-              //   decoration: BoxDecoration(
-              //     shape: BoxShape.circle,
-              //     color: widget.color,
-              //   ),
-              // ),
-              Icon(
-                widget.iconData,
-                color: widget.color,
-              ),
-            ],
-          ),
-        ),
-        // const SizedBox(
-        //   width: 6.0,
-        // ),
-        // Text(
-        //   widget.title,
-        //   style: const TextStyle(
-        //     fontSize: CustomStyle.sizeL,
+              return Opacity(
+                opacity: opacity,
+                child: Transform.scale(
+                    scale: scale,
+                    child: Container(
+                      width: widget.size,
+                      height: widget.size,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: widget.color,
+                      ),
+                    )),
+              );
+            },
+          );
+        }),
+        // Container(
+        //   width: widget.size,
+        //   height: widget.size,
+        //   decoration: BoxDecoration(
+        //     shape: BoxShape.circle,
+        //     color: widget.color,
         //   ),
         // ),
+        // Icon(
+        //   widget.iconData,
+        //   color: widget.color,
+        // ),
+
+        IconButton(
+          visualDensity: const VisualDensity(horizontal: -4.0, vertical: -4.0),
+          onPressed: widget.enableTap ? widget.onTap : null,
+          icon: Icon(
+            widget.iconData,
+            color: widget.color,
+            size: widget.size,
+          ),
+        ),
       ],
+
+      // const SizedBox(
+      //   width: 6.0,
+      // ),
+      // Text(
+      //   widget.title,
+      //   style: const TextStyle(
+      //     fontSize: CustomStyle.sizeL,
+      //   ),
+      // ),
     );
   }
 
