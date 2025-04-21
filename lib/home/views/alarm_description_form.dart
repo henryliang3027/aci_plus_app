@@ -1,5 +1,7 @@
+import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/home/bloc/alarm_description/alarm_description_bloc.dart';
+import 'package:aci_plus_app/repositories/unit_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -9,44 +11,91 @@ class AlarmDescriptionForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<String> getDescriptions({
-      required List<SeverityIndex> severityIndexList,
+    RichText getRichText({
+      required String text,
+      required String value,
+      required String unit,
     }) {
-      // List<String> alarmDescriptionList = [
-      //   AppLocalizations.of(context)!.dialogMessageTemperatureAlarmDescription,
-      //   AppLocalizations.of(context)!.dialogMessageVoltageAlarmDescription,
-      //   AppLocalizations.of(context)!
-      //       .dialogMessageVoltageRippleAlarmDescription,
-      //   AppLocalizations.of(context)!
-      //       .dialogMessageRFOutputPowerAlarmDescription,
-      //   AppLocalizations.of(context)!
-      //       .dialogMessageRFOutputPilotLowFrequencyDescription,
-      //   AppLocalizations.of(context)!
-      //       .dialogMessageRFOutputPilotHighFrequencyDescription,
-      // ];
-      List<String> alarmDescriptionList = [];
-      for (SeverityIndex severityIndex in severityIndexList) {
-        int index = severityIndex.index;
-        String value = severityIndex.value;
+      return RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: '$text ($unit): ',
+              style: const TextStyle(
+                fontSize: CustomStyle.sizeL,
+                color: Colors.black,
+              ),
+            ),
+            TextSpan(
+              text: value,
+              style: TextStyle(
+                  fontSize: CustomStyle.sizeL,
+                  color: CustomStyle.alarmColor[Alarm.danger.name]!),
+            ),
+          ],
+        ),
+      );
+    }
+
+    List<RichText> getDescriptions({
+      required TemperatureUnit temperatureUnit,
+      required List<SeverityIndex> severityIndexValueList,
+    }) {
+      List<RichText> alarmDescriptionList = [];
+      for (SeverityIndex severityIndexValue in severityIndexValueList) {
+        int index = severityIndexValue.index;
+        String value = severityIndexValue.value;
 
         if (index == 0) {
-          alarmDescriptionList.add(AppLocalizations.of(context)!
-              .dialogMessageTemperatureAlarmDescription(value));
+          String unit = temperatureUnit == TemperatureUnit.celsius
+              ? CustomStyle.celciusUnit
+              : CustomStyle.fahrenheitUnit;
+          RichText richText = getRichText(
+              text: AppLocalizations.of(context)!
+                  .dialogMessageTemperatureAlarmDescription,
+              value: value,
+              unit: unit);
+          alarmDescriptionList.add(richText);
         } else if (index == 1) {
-          alarmDescriptionList.add(AppLocalizations.of(context)!
-              .dialogMessageVoltageAlarmDescription(value));
+          RichText richText = getRichText(
+            text: AppLocalizations.of(context)!
+                .dialogMessageVoltageAlarmDescription,
+            value: value,
+            unit: CustomStyle.volt,
+          );
+          alarmDescriptionList.add(richText);
         } else if (index == 2) {
-          alarmDescriptionList.add(AppLocalizations.of(context)!
-              .dialogMessageVoltageRippleAlarmDescription(value));
+          RichText richText = getRichText(
+            text: AppLocalizations.of(context)!
+                .dialogMessageVoltageRippleAlarmDescription,
+            value: value,
+            unit: CustomStyle.milliVolt,
+          );
+          alarmDescriptionList.add(richText);
         } else if (index == 3) {
-          alarmDescriptionList.add(AppLocalizations.of(context)!
-              .dialogMessageRFOutputPowerAlarmDescription(value));
+          RichText richText = getRichText(
+            text: AppLocalizations.of(context)!
+                .dialogMessageRFOutputPowerAlarmDescription,
+            value: value,
+            unit: CustomStyle.dBmV,
+          );
+          alarmDescriptionList.add(richText);
         } else if (index == 4) {
-          alarmDescriptionList.add(AppLocalizations.of(context)!
-              .dialogMessageRFOutputPilotLowFrequencyDescription(value));
+          RichText richText = getRichText(
+            text: AppLocalizations.of(context)!
+                .dialogMessageRFOutputPilotLowFrequencyDescription,
+            value: value,
+            unit: CustomStyle.dBmV,
+          );
+          alarmDescriptionList.add(richText);
         } else if (index == 5) {
-          alarmDescriptionList.add(AppLocalizations.of(context)!
-              .dialogMessageRFOutputPilotHighFrequencyDescription(value));
+          RichText richText = getRichText(
+            text: AppLocalizations.of(context)!
+                .dialogMessageRFOutputPilotHighFrequencyDescription,
+            value: value,
+            unit: CustomStyle.dBmV,
+          );
+          alarmDescriptionList.add(richText);
         } else {}
       }
 
@@ -55,8 +104,9 @@ class AlarmDescriptionForm extends StatelessWidget {
 
     return BlocBuilder<AlarmDescriptionBloc, AlarmDescriptionState>(
       builder: (context, state) {
-        List<String> alarmDescriptions = getDescriptions(
-          severityIndexList: state.severityIndexList,
+        List<RichText> alarmDescriptions = getDescriptions(
+          temperatureUnit: state.temperatureUnit,
+          severityIndexValueList: state.severityIndexValueList,
         );
         return Column(
           mainAxisSize: MainAxisSize.min,
@@ -87,7 +137,6 @@ class AlarmDescriptionForm extends StatelessWidget {
                     children: [
                       ListBody(
                         children: [
-                          // Text(state.temperatureUnit.name),
                           for (int i = 0;
                               i < alarmDescriptions.length;
                               i++) ...[
@@ -102,12 +151,7 @@ class AlarmDescriptionForm extends StatelessWidget {
                                 textBaseline: TextBaseline.alphabetic,
                                 children: [
                                   Flexible(
-                                    child: Text(
-                                      alarmDescriptions[i],
-                                      style: const TextStyle(
-                                        fontSize: CustomStyle.sizeL,
-                                      ),
-                                    ),
+                                    child: alarmDescriptions[i],
                                   ),
                                 ],
                               ),

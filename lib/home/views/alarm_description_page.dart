@@ -11,15 +11,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class AlarmDescriptionPage extends StatelessWidget {
   const AlarmDescriptionPage({
     super.key,
-    required this.dataKey,
+    required this.severityIndexList,
   });
-  final DataKey dataKey;
+  final List<int> severityIndexList;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AlarmDescriptionBloc(
-        dataKey: dataKey,
+        severityIndexList: severityIndexList,
         aciDeviceRepository:
             RepositoryProvider.of<ACIDeviceRepository>(context),
         amp18Repository: RepositoryProvider.of<Amp18Repository>(context),

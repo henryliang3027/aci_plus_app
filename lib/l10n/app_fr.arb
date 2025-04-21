@@ -479,67 +479,12 @@
     "dialogMessageAutoSettingLogIntervalFailed": "Échec d'initialisation de l'intervalle de journalisation",
 
     
-    "dialogMessageTemperatureAlarmDescription": "Température actuelle: {value}",
-    "@dialogMessageTemperatureAlarmDescription": {
-        "placeholders": {
-                "value": {
-                "type": "String",
-                "example": "127"
-            }
-        }
-    },
-
-    "dialogMessageVoltageAlarmDescription": "Tension actual: {value}",
-    "@dialogMessageVoltageAlarmDescription": {
-        "placeholders": {
-                "value": {
-                "type": "String",
-                "example": "127"
-            }
-        }
-    },
-
-    "dialogMessageVoltageRippleAlarmDescription": "Ondulation tension actual: {value}",
-    "@dialogMessageVoltageRippleAlarmDescription": {
-        "placeholders": {
-                "value": {
-                "type": "String",
-                "example": "127"
-            }
-        }
-    },
-
-    "dialogMessageRFOutputPowerAlarmDescription": "Puissance sortie TCP actual: {value}",
-    "@dialogMessageRFOutputPowerAlarmDescription": {
-        "placeholders": {
-                "value": {
-                "type": "String",
-                "example": "127"
-            }
-        }
-    },
-
-    "dialogMessageRFOutputPilotLowFrequencyDescription": "Sortie basse fréquence: {value}",
-    "@dialogMessageRFOutputPilotLowFrequencyDescription": {
-        "placeholders": {
-                "value": {
-                "type": "String",
-                "example": "127"
-            }
-        }
-    },
-
-    "dialogMessageRFOutputPilotHighFrequencyDescription": "Sortie haute fréquence: {value}",
-    "@dialogMessageRFOutputPilotHighFrequencyDescription": {
-        "placeholders": {
-                "value": {
-                "type": "String",
-                "example": "127"
-            }
-        }
-    },
-
-
+    "dialogMessageTemperatureAlarmDescription": "Température actuelle",
+    "dialogMessageVoltageAlarmDescription": "Tension actuelle",
+    "dialogMessageVoltageRippleAlarmDescription": "Ondulation tension actuelle",
+    "dialogMessageRFOutputPowerAlarmDescription": "Puissance sortie TCP actuelle",
+    "dialogMessageRFOutputPilotLowFrequencyDescription": "Sortie basse fréquence actuelle",
+    "dialogMessageRFOutputPilotHighFrequencyDescription": "Sortie haute fréquence actuelle",
 
     "dialogMessageTechnicianIDSetting": "Réglage ID technicien",
     "dialogMessageInputSignalLevelSetting": "Réglage niveaux d'entrée",

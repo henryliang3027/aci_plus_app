@@ -165,7 +165,7 @@ class Indicator extends StatelessWidget {
 
     // alarmState (alarm mask) == '0' 代表 enable
     // alarmState (alarm mask) == '1' 代表 disable
-    Alarm getNodeUnitStatusAlarmSeverity({
+    List<int> getNodeUnitStatusAlarmSeverityIndexList({
       required String temperatureAlarmState,
       required String voltageAlarmState,
       required String rfOutputPower1AlarmState,
@@ -188,11 +188,19 @@ class Indicator extends StatelessWidget {
         getSeverity(rfOutputPower6AlarmState, rfOutputPower6AlarmSeverity),
       ];
 
-      return severityList.contains(Alarm.danger) ? Alarm.danger : Alarm.success;
+      // create a list contain index in severityList which is Alarm.danger
+      List<int> severityIndexList = [];
+      for (int i = 0; i < severityList.length; i++) {
+        if (severityList[i] == Alarm.danger) {
+          severityIndexList.add(i);
+        }
+      }
+
+      return severityIndexList;
     }
 
-    Future<void> showAlarmDescriptionDialog2({
-      required DataKey dataKey,
+    Future<void> showAlarmDescriptionDialog({
+      required List<int> severityIndexList,
     }) async {
       return showDialog<void>(
         context: context,
@@ -208,121 +216,7 @@ class Indicator extends StatelessWidget {
               child: Dialog(
                 insetPadding: const EdgeInsets.all(0),
                 child: AlarmDescriptionPage(
-                  dataKey: dataKey,
-                ),
-              ),
-            ),
-          );
-        },
-      );
-    }
-
-    Future<void> showAlarmDescriptionDialog({
-      required BuildContext context,
-      required List<String> alarmDescriptions,
-    }) async {
-      return showDialog<void>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (BuildContext context) {
-          var width = MediaQuery.of(context).size.width;
-          // var height = MediaQuery.of(context).size.height;
-
-          return Center(
-            child: Container(
-              width: 350,
-              child: Dialog(
-                insetPadding: EdgeInsets.all(0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      alignment: Alignment.center,
-                      width: double.maxFinite,
-                      height: 58,
-                      decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(20.0),
-                            topRight: Radius.circular(20.0)),
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                      child: Text(
-                        AppLocalizations.of(context)!
-                            .dialogTitleAlarmDescription,
-                        style: TextStyle(
-                          fontSize: CustomStyle.sizeXL,
-                          color: Theme.of(context).colorScheme.onPrimary,
-                        ),
-                      ),
-                    ),
-                    Flexible(
-                      child: SingleChildScrollView(
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(24, 30, 24, 30),
-                          child: Column(
-                            children: [
-                              ListBody(
-                                children: [
-                                  for (int i = 0;
-                                      i < alarmDescriptions.length;
-                                      i++) ...[
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                        bottom: 10.0,
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment
-                                            .baseline, // Align based on text baseline
-                                        textBaseline: TextBaseline.alphabetic,
-                                        children: [
-                                          Flexible(
-                                            child: Text(
-                                              alarmDescriptions[i],
-                                              style: const TextStyle(
-                                                fontSize: CustomStyle.sizeL,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ]
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 6.0),
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        padding: const EdgeInsets.symmetric(
-                                          vertical: 0.0,
-                                          horizontal: 20.0,
-                                        ),
-                                        tapTargetSize:
-                                            MaterialTapTargetSize.shrinkWrap,
-                                      ),
-                                      child: Text(
-                                        AppLocalizations.of(context)!
-                                            .dialogMessageOk,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                  severityIndexList: severityIndexList,
                 ),
               ),
             ),
@@ -354,18 +248,14 @@ class Indicator extends StatelessWidget {
 
     Widget getPulsator({
       required Color color,
-      required DataKey dataKey,
+      required List<int> severityIndexList,
       required IconData iconData,
       required bool enableTap,
     }) {
       return Pulsator(
         enableTap: enableTap,
         onTap: () {
-          showAlarmDescriptionDialog2(dataKey: dataKey);
-          // showAlarmDescriptionDialog(
-          //   context: context,
-          //   alarmDescriptions: alarmDescriptions,
-          // );
+          showAlarmDescriptionDialog(severityIndexList: severityIndexList);
         },
         iconData: iconData,
         size: 30, // Circle size
@@ -377,31 +267,6 @@ class Indicator extends StatelessWidget {
         // animationEnabled = false 時關閉動畫
         // title: name,
       );
-
-      // GestureDetector(
-      //   onTap: alarmDescriptions.isNotEmpty
-      //       ? () {
-      //           showAlarmDescriptionDialog(
-      //             context: context,
-      //             alarmDescriptions: alarmDescriptions,
-      //           );
-      //         }
-      //       : null,
-      //   child: Padding(
-      //     padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      //     child: Pulsator(
-      //       iconData: iconData,
-      //       size: 30, // Circle size
-      //       color: color,
-      //       duration: const Duration(
-      //         seconds: 2,
-      //       ), //  animationEnabled = false 時 Ripple duration 可以忽略
-      //       rippleCount: animationEnabled ? 1 : 0,
-      //       // animationEnabled = false 時關閉動畫
-      //       // title: name,
-      //     ),
-      //   ),
-      // );
     }
 
     Color getPulsatorColor({
@@ -520,7 +385,8 @@ class Indicator extends StatelessWidget {
                 rfOutputPilotHighFrequencyAlarmSeverity,
           );
 
-          Alarm nodeUnitStatusAlarmSeverity = getNodeUnitStatusAlarmSeverity(
+          List<int> nodeUnitStatusAlarmSeverityIndexList =
+              getNodeUnitStatusAlarmSeverityIndexList(
             temperatureAlarmState: temperatureAlarmState,
             voltageAlarmState: voltageAlarmState,
             rfOutputPower1AlarmState: rfOutputPower1AlarmState,
@@ -535,8 +401,13 @@ class Indicator extends StatelessWidget {
             rfOutputPower6AlarmSeverity: rfOutputPower6AlarmSeverity,
           );
 
-          Alarm finalAmpUnitStatusAlarmSeverity =
+          Alarm ampUnitStatusAlarmSeverity =
               ampUnitStatusAlarmSeverityIndexList.isNotEmpty
+                  ? Alarm.danger
+                  : Alarm.success;
+
+          Alarm nodeUnitStatusAlarmSeverity =
+              nodeUnitStatusAlarmSeverityIndexList.isNotEmpty
                   ? Alarm.danger
                   : Alarm.success;
 
@@ -554,21 +425,23 @@ class Indicator extends StatelessWidget {
                 getPulsator(
                   color: getPulsatorColor(
                     alarm: state.aciDeviceType == ACIDeviceType.amp1P8G
-                        ? finalAmpUnitStatusAlarmSeverity
+                        ? ampUnitStatusAlarmSeverity
                         : nodeUnitStatusAlarmSeverity,
                   ),
-                  dataKey: DataKey.unitStatusAlarmSeverity,
+                  severityIndexList: ampUnitStatusAlarmSeverityIndexList,
                   iconData: CustomIcons.device,
                   enableTap: state.aciDeviceType == ACIDeviceType.amp1P8G
-                      ? getPulsatorEnabled(
-                          alarm: finalAmpUnitStatusAlarmSeverity)
+                      ? getPulsatorEnabled(alarm: ampUnitStatusAlarmSeverity)
                       : getPulsatorEnabled(alarm: nodeUnitStatusAlarmSeverity),
                 ),
                 getPulsator(
                   color: getPulsatorColor(
                     alarm: finalTemperatureAlarmSeverity,
                   ),
-                  dataKey: DataKey.temperatureAlarmSeverity,
+                  severityIndexList:
+                      ampUnitStatusAlarmSeverityIndexList.contains(0)
+                          ? [0]
+                          : [],
                   iconData: CustomIcons.temperature,
                   enableTap:
                       getPulsatorEnabled(alarm: finalTemperatureAlarmSeverity),
@@ -577,7 +450,10 @@ class Indicator extends StatelessWidget {
                   color: getPulsatorColor(
                     alarm: finalVoltageAlarmSeverity,
                   ),
-                  dataKey: DataKey.voltageAlarmSeverity,
+                  severityIndexList:
+                      ampUnitStatusAlarmSeverityIndexList.contains(1)
+                          ? [1]
+                          : [],
                   iconData: CustomIcons.power,
                   enableTap:
                       getPulsatorEnabled(alarm: finalVoltageAlarmSeverity),
@@ -599,19 +475,19 @@ class Indicator extends StatelessWidget {
               children: [
                 getPulsator(
                   color: const Color(0xff6c757d),
-                  dataKey: DataKey.unitStatusAlarmSeverity,
+                  severityIndexList: [],
                   iconData: CustomIcons.device,
                   enableTap: false,
                 ),
                 getPulsator(
                   color: const Color(0xff6c757d),
-                  dataKey: DataKey.temperatureAlarmSeverity,
+                  severityIndexList: [],
                   iconData: CustomIcons.temperature,
                   enableTap: false,
                 ),
                 getPulsator(
                   color: const Color(0xff6c757d),
-                  dataKey: DataKey.voltageAlarmSeverity,
+                  severityIndexList: [],
                   iconData: CustomIcons.power,
                   enableTap: false,
                 ),

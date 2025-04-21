@@ -3,25 +3,26 @@ part of 'alarm_description_bloc.dart';
 class AlarmDescriptionState extends Equatable {
   const AlarmDescriptionState({
     this.temperatureUnit = TemperatureUnit.fahrenheit,
-    this.severityIndexList = const <SeverityIndex>[],
+    this.severityIndexValueList = const <SeverityIndex>[],
   });
 
   final TemperatureUnit temperatureUnit;
-  final List<SeverityIndex> severityIndexList;
+  final List<SeverityIndex> severityIndexValueList;
 
   AlarmDescriptionState copyWith({
     TemperatureUnit? temperatureUnit,
-    List<SeverityIndex>? severityIndexList,
+    List<SeverityIndex>? severityIndexValueList,
   }) {
     return AlarmDescriptionState(
       temperatureUnit: temperatureUnit ?? this.temperatureUnit,
-      severityIndexList: severityIndexList ?? this.severityIndexList,
+      severityIndexValueList:
+          severityIndexValueList ?? this.severityIndexValueList,
     );
   }
 
   @override
   List<Object> get props => [
         temperatureUnit,
-        severityIndexList,
+        severityIndexValueList,
       ];
 }
