@@ -7,6 +7,7 @@ import 'package:aci_plus_app/core/pulsator.dart';
 import 'package:aci_plus_app/core/setup_wizard_dialog.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
+import 'package:aci_plus_app/home/views/alarm_description_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -124,34 +125,6 @@ class Indicator extends StatelessWidget {
       }
     }
 
-    List<String> getAmpUnitStatusAlarmDescription({
-      required List<int> severityIndexList,
-    }) {
-      List<String> alarmDescriptionList = [
-        AppLocalizations.of(context)!.dialogMessageTemperatureAlarmDescription,
-        AppLocalizations.of(context)!.dialogMessageVoltageAlarmDescription,
-        AppLocalizations.of(context)!
-            .dialogMessageVoltageRippleAlarmDescription,
-        AppLocalizations.of(context)!
-            .dialogMessageRFOutputPowerAlarmDescription,
-        AppLocalizations.of(context)!
-            .dialogMessageRFOutputPilotLowFrequencyDescription,
-        AppLocalizations.of(context)!
-            .dialogMessageRFOutputPilotHighFrequencyDescription,
-      ];
-
-      // 取得 severityIndexList 中的 index 對應的 alarmDescription
-      List<String> alarmDescriptions = [];
-      for (int i = 0; i < severityIndexList.length; i++) {
-        int index = severityIndexList[i];
-        if (index >= 0 && index < alarmDescriptionList.length) {
-          alarmDescriptions.add(alarmDescriptionList[index]);
-        }
-      }
-
-      return alarmDescriptions;
-    }
-
     // alarmState (alarm mask) == '0' 代表 enable
     // alarmState (alarm mask) == '1' 代表 disable
     List<int> getAmpUnitStatusAlarmSeverityIndexList({
@@ -216,6 +189,32 @@ class Indicator extends StatelessWidget {
       ];
 
       return severityList.contains(Alarm.danger) ? Alarm.danger : Alarm.success;
+    }
+
+    Future<void> showAlarmDescriptionDialog2({
+      required DataKey dataKey,
+    }) async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+
+        builder: (BuildContext context) {
+          var width = MediaQuery.of(context).size.width;
+          var height = MediaQuery.of(context).size.height;
+
+          return Center(
+            child: SizedBox(
+              width: 350,
+              child: Dialog(
+                insetPadding: const EdgeInsets.all(0),
+                child: AlarmDescriptionPage(
+                  dataKey: dataKey,
+                ),
+              ),
+            ),
+          );
+        },
+      );
     }
 
     Future<void> showAlarmDescriptionDialog({
@@ -332,7 +331,7 @@ class Indicator extends StatelessWidget {
       );
     }
 
-    Widget getSetupWizardButton({bool enabled = false}) {
+    Widget getSetupWizardButton({bool enabled = true}) {
       return IconButton(
         visualDensity: const VisualDensity(horizontal: -4.0, vertical: -4.0),
         onPressed: enabled
@@ -355,17 +354,18 @@ class Indicator extends StatelessWidget {
 
     Widget getPulsator({
       required Color color,
-      required List<String> alarmDescriptions,
+      required DataKey dataKey,
       required IconData iconData,
-      bool animationEnabled = true,
+      required bool enableTap,
     }) {
       return Pulsator(
-        enableTap: alarmDescriptions.isNotEmpty,
+        enableTap: enableTap,
         onTap: () {
-          showAlarmDescriptionDialog(
-            context: context,
-            alarmDescriptions: alarmDescriptions,
-          );
+          showAlarmDescriptionDialog2(dataKey: dataKey);
+          // showAlarmDescriptionDialog(
+          //   context: context,
+          //   alarmDescriptions: alarmDescriptions,
+          // );
         },
         iconData: iconData,
         size: 30, // Circle size
@@ -373,7 +373,7 @@ class Indicator extends StatelessWidget {
         duration: const Duration(
           seconds: 2,
         ), //  animationEnabled = false 時 Ripple duration 可以忽略
-        rippleCount: animationEnabled ? 1 : 0,
+        rippleCount: enableTap ? 1 : 0,
         // animationEnabled = false 時關閉動畫
         // title: name,
       );
@@ -410,7 +410,7 @@ class Indicator extends StatelessWidget {
       return CustomStyle.alarmColor[alarm.name]!; // Ripple color
     }
 
-    bool getPulsatorAnimationEnabled({
+    bool getPulsatorEnabled({
       required Alarm alarm,
     }) {
       return alarm == Alarm.success ? false : true;
@@ -540,32 +540,11 @@ class Indicator extends StatelessWidget {
                   ? Alarm.danger
                   : Alarm.success;
 
-          List<String> ampUnitStatusAlarmSeverityDescription =
-              getAmpUnitStatusAlarmDescription(
-            severityIndexList: ampUnitStatusAlarmSeverityIndexList,
-          );
-
           Alarm finalTemperatureAlarmSeverity =
               getSeverity(temperatureAlarmState, temperatureAlarmSeverity);
 
-          List<String> temperatureAlarmDescription =
-              finalTemperatureAlarmSeverity == Alarm.danger
-                  ? [
-                      AppLocalizations.of(context)!
-                          .dialogMessageTemperatureAlarmDescription,
-                    ]
-                  : [];
-
           Alarm finalVoltageAlarmSeverity =
               getSeverity(voltageAlarmState, voltageAlarmSeverity);
-
-          List<String> voltageAlarmDescription =
-              finalVoltageAlarmSeverity == Alarm.danger
-                  ? [
-                      AppLocalizations.of(context)!
-                          .dialogMessageVoltageAlarmDescription,
-                    ]
-                  : [];
 
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -578,33 +557,30 @@ class Indicator extends StatelessWidget {
                         ? finalAmpUnitStatusAlarmSeverity
                         : nodeUnitStatusAlarmSeverity,
                   ),
+                  dataKey: DataKey.unitStatusAlarmSeverity,
                   iconData: CustomIcons.device,
-                  // name: AppLocalizations.of(context)!.unitStatusAlarm,
-                  animationEnabled: state.aciDeviceType == ACIDeviceType.amp1P8G
-                      ? getPulsatorAnimationEnabled(
+                  enableTap: state.aciDeviceType == ACIDeviceType.amp1P8G
+                      ? getPulsatorEnabled(
                           alarm: finalAmpUnitStatusAlarmSeverity)
-                      : getPulsatorAnimationEnabled(
-                          alarm: nodeUnitStatusAlarmSeverity),
-                  alarmDescriptions: ampUnitStatusAlarmSeverityDescription,
+                      : getPulsatorEnabled(alarm: nodeUnitStatusAlarmSeverity),
                 ),
                 getPulsator(
                   color: getPulsatorColor(
                     alarm: finalTemperatureAlarmSeverity,
                   ),
+                  dataKey: DataKey.temperatureAlarmSeverity,
                   iconData: CustomIcons.temperature,
-                  // name: AppLocalizations.of(context)!.temperatureAlarm,
-                  animationEnabled: getPulsatorAnimationEnabled(
-                      alarm: finalTemperatureAlarmSeverity),
-                  alarmDescriptions: temperatureAlarmDescription,
+                  enableTap:
+                      getPulsatorEnabled(alarm: finalTemperatureAlarmSeverity),
                 ),
                 getPulsator(
                   color: getPulsatorColor(
                     alarm: finalVoltageAlarmSeverity,
                   ),
+                  dataKey: DataKey.voltageAlarmSeverity,
                   iconData: CustomIcons.power,
-                  animationEnabled: getPulsatorAnimationEnabled(
-                      alarm: finalVoltageAlarmSeverity),
-                  alarmDescriptions: voltageAlarmDescription,
+                  enableTap:
+                      getPulsatorEnabled(alarm: finalVoltageAlarmSeverity),
                 ),
                 Container(
                   width: 44,
@@ -623,24 +599,21 @@ class Indicator extends StatelessWidget {
               children: [
                 getPulsator(
                   color: const Color(0xff6c757d),
+                  dataKey: DataKey.unitStatusAlarmSeverity,
                   iconData: CustomIcons.device,
-                  // name: AppLocalizations.of(context)!.unitStatusAlarm,
-                  animationEnabled: false,
-                  alarmDescriptions: [],
+                  enableTap: false,
                 ),
                 getPulsator(
                   color: const Color(0xff6c757d),
+                  dataKey: DataKey.temperatureAlarmSeverity,
                   iconData: CustomIcons.temperature,
-                  // name: AppLocalizations.of(context)!.temperatureAlarm,
-                  animationEnabled: false,
-                  alarmDescriptions: [],
+                  enableTap: false,
                 ),
                 getPulsator(
                   color: const Color(0xff6c757d),
+                  dataKey: DataKey.voltageAlarmSeverity,
                   iconData: CustomIcons.power,
-                  // name: AppLocalizations.of(context)!.powerSupplyAlarm,
-                  animationEnabled: false,
-                  alarmDescriptions: [],
+                  enableTap: false,
                 ),
                 Container(
                   width: 44,

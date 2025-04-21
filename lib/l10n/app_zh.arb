@@ -482,12 +482,69 @@
     "dialogMessageGPSPermissionDenied": "無法取得定位權限, 請允許定位權限。",
     "dialogMessageAutoSettingLogIntervalFailed": "初始化記錄間隔失敗",
 
-    "dialogMessageTemperatureAlarmDescription": "溫度警告",
-    "dialogMessageVoltageAlarmDescription": "電壓警告",
-    "dialogMessageVoltageRippleAlarmDescription": "電壓漣波警告",
-    "dialogMessageRFOutputPowerAlarmDescription": "TCP 輸出強度警告",
-    "dialogMessageRFOutputPilotLowFrequencyDescription": "低頻輸出狀態警告",
-    "dialogMessageRFOutputPilotHighFrequencyDescription": "高頻輸出狀態警告",
+
+    "dialogMessageTemperatureAlarmDescription": "目前溫度: {value}",
+    "@dialogMessageTemperatureAlarmDescription": {
+        "placeholders": {
+                "value": {
+                "type": "String",
+                "example": "127"
+            }
+        }
+    },
+
+    "dialogMessageVoltageAlarmDescription": "目前電壓: {value}",
+    "@dialogMessageVoltageAlarmDescription": {
+        "placeholders": {
+                "value": {
+                "type": "String",
+                "example": "127"
+            }
+        }
+    },
+
+    "dialogMessageVoltageRippleAlarmDescription": "目前電壓漣波: {value}",
+    "@dialogMessageVoltageRippleAlarmDescription": {
+        "placeholders": {
+                "value": {
+                "type": "String",
+                "example": "127"
+            }
+        }
+    },
+
+    "dialogMessageRFOutputPowerAlarmDescription": "目前 TCP 輸出強度: {value}",
+    "@dialogMessageRFOutputPowerAlarmDescription": {
+        "placeholders": {
+                "value": {
+                "type": "String",
+                "example": "127"
+            }
+        }
+    },
+
+    "dialogMessageRFOutputPilotLowFrequencyDescription": "目前低頻輸出: {value}",
+    "@dialogMessageRFOutputPilotLowFrequencyDescription": {
+        "placeholders": {
+                "value": {
+                "type": "String",
+                "example": "127"
+            }
+        }
+    },
+
+
+    "dialogMessageRFOutputPilotHighFrequencyDescription": "目前高頻輸出: {value}",
+    "@dialogMessageRFOutputPilotHighFrequencyDescription": {
+        "placeholders": {
+                "value": {
+                "type": "String",
+                "example": "127"
+            }
+        }
+    },
+    
+
 
     "dialogMessageTechnicianIDSetting": "技術人員 ID 設定",
     "dialogMessageInputSignalLevelSetting": "輸入信號強度設定",

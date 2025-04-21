@@ -10,6 +10,7 @@ import 'package:aci_plus_app/repositories/dsim_repository.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_repository.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/repositories/firmware_repository.dart';
+import 'package:aci_plus_app/repositories/unit_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:speed_chart/speed_chart.dart';
@@ -27,12 +28,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     required Amp18CCorNodeRepository amp18CCorNodeRepository,
     required FirmwareRepository firmwareRepository,
     required CodeRepository codeRepository,
+    required UnitRepository unitRepository,
   })  : _aciDeviceRepository = aciDeviceRepository,
         _dsimRepository = dsimRepository,
         _amp18Repository = amp18Repository,
         _amp18CCorNodeRepository = amp18CCorNodeRepository,
         _firmwareRepository = firmwareRepository,
         _codeRepository = codeRepository,
+        _unitRepository = unitRepository,
         super(const HomeState()) {
     on<SplashStateChanged>(_onSplashStateChanged);
     on<DiscoveredDeviceChanged>(_onDiscoveredDeviceChanged);
@@ -58,6 +61,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final Amp18CCorNodeRepository _amp18CCorNodeRepository;
   final FirmwareRepository _firmwareRepository;
   final CodeRepository _codeRepository;
+  final UnitRepository _unitRepository;
   StreamSubscription<ScanReport>? _scanStreamSubscription;
   StreamSubscription<ConnectionReport>? _connectionReportStreamSubscription;
   StreamSubscription<Map<DataKey, String>>?

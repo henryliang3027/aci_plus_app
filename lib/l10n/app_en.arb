@@ -480,12 +480,67 @@
     "dialogMessageGPSPermissionDenied": "Location permissions are denied. Please provide permission.",
     "dialogMessageAutoSettingLogIntervalFailed": "Failed to initialize the log interval.",
 
-    "dialogMessageTemperatureAlarmDescription": "Temperature alarm",
-    "dialogMessageVoltageAlarmDescription": "Voltage alarm",
-    "dialogMessageVoltageRippleAlarmDescription": "Voltage ripple alarm",
-    "dialogMessageRFOutputPowerAlarmDescription": "TCP output power alarm",
-    "dialogMessageRFOutputPilotLowFrequencyDescription": "Low pilot output status alarm",
-    "dialogMessageRFOutputPilotHighFrequencyDescription": "High pilot output status alarm",
+    "dialogMessageTemperatureAlarmDescription": "Current temperature: {value}",
+    "@dialogMessageTemperatureAlarmDescription": {
+        "placeholders": {
+                "value": {
+                "type": "String",
+                "example": "127"
+            }
+        }
+    },
+
+    "dialogMessageVoltageAlarmDescription": "Current voltage: {value}",
+    "@dialogMessageVoltageAlarmDescription": {
+        "placeholders": {
+                "value": {
+                "type": "String",
+                "example": "127"
+            }
+        }
+    },
+
+    "dialogMessageVoltageRippleAlarmDescription": "Current voltage ripple: {value}",
+    "@dialogMessageVoltageRippleAlarmDescription": {
+        "placeholders": {
+                "value": {
+                "type": "String",
+                "example": "127"
+            }
+        }
+    },
+
+    "dialogMessageRFOutputPowerAlarmDescription": "Current TCP output power: {value}",
+    "@dialogMessageRFOutputPowerAlarmDescription": {
+        "placeholders": {
+                "value": {
+                "type": "String",
+                "example": "127"
+            }
+        }
+    },
+
+    "dialogMessageRFOutputPilotLowFrequencyDescription": "Current Low pilot output: {value}",
+    "@dialogMessageRFOutputPilotLowFrequencyDescription": {
+        "placeholders": {
+                "value": {
+                "type": "String",
+                "example": "127"
+            }
+        }
+    },
+
+
+    "dialogMessageRFOutputPilotHighFrequencyDescription": "Current high pilot output: {value}",
+    "@dialogMessageRFOutputPilotHighFrequencyDescription": {
+        "placeholders": {
+                "value": {
+                "type": "String",
+                "example": "127"
+            }
+        }
+    },
+    
 
     "dialogMessageTechnicianIDSetting": "Tech ID setting",
     "dialogMessageInputSignalLevelSetting": "Input signal levels setting",

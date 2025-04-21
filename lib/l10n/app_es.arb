@@ -475,12 +475,66 @@
     "dialogMessageGPSPermissionDenied": "Permisos de ubicación denegados. Por favor, otorgue permiso.",
     "dialogMessageAutoSettingLogIntervalFailed": "Error al inicializar el intervalo de registro.",
 
-    "dialogMessageTemperatureAlarmDescription": "Alarma de temperatura",
-    "dialogMessageVoltageAlarmDescription": "Alarma de voltaje",
-    "dialogMessageVoltageRippleAlarmDescription": "Alarma de Ondulación Voltaje",
-    "dialogMessageRFOutputPowerAlarmDescription": "Alarma de potencia salida TCP",
-    "dialogMessageRFOutputPilotLowFrequencyDescription": "Alarma de estado salida baja frecuencia",
-    "dialogMessageRFOutputPilotHighFrequencyDescription": "Alarma de estado salida alta frecuencia",
+    "dialogMessageTemperatureAlarmDescription": "Temperatura actual: {value}",
+    "@dialogMessageTemperatureAlarmDescription": {
+        "placeholders": {
+                "value": {
+                "type": "String",
+                "example": "127"
+            }
+        }
+    },
+
+    "dialogMessageVoltageAlarmDescription": "Voltaje actual: {value}",
+    "@dialogMessageVoltageAlarmDescription": {
+        "placeholders": {
+                "value": {
+                "type": "String",
+                "example": "127"
+            }
+        }
+    },
+
+    "dialogMessageVoltageRippleAlarmDescription": "Ondulación voltaje actual: {value}",
+    "@dialogMessageVoltageRippleAlarmDescription": {
+        "placeholders": {
+                "value": {
+                "type": "String",
+                "example": "127"
+            }
+        }
+    },
+
+    "dialogMessageRFOutputPowerAlarmDescription": "Potencia salida TCP actual: {value}",
+    "@dialogMessageRFOutputPowerAlarmDescription": {
+        "placeholders": {
+                "value": {
+                "type": "String",
+                "example": "127"
+            }
+        }
+    },
+
+    "dialogMessageRFOutputPilotLowFrequencyDescription": "Salida baja frecuencia: {value}",
+    "@dialogMessageRFOutputPilotLowFrequencyDescription": {
+        "placeholders": {
+                "value": {
+                "type": "String",
+                "example": "127"
+            }
+        }
+    },
+
+    "dialogMessageRFOutputPilotHighFrequencyDescription": "Salida alta frecuencia: {value}",
+    "@dialogMessageRFOutputPilotHighFrequencyDescription": {
+        "placeholders": {
+                "value": {
+                "type": "String",
+                "example": "127"
+            }
+        }
+    },
+
 
     "dialogMessageTechnicianIDSetting": "Ajuste ID del técnico",
     "dialogMessageInputSignalLevelSetting": "Ajuste niveles de entrada",
