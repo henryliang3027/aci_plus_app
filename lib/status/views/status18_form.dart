@@ -2384,8 +2384,13 @@ class _FirstChannelPowerLevelCard extends StatelessWidget {
     return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
       String firstChannelFrequency =
           state.characteristicData[DataKey.pilot1RFChannelFrequency] ?? '';
-      String rfOutputLowChannelPower =
-          state.characteristicData[DataKey.rfOutputLowChannelPower] ?? '';
+
+      String rfOutputLowChannelPower = getRFLevelString(
+        context: context,
+        rfLevel:
+            state.characteristicData[DataKey.rfOutputLowChannelPower] ?? '',
+      );
+
       String pilotFrequency1AlarmState = state.characteristicData[
               DataKey.rfOutputPilotLowFrequencyAlarmState] ??
           '1';
@@ -2581,8 +2586,11 @@ class _LastChannelPowerLevelCard extends StatelessWidget {
       String lastChannelFrequency =
           state.characteristicData[DataKey.pilot2RFChannelFrequency] ?? '';
 
-      String rfOutputHighChannelPower =
-          state.characteristicData[DataKey.rfOutputHighChannelPower] ?? '';
+      String rfOutputHighChannelPower = getRFLevelString(
+        context: context,
+        rfLevel:
+            state.characteristicData[DataKey.rfOutputHighChannelPower] ?? '',
+      );
 
       String pilotFrequency2AlarmState = state.characteristicData[
               DataKey.rfOutputPilotHighFrequencyAlarmState] ??

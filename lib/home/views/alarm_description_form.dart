@@ -1,5 +1,6 @@
 import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/alarm_description/alarm_description_bloc.dart';
 import 'package:aci_plus_app/repositories/unit_repository.dart';
 import 'package:flutter/material.dart';
@@ -81,18 +82,20 @@ class AlarmDescriptionForm extends StatelessWidget {
           );
           alarmDescriptionList.add(richText);
         } else if (index == 4) {
+          String rfLevel = getRFLevelString(context: context, rfLevel: value);
           RichText richText = getRichText(
             text: AppLocalizations.of(context)!
                 .dialogMessageRFOutputPilotLowFrequencyDescription,
-            value: value,
+            value: rfLevel,
             unit: CustomStyle.dBmV,
           );
           alarmDescriptionList.add(richText);
         } else if (index == 5) {
+          String rfLevel = getRFLevelString(context: context, rfLevel: value);
           RichText richText = getRichText(
             text: AppLocalizations.of(context)!
                 .dialogMessageRFOutputPilotHighFrequencyDescription,
-            value: value,
+            value: rfLevel,
             unit: CustomStyle.dBmV,
           );
           alarmDescriptionList.add(richText);

@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 const int winBeta = int.fromEnvironment('WIN_BETA', defaultValue: 7);
 
@@ -455,6 +456,22 @@ void closeKeyboard({required BuildContext context}) {
   if (!currentFocus.hasPrimaryFocus) {
     currentFocus.focusedChild?.unfocus();
   }
+}
+
+String getRFLevelString({
+  required BuildContext context,
+  required String rfLevel,
+}) {
+  // convert rfLevel string to double
+  double rfLevelValue = double.tryParse(rfLevel) ?? 0.0;
+
+  String rfLevelString = '';
+  if (rfLevelValue == -1000) {
+    rfLevelString = AppLocalizations.of(context)!.noSignal;
+  } else {
+    rfLevelString = rfLevel;
+  }
+  return rfLevelString;
 }
 
 A1P8GAlarm decodeAlarmSeverity(List<int> rawData) {

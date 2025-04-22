@@ -32,6 +32,7 @@
     "stopFrequency": "Fréquence d'Arrêt",
     "frequency": "Fréquence",
     "startFrequencyRFLevel": "Niveau RF",
+    "noSignal": "Pas de RF",
     "level": "Niveau",
     "slope": "Pente",
     "startLevel": "Niveau de Démarrage",

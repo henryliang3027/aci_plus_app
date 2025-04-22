@@ -31,6 +31,7 @@
     "stopFrequency": "Frecuencia de Parada",
     "frequency": "Frecuencia",
     "startFrequencyRFLevel": "Nivel RF",
+    "noSignal": "Sin RF",
     "level": "Nivel",
     "slope": "Pendiente",
     "startLevel": "Nivel de Inicio",

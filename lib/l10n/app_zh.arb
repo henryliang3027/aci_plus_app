@@ -32,6 +32,7 @@
     "stopFrequency": "截止頻率",
     "frequency": "頻率",
     "startFrequencyRFLevel": "訊號強度",
+    "noSignal": "無訊號",
     "level": "強度",
     "slope": "斜率",
     "startLevel": "起始強度",
