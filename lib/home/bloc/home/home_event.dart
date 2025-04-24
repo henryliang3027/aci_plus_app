@@ -4,6 +4,13 @@ abstract class HomeEvent extends Equatable {
   const HomeEvent();
 }
 
+class TestUSB extends HomeEvent {
+  const TestUSB();
+
+  @override
+  List<Object?> get props => [];
+}
+
 class SplashStateChanged extends HomeEvent {
   const SplashStateChanged();
 

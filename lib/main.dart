@@ -16,6 +16,7 @@ import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/repositories/gps_repository.dart';
 import 'package:aci_plus_app/repositories/unit_repository.dart';
 import 'package:aci_plus_app/repositories/firmware_repository.dart';
+import 'package:aci_plus_app/repositories/usb_repository.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -118,6 +119,7 @@ Future<void> main() async {
       configRepository: ConfigRepository(),
       firmwareRepository: FirmwareRepository(),
       codeRepository: CodeRepository(),
+      usbRepository: UsbRepository(),
     ));
   } else {
     runApp(App(
@@ -131,6 +133,7 @@ Future<void> main() async {
       configRepository: ConfigRepository(),
       firmwareRepository: FirmwareRepository(),
       codeRepository: CodeRepository(),
+      usbRepository: UsbRepository(),
     ));
   }
 }

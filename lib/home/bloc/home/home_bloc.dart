@@ -11,6 +11,7 @@ import 'package:aci_plus_app/repositories/amp18_ccor_node_repository.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/repositories/firmware_repository.dart';
 import 'package:aci_plus_app/repositories/unit_repository.dart';
+import 'package:aci_plus_app/repositories/usb_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:speed_chart/speed_chart.dart';
@@ -29,6 +30,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     required FirmwareRepository firmwareRepository,
     required CodeRepository codeRepository,
     required UnitRepository unitRepository,
+    required UsbRepository usbRepository,
   })  : _aciDeviceRepository = aciDeviceRepository,
         _dsimRepository = dsimRepository,
         _amp18Repository = amp18Repository,
@@ -36,6 +38,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         _firmwareRepository = firmwareRepository,
         _codeRepository = codeRepository,
         _unitRepository = unitRepository,
+        _usbRepository = usbRepository,
         super(const HomeState()) {
     on<SplashStateChanged>(_onSplashStateChanged);
     on<DiscoveredDeviceChanged>(_onDiscoveredDeviceChanged);
@@ -51,6 +54,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<DevicePeriodicUpdateRequested>(_onDevicePeriodicUpdateRequested);
     on<DevicePeriodicUpdateCanceled>(_onDevicePeriodicUpdateCanceled);
     on<DevicePeriodicUpdate>(_onDevicePeriodicUpdate);
+    on<TestUSB>(_onTestUSB);
     // on<NeedsDataReloaded>(_onNeedsDataReloaded);
     // on<testTimeout>(_onTestTimeout);
   }
@@ -62,6 +66,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final FirmwareRepository _firmwareRepository;
   final CodeRepository _codeRepository;
   final UnitRepository _unitRepository;
+  final UsbRepository _usbRepository;
   StreamSubscription<ScanReport>? _scanStreamSubscription;
   StreamSubscription<ConnectionReport>? _connectionReportStreamSubscription;
   StreamSubscription<Map<DataKey, String>>?
@@ -94,19 +99,28 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   //   }
   // }
 
+  void _onTestUSB(
+    TestUSB event,
+    Emitter<HomeState> emit,
+  ) {
+    _usbRepository.getInformation();
+  }
+
   // 進入首頁時播放動畫，動畫播完後掃描藍芽裝置
   Future<void> _onSplashStateChanged(
     SplashStateChanged event,
     Emitter<HomeState> emit,
   ) async {
-    _scanStreamSubscription = _aciDeviceRepository.scanReport.listen(
-      (scanReport) {
-        print(scanReport);
-        add(DiscoveredDeviceChanged(scanReport));
-      },
-    );
+    // _scanStreamSubscription = _aciDeviceRepository.scanReport.listen(
+    //   (scanReport) {
+    //     print(scanReport);
+    //     add(DiscoveredDeviceChanged(scanReport));
+    //   },
+    // );
 
     // _dsimRepository.scanDevices();
+    _usbRepository.connectToDevice();
+    _usbRepository.getInformation();
 
     emit(state.copyWith(
       showSplash: false,

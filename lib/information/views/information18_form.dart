@@ -334,6 +334,12 @@ class _ConnectionCard extends StatelessWidget {
                 title: AppLocalizations.of(context)!.bluetooth,
                 name: state.device.name.isNotEmpty ? state.device.name : '',
               ),
+              ElevatedButton(
+                onPressed: () {
+                  context.read()<Information18Bloc>().add(const TestUSB());
+                },
+                child: const Text('test'),
+              ),
             ],
           ),
         ),

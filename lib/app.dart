@@ -9,6 +9,7 @@ import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/repositories/gps_repository.dart';
 import 'package:aci_plus_app/repositories/unit_repository.dart';
 import 'package:aci_plus_app/repositories/firmware_repository.dart';
+import 'package:aci_plus_app/repositories/usb_repository.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,6 +28,7 @@ class App extends StatelessWidget {
     required this.configRepository,
     required this.firmwareRepository,
     required this.codeRepository,
+    required this.usbRepository,
   });
 
   final AdaptiveThemeMode savedAdaptiveThemeMode;
@@ -39,6 +41,7 @@ class App extends StatelessWidget {
   final ConfigRepository configRepository;
   final FirmwareRepository firmwareRepository;
   final CodeRepository codeRepository;
+  final UsbRepository usbRepository;
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
@@ -70,6 +73,9 @@ class App extends StatelessWidget {
         RepositoryProvider<CodeRepository>(
           create: (context) => codeRepository,
         ),
+        RepositoryProvider<UsbRepository>(
+          create: (context) => usbRepository,
+        ),
       ],
       child: BlocProvider(
         create: (context) => HomeBloc(
@@ -80,6 +86,7 @@ class App extends StatelessWidget {
           firmwareRepository: firmwareRepository,
           codeRepository: codeRepository,
           unitRepository: unitRepository,
+          usbRepository: usbRepository,
         ),
         child: _AppView(
           savedAdaptiveThemeMode: savedAdaptiveThemeMode,
