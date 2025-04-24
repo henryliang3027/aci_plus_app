@@ -355,19 +355,14 @@ class Setting18RegulationBloc
   ) {
     // 20.0 <= firstChannelLoadingLevel <= lastChannelLoadingLevel
     // 如果沒輸入 lastChannelLoadingLevel 時 lastChannelLoadingLevel <= 61.0
+
+    // 2025/04/24 改為不限制範圍
     RangeFloatPointInput firstChannelLoadingLevel = RangeFloatPointInput.dirty(
       event.firstChannelLoadingLevel,
-      minValue: 20.0,
-      maxValue: double.tryParse(state.lastChannelLoadingLevel.value) ?? 61.0,
     );
 
     RangeFloatPointInput lastChannelLoadingLevel = RangeFloatPointInput.dirty(
       state.lastChannelLoadingLevel.value,
-      minValue: double.tryParse(
-            event.firstChannelLoadingLevel,
-          ) ??
-          20.0,
-      maxValue: 61.0,
     );
 
     Set<DataKey> tappedSet = Set.from(state.tappedSet);
@@ -454,19 +449,14 @@ class Setting18RegulationBloc
   ) {
     // 20.0 <= firstChannelLoadingLevel <= lastChannelLoadingLevel
     // 如果沒輸入 lastChannelLoadingLevel 時 lastChannelLoadingLevel <= 61.0
+
+    // 2025/04/24 改為不限制範圍
     RangeFloatPointInput firstChannelLoadingLevel = RangeFloatPointInput.dirty(
       state.firstChannelLoadingLevel.value,
-      minValue: 20.0,
-      maxValue: double.tryParse(event.lastChannelLoadingLevel) ?? 61.0,
     );
 
     RangeFloatPointInput lastChannelLoadingLevel = RangeFloatPointInput.dirty(
       event.lastChannelLoadingLevel,
-      minValue: double.tryParse(
-            state.firstChannelLoadingLevel.value,
-          ) ??
-          20.0,
-      maxValue: 61.0,
     );
 
     Set<DataKey> tappedSet = Set.from(state.tappedSet);

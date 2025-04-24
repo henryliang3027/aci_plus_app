@@ -102,7 +102,6 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
       ],
       DataKey.dsVVA1.name: [
         _ForwardInputAttenuation1(
-          isEnableForwardSetting: isEnableForwardSetting,
           pilotFrequencyMode: pilotFrequencyMode,
           agcMode: agcMode,
           currentInputAttenuation: currentInputAttenuation,
@@ -137,7 +136,6 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
       ],
       DataKey.dsSlope1.name: [
         _ForwardInputEqualizer1(
-          isEnableForwardSetting: isEnableForwardSetting,
           forwardCEQIndex: forwardCEQIndex,
           pilotFrequencyMode: pilotFrequencyMode,
           agcMode: agcMode,
@@ -383,13 +381,11 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
 
 class _ForwardInputAttenuation1 extends StatelessWidget {
   const _ForwardInputAttenuation1({
-    required this.isEnableForwardSetting,
     required this.pilotFrequencyMode,
     required this.agcMode,
     required this.currentInputAttenuation,
   });
 
-  final bool isEnableForwardSetting;
   final String pilotFrequencyMode;
   final String agcMode;
   final String currentInputAttenuation;
@@ -407,11 +403,15 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
           inputAttenuation: state.targetValues[DataKey.dsVVA1]?.value ?? '0.0',
           currentInputAttenuation: currentInputAttenuation,
         );
+        String agcModeText = getAgcModeText(
+          context: context,
+          agcMode: state.agcMode,
+        );
         return Column(
           children: [
             controlTextSlider(
               context: context,
-              editMode: isEnableForwardSetting,
+              editMode: state.editMode && state.agcMode == '0',
               title:
                   '${AppLocalizations.of(context)!.forwardInputAttenuation1} (${CustomStyle.dB}):',
               minValue: minValue,
@@ -429,6 +429,17 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
               elevation: CustomStyle.graphSettingCardElevation,
               color: CustomStyle.graphSettingCardColor,
             ),
+            Row(
+              children: [
+                Text(
+                  '${AppLocalizations.of(context)!.agcMode}: $agcModeText',
+                  style: const TextStyle(
+                    fontSize: CustomStyle.sizeXL,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
           ],
         );
       },
@@ -438,14 +449,12 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
 
 class _ForwardInputEqualizer1 extends StatelessWidget {
   const _ForwardInputEqualizer1({
-    required this.isEnableForwardSetting,
     required this.forwardCEQIndex,
     required this.pilotFrequencyMode,
     required this.agcMode,
     required this.currentInputEqualizer,
   });
 
-  final bool isEnableForwardSetting;
   final String forwardCEQIndex;
   final String pilotFrequencyMode;
   final String agcMode;
@@ -464,11 +473,15 @@ class _ForwardInputEqualizer1 extends StatelessWidget {
           inputEqualizer: state.targetValues[DataKey.dsSlope1]?.value ?? '0.0',
           currentInputEqualizer: currentInputEqualizer,
         );
+        String agcModeText = getAgcModeText(
+          context: context,
+          agcMode: state.agcMode,
+        );
         return Column(
           children: [
             controlTextSlider(
               context: context,
-              editMode: isEnableForwardSetting,
+              editMode: state.editMode && state.agcMode == '0',
               title:
                   '${AppLocalizations.of(context)!.forwardInputEqualizer1} (${CustomStyle.dB}):',
               subTitle: getForwardCEQText(forwardCEQIndex),
@@ -487,6 +500,17 @@ class _ForwardInputEqualizer1 extends StatelessWidget {
                       : null,
               elevation: CustomStyle.graphSettingCardElevation,
               color: CustomStyle.graphSettingCardColor,
+            ),
+            Row(
+              children: [
+                Text(
+                  '${AppLocalizations.of(context)!.agcMode}: $agcModeText',
+                  style: const TextStyle(
+                    fontSize: CustomStyle.sizeXL,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
             ),
           ],
         );

@@ -157,11 +157,6 @@ class Setting18ReverseControlView extends StatelessWidget {
           getReturnControlParameterWidgetsByPartId(partId);
 
       return Column(children: [
-        returnControlParameters.isNotEmpty
-            ? _ReverseControlHeader(
-                factoryDefaultNumber: factoryDefaultNumber,
-              )
-            : Container(),
         ...returnControlParameters,
         const SizedBox(
           height: CustomStyle.formBottomSpacingL,

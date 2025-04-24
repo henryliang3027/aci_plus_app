@@ -2445,6 +2445,18 @@ const List<String> forwardModeValues = [
   '180',
 ];
 
+String getAgcModeText({
+  required BuildContext context,
+  required String agcMode,
+}) {
+  Map<String, String> agcModeTexts = {
+    '0': AppLocalizations.of(context)!.off,
+    '1': AppLocalizations.of(context)!.on,
+  };
+
+  return agcModeTexts[agcMode] ?? AppLocalizations.of(context)!.off;
+}
+
 bool isValidFirstChannelLoadingFrequency({
   required String currentDetectedSplitOption,
   required IntegerInput firstChannelLoadingFrequency,
