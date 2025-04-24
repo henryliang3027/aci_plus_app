@@ -33,14 +33,17 @@ class Setting18ForwardControlView extends StatelessWidget {
     String currentInputEqualizer =
         homeState.characteristicData[DataKey.currentDSSlope1] ?? '';
 
-    String factoryDefaultNumber =
-        homeState.characteristicData[DataKey.factoryDefaultNumber] ?? '';
+    // String factoryDefaultNumber =
+    //     homeState.characteristicData[DataKey.factoryDefaultNumber] ?? '';
 
     String forwardCEQIndex =
         homeState.characteristicData[DataKey.currentForwardCEQIndex] ?? '';
 
     String pilotFrequencyMode =
         homeState.characteristicData[DataKey.pilotFrequencyMode] ?? '0';
+
+    String currentDetectedSplitOption =
+        homeState.characteristicData[DataKey.currentDetectedSplitOption] ?? '0';
 
     if (homeState.connectionStatus.isRequestFailure) {
       // 重新 Initialized, 讀取並顯示空值
@@ -159,11 +162,9 @@ class Setting18ForwardControlView extends StatelessWidget {
           getForwardControlParameterWidgetsByPartId(partId);
 
       return Column(children: [
-        forwardControlParameters.isNotEmpty
-            ? _ForwardControlHeader(
-                factoryDefaultNumber: factoryDefaultNumber,
-              )
-            : Container(),
+        const _FirstChannelLoading(),
+        const _LastChannelLoading(),
+        const _RFLevelFineTuner(),
         ...forwardControlParameters,
         const SizedBox(
           height: CustomStyle.formBottomSpacingL,
@@ -391,6 +392,148 @@ class _ForwardControlHeader extends StatelessWidget {
   }
 }
 
+class _FirstChannelLoading extends StatelessWidget {
+  const _FirstChannelLoading();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ForwardControlBloc,
+        Setting18ForwardControlState>(
+      builder: (context, state) {
+        // double step1 = 6.0;
+        // double step2 = 0.5;
+
+        return TwoInputs(
+          title: '${AppLocalizations.of(context)!.startFrequency}:',
+          editMode1: false,
+          editMode2: state.editMode,
+          initialValue1: state.firstChannelLoadingFrequency.value,
+          initialValue2: state.firstChannelLoadingLevel.value,
+          onChanged1: (firstChannelLoadingFrequency) {},
+          onChanged2: (firstChannelLoadingLevel) {
+            context
+                .read<Setting18ForwardControlBloc>()
+                .add(FirstChannelLoadingLevelChanged(firstChannelLoadingLevel));
+          },
+          errorText1: null,
+          errorText2: state.firstChannelLoadingLevel.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet
+                    .contains(DataKey.firstChannelLoadingFrequency) ||
+                state.tappedSet.contains(DataKey.firstChannelLoadingLevel),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _LastChannelLoading extends StatelessWidget {
+  const _LastChannelLoading();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ForwardControlBloc,
+        Setting18ForwardControlState>(
+      builder: (context, state) {
+        // double step1 = 6.0;
+        // double step2 = 0.5;
+        return TwoInputs(
+          title: '${AppLocalizations.of(context)!.stopFrequency}:',
+          editMode1: false,
+          editMode2: state.editMode,
+          initialValue1: state.lastChannelLoadingFrequency.value,
+          initialValue2: state.lastChannelLoadingLevel.value,
+          onChanged1: (lastChannelLoadingFrequency) {},
+          onChanged2: (lastChannelLoadingLevel) {
+            context
+                .read<Setting18ForwardControlBloc>()
+                .add(LastChannelLoadingLevelChanged(lastChannelLoadingLevel));
+          },
+          errorText1: null,
+          errorText2: state.lastChannelLoadingLevel.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
+          color: getSettingListCardColor(
+            context: context,
+            isTap:
+                state.tappedSet.contains(DataKey.lastChannelLoadingFrequency) ||
+                    state.tappedSet.contains(DataKey.lastChannelLoadingLevel),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _RFLevelFineTuner extends StatelessWidget {
+  const _RFLevelFineTuner({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ForwardControlBloc,
+        Setting18ForwardControlState>(builder: (context, state) {
+      double step = 0.5;
+      return rfSlopeFinetune(
+        context: context,
+        title1: AppLocalizations.of(context)!.startFrequencyRFLevel,
+        title2: AppLocalizations.of(context)!.slope,
+        editMode1: state.editMode,
+        editMode2: state.editMode,
+        step1: step,
+        step2: step,
+        onIncreased1: () {
+          // convert to double
+          double firstChannelLoadingLevel =
+              double.parse(state.firstChannelLoadingLevel.value) + step;
+          context.read<Setting18ForwardControlBloc>().add(
+              FirstChannelLoadingLevelChanged(
+                  firstChannelLoadingLevel.toStringAsFixed(1)));
+
+          double lastChannelLoadingLevel =
+              double.parse(state.lastChannelLoadingLevel.value) + step;
+          context.read<Setting18ForwardControlBloc>().add(
+              LastChannelLoadingLevelChanged(
+                  lastChannelLoadingLevel.toStringAsFixed(1)));
+        },
+        onDecreased1: () {
+          // convert to double
+          double firstChannelLoadingLevel =
+              double.parse(state.firstChannelLoadingLevel.value) - step;
+          context.read<Setting18ForwardControlBloc>().add(
+              FirstChannelLoadingLevelChanged(
+                  firstChannelLoadingLevel.toStringAsFixed(1)));
+
+          double lastChannelLoadingLevel =
+              double.parse(state.lastChannelLoadingLevel.value) - step;
+          context.read<Setting18ForwardControlBloc>().add(
+              LastChannelLoadingLevelChanged(
+                  lastChannelLoadingLevel.toStringAsFixed(1)));
+        },
+        onIncreased2: () {
+          // convert to double
+          double firstChannelLoadingLevel =
+              double.parse(state.firstChannelLoadingLevel.value) - step;
+          context.read<Setting18ForwardControlBloc>().add(
+              FirstChannelLoadingLevelChanged(
+                  firstChannelLoadingLevel.toStringAsFixed(1)));
+        },
+        onDecreased2: () {
+          // convert to double
+          double firstChannelLoadingLevel =
+              double.parse(state.firstChannelLoadingLevel.value) + step;
+          context.read<Setting18ForwardControlBloc>().add(
+              FirstChannelLoadingLevelChanged(
+                  firstChannelLoadingLevel.toStringAsFixed(1)));
+        },
+      );
+    });
+  }
+}
+
 class _ForwardInputAttenuation1 extends StatelessWidget {
   const _ForwardInputAttenuation1({
     required this.pilotFrequencyMode,
@@ -426,7 +569,7 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
         );
         return controlTextSlider(
           context: context,
-          editMode: state.editMode,
+          editMode: state.editMode && agcMode == '0',
           title:
               '${AppLocalizations.of(context)!.forwardInputAttenuation1} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -490,7 +633,7 @@ class _ForwardInputEqualizer1 extends StatelessWidget {
         );
         return controlTextSlider(
           context: context,
-          editMode: state.editMode,
+          editMode: state.editMode && agcMode == '0',
           title:
               '${AppLocalizations.of(context)!.forwardInputEqualizer1} (${CustomStyle.dB}):',
           subTitle: getForwardCEQText(forwardCEQIndex),

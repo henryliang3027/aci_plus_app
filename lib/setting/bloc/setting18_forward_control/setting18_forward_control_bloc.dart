@@ -7,6 +7,7 @@ import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/setting/model/custom_input.dart';
+import 'package:aci_plus_app/setting/model/setting_widgets.dart';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,16 +25,12 @@ class Setting18ForwardControlBloc
     on<Initialized>(_onInitialized);
     on<ResetForwardValuesRequested>(_onResetForwardValuesRequested);
     on<ControlItemChanged>(_onControlItemChanged);
-    // on<DSVVA1Changed>(_onDSVVA1Changed);
-    // on<DSVVA2Changed>(_onDSVVA2Changed);
-    // on<DSVVA3Changed>(_onDSVVA3Changed);
-    // on<DSVVA4Changed>(_onDSVVA4Changed);
-    // on<DSVVA5Changed>(_onDSVVA5Changed);
-    // on<DSSlope1Changed>(_onDSSlope1Changed);
-    // on<DSSlope2Changed>(_onDSSlope2Changed);
-    // on<DSSlope3Changed>(_onDSSlope3Changed);
-    // on<DSSlope4Changed>(_onDSSlope4Changed);
-    // on<TGCCableLengthChanged>(_onTGCCableLengthChanged);
+    // on<FirstChannelLoadingFrequencyChanged>(
+    //     _onFirstChannelLoadingFrequencyChanged);
+    on<FirstChannelLoadingLevelChanged>(_onFirstChannelLoadingLevelChanged);
+    // on<LastChannelLoadingFrequencyChanged>(
+    //     _onLastChannelLoadingFrequencyChanged);
+    on<LastChannelLoadingLevelChanged>(_onLastChannelLoadingLevelChanged);
     on<EditModeEnabled>(_onEditModeEnabled);
     on<EditModeDisabled>(_onEditModeDisabled);
     on<SettingSubmitted>(_onSettingSubmitted);
@@ -54,12 +51,31 @@ class Setting18ForwardControlBloc
     Map<DataKey, String> characteristicDataCache =
         _amp18Repository.characteristicDataCache;
 
+    Map<DataKey, String> initialValues = {};
+    Map<DataKey, RangeFloatPointInput> targetValues = {};
+
     // 當斷線的時候重新初始化時讀取 map 元素會有 null 的情況, null 時就 assign 空字串
     String splitOption =
         characteristicDataCache[DataKey.currentDetectedSplitOption] ?? '';
     String partId = characteristicDataCache[DataKey.partId] ?? '';
     String operatingMode = getOperatingModeFromForwardCEQIndex(
         characteristicDataCache[DataKey.forwardCEQIndex] ?? '');
+
+    String firstChannelLoadingFrequency =
+        characteristicDataCache[DataKey.firstChannelLoadingFrequency] ?? '';
+    String lastChannelLoadingFrequency =
+        characteristicDataCache[DataKey.lastChannelLoadingFrequency] ?? '';
+    String firstChannelLoadingLevel =
+        characteristicDataCache[DataKey.firstChannelLoadingLevel] ?? '';
+    String lastChannelLoadingLevel =
+        characteristicDataCache[DataKey.lastChannelLoadingLevel] ?? '';
+
+    initialValues[DataKey.firstChannelLoadingFrequency] =
+        firstChannelLoadingFrequency;
+    initialValues[DataKey.lastChannelLoadingFrequency] =
+        lastChannelLoadingFrequency;
+    initialValues[DataKey.firstChannelLoadingLevel] = firstChannelLoadingLevel;
+    initialValues[DataKey.lastChannelLoadingLevel] = lastChannelLoadingLevel;
 
     Map<DataKey, MinMax> values = {};
 
@@ -73,9 +89,6 @@ class Setting18ForwardControlBloc
 
     Map<Enum, DataKey> forwardControlMap =
         SettingItemTable.controlItemDataMapCollection[partId]![0];
-
-    Map<DataKey, String> initialValues = {};
-    Map<DataKey, RangeFloatPointInput> targetValues = {};
 
     forwardControlMap.forEach((name, dataKey) {
       MinMax minMax = values[dataKey]!;
@@ -93,6 +106,14 @@ class Setting18ForwardControlBloc
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       initialValues: initialValues,
+      firstChannelLoadingFrequency:
+          RangeIntegerInput.dirty(firstChannelLoadingFrequency),
+      firstChannelLoadingLevel:
+          RangeFloatPointInput.dirty(firstChannelLoadingLevel),
+      lastChannelLoadingFrequency:
+          RangeIntegerInput.dirty(lastChannelLoadingFrequency),
+      lastChannelLoadingLevel:
+          RangeFloatPointInput.dirty(lastChannelLoadingLevel),
       targetValues: targetValues,
       editMode: false,
       enableSubmission: false,
@@ -158,6 +179,148 @@ class Setting18ForwardControlBloc
     ));
   }
 
+  // void _onFirstChannelLoadingFrequencyChanged(
+  //   FirstChannelLoadingFrequencyChanged event,
+  //   Emitter<Setting18ForwardControlState> emit,
+  // ) {
+  //   // 根據 偵測到的 splitOption 來決定 minimum forwardStartFrequency 和 maximum forwardStopFrequency
+  //   int minForwardStartFrequency = _getMinForwardStartFrequency();
+  //   int maxForwardStopFrequency = _getMaxForwardStopFrequency();
+
+  //   // 偵測到的 splitOption的起始頻率 <= firstChannelLoadingFrequency <= lastChannelLoadingFrequency
+  //   // 截止頻率輸入內容不符時即 int.tryParse(state.lastChannelLoadingFrequency.value) 回傳 null,
+  //   // 則判斷方式為: 偵測到的splitOption的起始頻率 <= firstChannelLoadingFrequency <= maxForwardStopFrequency
+  //   RangeIntegerInput firstChannelLoadingFrequency = RangeIntegerInput.dirty(
+  //     event.firstChannelLoadingFrequency,
+  //     minValue: minForwardStartFrequency,
+  //     maxValue: int.tryParse(state.lastChannelLoadingFrequency.value) ??
+  //         maxForwardStopFrequency,
+  //   );
+
+  //   // firstChannelLoadingFrequency <= lastChannelLoadingFrequency <= maxForwardStopFrequency
+  //   // 起始頻率輸入內容不符時即 int.tryParse(state.firstChannelLoadingFrequency.value) 回傳 null,
+  //   // 則判斷方式為: minForwardStartFrequency <= lastChannelLoadingFrequency <= maxForwardStopFrequency
+  //   RangeIntegerInput lastChannelLoadingFrequency = RangeIntegerInput.dirty(
+  //     state.lastChannelLoadingFrequency.value,
+  //     minValue: int.tryParse(event.firstChannelLoadingFrequency) ??
+  //         minForwardStartFrequency,
+  //     maxValue: maxForwardStopFrequency,
+  //   );
+
+  //   Set<DataKey> tappedSet = Set.from(state.tappedSet);
+  //   tappedSet.add(DataKey.firstChannelLoadingFrequency);
+
+  //   emit(state.copyWith(
+  //     submissionStatus: SubmissionStatus.none,
+  //     firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+  //     lastChannelLoadingFrequency: lastChannelLoadingFrequency,
+  //     tappedSet: tappedSet,
+  //     enableSubmission: _isEnabledSubmission(
+  //       firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+  //       lastChannelLoadingFrequency: lastChannelLoadingFrequency,
+  //     ),
+  //   ));
+  // }
+
+  void _onFirstChannelLoadingLevelChanged(
+    FirstChannelLoadingLevelChanged event,
+    Emitter<Setting18ForwardControlState> emit,
+  ) {
+    // 20.0 <= firstChannelLoadingLevel <= lastChannelLoadingLevel
+    // 如果沒輸入 lastChannelLoadingLevel 時 lastChannelLoadingLevel <= 61.0
+
+    // 2025/04/24 改為不限制範圍
+    RangeFloatPointInput firstChannelLoadingLevel = RangeFloatPointInput.dirty(
+      event.firstChannelLoadingLevel,
+    );
+
+    RangeFloatPointInput lastChannelLoadingLevel = RangeFloatPointInput.dirty(
+      state.lastChannelLoadingLevel.value,
+    );
+
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.firstChannelLoadingLevel);
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      firstChannelLoadingLevel: firstChannelLoadingLevel,
+      lastChannelLoadingLevel: lastChannelLoadingLevel,
+      tappedSet: tappedSet,
+      enableSubmission: _isEnabledSubmission(
+        firstChannelLoadingLevel: firstChannelLoadingLevel,
+        lastChannelLoadingLevel: lastChannelLoadingLevel,
+      ),
+    ));
+  }
+
+  // 參照 _onFirstChannelLoadingFrequencyChanged 的邏輯來設定各個 frequency 上下限
+  // void _onLastChannelLoadingFrequencyChanged(
+  //   LastChannelLoadingFrequencyChanged event,
+  //   Emitter<Setting18ForwardControlState> emit,
+  // ) {
+  //   int minForwardStartFrequency = _getMinForwardStartFrequency();
+  //   int maxForwardStopFrequency = _getMaxForwardStopFrequency();
+
+  //   RangeIntegerInput firstChannelLoadingFrequency = RangeIntegerInput.dirty(
+  //     state.firstChannelLoadingFrequency.value,
+  //     minValue: minForwardStartFrequency,
+  //     maxValue: int.tryParse(event.lastChannelLoadingFrequency) ??
+  //         maxForwardStopFrequency,
+  //   );
+
+  //   RangeIntegerInput lastChannelLoadingFrequency = RangeIntegerInput.dirty(
+  //     event.lastChannelLoadingFrequency,
+  //     minValue: int.tryParse(state.firstChannelLoadingFrequency.value) ??
+  //         minForwardStartFrequency,
+  //     maxValue: maxForwardStopFrequency,
+  //   );
+
+  //   Set<DataKey> tappedSet = Set.from(state.tappedSet);
+  //   tappedSet.add(DataKey.lastChannelLoadingFrequency);
+
+  //   emit(state.copyWith(
+  //     submissionStatus: SubmissionStatus.none,
+  //     firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+  //     lastChannelLoadingFrequency: lastChannelLoadingFrequency,
+  //     tappedSet: tappedSet,
+  //     enableSubmission: _isEnabledSubmission(
+  //       firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+  //       lastChannelLoadingFrequency: lastChannelLoadingFrequency,
+  //     ),
+  //   ));
+  // }
+
+  void _onLastChannelLoadingLevelChanged(
+    LastChannelLoadingLevelChanged event,
+    Emitter<Setting18ForwardControlState> emit,
+  ) {
+    // 20.0 <= firstChannelLoadingLevel <= lastChannelLoadingLevel
+    // 如果沒輸入 lastChannelLoadingLevel 時 lastChannelLoadingLevel <= 61.0
+
+    // 2025/04/24 改為不限制範圍
+    RangeFloatPointInput firstChannelLoadingLevel = RangeFloatPointInput.dirty(
+      state.firstChannelLoadingLevel.value,
+    );
+
+    RangeFloatPointInput lastChannelLoadingLevel = RangeFloatPointInput.dirty(
+      event.lastChannelLoadingLevel,
+    );
+
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.lastChannelLoadingLevel);
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      firstChannelLoadingLevel: firstChannelLoadingLevel,
+      lastChannelLoadingLevel: lastChannelLoadingLevel,
+      tappedSet: tappedSet,
+      enableSubmission: _isEnabledSubmission(
+        firstChannelLoadingLevel: firstChannelLoadingLevel,
+        lastChannelLoadingLevel: lastChannelLoadingLevel,
+      ),
+    ));
+  }
+
   void _onEditModeEnabled(
     EditModeEnabled event,
     Emitter<Setting18ForwardControlState> emit,
@@ -179,6 +342,13 @@ class Setting18ForwardControlBloc
       DataKey dataKey = entry.key;
       String value = entry.value;
 
+      if (dataKey == DataKey.firstChannelLoadingFrequency ||
+          dataKey == DataKey.lastChannelLoadingFrequency ||
+          dataKey == DataKey.firstChannelLoadingLevel ||
+          dataKey == DataKey.lastChannelLoadingLevel) {
+        continue;
+      }
+
       RangeFloatPointInput rangeFloatPointInput = RangeFloatPointInput.dirty(
         value,
         minValue: state.targetValues[dataKey]!.minValue,
@@ -193,29 +363,46 @@ class Setting18ForwardControlBloc
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       editMode: false,
       enableSubmission: false,
+      firstChannelLoadingLevel: RangeFloatPointInput.dirty(
+          state.initialValues[DataKey.firstChannelLoadingLevel] ?? ''),
+      lastChannelLoadingLevel: RangeFloatPointInput.dirty(
+          state.initialValues[DataKey.lastChannelLoadingLevel] ?? ''),
       targetValues: targetValues,
       tappedSet: {},
     ));
   }
 
   bool _isEnabledSubmission({
+    RangeFloatPointInput? firstChannelLoadingLevel,
+    RangeFloatPointInput? lastChannelLoadingLevel,
     Map<DataKey, RangeFloatPointInput>? targetValues,
   }) {
+    firstChannelLoadingLevel ??= state.firstChannelLoadingLevel;
+    lastChannelLoadingLevel ??= state.lastChannelLoadingLevel;
     targetValues ??= state.targetValues;
 
-    if (targetValues.isNotEmpty) {
-      bool isValid = Formz.validate(targetValues.values.toList());
-      bool isChanged = false;
+    bool isValid = Formz.validate([
+      ...targetValues.values.toList(),
+      firstChannelLoadingLevel,
+      lastChannelLoadingLevel,
+    ]);
 
-      if (isValid) {
-        targetValues.forEach((dataKey, rangeFloatPointInput) {
-          if (rangeFloatPointInput.value != state.initialValues[dataKey]) {
-            isChanged = true;
-          }
-        });
+    if (isValid) {
+      bool isForwardValueChanged = false;
+      bool isRegulationValueChanged = false;
+      targetValues.forEach((dataKey, rangeFloatPointInput) {
+        if (rangeFloatPointInput.value != state.initialValues[dataKey]) {
+          isForwardValueChanged = true;
+        }
+      });
+
+      if (firstChannelLoadingLevel.value !=
+              state.initialValues[DataKey.firstChannelLoadingLevel] ||
+          lastChannelLoadingLevel.value !=
+              state.initialValues[DataKey.lastChannelLoadingLevel]) {
+        isRegulationValueChanged = true;
       }
-
-      return isChanged;
+      return isForwardValueChanged || isRegulationValueChanged;
     } else {
       return false;
     }
@@ -233,6 +420,27 @@ class Setting18ForwardControlBloc
     List<String> settingResult = [];
     List<DataKey> changedSettingItem = [];
 
+    // 檢查 Regulation 設定值有沒有改變, 如果有變就進行設定
+    if (state.firstChannelLoadingLevel.value !=
+        state.initialValues[DataKey.firstChannelLoadingLevel]) {
+      bool resultOfSetFirstChannelLoadingLevel =
+          await _amp18Repository.set1p8GFirstChannelLoadingLevel(
+              state.firstChannelLoadingLevel.value);
+
+      settingResult.add(
+          '${DataKey.firstChannelLoadingLevel.name},$resultOfSetFirstChannelLoadingLevel');
+    }
+
+    if (state.lastChannelLoadingLevel.value !=
+        state.initialValues[DataKey.lastChannelLoadingLevel]) {
+      bool resultOfSetLastChannelLoadingLevel = await _amp18Repository
+          .set1p8GLastChannelLoadingLevel(state.lastChannelLoadingLevel.value);
+
+      settingResult.add(
+          '${DataKey.lastChannelLoadingLevel.name},$resultOfSetLastChannelLoadingLevel');
+    }
+
+    // 檢查 Forward port 設定值有沒有改變, 如果有變就進行設定
     state.targetValues.forEach((dataKey, rangeFloatPointInput) {
       if (rangeFloatPointInput.value != state.initialValues[dataKey]) {
         changedSettingItem.add(dataKey);
