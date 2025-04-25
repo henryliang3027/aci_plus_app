@@ -8,6 +8,8 @@ class Information18State extends Equatable {
     this.alarmTSeverity = 'default',
     this.alarmPSeverity = 'default',
     this.errorMessage = '',
+    this.isConnected = false,
+    this.characteristicDataCache = const {},
   });
 
   final String appVersion;
@@ -16,6 +18,8 @@ class Information18State extends Equatable {
   final String alarmTSeverity;
   final String alarmPSeverity;
   final String errorMessage;
+  final bool isConnected;
+  final Map<DataKey, String> characteristicDataCache;
 
   Information18State copyWith({
     String? appVersion,
@@ -24,6 +28,8 @@ class Information18State extends Equatable {
     String? alarmTSeverity,
     String? alarmPSeverity,
     String? errorMessage,
+    bool? isConnected,
+    Map<DataKey, String>? characteristicDataCache,
   }) {
     return Information18State(
       appVersion: appVersion ?? this.appVersion,
@@ -32,6 +38,9 @@ class Information18State extends Equatable {
       alarmTSeverity: alarmTSeverity ?? this.alarmTSeverity,
       alarmPSeverity: alarmPSeverity ?? this.alarmPSeverity,
       errorMessage: errorMessage ?? this.errorMessage,
+      isConnected: isConnected ?? this.isConnected,
+      characteristicDataCache:
+          characteristicDataCache ?? this.characteristicDataCache,
     );
   }
 
@@ -43,5 +52,7 @@ class Information18State extends Equatable {
         alarmTSeverity,
         alarmPSeverity,
         errorMessage,
+        isConnected,
+        characteristicDataCache,
       ];
 }

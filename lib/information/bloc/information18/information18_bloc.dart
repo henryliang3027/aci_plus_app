@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/repositories/config.dart';
 import 'package:aci_plus_app/repositories/config_repository.dart';
+import 'package:aci_plus_app/repositories/usb_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,11 +15,15 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
   Information18Bloc({
     required Amp18Repository amp18Repository,
     required ConfigRepository configRepository,
+    required USBRepository usbRepository,
   })  : _amp18Repository = amp18Repository,
         _configRepository = configRepository,
+        _usbRepository = usbRepository,
         super(const Information18State()) {
     on<ConfigLoaded>(_onConfigLoaded);
     on<AppVersionRequested>(_onAppVersionRequested);
+    on<TestUSBConnection>(_onTestUSBConnection);
+    on<TestUSBRead>(_onTestUSBRead);
     // on<AlarmUpdated>(_onAlarmUpdated);
     // on<AlarmPeriodicUpdateRequested>(_onAlarmPeriodicUpdateRequested);
     // on<AlarmPeriodicUpdateCanceled>(_onAlarmPeriodicUpdateCanceled);
@@ -28,6 +34,39 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
   // Timer? _timer;
   final Amp18Repository _amp18Repository;
   final ConfigRepository _configRepository;
+  final USBRepository _usbRepository;
+
+  Future<void> _onTestUSBConnection(
+    TestUSBConnection event,
+    Emitter<Information18State> emit,
+  ) async {
+    // bool isConnected = await _usbRepository.connectToDevice();
+
+    // emit(state.copyWith(
+    //   isConnected: isConnected,
+    // ));
+  }
+
+  Future<void> _onTestUSBRead(
+    TestUSBRead event,
+    Emitter<Information18State> emit,
+  ) async {
+    // List<dynamic> result = await _usbRepository.getInformation();
+
+    // if (result[0]) {
+    //   Map<DataKey, String> characteristicDataCache = result[1];
+
+    //   emit(state.copyWith(
+    //     isConnected: true,
+    //     characteristicDataCache: characteristicDataCache,
+    //   ));
+    // } else {
+    //   emit(state.copyWith(
+    //     isConnected: false,
+    //     errorMessage: 'Failed to read USB data.',
+    //   ));
+    // }
+  }
 
   Future<void> _onAppVersionRequested(
     AppVersionRequested event,

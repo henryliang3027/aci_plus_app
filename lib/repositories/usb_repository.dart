@@ -2,18 +2,28 @@ import 'package:aci_plus_app/core/command.dart';
 import 'package:aci_plus_app/core/crc16_calculate.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/repositories/amp18_parser.dart';
+import 'package:aci_plus_app/repositories/ble_client_base.dart';
+import 'package:aci_plus_app/repositories/ble_peripheral.dart';
 import 'package:aci_plus_app/repositories/usb_client.dart';
 
-class UsbRepository {
-  UsbRepository()
-      : _usbClient = UsbClient(),
+class USBRepository {
+  USBRepository()
+      : _usbClient = USBClient(),
         _amp18Parser = Amp18Parser();
 
-  final UsbClient _usbClient;
+  final BLEClientBase _usbClient;
   final Amp18Parser _amp18Parser;
 
-  Future<bool> connectToDevice() async {
-    return _usbClient.connectToDevice();
+  Stream<ScanReport> get scanReport async* {
+    yield* _usbClient.scanReport;
+  }
+
+  Stream<ConnectionReport> get connectionStateReport async* {
+    yield* _usbClient.connectionStateReport;
+  }
+
+  Future<void> connectToDevice(Peripheral peripheral) {
+    return _usbClient.connectToDevice(peripheral);
   }
 
   Future<dynamic> getInformation() async {

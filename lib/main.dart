@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:aci_plus_app/app.dart';
 import 'package:aci_plus_app/core/shared_preference_key.dart';
 import 'package:aci_plus_app/repositories/aci_device_repository.dart';
+import 'package:aci_plus_app/repositories/ble_factory.dart';
 import 'package:aci_plus_app/repositories/code_repository.dart';
+import 'package:aci_plus_app/repositories/connection_repository.dart';
 import 'package:aci_plus_app/repositories/distribution_config.dart';
 import 'package:aci_plus_app/repositories/mock/sample_aci_device_repository.dart';
 import 'package:aci_plus_app/repositories/mock/sample_amp18_repository.dart';
@@ -105,6 +107,8 @@ Future<void> main() async {
 
   await initBox();
 
+  await BLEClientFactory.initialize();
+
   int mock = 0;
 
   if (mock == 1) {
@@ -119,7 +123,8 @@ Future<void> main() async {
       configRepository: ConfigRepository(),
       firmwareRepository: FirmwareRepository(),
       codeRepository: CodeRepository(),
-      usbRepository: UsbRepository(),
+      usbRepository: USBRepository(),
+      connectionRepository: ConnectionRepository(),
     ));
   } else {
     runApp(App(
@@ -133,7 +138,8 @@ Future<void> main() async {
       configRepository: ConfigRepository(),
       firmwareRepository: FirmwareRepository(),
       codeRepository: CodeRepository(),
-      usbRepository: UsbRepository(),
+      usbRepository: USBRepository(),
+      connectionRepository: ConnectionRepository(),
     ));
   }
 }

@@ -23,6 +23,20 @@ class ConfigLoaded extends Information18Event {
   List<Object> get props => [partId];
 }
 
+class TestUSBConnection extends Information18Event {
+  const TestUSBConnection();
+
+  @override
+  List<Object> get props => [];
+}
+
+class TestUSBRead extends Information18Event {
+  const TestUSBRead();
+
+  @override
+  List<Object> get props => [];
+}
+
 // class AlarmUpdated extends Information18Event {
 //   const AlarmUpdated();
 

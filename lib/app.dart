@@ -3,6 +3,7 @@ import 'package:aci_plus_app/home/views/home_page.dart';
 import 'package:aci_plus_app/repositories/aci_device_repository.dart';
 import 'package:aci_plus_app/repositories/code_repository.dart';
 import 'package:aci_plus_app/repositories/config_repository.dart';
+import 'package:aci_plus_app/repositories/connection_repository.dart';
 import 'package:aci_plus_app/repositories/dsim_repository.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_repository.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
@@ -29,6 +30,7 @@ class App extends StatelessWidget {
     required this.firmwareRepository,
     required this.codeRepository,
     required this.usbRepository,
+    required this.connectionRepository,
   });
 
   final AdaptiveThemeMode savedAdaptiveThemeMode;
@@ -41,7 +43,9 @@ class App extends StatelessWidget {
   final ConfigRepository configRepository;
   final FirmwareRepository firmwareRepository;
   final CodeRepository codeRepository;
-  final UsbRepository usbRepository;
+  final USBRepository usbRepository;
+  final ConnectionRepository connectionRepository;
+
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
@@ -73,8 +77,11 @@ class App extends StatelessWidget {
         RepositoryProvider<CodeRepository>(
           create: (context) => codeRepository,
         ),
-        RepositoryProvider<UsbRepository>(
+        RepositoryProvider<USBRepository>(
           create: (context) => usbRepository,
+        ),
+        RepositoryProvider<ConnectionRepository>(
+          create: (context) => connectionRepository,
         ),
       ],
       child: BlocProvider(
@@ -87,6 +94,7 @@ class App extends StatelessWidget {
           codeRepository: codeRepository,
           unitRepository: unitRepository,
           usbRepository: usbRepository,
+          connectionRepository: connectionRepository,
         ),
         child: _AppView(
           savedAdaptiveThemeMode: savedAdaptiveThemeMode,

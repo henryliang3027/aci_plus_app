@@ -6,6 +6,7 @@ import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/aci_device_repository.dart';
 import 'package:aci_plus_app/repositories/ble_peripheral.dart';
 import 'package:aci_plus_app/repositories/code_repository.dart';
+import 'package:aci_plus_app/repositories/connection_repository.dart';
 import 'package:aci_plus_app/repositories/dsim_repository.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_repository.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
@@ -16,6 +17,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:speed_chart/speed_chart.dart';
 import 'package:intl/intl.dart';
+import 'package:usb_serial/usb_serial.dart';
 // import 'package:assets_audio_player/assets_audio_player.dart';
 
 part 'home_event.dart';
@@ -30,7 +32,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     required FirmwareRepository firmwareRepository,
     required CodeRepository codeRepository,
     required UnitRepository unitRepository,
-    required UsbRepository usbRepository,
+    required USBRepository usbRepository,
+    required ConnectionRepository connectionRepository,
   })  : _aciDeviceRepository = aciDeviceRepository,
         _dsimRepository = dsimRepository,
         _amp18Repository = amp18Repository,
@@ -39,6 +42,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         _codeRepository = codeRepository,
         _unitRepository = unitRepository,
         _usbRepository = usbRepository,
+        _connectionRepository = connectionRepository,
         super(const HomeState()) {
     on<SplashStateChanged>(_onSplashStateChanged);
     on<DiscoveredDeviceChanged>(_onDiscoveredDeviceChanged);
@@ -66,7 +70,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final FirmwareRepository _firmwareRepository;
   final CodeRepository _codeRepository;
   final UnitRepository _unitRepository;
-  final UsbRepository _usbRepository;
+  final USBRepository _usbRepository;
+  final ConnectionRepository _connectionRepository;
   StreamSubscription<ScanReport>? _scanStreamSubscription;
   StreamSubscription<ConnectionReport>? _connectionReportStreamSubscription;
   StreamSubscription<Map<DataKey, String>>?
@@ -111,6 +116,33 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     SplashStateChanged event,
     Emitter<HomeState> emit,
   ) async {
+    // 呼叫 _connectionRepository 的 getConnectionType() 方法, 回傳 connectionType 是 usb 還是 ble
+    // ConnectionType connectionType = await _connectionRepository.getConnectionType();
+
+    bool isUsb = await _connectionRepository.checkUsbConnection();
+
+    if (isUsb) {
+      // USB 連線
+
+      UsbDevice usbDevice = await _connectionRepository.getUsbDevice();
+      Peripheral peripheral = Peripheral(
+        id: usbDevice.deviceId.toString(),
+        name: usbDevice.deviceName,
+        rssi: 0,
+        usbDevice: usbDevice,
+      );
+
+      _connectionReportStreamSubscription =
+          _aciDeviceRepository.connectionStateReport.listen((connectionReport) {
+        add(DeviceConnectionChanged(connectionReport));
+      });
+
+      _aciDeviceRepository.connectToDevice(peripheral);
+    } else {
+      // BLE 連線
+      // _aciDeviceRepository.startScan();
+    }
+
     // _scanStreamSubscription = _aciDeviceRepository.scanReport.listen(
     //   (scanReport) {
     //     print(scanReport);
@@ -119,8 +151,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     // );
 
     // _dsimRepository.scanDevices();
-    _usbRepository.connectToDevice();
-    _usbRepository.getInformation();
 
     emit(state.copyWith(
       showSplash: false,
@@ -1197,11 +1227,35 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       print('_characteristicDataStreamSubscription closed');
     }
 
-    _scanStreamSubscription = _aciDeviceRepository.scanReport.listen(
-      (scanReport) {
-        add(DiscoveredDeviceChanged(scanReport));
-      },
-    );
+    bool isUsb = await _connectionRepository.checkUsbConnection();
+
+    if (isUsb) {
+      // USB 連線
+
+      UsbDevice usbDevice = await _connectionRepository.getUsbDevice();
+      Peripheral peripheral = Peripheral(
+        id: usbDevice.deviceId.toString(),
+        name: usbDevice.deviceName,
+        rssi: 0,
+        usbDevice: usbDevice,
+      );
+
+      _connectionReportStreamSubscription =
+          _aciDeviceRepository.connectionStateReport.listen((connectionReport) {
+        add(DeviceConnectionChanged(connectionReport));
+      });
+
+      _aciDeviceRepository.connectToDevice(peripheral);
+    } else {
+      // BLE 連線
+      // _aciDeviceRepository.startScan();
+    }
+
+    // _scanStreamSubscription = _aciDeviceRepository.scanReport.listen(
+    //   (scanReport) {
+    //     add(DiscoveredDeviceChanged(scanReport));
+    //   },
+    // );
   }
 
   void _onDevicePeriodicUpdateRequested(

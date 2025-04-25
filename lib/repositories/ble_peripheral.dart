@@ -1,3 +1,5 @@
+import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
+import 'package:usb_serial/usb_serial.dart';
 
 enum ScanStatus {
   scanning,
@@ -18,16 +20,19 @@ class Peripheral {
     required this.id,
     required this.name,
     this.rssi = 0,
+    this.usbDevice,
   });
 
   const Peripheral.empty()
       : id = '',
         name = '',
-        rssi = 0;
+        rssi = 0,
+        usbDevice = null;
 
   final String id;
   final String name;
   final int rssi;
+  final UsbDevice? usbDevice;
 }
 
 class ScanReport {

@@ -104,6 +104,36 @@ abstract class BLEClientBase {
     }
   }
 
+  List<dynamic> combineUsbRawData({
+    required commandIndex,
+    required List<int> rawData,
+  }) {
+    if (commandIndex >= 80 && commandIndex <= 83) {
+      return _combine1p8GRawData(rawData: rawData, length: 181);
+    } else if (commandIndex == 183) {
+      // 接收 RF input/output power 資料流
+      // RF input/output power 資料流總長度 1029
+      return _combine1p8GRawData(rawData: rawData, length: 1029);
+    } else if (commandIndex >= 184 && commandIndex <= 194) {
+      // _currentCommandIndex 184 ~ 193 用來接收 10 組 Log 資料流, 每一組 Log 總長 16389
+      // _currentCommandIndex 194 用來接收 1 組 Event 資料流, Event 總長 16389
+      return _combine1p8GRawData(rawData: rawData, length: 16389);
+    } else if (commandIndex >= 195 && commandIndex <= 204) {
+      // _currentCommandIndex 195 ~ 204 用來接收 10 組 RFOut 資料流, 每一組 RFOut 總長 16389
+      return _combine1p8GRawData(rawData: rawData, length: 16389);
+    } else if (commandIndex >= 205 && commandIndex <= 206) {
+      // 接收 User Attribute 資料流
+      // User Attribute 資料流總長度 1029
+      return _combine1p8GRawData(rawData: rawData, length: 1029);
+    } else if (commandIndex >= 300 && commandIndex <= 999) {
+      return [true, rawData];
+    } else if (commandIndex >= 1000 && commandIndex <= 1100) {
+      return [true, rawData];
+    } else {
+      return [false];
+    }
+  }
+
   List<dynamic> combineRawData({
     required commandIndex,
     required List<int> rawData,

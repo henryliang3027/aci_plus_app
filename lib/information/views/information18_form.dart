@@ -51,6 +51,7 @@ class Information18Form extends StatelessWidget {
         child: Column(
           children: [
             // _VersionCard(),
+            _UsbTestWidget(),
             _ConnectionCard(),
             _ShortcutCard(),
             // _BlockDiagramCard(),
@@ -252,6 +253,46 @@ class _DeviceStatus extends StatelessWidget {
   }
 }
 
+class _UsbTestWidget extends StatelessWidget {
+  const _UsbTestWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Information18Bloc, Information18State>(
+      builder: (context, state) {
+        return Column(
+          children: [
+            Row(
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    context
+                        .read<Information18Bloc>()
+                        .add(const TestUSBConnection());
+                  },
+                  child: const Text('testConnection'),
+                ),
+                Text('isConnected: ${state.isConnected}'),
+              ],
+            ),
+            Row(
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    context.read<Information18Bloc>().add(const TestUSBRead());
+                  },
+                  child: const Text('testRead'),
+                ),
+                Flexible(child: Text('data: ${state.characteristicDataCache}')),
+              ],
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
 class _ConnectionCard extends StatelessWidget {
   const _ConnectionCard();
 
@@ -333,12 +374,6 @@ class _ConnectionCard extends StatelessWidget {
                 scanStatus: state.scanStatus,
                 title: AppLocalizations.of(context)!.bluetooth,
                 name: state.device.name.isNotEmpty ? state.device.name : '',
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  context.read()<Information18Bloc>().add(const TestUSB());
-                },
-                child: const Text('test'),
               ),
             ],
           ),
