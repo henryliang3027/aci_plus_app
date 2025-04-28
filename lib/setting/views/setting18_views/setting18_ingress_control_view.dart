@@ -485,7 +485,9 @@ class _SettingFloatingActionButton extends StatelessWidget {
       );
     }
 
-    Widget getDisabledEditModeTools() {
+    Widget getDisabledEditModeTools({
+      bool isExpertMode = false,
+    }) {
       String graphFilePath = settingGraphFilePath[partId] ?? '';
       return SingleChildScrollView(
         clipBehavior: Clip.none,
@@ -536,17 +538,20 @@ class _SettingFloatingActionButton extends StatelessWidget {
               shape: const CircleBorder(
                 side: BorderSide.none,
               ),
-              backgroundColor:
-                  Theme.of(context).colorScheme.primary.withAlpha(200),
+              backgroundColor: isExpertMode
+                  ? Theme.of(context).colorScheme.primary.withAlpha(200)
+                  : Colors.grey.withAlpha(200),
+              onPressed: isExpertMode
+                  ? () {
+                      context
+                          .read<Setting18IngressControlBloc>()
+                          .add(const EditModeEnabled());
+                    }
+                  : null,
               child: Icon(
                 Icons.edit,
                 color: Theme.of(context).colorScheme.onPrimary,
               ),
-              onPressed: () {
-                context
-                    .read<Setting18IngressControlBloc>()
-                    .add(const EditModeEnabled());
-              },
             ),
           ],
         ),
@@ -598,11 +603,17 @@ class _SettingFloatingActionButton extends StatelessWidget {
       required bool editMode,
       required bool enableSubmission,
     }) {
-      return editMode
-          ? getEnabledEditModeTools(
-              enableSubmission: enableSubmission,
-            )
-          : getDisabledEditModeTools();
+      if (ModeProperty.mode == Mode.expert) {
+        return editMode
+            ? getEnabledEditModeTools(
+                enableSubmission: enableSubmission,
+              )
+            : getDisabledEditModeTools(
+                isExpertMode: true,
+              );
+      } else {
+        return getDisabledEditModeTools();
+      }
     }
 
     bool getEditable({

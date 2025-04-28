@@ -212,6 +212,8 @@
     "monitoringChart": "Monitoring Chart",
     "reconnect": "Reconnect",
     "warmReset": "Warm Reset",
+    "basicMode": "Basic Mode",
+    "expertMode": "Expert Mode",
     "reset": "Reset",
     "share": "Share",
     "export": "Export",
@@ -327,6 +329,7 @@
     "dialogTitleSettingResult": "Result",
     "dialogTitleSuccess": "Success",
     "dialogTitleEnterYourCode": "Enter Your Code",
+    "dialogTitleEnterPassword": "Enter Password",
     "dialogTitleEnterQRCodeDescription": "Enter QR Code Description",
     "dialogTitleEnterConfirm": "Confirm",
     "dialogTitleDeleteConfig": "Delete",
@@ -522,5 +525,7 @@
     "dialogMessageWarmResetingAlmostDone": "Almost done",
     "dialogMessageWarmResetSeccessful": "Warm reset performed successfully.",
     "dialogMessageForwardCEQChanged": "The equalizer module has been detected as changed.",
-    "dialogMessageSelectedFirmwareInvalid": "The file you selected is invalid."
+    "dialogMessageSelectedFirmwareInvalid": "The file you selected is invalid.",
+    "dialogMessageEnterExpertModePassword": "Please enter the expert mode password.",
+    "dialogMessageToggleBasicMode": "Do you want to switch to basic mode ?"
 }

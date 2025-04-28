@@ -12,6 +12,7 @@ class HomeState extends Equatable {
     this.periodicUpdateEnabled = false,
     this.ceqStatus = CEQStatus.none,
     this.aciDeviceType = ACIDeviceType.undefined,
+    this.mode = Mode.basic,
     this.peripherals = const [],
     this.device = const Peripheral.empty(),
     this.characteristicData = const {},
@@ -31,6 +32,7 @@ class HomeState extends Equatable {
   final bool periodicUpdateEnabled;
   final CEQStatus ceqStatus;
   final ACIDeviceType aciDeviceType;
+  final Mode mode;
   final List<Peripheral> peripherals;
   final Peripheral device;
   final Map<DataKey, String> characteristicData;
@@ -50,6 +52,7 @@ class HomeState extends Equatable {
     bool? periodicUpdateEnabled,
     CEQStatus? ceqStatus,
     ACIDeviceType? aciDeviceType,
+    Mode? mode,
     List<Peripheral>? peripherals,
     Peripheral? device,
     Map<DataKey, String>? characteristicData,
@@ -69,6 +72,7 @@ class HomeState extends Equatable {
           periodicUpdateEnabled ?? this.periodicUpdateEnabled,
       ceqStatus: ceqStatus ?? this.ceqStatus,
       aciDeviceType: aciDeviceType ?? this.aciDeviceType,
+      mode: mode ?? this.mode,
       peripherals: peripherals ?? this.peripherals,
       device: device ?? this.device,
       characteristicData: characteristicData != null
@@ -93,6 +97,7 @@ class HomeState extends Equatable {
         periodicUpdateEnabled,
         ceqStatus,
         aciDeviceType,
+        mode,
         peripherals,
         device,
         characteristicData,

@@ -64,20 +64,24 @@ class _ConfigFloatActionButton extends StatelessWidget {
               shape: const CircleBorder(
                 side: BorderSide.none,
               ),
-              backgroundColor: state.trunkConfigs.length < 3
-                  ? Theme.of(context).colorScheme.primary.withAlpha(200)
+              backgroundColor: ModeProperty.isExpertMode
+                  ? state.trunkConfigs.length < 3
+                      ? Theme.of(context).colorScheme.primary.withAlpha(200)
+                      : Colors.grey.withAlpha(200)
                   : Colors.grey.withAlpha(200),
-              onPressed: state.trunkConfigs.length < 3
-                  ? () async {
-                      showAddConfigDialog(groupId: '0').then(
-                        (result) async {
-                          // await Future.delayed(Duration(seconds: 1));
-                          context
-                              .read<Setting18ConfigBloc>()
-                              .add(const ConfigsRequested());
-                        },
-                      );
-                    }
+              onPressed: ModeProperty.isExpertMode
+                  ? state.trunkConfigs.length < 3
+                      ? () async {
+                          showAddConfigDialog(groupId: '0').then(
+                            (result) async {
+                              // await Future.delayed(Duration(seconds: 1));
+                              context
+                                  .read<Setting18ConfigBloc>()
+                                  .add(const ConfigsRequested());
+                            },
+                          );
+                        }
+                      : null
                   : null,
               child: Icon(
                 Icons.add,
@@ -287,62 +291,53 @@ class _DeviceListView extends StatelessWidget {
                   children: [
                     Expanded(
                       child: IconButton(
-                        onPressed: () {
-                          showConfirmDeleteDialog(
-                            configName: config.name,
-                          ).then((result) {
-                            if (result != null) {
-                              if (result) {
-                                context
-                                    .read<Setting18ConfigBloc>()
-                                    .add(ConfigDeleted(
-                                      id: config.id,
-                                      groupId: groupId,
-                                    ));
+                        onPressed: ModeProperty.isExpertMode
+                            ? () {
+                                showConfirmDeleteDialog(
+                                  configName: config.name,
+                                ).then((result) {
+                                  if (result != null) {
+                                    if (result) {
+                                      context
+                                          .read<Setting18ConfigBloc>()
+                                          .add(ConfigDeleted(
+                                            id: config.id,
+                                            groupId: groupId,
+                                          ));
+                                    }
+                                  }
+                                });
                               }
-                            }
-                          });
-                        },
-
-                        // config.isDefault == '0' || true
-                        //     ? () {
-                        //         showConfirmDeleteDialog(
-                        //           configName: config.name,
-                        //         ).then((result) {
-                        //           if (result != null) {
-                        //             if (result) {
-                        //               context
-                        //                   .read<Setting18ConfigBloc>()
-                        //                   .add(ConfigDeleted(
-                        //                     id: config.id,
-                        //                     groupId: groupId,
-                        //                   ));
-                        //             }
-                        //           }
-                        //         });
-                        //       }
-                        //     : null,
-                        icon: const Icon(
+                            : null,
+                        icon: Icon(
                           Icons.delete,
                           size: 26,
+                          color: ModeProperty.isExpertMode
+                              ? Theme.of(context).iconTheme.color
+                              : Colors.grey,
                         ),
                       ),
                     ),
                     Expanded(
                       child: IconButton(
-                        onPressed: () async {
-                          showEditConfigDialog(
-                            config: config,
-                            groupId: groupId,
-                          ).then((result) {
-                            context
-                                .read<Setting18ConfigBloc>()
-                                .add(const ConfigsRequested());
-                          });
-                        },
-                        icon: const Icon(
+                        onPressed: ModeProperty.isExpertMode
+                            ? () async {
+                                showEditConfigDialog(
+                                  config: config,
+                                  groupId: groupId,
+                                ).then((result) {
+                                  context
+                                      .read<Setting18ConfigBloc>()
+                                      .add(const ConfigsRequested());
+                                });
+                              }
+                            : null,
+                        icon: Icon(
                           Icons.edit,
                           size: 26,
+                          color: ModeProperty.isExpertMode
+                              ? Theme.of(context).iconTheme.color
+                              : Colors.grey,
                         ),
                       ),
                     ),

@@ -51,6 +51,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<DevicePeriodicUpdateRequested>(_onDevicePeriodicUpdateRequested);
     on<DevicePeriodicUpdateCanceled>(_onDevicePeriodicUpdateCanceled);
     on<DevicePeriodicUpdate>(_onDevicePeriodicUpdate);
+    on<ModeChanged>(_onModeChanged);
     // on<NeedsDataReloaded>(_onNeedsDataReloaded);
     // on<testTimeout>(_onTestTimeout);
   }
@@ -1311,6 +1312,18 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         print('requestCommand1p8G1() setting values updated failed');
       }
     }
+  }
+
+  void _onModeChanged(
+    ModeChanged event,
+    Emitter<HomeState> emit,
+  ) {
+    ModeProperty.mode = event.mode;
+
+    // 這邊是為了讓 UI 可以即時更新 mode
+    emit(state.copyWith(
+      mode: event.mode,
+    ));
   }
 
   void _cancelUpdateTimer() {

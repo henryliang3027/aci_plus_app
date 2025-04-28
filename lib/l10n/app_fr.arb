@@ -210,6 +210,8 @@
     "monitoringChart": "Graphique moniteur",
     "reconnect": "reconnecter",
     "warmReset": "Réinitialisation chaude",
+    "basicMode": "Mode Basique",
+    "expertMode": "Mode Expert",
     "reset": "Réinitialiser",
     "share": "Partager",
     "export": "Exportation",
@@ -324,6 +326,7 @@
     "dialogTitleSettingResult": "Résultat",
     "dialogTitleSuccess": "Succès",
     "dialogTitleEnterYourCode": "Entrez Votre Code",
+    "dialogTitleEnterPassword": "Entrer Mot De Passe",
     "dialogTitleEnterQRCodeDescription": "Entrez la description du code QR",
     "dialogTitleEnterConfirm": "Confirmer",
     "dialogTitleDeleteConfig": "Supprimer",
@@ -521,5 +524,7 @@
     "dialogMessageWarmResetingAlmostDone": "Presque terminé",
     "dialogMessageWarmResetSeccessful": "Réinitialisation chaude effectuée avec succès.",
     "dialogMessageForwardCEQChanged": "Le module d'égaliseur a été détecté comme modifié.",
-    "dialogMessageSelectedFirmwareInvalid": "Le fichier que vous avez sélectionné est invalide."
+    "dialogMessageSelectedFirmwareInvalid": "Le fichier que vous avez sélectionné est invalide.",
+    "dialogMessageEnterExpertModePassword": "Veuillez entrer le mot de passe du mode expert.",
+    "dialogMessageToggleBasicMode": "Êtes-vous sûr de vouloir passer en mode basique ?"
 }

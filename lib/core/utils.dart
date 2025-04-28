@@ -15,6 +15,12 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 const int winBeta = int.fromEnvironment('WIN_BETA', defaultValue: 7);
 
+// define a enum contain expert mode and basic mode
+enum Mode {
+  expert,
+  basic,
+}
+
 enum CEQStatus {
   none,
   from1P2GTo1P8G,
@@ -31,6 +37,11 @@ enum FunctionDescriptionType {
   rfLevel,
   config,
   firmwareUpdate,
+}
+
+class ModeProperty {
+  static Mode mode = Mode.basic;
+  static bool get isExpertMode => ModeProperty.mode == Mode.expert;
 }
 
 class SetupWizardProperty {

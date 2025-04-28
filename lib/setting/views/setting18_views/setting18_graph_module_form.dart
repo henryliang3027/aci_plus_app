@@ -411,7 +411,9 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
           children: [
             controlTextSlider(
               context: context,
-              editMode: state.editMode && state.agcMode == '0',
+              editMode: ModeProperty.isExpertMode
+                  ? state.editMode && state.agcMode == '0'
+                  : false,
               title:
                   '${AppLocalizations.of(context)!.forwardInputAttenuation1} (${CustomStyle.dB}):',
               minValue: minValue,
@@ -481,7 +483,9 @@ class _ForwardInputEqualizer1 extends StatelessWidget {
           children: [
             controlTextSlider(
               context: context,
-              editMode: state.editMode && state.agcMode == '0',
+              editMode: ModeProperty.isExpertMode
+                  ? state.editMode && state.agcMode == '0'
+                  : false,
               title:
                   '${AppLocalizations.of(context)!.forwardInputEqualizer1} (${CustomStyle.dB}):',
               subTitle: getForwardCEQText(forwardCEQIndex),
@@ -535,7 +539,7 @@ class _ForwardOutputEqualizer3 extends StatelessWidget {
             state.targetValues[DataKey.dsSlope3]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
-          editMode: isEnableForwardSetting,
+          editMode: ModeProperty.isExpertMode ? isEnableForwardSetting : false,
           title:
               '${AppLocalizations.of(context)!.forwardOutputEqualizer3} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -574,7 +578,7 @@ class _ForwardOutputEqualizer4 extends StatelessWidget {
             state.targetValues[DataKey.dsSlope4]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
-          editMode: isEnableForwardSetting,
+          editMode: ModeProperty.isExpertMode ? isEnableForwardSetting : false,
           title:
               '${AppLocalizations.of(context)!.forwardOutputEqualizer4} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -612,7 +616,7 @@ class _ForwardOutputAttenuation3 extends StatelessWidget {
         double maxValue = state.targetValues[DataKey.dsVVA4]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
-          editMode: isEnableForwardSetting,
+          editMode: ModeProperty.isExpertMode ? isEnableForwardSetting : false,
           title:
               '${AppLocalizations.of(context)!.forwardOutputAttenuation3} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -650,7 +654,7 @@ class _ForwardOutputAttenuation4 extends StatelessWidget {
         double maxValue = state.targetValues[DataKey.dsVVA5]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
-          editMode: isEnableForwardSetting,
+          editMode: ModeProperty.isExpertMode ? isEnableForwardSetting : false,
           title:
               '${AppLocalizations.of(context)!.forwardOutputAttenuation4} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -687,7 +691,7 @@ class _ForwardOutputAttenuation2And3 extends StatelessWidget {
         double maxValue = state.targetValues[DataKey.dsVVA4]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
-          editMode: isEnableForwardSetting,
+          editMode: ModeProperty.isExpertMode ? isEnableForwardSetting : false,
           title:
               '${AppLocalizations.of(context)!.forwardOutputAttenuation2And3} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -724,7 +728,7 @@ class _ForwardOutputAttenuation3And4 extends StatelessWidget {
         double maxValue = state.targetValues[DataKey.dsVVA4]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
-          editMode: isEnableForwardSetting,
+          editMode: ModeProperty.isExpertMode ? isEnableForwardSetting : false,
           title:
               '${AppLocalizations.of(context)!.forwardOutputAttenuation3And4} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -761,7 +765,7 @@ class _ForwardOutputAttenuation5And6 extends StatelessWidget {
 
         return controlTextSlider(
           context: context,
-          editMode: isEnableForwardSetting,
+          editMode: ModeProperty.isExpertMode ? isEnableForwardSetting : false,
           title:
               '${AppLocalizations.of(context)!.forwardOutputAttenuation5And6} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -797,7 +801,7 @@ class _ForwardOutputEqualizer2And3 extends StatelessWidget {
             state.targetValues[DataKey.dsSlope3]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
-          editMode: isEnableForwardSetting,
+          editMode: ModeProperty.isExpertMode ? isEnableForwardSetting : false,
           title:
               '${AppLocalizations.of(context)!.forwardOutputEqualizer2And3} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -833,7 +837,7 @@ class _ForwardOutputEqualizer5And6 extends StatelessWidget {
             state.targetValues[DataKey.dsSlope4]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
-          editMode: isEnableForwardSetting,
+          editMode: ModeProperty.isExpertMode ? isEnableForwardSetting : false,
           title:
               '${AppLocalizations.of(context)!.forwardOutputEqualizer5And6} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -867,7 +871,7 @@ class _ReturnOutputAttenuation1 extends StatelessWidget {
         double maxValue = state.targetValues[DataKey.usVCA2]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
-          editMode: state.editMode,
+          editMode: ModeProperty.isExpertMode ? state.editMode : false,
           title:
               '${AppLocalizations.of(context)!.returnOutputAttenuation1} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -901,7 +905,7 @@ class _ReturnOutputEqualizer1 extends StatelessWidget {
         double maxValue = state.targetValues[DataKey.eREQ]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
-          editMode: state.editMode,
+          editMode: ModeProperty.isExpertMode ? state.editMode : false,
           title:
               '${AppLocalizations.of(context)!.returnOutputEqualizer1} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -935,7 +939,7 @@ class _ReturnInputAttenuation2 extends StatelessWidget {
         double maxValue = state.targetValues[DataKey.usVCA1]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
-          editMode: state.editMode,
+          editMode: ModeProperty.isExpertMode ? state.editMode : false,
           title:
               '${AppLocalizations.of(context)!.returnInputAttenuation2} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -969,7 +973,7 @@ class _ReturnInputAttenuation3 extends StatelessWidget {
         double maxValue = state.targetValues[DataKey.usVCA3]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
-          editMode: state.editMode,
+          editMode: ModeProperty.isExpertMode ? state.editMode : false,
           title:
               '${AppLocalizations.of(context)!.returnInputAttenuation3} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -1003,7 +1007,7 @@ class _ReturnInputAttenuation2And3 extends StatelessWidget {
         double maxValue = state.targetValues[DataKey.usVCA3]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
-          editMode: state.editMode,
+          editMode: ModeProperty.isExpertMode ? state.editMode : false,
           title:
               '${AppLocalizations.of(context)!.returnInputAttenuation2And3} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -1043,7 +1047,7 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
               state.targetValues[DataKey.usVCA1]?.maxValue ?? 10.0;
           return controlTextSlider(
             context: context,
-            editMode: state.editMode,
+            editMode: ModeProperty.isExpertMode ? state.editMode : false,
             title:
                 '${AppLocalizations.of(context)!.returnInputAttenuation4} (${CustomStyle.dB}):',
             minValue: minValue,
@@ -1071,7 +1075,7 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
               state.targetValues[DataKey.usVCA4]?.maxValue ?? 10.0;
           return controlTextSlider(
             context: context,
-            editMode: state.editMode,
+            editMode: ModeProperty.isExpertMode ? state.editMode : false,
             title:
                 '${AppLocalizations.of(context)!.returnInputAttenuation4} (${CustomStyle.dB}):',
             minValue: minValue,
@@ -1106,7 +1110,7 @@ class _ReturnInputAttenuation5And6 extends StatelessWidget {
         double maxValue = state.targetValues[DataKey.usVCA4]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
-          editMode: state.editMode,
+          editMode: ModeProperty.isExpertMode ? state.editMode : false,
           title:
               '${AppLocalizations.of(context)!.returnInputAttenuation5And6} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -1138,7 +1142,7 @@ class _ReturnInputAttenuation5And6 extends StatelessWidget {
 //         builder: (context, state) {
 //       return splitOptionGridViewButton(
 //         context: context,
-//         editMode: state.editMode,
+//         editMode: ModeProperty.isExpertMode ? state.editMode : false,
 //         splitOption: state.splitOption,
 //         onGridPressed: (index) => context
 //             .read<Setting18GraphModuleBloc>()
@@ -1172,7 +1176,7 @@ class _PilotFrequencyMode extends StatelessWidget {
           crossAxisCount: 1,
           texts: pilotFrequencyModeTexts,
           values: pilotFrequencyModeValues,
-          editMode: state.editMode,
+          editMode: ModeProperty.isExpertMode ? state.editMode : false,
           pilotFrequencyMode: state.pilotFrequencyMode,
           onGridPressed: (index) => context
               .read<Setting18GraphModuleBloc>()
@@ -1199,8 +1203,12 @@ class _FirstChannelLoading extends StatelessWidget {
       builder: (context, state) {
         return TwoInputs(
           title: '${AppLocalizations.of(context)!.startFrequency}:',
-          editMode1: state.editMode && state.pilotFrequencyMode != '2',
-          editMode2: state.editMode && state.pilotFrequencyMode != '2',
+          editMode1: ModeProperty.isExpertMode
+              ? state.editMode && state.pilotFrequencyMode != '2'
+              : false,
+          editMode2: ModeProperty.isExpertMode
+              ? state.editMode && state.pilotFrequencyMode != '2'
+              : false,
           readOnly1: true,
           readOnly2: true,
           initialValue1: state.firstChannelLoadingFrequency.value,
@@ -1334,8 +1342,12 @@ class _LastChannelLoading extends StatelessWidget {
         double step2 = 0.5;
         return TwoInputs(
           title: '${AppLocalizations.of(context)!.stopFrequency}:',
-          editMode1: state.editMode && state.pilotFrequencyMode != '2',
-          editMode2: state.editMode && state.pilotFrequencyMode != '2',
+          editMode1: ModeProperty.isExpertMode
+              ? state.editMode && state.pilotFrequencyMode != '2'
+              : false,
+          editMode2: ModeProperty.isExpertMode
+              ? state.editMode && state.pilotFrequencyMode != '2'
+              : false,
           initialValue1: state.lastChannelLoadingFrequency.value,
           initialValue2: state.lastChannelLoadingLevel.value,
           onChanged1: (lastChannelLoadingFrequency) {
@@ -1440,8 +1452,12 @@ class _RFLevelFineTuner extends StatelessWidget {
         context: context,
         title1: AppLocalizations.of(context)!.startFrequencyRFLevel,
         title2: AppLocalizations.of(context)!.slope,
-        editMode1: state.editMode && state.pilotFrequencyMode != '2',
-        editMode2: state.editMode && state.pilotFrequencyMode != '2',
+        editMode1: ModeProperty.isExpertMode
+            ? state.editMode && state.pilotFrequencyMode != '2'
+            : false,
+        editMode2: ModeProperty.isExpertMode
+            ? state.editMode && state.pilotFrequencyMode != '2'
+            : false,
         step1: step,
         step2: step,
         onIncreased1: () {
@@ -1518,7 +1534,9 @@ class _PilotFrequency1 extends StatelessWidget {
         return twoTextField(
           context: context,
           title: '${AppLocalizations.of(context)!.pilotFrequency1}:',
-          editMode1: state.editMode && state.pilotFrequencyMode == '1',
+          editMode1: ModeProperty.isExpertMode
+              ? state.editMode && state.pilotFrequencyMode == '1'
+              : false,
           editMode2: false,
           textEditingControllerName1:
               'setting18Form_pilotFrequency1Input_textField',
@@ -1567,7 +1585,9 @@ class _PilotFrequency2 extends StatelessWidget {
         return twoTextField(
           context: context,
           title: '${AppLocalizations.of(context)!.pilotFrequency2}:',
-          editMode1: state.editMode && state.pilotFrequencyMode == '1',
+          editMode1: ModeProperty.isExpertMode
+              ? state.editMode && state.pilotFrequencyMode == '1'
+              : false,
           editMode2: false,
           textEditingControllerName1:
               'setting18Form_pilotFrequency2Input_textField',
@@ -1616,7 +1636,7 @@ class _AGCMode extends StatelessWidget {
       builder: (context, state) {
         return controlToggleButton(
           context: context,
-          editMode: state.editMode,
+          editMode: ModeProperty.isExpertMode ? state.editMode : false,
           title: '${AppLocalizations.of(context)!.agcMode}:',
           currentValue: state.agcMode,
           onChanged: (int index) {
@@ -1638,99 +1658,99 @@ class _AGCMode extends StatelessWidget {
 }
 
 // 2024/0419 ALC 為 read only 且 ALC 的動作跟 AGC 連動
-class _ALCMode extends StatelessWidget {
-  const _ALCMode();
+// class _ALCMode extends StatelessWidget {
+//   const _ALCMode();
 
-  final List<String> autoLevelControlValues = const [
-    '1',
-    '0',
-  ];
+//   final List<String> autoLevelControlValues = const [
+//     '1',
+//     '0',
+//   ];
 
-  List<bool> getSelectionState(String selectedAutoLevelControl) {
-    Map<String, bool> autoLevelControlMap = {
-      '1': false,
-      '0': false,
-    };
+//   List<bool> getSelectionState(String selectedAutoLevelControl) {
+//     Map<String, bool> autoLevelControlMap = {
+//       '1': false,
+//       '0': false,
+//     };
 
-    if (autoLevelControlMap.containsKey(selectedAutoLevelControl)) {
-      autoLevelControlMap[selectedAutoLevelControl] = true;
-    }
+//     if (autoLevelControlMap.containsKey(selectedAutoLevelControl)) {
+//       autoLevelControlMap[selectedAutoLevelControl] = true;
+//     }
 
-    return autoLevelControlMap.values.toList();
-  }
+//     return autoLevelControlMap.values.toList();
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
-      buildWhen: (previous, current) =>
-          previous.alcMode != current.alcMode ||
-          previous.editMode != current.editMode,
-      builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.only(
-            bottom: 40.0,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  bottom: CustomStyle.sizeL,
-                ),
-                child: Text(
-                  '${AppLocalizations.of(context)!.alcMode}:',
-                  style: const TextStyle(
-                    fontSize: CustomStyle.sizeXL,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              LayoutBuilder(
-                builder: (context, constraints) => ToggleButtons(
-                  direction: Axis.horizontal,
-                  onPressed: (int index) {
-                    // if (state.editMode) {
-                    //   context.read<Setting18GraphModuleBloc>().add(
-                    //       AutoLevelControlChanged(
-                    //           autoLevelControlValues[index]));
-                    // }
-                  },
-                  textStyle: const TextStyle(fontSize: 18.0),
-                  borderRadius: const BorderRadius.all(Radius.circular(8)),
-                  selectedBorderColor: state.editMode && false
-                      ? Theme.of(context).colorScheme.primary
-                      : Theme.of(context)
-                          .colorScheme
-                          .inversePrimary, // indigo border color
-                  selectedColor: Theme.of(context)
-                      .colorScheme
-                      .onPrimary, // white text color
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
+//       buildWhen: (previous, current) =>
+//           previous.alcMode != current.alcMode ||
+//           previous.editMode != current.editMode,
+//       builder: (context, state) {
+//         return Padding(
+//           padding: const EdgeInsets.only(
+//             bottom: 40.0,
+//           ),
+//           child: Column(
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+//               Padding(
+//                 padding: const EdgeInsets.only(
+//                   bottom: CustomStyle.sizeL,
+//                 ),
+//                 child: Text(
+//                   '${AppLocalizations.of(context)!.alcMode}:',
+//                   style: const TextStyle(
+//                     fontSize: CustomStyle.sizeXL,
+//                     fontWeight: FontWeight.w500,
+//                   ),
+//                 ),
+//               ),
+//               LayoutBuilder(
+//                 builder: (context, constraints) => ToggleButtons(
+//                   direction: Axis.horizontal,
+//                   onPressed: (int index) {
+//                     // if (state.editMode) {
+//                     //   context.read<Setting18GraphModuleBloc>().add(
+//                     //       AutoLevelControlChanged(
+//                     //           autoLevelControlValues[index]));
+//                     // }
+//                   },
+//                   textStyle: const TextStyle(fontSize: 18.0),
+//                   borderRadius: const BorderRadius.all(Radius.circular(8)),
+//                   selectedBorderColor: state.editMode && false
+//                       ? Theme.of(context).colorScheme.primary
+//                       : Theme.of(context)
+//                           .colorScheme
+//                           .inversePrimary, // indigo border color
+//                   selectedColor: Theme.of(context)
+//                       .colorScheme
+//                       .onPrimary, // white text color
 
-                  fillColor: state.editMode && false
-                      ? Theme.of(context).colorScheme.primary
-                      : Theme.of(context)
-                          .colorScheme
-                          .inversePrimary, // selected
-                  color:
-                      Theme.of(context).colorScheme.secondary, // not selected
-                  constraints: BoxConstraints.expand(
-                    width: (constraints.maxWidth - 4) /
-                        autoLevelControlValues.length,
-                  ),
-                  isSelected: getSelectionState(state.alcMode),
-                  children: <Widget>[
-                    Text(AppLocalizations.of(context)!.on),
-                    Text(AppLocalizations.of(context)!.off),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-}
+//                   fillColor: state.editMode && false
+//                       ? Theme.of(context).colorScheme.primary
+//                       : Theme.of(context)
+//                           .colorScheme
+//                           .inversePrimary, // selected
+//                   color:
+//                       Theme.of(context).colorScheme.secondary, // not selected
+//                   constraints: BoxConstraints.expand(
+//                     width: (constraints.maxWidth - 4) /
+//                         autoLevelControlValues.length,
+//                   ),
+//                   isSelected: getSelectionState(state.alcMode),
+//                   children: <Widget>[
+//                     Text(AppLocalizations.of(context)!.on),
+//                     Text(AppLocalizations.of(context)!.off),
+//                   ],
+//                 ),
+//               ),
+//             ],
+//           ),
+//         );
+//       },
+//     );
+//   }
+// }
 
 const List<String> rtnIngressValues = [
   '0',
@@ -1769,7 +1789,7 @@ class _ReturnIngressSetting2 extends StatelessWidget {
       builder: (context, state) {
         return controlToggleButton(
           context: context,
-          editMode: state.editMode,
+          editMode: ModeProperty.isExpertMode ? state.editMode : false,
           title: '${AppLocalizations.of(context)!.returnIngressSetting2}:',
           currentValue:
               state.targetIngressValues[DataKey.ingressSetting2] ?? '0',
@@ -1802,7 +1822,7 @@ class _ReturnIngressSetting3 extends StatelessWidget {
       builder: (context, state) {
         return controlToggleButton(
           context: context,
-          editMode: state.editMode,
+          editMode: ModeProperty.isExpertMode ? state.editMode : false,
           title: '${AppLocalizations.of(context)!.returnIngressSetting3}:',
           currentValue:
               state.targetIngressValues[DataKey.ingressSetting3] ?? '0',
@@ -1840,7 +1860,7 @@ class _ReturnIngressSetting4 extends StatelessWidget {
         builder: (context, state) {
           return controlToggleButton(
             context: context,
-            editMode: state.editMode,
+            editMode: ModeProperty.isExpertMode ? state.editMode : false,
             title: '${AppLocalizations.of(context)!.returnIngressSetting4}:',
             currentValue:
                 state.targetIngressValues[DataKey.ingressSetting2] ?? '0',
@@ -1866,7 +1886,7 @@ class _ReturnIngressSetting4 extends StatelessWidget {
         builder: (context, state) {
           return controlToggleButton(
             context: context,
-            editMode: state.editMode,
+            editMode: ModeProperty.isExpertMode ? state.editMode : false,
             title: '${AppLocalizations.of(context)!.returnIngressSetting4}:',
             currentValue:
                 state.targetIngressValues[DataKey.ingressSetting4] ?? '0',
@@ -1900,7 +1920,7 @@ class _ReturnIngressSetting2And3 extends StatelessWidget {
       builder: (context, state) {
         return controlToggleButton(
           context: context,
-          editMode: state.editMode,
+          editMode: ModeProperty.isExpertMode ? state.editMode : false,
           title: '${AppLocalizations.of(context)!.returnIngressSetting2And3}:',
           currentValue:
               state.targetIngressValues[DataKey.ingressSetting3] ?? '0',
@@ -1933,7 +1953,7 @@ class _ReturnIngressSetting5And6 extends StatelessWidget {
       builder: (context, state) {
         return controlToggleButton(
           context: context,
-          editMode: state.editMode,
+          editMode: ModeProperty.isExpertMode ? state.editMode : false,
           title: '${AppLocalizations.of(context)!.returnIngressSetting5And6}:',
           currentValue:
               state.targetIngressValues[DataKey.ingressSetting4] ?? '0',

@@ -210,6 +210,8 @@
     "monitoringChart": "Gráfico de Monitoreo",
     "reconnect": "Reconectar",
     "warmReset": "Reinicio Caliente",
+    "basicMode": "Modo Básico",
+    "expertMode": "Modo Experto",
     "reset": "Restablecer",
     "share": "Compartir",
     "export": "Exportar",
@@ -321,6 +323,7 @@
     "dialogTitleSettingResult": "Resultado",
     "dialogTitleSuccess": "Éxito",
     "dialogTitleEnterYourCode": "Ingrese Su Código",
+    "dialogTitleEnterPassword": "Introduzca Contraseña.",
     "dialogTitleEnterQRCodeDescription": "Ingrese la descripción del código QR",
     "dialogTitleEnterConfirm": "Confirmar",
     "dialogTitleDeleteConfig": "Eliminar",
@@ -517,5 +520,7 @@
     "dialogMessageWarmResetingAlmostDone": "Casi terminado",
     "dialogMessageWarmResetSeccessful": "Reinicio caliente realizado con éxito.",
     "dialogMessageForwardCEQChanged": "Se ha detectado un cambio en el módulo ecualizador.",
-    "dialogMessageSelectedFirmwareInvalid": "El archivo que seleccionaste no es válido."
+    "dialogMessageSelectedFirmwareInvalid": "El archivo que seleccionaste no es válido.",
+    "dialogMessageEnterExpertModePassword": "Por favor, introduzca la contraseña del modo experto.",
+    "dialogMessageToggleBasicMode": "¿Está seguro de que desea cambiar al modo básico?"
 }
