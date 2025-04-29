@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import 'package:aci_plus_app/core/command18.dart';
 import 'package:aci_plus_app/core/crc16_calculate.dart';
-import 'package:aci_plus_app/core/firmware_file_table.dart';
+import 'package:aci_plus_app/core/firmware_file_id.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/ble_client_base.dart';
 import 'package:aci_plus_app/repositories/ble_factory.dart';
