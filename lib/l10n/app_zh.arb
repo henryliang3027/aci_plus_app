@@ -14,7 +14,7 @@
 
     
     "attribute": "屬性",
-    "regulation": "規則",
+    "configuration": "配置",
     "technicianID": "技術員 ID",
     "inputSignalLevel": "輸入信號強度",
     "inputAttenuation": "輸入衰減量",
@@ -492,6 +492,10 @@
     "dialogMessageRFOutputPowerAlarmDescription": "目前 TCP 輸出強度",
     "dialogMessageRFOutputPilotLowFrequencyDescription": "目前低頻輸出",
     "dialogMessageRFOutputPilotHighFrequencyDescription": "目前高頻輸出",
+    "dialogMessageRFOutputPower1AlarmDescription": "目前 port 1 輸出強度",
+    "dialogMessageRFOutputPower3AlarmDescription": "目前 port 3 輸出強度",
+    "dialogMessageRFOutputPower4AlarmDescription": "目前 port 4 輸出強度",
+    "dialogMessageRFOutputPower6AlarmDescription": "目前 port 6 輸出強度",
 
     "dialogMessageTechnicianIDSetting": "技術人員 ID 設定",
     "dialogMessageInputSignalLevelSetting": "輸入信號強度設定",

@@ -14,7 +14,7 @@
 
    
     "attribute": "Attribut",
-    "regulation": "Réglement",
+    "configuration": "Configuration",
     "technicianID": "ID technicien",
     "inputSignalLevel": "Niveaux d'entrée",
     "inputAttenuation": "Atténuation d'entrée",
@@ -489,6 +489,10 @@
     "dialogMessageRFOutputPowerAlarmDescription": "Puissance sortie TCP actuelle",
     "dialogMessageRFOutputPilotLowFrequencyDescription": "Sortie basse fréquence actuelle",
     "dialogMessageRFOutputPilotHighFrequencyDescription": "Sortie haute fréquence actuelle",
+    "dialogMessageRFOutputPower1AlarmDescription": "Port 1 puissance de sortie actuelle",
+    "dialogMessageRFOutputPower3AlarmDescription": "Port 3 puissance de sortie actuelle",
+    "dialogMessageRFOutputPower4AlarmDescription": "Port 4 puissance de sortie actuelle",
+    "dialogMessageRFOutputPower6AlarmDescription": "Port 6 puissance de sortie actuelle",
 
     "dialogMessageTechnicianIDSetting": "Réglage ID technicien",
     "dialogMessageInputSignalLevelSetting": "Réglage niveaux d'entrée",

@@ -10,3 +10,10 @@ class AlarmDescriptionRequested extends AlarmDescriptionEvent {
   @override
   List<Object?> get props => [];
 }
+
+class NodeAlarmDescriptionRequested extends AlarmDescriptionEvent {
+  const NodeAlarmDescriptionRequested();
+
+  @override
+  List<Object?> get props => [];
+}

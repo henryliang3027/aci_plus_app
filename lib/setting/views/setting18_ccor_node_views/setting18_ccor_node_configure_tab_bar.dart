@@ -39,7 +39,7 @@ class Setting18CCorNodeConfigurationTabBar extends StatelessWidget {
                       // width: 110,
                       child: Center(
                         child: Text(
-                          AppLocalizations.of(context)!.regulation,
+                          AppLocalizations.of(context)!.configuration,
                         ),
                       ),
                     ),

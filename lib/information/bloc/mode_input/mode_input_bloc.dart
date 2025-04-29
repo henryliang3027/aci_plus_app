@@ -1,3 +1,4 @@
+import 'package:aci_plus_app/env_config.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -13,16 +14,13 @@ class ModeInputBloc extends Bloc<ModeInputEvent, ModeInputState> {
     add(const CodeRequested());
   }
 
-  final String _password =
-      'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjaGlycHN0YWNrIiwiaXNzIjoiY2hpcnBzdGFjayIsInN1YiI6Ijc2MjBjYjNkLTU5NGUtNDI3Yy1iNTY2LWQ2OTM5MDgxYTQyOSIsInR5cCI6ImtleSJ9.UOZeTZZ5hNlBAe_EGygKR8ekuJfSABuhHIvjT9Mh-M4';
-
   Future<void> _onCodeRequested(
     CodeRequested event,
     Emitter<ModeInputState> emit,
   ) async {
     emit(state.copyWith(
       isInitialize: true,
-      code: _password,
+      code: EnvConfig.expertModePassword,
       isMatched: true,
     ));
   }
@@ -32,7 +30,7 @@ class ModeInputBloc extends Bloc<ModeInputEvent, ModeInputState> {
     Emitter<ModeInputState> emit,
   ) {
     bool isMatched = false;
-    if (event.code == _password) {
+    if (event.code == EnvConfig.expertModePassword) {
       isMatched = true;
     } else {
       isMatched = false;

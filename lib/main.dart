@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:aci_plus_app/app.dart';
 import 'package:aci_plus_app/core/shared_preference_key.dart';
+import 'package:aci_plus_app/env_config.dart';
 import 'package:aci_plus_app/repositories/aci_device_repository.dart';
 import 'package:aci_plus_app/repositories/code_repository.dart';
 import 'package:aci_plus_app/repositories/distribution_config.dart';
@@ -21,6 +22,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -103,6 +105,9 @@ Future<void> main() async {
   // }
 
   await initBox();
+
+  // Initialize env config
+  await EnvConfig.initialize();
 
   int mock = 0;
 

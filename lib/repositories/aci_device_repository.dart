@@ -1,4 +1,5 @@
 import 'package:aci_plus_app/core/command.dart';
+import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/crc16_calculate.dart';
 import 'package:aci_plus_app/repositories/ble_client_base.dart';
 import 'package:aci_plus_app/repositories/ble_factory.dart';
@@ -34,6 +35,14 @@ class ACIDeviceRepository {
     int mtu = 247,
   }) async {
     CRC16.calculateCRC16(command: Command.req00Cmd, usDataLength: 6);
+
+    List<dynamic> result = await _bleClient.getACIDeviceType(
+      commandIndex: -1,
+      value: Command.req00Cmd,
+      deviceId: deviceId,
+      mtu: mtu,
+    );
+
     return _bleClient.getACIDeviceType(
       commandIndex: -1,
       value: Command.req00Cmd,
