@@ -125,6 +125,9 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
       DataKey.dsVVA5.name: [
         if (partId == '5' || partId == '6') ...[
           _ForwardOutputAttenuation5And6(
+            partId: partId,
+            agcMode: agcMode,
+            pilotFrequencyMode: pilotFrequencyMode,
             isEnableForwardSetting: isEnableForwardSetting,
           ),
         ] else ...[
@@ -156,6 +159,9 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
       DataKey.dsSlope4.name: [
         if (partId == '5' || partId == '6') ...[
           _ForwardOutputEqualizer5And6(
+            partId: partId,
+            agcMode: agcMode,
+            pilotFrequencyMode: pilotFrequencyMode,
             isEnableForwardSetting: isEnableForwardSetting,
           ),
         ] else ...[
@@ -407,12 +413,18 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
           context: context,
           agcMode: state.agcMode,
         );
+
+        bool isEnableForwardInputSetting = getForwardInputSettingEditable(
+          pilotFrequencyMode: pilotFrequencyMode,
+          agcMode: agcMode,
+        );
+
         return Column(
           children: [
             controlTextSlider(
               context: context,
               editMode: ModeProperty.isExpertMode
-                  ? state.editMode && state.agcMode == '0'
+                  ? state.editMode && isEnableForwardInputSetting
                   : false,
               title:
                   '${AppLocalizations.of(context)!.forwardInputAttenuation1} (${CustomStyle.dB}):',
@@ -479,12 +491,18 @@ class _ForwardInputEqualizer1 extends StatelessWidget {
           context: context,
           agcMode: state.agcMode,
         );
+
+        bool isEnableForwardInputSetting = getForwardInputSettingEditable(
+          pilotFrequencyMode: pilotFrequencyMode,
+          agcMode: agcMode,
+        );
+
         return Column(
           children: [
             controlTextSlider(
               context: context,
               editMode: ModeProperty.isExpertMode
-                  ? state.editMode && state.agcMode == '0'
+                  ? state.editMode && isEnableForwardInputSetting
                   : false,
               title:
                   '${AppLocalizations.of(context)!.forwardInputEqualizer1} (${CustomStyle.dB}):',
@@ -752,8 +770,16 @@ class _ForwardOutputAttenuation3And4 extends StatelessWidget {
 }
 
 class _ForwardOutputAttenuation5And6 extends StatelessWidget {
-  const _ForwardOutputAttenuation5And6({required this.isEnableForwardSetting});
+  const _ForwardOutputAttenuation5And6({
+    required this.partId,
+    required this.agcMode,
+    required this.pilotFrequencyMode,
+    required this.isEnableForwardSetting,
+  });
 
+  final String partId;
+  final String agcMode;
+  final String pilotFrequencyMode;
   final bool isEnableForwardSetting;
 
   @override
@@ -763,9 +789,17 @@ class _ForwardOutputAttenuation5And6 extends StatelessWidget {
         double minValue = state.targetValues[DataKey.dsVVA5]?.minValue ?? 0.0;
         double maxValue = state.targetValues[DataKey.dsVVA5]?.maxValue ?? 10.0;
 
+        // BR 的機種在 AGC 開啟的情況下 而且不是 Bench mode 時, 這個參數是無法編輯的
+        bool brFlag =
+            partId == '6' && pilotFrequencyMode != '3' && agcMode == '1';
+
         return controlTextSlider(
           context: context,
-          editMode: ModeProperty.isExpertMode ? isEnableForwardSetting : false,
+          editMode: ModeProperty.isExpertMode
+              ? brFlag
+                  ? false
+                  : true
+              : false,
           title:
               '${AppLocalizations.of(context)!.forwardOutputAttenuation5And6} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -825,8 +859,17 @@ class _ForwardOutputEqualizer2And3 extends StatelessWidget {
 }
 
 class _ForwardOutputEqualizer5And6 extends StatelessWidget {
-  const _ForwardOutputEqualizer5And6({required this.isEnableForwardSetting});
+  const _ForwardOutputEqualizer5And6({
+    required this.partId,
+    required this.agcMode,
+    required this.pilotFrequencyMode,
+    required this.isEnableForwardSetting,
+  });
+
   final bool isEnableForwardSetting;
+  final String partId;
+  final String agcMode;
+  final String pilotFrequencyMode;
 
   @override
   Widget build(BuildContext context) {
@@ -835,9 +878,18 @@ class _ForwardOutputEqualizer5And6 extends StatelessWidget {
         double minValue = state.targetValues[DataKey.dsSlope4]?.minValue ?? 0.0;
         double maxValue =
             state.targetValues[DataKey.dsSlope4]?.maxValue ?? 10.0;
+
+        // BR 的機種在 AGC 開啟的情況下 而且不是 Bench mode 時, 這個參數是無法編輯的
+        bool brFlag =
+            partId == '6' && pilotFrequencyMode != '3' && agcMode == '1';
+
         return controlTextSlider(
           context: context,
-          editMode: ModeProperty.isExpertMode ? isEnableForwardSetting : false,
+          editMode: ModeProperty.isExpertMode
+              ? brFlag
+                  ? false
+                  : true
+              : false,
           title:
               '${AppLocalizations.of(context)!.forwardOutputEqualizer5And6} (${CustomStyle.dB}):',
           minValue: minValue,

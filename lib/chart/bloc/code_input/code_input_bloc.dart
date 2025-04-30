@@ -25,11 +25,12 @@ class CodeInputBloc extends Bloc<CodeInputEvent, CodeInputState> {
     CodeRequested event,
     Emitter<CodeInputState> emit,
   ) async {
-    String code = await _codeRepository.readUserCode();
+    // 2025/04/03 不記錄人員代碼
+    // String code = await _codeRepository.readUserCode();
 
     emit(state.copyWith(
       isInitialize: true,
-      code: code,
+      code: '',
     ));
   }
 
@@ -50,6 +51,8 @@ class CodeInputBloc extends Bloc<CodeInputEvent, CodeInputState> {
     emit(state.copyWith(
       isInitialize: false,
     ));
-    await _codeRepository.writeUserCode(state.code);
+
+    // 2025/04/03 不記錄人員代碼
+    // await _codeRepository.writeUserCode(state.code);
   }
 }

@@ -532,5 +532,6 @@
     "dialogMessageForwardCEQChanged": "The equalizer module has been detected as changed.",
     "dialogMessageSelectedFirmwareInvalid": "The file you selected is invalid.",
     "dialogMessageEnterExpertModePassword": "Please enter the expert mode password.",
+    "dialogMessagePasswordHint": "Please enter the password",
     "dialogMessageToggleBasicMode": "Do you want to switch to basic mode ?"
 }

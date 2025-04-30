@@ -530,5 +530,6 @@
     "dialogMessageForwardCEQChanged": "Le module d'égaliseur a été détecté comme modifié.",
     "dialogMessageSelectedFirmwareInvalid": "Le fichier que vous avez sélectionné est invalide.",
     "dialogMessageEnterExpertModePassword": "Veuillez entrer le mot de passe du mode expert.",
+    "dialogMessagePasswordHint": "Veuillez entrer le mot de passe",
     "dialogMessageToggleBasicMode": "Êtes-vous sûr de vouloir passer en mode basique ?"
 }

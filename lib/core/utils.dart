@@ -408,6 +408,20 @@ bool getForwardSettingEditable({
   return isEnableEdit;
 }
 
+// 判斷 forward input port (VVA1, Slope1)是否可以編輯
+bool getForwardInputSettingEditable({
+  required String pilotFrequencyMode,
+  required String agcMode,
+}) {
+  bool isEnableEdit = pilotFrequencyMode == '3'
+      ? true
+      : agcMode == '0'
+          ? true
+          : false;
+
+  return isEnableEdit;
+}
+
 // 判斷在不同 pilotFrequencyMode 下要顯示哪些 error text,
 // 只要有其中一個不符合, 所有相關的 frequency 欄位都會顯示 error text
 bool isNotValidFrequency({

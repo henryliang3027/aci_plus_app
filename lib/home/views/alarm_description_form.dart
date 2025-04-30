@@ -224,9 +224,9 @@ class AlarmDescriptionForm extends StatelessWidget {
                               ),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment
-                                    .baseline, // Align based on text baseline
-                                textBaseline: TextBaseline.alphabetic,
+                                // crossAxisAlignment: CrossAxisAlignment
+                                //     .baseline, // Align based on text baseline
+                                // textBaseline: TextBaseline.alphabetic,
                                 children: [
                                   Flexible(
                                     child: alarmDescriptions[i],
@@ -236,6 +236,9 @@ class AlarmDescriptionForm extends StatelessWidget {
                             ),
                           ]
                         ],
+                      ),
+                      const SizedBox(
+                        height: 10,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,

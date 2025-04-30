@@ -210,7 +210,7 @@ class Indicator extends StatelessWidget {
         builder: (BuildContext context) {
           return Center(
             child: SizedBox(
-              width: 350,
+              width: 380,
               child: Dialog(
                 insetPadding: const EdgeInsets.all(0),
                 child: AlarmDescriptionPage(

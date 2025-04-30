@@ -533,5 +533,6 @@
     "dialogMessageForwardCEQChanged": "偵測到等化器模組已被更換",
     "dialogMessageSelectedFirmwareInvalid": "您選擇的檔案無效",
     "dialogMessageEnterExpertModePassword": "請輸入專家模式密碼",
+    "dialogMessagePasswordHint": "請輸入密碼",
     "dialogMessageToggleBasicMode": "您確定要切換到基本模式嗎 ?"
 }

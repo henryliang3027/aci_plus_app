@@ -58,6 +58,7 @@ class _CodeInputDialog extends StatelessWidget {
                 ],
                 controller: codeTextEditingController,
                 maxLength: 8,
+                keyboardType: const TextInputType.numberWithOptions(),
                 decoration: InputDecoration(
                   hintText: AppLocalizations.of(context)!.dialogMessageCodeHint,
                   border: const OutlineInputBorder(

@@ -526,5 +526,6 @@
     "dialogMessageForwardCEQChanged": "Se ha detectado un cambio en el módulo ecualizador.",
     "dialogMessageSelectedFirmwareInvalid": "El archivo que seleccionaste no es válido.",
     "dialogMessageEnterExpertModePassword": "Por favor, introduzca la contraseña del modo experto.",
+    "dialogMessagePasswordHint": "Por favor introduzca la contraseña",
     "dialogMessageToggleBasicMode": "¿Está seguro de que desea cambiar al modo básico?"
 }

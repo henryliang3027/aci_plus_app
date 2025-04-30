@@ -65,7 +65,8 @@ class _CodeInputDialog extends StatelessWidget {
                 controller: codeTextEditingController,
                 // maxLength: 8,
                 decoration: InputDecoration(
-                  hintText: AppLocalizations.of(context)!.dialogMessageCodeHint,
+                  hintText:
+                      AppLocalizations.of(context)!.dialogMessagePasswordHint,
                   border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(4.0))),
                   contentPadding: const EdgeInsets.all(8.0),

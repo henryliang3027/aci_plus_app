@@ -11,7 +11,7 @@ class ModeInputBloc extends Bloc<ModeInputEvent, ModeInputState> {
     on<CodeChanged>(_onCodeChanged);
     on<CodeConfirmed>(_onCodeConfirmed);
 
-    add(const CodeRequested());
+    // add(const CodeRequested());
   }
 
   Future<void> _onCodeRequested(
