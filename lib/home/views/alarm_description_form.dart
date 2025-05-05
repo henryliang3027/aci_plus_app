@@ -38,7 +38,7 @@ class AlarmDescriptionForm extends StatelessWidget {
       );
     }
 
-    List<RichText> getDescriptions({
+    List<RichText> getAmpDescriptions({
       required TemperatureUnit temperatureUnit,
       required List<SeverityIndex> severityIndexValueList,
     }) {
@@ -105,12 +105,87 @@ class AlarmDescriptionForm extends StatelessWidget {
       return alarmDescriptionList;
     }
 
+    List<RichText> getNodeDescriptions({
+      required TemperatureUnit temperatureUnit,
+      required List<SeverityIndex> severityIndexValueList,
+    }) {
+      List<RichText> alarmDescriptionList = [];
+      for (SeverityIndex severityIndexValue in severityIndexValueList) {
+        int index = severityIndexValue.index;
+        String value = severityIndexValue.value;
+
+        if (index == 0) {
+          String unit = temperatureUnit == TemperatureUnit.celsius
+              ? CustomStyle.celciusUnit
+              : CustomStyle.fahrenheitUnit;
+          RichText richText = getRichText(
+              text: AppLocalizations.of(context)!
+                  .dialogMessageTemperatureAlarmDescription,
+              value: value,
+              unit: unit);
+          alarmDescriptionList.add(richText);
+        } else if (index == 1) {
+          RichText richText = getRichText(
+            text: AppLocalizations.of(context)!
+                .dialogMessageVoltageAlarmDescription,
+            value: value,
+            unit: CustomStyle.volt,
+          );
+          alarmDescriptionList.add(richText);
+        } else if (index == 2) {
+          RichText richText = getRichText(
+            text: AppLocalizations.of(context)!
+                .dialogMessageRFOutputPower1AlarmDescription,
+            value: value,
+            unit: CustomStyle.dBmV,
+          );
+          alarmDescriptionList.add(richText);
+        } else if (index == 3) {
+          RichText richText = getRichText(
+            text: AppLocalizations.of(context)!
+                .dialogMessageRFOutputPower3AlarmDescription,
+            value: value,
+            unit: CustomStyle.dBmV,
+          );
+          alarmDescriptionList.add(richText);
+        } else if (index == 4) {
+          RichText richText = getRichText(
+            text: AppLocalizations.of(context)!
+                .dialogMessageRFOutputPower4AlarmDescription,
+            value: value,
+            unit: CustomStyle.dBmV,
+          );
+          alarmDescriptionList.add(richText);
+        } else if (index == 5) {
+          RichText richText = getRichText(
+            text: AppLocalizations.of(context)!
+                .dialogMessageRFOutputPower6AlarmDescription,
+            value: value,
+            unit: CustomStyle.dBmV,
+          );
+          alarmDescriptionList.add(richText);
+        } else {}
+      }
+
+      return alarmDescriptionList;
+    }
+
     return BlocBuilder<AlarmDescriptionBloc, AlarmDescriptionState>(
       builder: (context, state) {
-        List<RichText> alarmDescriptions = getDescriptions(
-          temperatureUnit: state.temperatureUnit,
-          severityIndexValueList: state.severityIndexValueList,
-        );
+        List<RichText> alarmDescriptions = [];
+
+        if (state.aciDeviceType == ACIDeviceType.amp1P8G) {
+          alarmDescriptions = getAmpDescriptions(
+            temperatureUnit: state.temperatureUnit,
+            severityIndexValueList: state.severityIndexValueList,
+          );
+        } else {
+          alarmDescriptions = getNodeDescriptions(
+            temperatureUnit: state.temperatureUnit,
+            severityIndexValueList: state.severityIndexValueList,
+          );
+        }
+
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -149,9 +224,9 @@ class AlarmDescriptionForm extends StatelessWidget {
                               ),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment
-                                    .baseline, // Align based on text baseline
-                                textBaseline: TextBaseline.alphabetic,
+                                // crossAxisAlignment: CrossAxisAlignment
+                                //     .baseline, // Align based on text baseline
+                                // textBaseline: TextBaseline.alphabetic,
                                 children: [
                                   Flexible(
                                     child: alarmDescriptions[i],
@@ -161,6 +236,9 @@ class AlarmDescriptionForm extends StatelessWidget {
                             ),
                           ]
                         ],
+                      ),
+                      const SizedBox(
+                        height: 10,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,

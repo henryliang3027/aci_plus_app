@@ -14,6 +14,7 @@ class AlarmDescriptionBloc
     extends Bloc<AlarmDescriptionEvent, AlarmDescriptionState> {
   AlarmDescriptionBloc({
     required this.severityIndexList,
+    required this.aciDeviceType,
     required ACIDeviceRepository aciDeviceRepository,
     required Amp18Repository amp18Repository,
     required Amp18CCorNodeRepository amp18CCorNodeRepository,
@@ -24,31 +25,122 @@ class AlarmDescriptionBloc
         _unitRepository = unitRepository,
         super(const AlarmDescriptionState()) {
     on<AlarmDescriptionRequested>(_onAlarmDescriptionRequested);
+    on<NodeAlarmDescriptionRequested>(_onNodeAlarmDescriptionRequested);
 
-    add(const AlarmDescriptionRequested());
+    if (aciDeviceType == ACIDeviceType.amp1P8G) {
+      add(const AlarmDescriptionRequested());
+    } else if (aciDeviceType == ACIDeviceType.ampCCorNode1P8G) {
+      add(const NodeAlarmDescriptionRequested());
+    } else {
+      // 沒有辨識出ACIDeviceType, 不做任何事
+    }
   }
 
   final List<int> severityIndexList;
+  final ACIDeviceType aciDeviceType;
   final ACIDeviceRepository _aciDeviceRepository;
   final Amp18Repository _amp18Repository;
   final Amp18CCorNodeRepository _amp18CCorNodeRepository;
   final UnitRepository _unitRepository;
 
-  // Alarm _getSeverity(String alarmState, String alarmSeverity) {
-  //   if (alarmState == '0') {
-  //     if (alarmSeverity == Alarm.success.name) {
-  //       return Alarm.success;
-  //     } else if (alarmSeverity == Alarm.danger.name) {
-  //       return Alarm.danger;
-  //     } else {
-  //       //  Alarm.medium
-  //       return Alarm.success;
-  //     }
-  //   } else {
-  //     // alarmState == '1'
-  //     return Alarm.success;
-  //   }
-  // }
+  void _onNodeAlarmDescriptionRequested(
+    NodeAlarmDescriptionRequested event,
+    Emitter<AlarmDescriptionState> emit,
+  ) {
+    TemperatureUnit temperatureUnit = _unitRepository.temperatureUnit;
+
+    Map<DataKey, String> characteristicDataCache =
+        _amp18CCorNodeRepository.characteristicDataCache;
+
+    String temperatureAlarmSeverity =
+        characteristicDataCache[DataKey.temperatureAlarmSeverity] ?? '';
+
+    String voltageAlarmSeverity =
+        characteristicDataCache[DataKey.voltageAlarmSeverity] ?? '';
+
+    String rfOutputPower1AlarmSeverity =
+        characteristicDataCache[DataKey.rfOutputPower1AlarmSeverity] ?? '';
+
+    String rfOutputPower3AlarmSeverity =
+        characteristicDataCache[DataKey.rfOutputPower3AlarmSeverity] ?? '';
+
+    String rfOutputPower4AlarmSeverity =
+        characteristicDataCache[DataKey.rfOutputPower4AlarmSeverity] ?? '';
+
+    String rfOutputPower6AlarmSeverity =
+        characteristicDataCache[DataKey.rfOutputPower6AlarmSeverity] ?? '';
+
+    String temperatureAlarmState =
+        characteristicDataCache[DataKey.temperatureAlarmState] ?? '1';
+
+    String voltageAlarmState =
+        characteristicDataCache[DataKey.voltageAlarmState] ?? '1';
+
+    String rfOutputPower1AlarmState =
+        characteristicDataCache[DataKey.rfOutputPower1AlarmState] ?? '';
+
+    String rfOutputPower3AlarmState =
+        characteristicDataCache[DataKey.rfOutputPower3AlarmState] ?? '';
+
+    String rfOutputPower4AlarmState =
+        characteristicDataCache[DataKey.rfOutputPower4AlarmState] ?? '';
+
+    String rfOutputPower6AlarmState =
+        characteristicDataCache[DataKey.rfOutputPower6AlarmState] ?? '';
+
+    String currentTemperatureC =
+        characteristicDataCache[DataKey.currentTemperatureC] ?? '';
+
+    String currentTemperatureF =
+        characteristicDataCache[DataKey.currentTemperatureF] ?? '';
+
+    String currentVoltage =
+        characteristicDataCache[DataKey.currentVoltage] ?? '';
+
+    String currentRFOutputPower1 =
+        characteristicDataCache[DataKey.currentRFOutputPower1] ?? '';
+
+    String currentRFOutputPower3 =
+        characteristicDataCache[DataKey.currentRFOutputPower3] ?? '';
+
+    String currentRFOutputPower4 =
+        characteristicDataCache[DataKey.currentRFOutputPower4] ?? '';
+
+    String currentRFOutputPower6 =
+        characteristicDataCache[DataKey.currentRFOutputPower6] ?? '';
+
+    List<String> severityValueList = [
+      temperatureUnit == TemperatureUnit.celsius
+          ? currentTemperatureC
+          : currentTemperatureF,
+      currentVoltage,
+      currentRFOutputPower1,
+      currentRFOutputPower3,
+      currentRFOutputPower4,
+      currentRFOutputPower6,
+    ];
+
+    List<SeverityIndex> severityIndexValueList = [];
+
+    for (int i = 0; i < severityIndexList.length; i++) {
+      severityIndexValueList.add(SeverityIndex(
+        index: severityIndexList[i],
+        value: severityValueList[severityIndexList[i]],
+      ));
+    }
+
+    // if (dataKey == DataKey.temperatureAlarmSeverity) {
+    //   severityIndexList = [severityIndexList[0]];
+    // } else if (dataKey == DataKey.voltageAlarmSeverity) {
+    //   severityIndexList = [severityIndexList[1]];
+    // } else {}
+
+    emit(state.copyWith(
+      aciDeviceType: aciDeviceType,
+      temperatureUnit: temperatureUnit,
+      severityIndexValueList: severityIndexValueList,
+    ));
+  }
 
   void _onAlarmDescriptionRequested(
     AlarmDescriptionRequested event,
@@ -121,7 +213,9 @@ class AlarmDescriptionBloc
         characteristicDataCache[DataKey.rfOutputHighChannelPower] ?? '';
 
     List<String> severityValueList = [
-      currentTemperatureC,
+      temperatureUnit == TemperatureUnit.celsius
+          ? currentTemperatureC
+          : currentTemperatureF,
       currentVoltage,
       currentVoltageRipple,
       currentRFOutputPower,
@@ -132,24 +226,10 @@ class AlarmDescriptionBloc
     List<SeverityIndex> severityIndexValueList = [];
 
     for (int i = 0; i < severityIndexList.length; i++) {
-      if (severityIndexList[i] == 0) {
-        if (temperatureUnit == TemperatureUnit.celsius) {
-          severityIndexValueList.add(SeverityIndex(
-            index: severityIndexList[i],
-            value: currentTemperatureC,
-          ));
-        } else {
-          severityIndexValueList.add(SeverityIndex(
-            index: severityIndexList[i],
-            value: currentTemperatureF,
-          ));
-        }
-      } else {
-        severityIndexValueList.add(SeverityIndex(
-          index: severityIndexList[i],
-          value: severityValueList[severityIndexList[i]],
-        ));
-      }
+      severityIndexValueList.add(SeverityIndex(
+        index: severityIndexList[i],
+        value: severityValueList[severityIndexList[i]],
+      ));
     }
 
     // if (dataKey == DataKey.temperatureAlarmSeverity) {
@@ -159,6 +239,7 @@ class AlarmDescriptionBloc
     // } else {}
 
     emit(state.copyWith(
+      aciDeviceType: aciDeviceType,
       temperatureUnit: temperatureUnit,
       severityIndexValueList: severityIndexValueList,
     ));

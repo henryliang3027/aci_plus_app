@@ -13,7 +13,7 @@
     "advanced": "Avanzado",
     
     "attribute": "Atributo",
-    "regulation": "Regulación",
+    "configuration": "Configuración",
     "technicianID": "ID del técnico",
     "inputSignalLevel": "Niveles de Entrada",
     "inputAttenuation": "Atenuación de entrada",
@@ -210,6 +210,8 @@
     "monitoringChart": "Gráfico de Monitoreo",
     "reconnect": "Reconectar",
     "warmReset": "Reinicio Caliente",
+    "basicMode": "Modo Básico",
+    "expertMode": "Modo Experto",
     "reset": "Restablecer",
     "share": "Compartir",
     "export": "Exportar",
@@ -321,6 +323,7 @@
     "dialogTitleSettingResult": "Resultado",
     "dialogTitleSuccess": "Éxito",
     "dialogTitleEnterYourCode": "Ingrese Su Código",
+    "dialogTitleEnterPassword": "Introduzca Contraseña.",
     "dialogTitleEnterQRCodeDescription": "Ingrese la descripción del código QR",
     "dialogTitleEnterConfirm": "Confirmar",
     "dialogTitleDeleteConfig": "Eliminar",
@@ -482,6 +485,10 @@
     "dialogMessageRFOutputPowerAlarmDescription": "Potencia salida TCP actual",
     "dialogMessageRFOutputPilotLowFrequencyDescription": "Salida baja frecuencia actual",
     "dialogMessageRFOutputPilotHighFrequencyDescription": "Salida alta frecuencia actual",
+    "dialogMessageRFOutputPower1AlarmDescription": "Puerto 1 potencia de salida actual",
+    "dialogMessageRFOutputPower3AlarmDescription": "Puerto 3 potencia de salida actual",
+    "dialogMessageRFOutputPower4AlarmDescription": "Puerto 4 potencia de salida actual",
+    "dialogMessageRFOutputPower6AlarmDescription": "Puerto 6 potencia de salida actual",
 
     "dialogMessageTechnicianIDSetting": "Ajuste ID del técnico",
     "dialogMessageInputSignalLevelSetting": "Ajuste niveles de entrada",
@@ -517,5 +524,8 @@
     "dialogMessageWarmResetingAlmostDone": "Casi terminado",
     "dialogMessageWarmResetSeccessful": "Reinicio caliente realizado con éxito.",
     "dialogMessageForwardCEQChanged": "Se ha detectado un cambio en el módulo ecualizador.",
-    "dialogMessageSelectedFirmwareInvalid": "El archivo que seleccionaste no es válido."
+    "dialogMessageSelectedFirmwareInvalid": "El archivo que seleccionaste no es válido.",
+    "dialogMessageEnterExpertModePassword": "Por favor, introduzca la contraseña del modo experto.",
+    "dialogMessagePasswordHint": "Por favor introduzca la contraseña",
+    "dialogMessageToggleBasicMode": "¿Está seguro de que desea cambiar al modo básico?"
 }

@@ -284,6 +284,8 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
   }
 
   Map<String, String> _getAttributeData() {
+    // 把 context 傳入, 這樣就可以在這裡使用 l10n
+    // 使用者在 app 執行期間切換語言, 匯出的資料中語言也會同步
     final AppLocalizations appLocalizations = AppLocalizations.of(_context)!;
 
     Map<DataKey, String> characteristicData =
@@ -325,6 +327,8 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
   }
 
   Map<String, String> _getRegulationData() {
+    // 把 context 傳入, 這樣就可以在這裡使用 l10n
+    // 使用者在 app 執行期間切換語言, 匯出的資料中語言也會同步
     final AppLocalizations appLocalizations = AppLocalizations.of(_context)!;
 
     Map<DataKey, String> characteristicData =

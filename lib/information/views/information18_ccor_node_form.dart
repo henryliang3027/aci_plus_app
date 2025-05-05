@@ -7,6 +7,7 @@ import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_buttom_navigation_bar18.dart';
 import 'package:aci_plus_app/information/bloc/information18_ccor_node/information18_ccor_node_bloc.dart';
+import 'package:aci_plus_app/information/shared/mode_widget.dart';
 import 'package:aci_plus_app/information/shared/theme_option_widget.dart';
 import 'package:aci_plus_app/information/shared/utils.dart';
 import 'package:aci_plus_app/information/shared/warm_reset_widget.dart';
@@ -74,6 +75,7 @@ class Information18CCorNodeForm extends StatelessWidget {
 
 enum HomeMenu {
   refresh,
+  mode,
   theme,
   warmReset,
   about,
@@ -111,6 +113,38 @@ class __PopupMenuState extends State<_PopupMenu> {
                         .read<HomeBloc>()
                         .add(const DevicePeriodicUpdateCanceled());
                     context.read<HomeBloc>().add(const DeviceRefreshed());
+                  },
+                ),
+                menuItem(
+                  value: HomeMenu.mode,
+                  iconData: Icons.safety_divider,
+                  title: state.mode == Mode.basic
+                      ? AppLocalizations.of(context)!.expertMode
+                      : AppLocalizations.of(context)!.basicMode,
+                  onTap: () {
+                    if (state.mode == Mode.basic) {
+                      showEnterExpertModeDialog(context: context)
+                          .then((bool? isMatch) {
+                        if (isMatch != null) {
+                          if (isMatch) {
+                            context
+                                .read<HomeBloc>()
+                                .add(const ModeChanged(Mode.expert));
+                          }
+                        }
+                      });
+                    } else {
+                      showToggleBasicModeDialog(context: context)
+                          .then((bool? isConfirm) {
+                        if (isConfirm != null) {
+                          if (isConfirm) {
+                            context
+                                .read<HomeBloc>()
+                                .add(const ModeChanged(Mode.basic));
+                          }
+                        }
+                      });
+                    }
                   },
                 ),
                 menuItem(

@@ -13,7 +13,7 @@
     "advanced": "Advanced",
 
     "attribute": "Attribute",
-    "regulation": "Regulation",
+    "configuration": "Configuration",
     "technicianID": "Tech ID",
     "inputSignalLevel": "Input Signal Levels",
     "inputAttenuation": "Input Attenuation",
@@ -212,6 +212,8 @@
     "monitoringChart": "Monitoring Chart",
     "reconnect": "Reconnect",
     "warmReset": "Warm Reset",
+    "basicMode": "Basic Mode",
+    "expertMode": "Expert Mode",
     "reset": "Reset",
     "share": "Share",
     "export": "Export",
@@ -327,6 +329,7 @@
     "dialogTitleSettingResult": "Result",
     "dialogTitleSuccess": "Success",
     "dialogTitleEnterYourCode": "Enter Your Code",
+    "dialogTitleEnterPassword": "Enter Password",
     "dialogTitleEnterQRCodeDescription": "Enter QR Code Description",
     "dialogTitleEnterConfirm": "Confirm",
     "dialogTitleDeleteConfig": "Delete",
@@ -487,6 +490,11 @@
     "dialogMessageRFOutputPowerAlarmDescription": "Current TCP output power",
     "dialogMessageRFOutputPilotLowFrequencyDescription": "Current Low pilot output",
     "dialogMessageRFOutputPilotHighFrequencyDescription": "Current high pilot output",
+    "dialogMessageRFOutputPower1AlarmDescription": "Current port 1 output power",
+    "dialogMessageRFOutputPower3AlarmDescription": "Current port 3 output power",
+    "dialogMessageRFOutputPower4AlarmDescription": "Current port 4 output power",
+    "dialogMessageRFOutputPower6AlarmDescription": "Current port 6 output power",
+
 
     "dialogMessageTechnicianIDSetting": "Tech ID setting",
     "dialogMessageInputSignalLevelSetting": "Input signal levels setting",
@@ -522,5 +530,8 @@
     "dialogMessageWarmResetingAlmostDone": "Almost done",
     "dialogMessageWarmResetSeccessful": "Warm reset performed successfully.",
     "dialogMessageForwardCEQChanged": "The equalizer module has been detected as changed.",
-    "dialogMessageSelectedFirmwareInvalid": "The file you selected is invalid."
+    "dialogMessageSelectedFirmwareInvalid": "The file you selected is invalid.",
+    "dialogMessageEnterExpertModePassword": "Please enter the expert mode password.",
+    "dialogMessagePasswordHint": "Please enter the password",
+    "dialogMessageToggleBasicMode": "Do you want to switch to basic mode ?"
 }

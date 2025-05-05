@@ -122,6 +122,8 @@ class Setting18ForwardControlView extends StatelessWidget {
           case SettingControl.forwardOutputAttenuation5And6:
             widgets.add(
               _ForwardOutputAttenuation5And6(
+                partId: partId,
+                agcMode: agcMode,
                 pilotFrequencyMode: pilotFrequencyMode,
               ),
             );
@@ -133,7 +135,11 @@ class Setting18ForwardControlView extends StatelessWidget {
             break;
           case SettingControl.forwardOutputEqualizer5And6:
             widgets.add(
-              const _ForwardOutputEqualizer5And6(),
+              _ForwardOutputEqualizer5And6(
+                partId: partId,
+                agcMode: agcMode,
+                pilotFrequencyMode: pilotFrequencyMode,
+              ),
             );
             break;
         }
@@ -567,9 +573,15 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
           inputAttenuation: state.targetValues[DataKey.dsVVA1]?.value ?? '0.0',
           currentInputAttenuation: currentInputAttenuation,
         );
+
+        bool isEnableForwardInputSetting = getForwardInputSettingEditable(
+          pilotFrequencyMode: pilotFrequencyMode,
+          agcMode: agcMode,
+        );
+
         return controlTextSlider(
           context: context,
-          editMode: state.editMode && agcMode == '0',
+          editMode: state.editMode && isEnableForwardInputSetting,
           title:
               '${AppLocalizations.of(context)!.forwardInputAttenuation1} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -631,9 +643,15 @@ class _ForwardInputEqualizer1 extends StatelessWidget {
           inputEqualizer: state.targetValues[DataKey.dsSlope1]?.value ?? '0.0',
           currentInputEqualizer: currentInputEqualizer,
         );
+
+        bool isEnableForwardInputSetting = getForwardInputSettingEditable(
+          pilotFrequencyMode: pilotFrequencyMode,
+          agcMode: agcMode,
+        );
+
         return controlTextSlider(
           context: context,
-          editMode: state.editMode && agcMode == '0',
+          editMode: state.editMode && isEnableForwardInputSetting,
           title:
               '${AppLocalizations.of(context)!.forwardInputEqualizer1} (${CustomStyle.dB}):',
           subTitle: getForwardCEQText(forwardCEQIndex),
@@ -908,8 +926,14 @@ class _ForwardOutputAttenuation3And4 extends StatelessWidget {
 }
 
 class _ForwardOutputAttenuation5And6 extends StatelessWidget {
-  const _ForwardOutputAttenuation5And6({required this.pilotFrequencyMode});
+  const _ForwardOutputAttenuation5And6({
+    required this.partId,
+    required this.agcMode,
+    required this.pilotFrequencyMode,
+  });
 
+  final String partId;
+  final String agcMode;
   final String pilotFrequencyMode;
 
   @override
@@ -925,7 +949,10 @@ class _ForwardOutputAttenuation5And6 extends StatelessWidget {
         double maxValue = state.targetValues[DataKey.dsVVA5]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
-          editMode: state.editMode,
+          // BR 的機種在 AGC 開啟的情況下 而且不是 Bench mode 時, 這個參數是無法編輯的
+          editMode: partId == '6' && pilotFrequencyMode != '3' && agcMode == '1'
+              ? false
+              : state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardOutputAttenuation5And6} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -1035,7 +1062,15 @@ class _ForwardOutputEqualizer3And4 extends StatelessWidget {
 }
 
 class _ForwardOutputEqualizer5And6 extends StatelessWidget {
-  const _ForwardOutputEqualizer5And6();
+  const _ForwardOutputEqualizer5And6({
+    required this.partId,
+    required this.agcMode,
+    required this.pilotFrequencyMode,
+  });
+
+  final String partId;
+  final String agcMode;
+  final String pilotFrequencyMode;
 
   @override
   Widget build(BuildContext context) {
@@ -1051,7 +1086,10 @@ class _ForwardOutputEqualizer5And6 extends StatelessWidget {
             state.targetValues[DataKey.dsSlope4]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
-          editMode: state.editMode,
+          // BR 的機種在 AGC 開啟的情況下 而且不是 Bench mode 時, 這個參數是無法編輯的
+          editMode: partId == '6' && pilotFrequencyMode != '3' && agcMode == '1'
+              ? false
+              : state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardOutputEqualizer5And6} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -1187,6 +1225,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
     Widget getDisabledEditModeTools({
       required String pilotFrequencyMode,
       required String agcMode,
+      bool isExpertMode = false,
     }) {
       String graphFilePath = settingGraphFilePath[partId] ?? '';
 
@@ -1244,20 +1283,24 @@ class _SettingFloatingActionButton extends StatelessWidget {
               shape: const CircleBorder(
                 side: BorderSide.none,
               ),
-              backgroundColor: isEnableEdit
-                  ? Theme.of(context).colorScheme.primary.withAlpha(200)
-                  : Colors.grey,
+              backgroundColor: isExpertMode
+                  ? isEnableEdit
+                      ? Theme.of(context).colorScheme.primary.withAlpha(200)
+                      : Colors.grey.withAlpha(200)
+                  : Colors.grey.withAlpha(200),
+              onPressed: isExpertMode
+                  ? isEnableEdit
+                      ? () {
+                          context
+                              .read<Setting18ForwardControlBloc>()
+                              .add(const EditModeEnabled());
+                        }
+                      : null
+                  : null,
               child: Icon(
                 Icons.edit,
                 color: Theme.of(context).colorScheme.onPrimary,
               ),
-              onPressed: isEnableEdit
-                  ? () {
-                      context
-                          .read<Setting18ForwardControlBloc>()
-                          .add(const EditModeEnabled());
-                    }
-                  : null,
             ),
           ],
         ),
@@ -1311,14 +1354,22 @@ class _SettingFloatingActionButton extends StatelessWidget {
       required String pilotFrequencyMode,
       required String agcMode,
     }) {
-      return editMode
-          ? getEnabledEditModeTools(
-              enableSubmission: enableSubmission,
-            )
-          : getDisabledEditModeTools(
-              pilotFrequencyMode: pilotFrequencyMode,
-              agcMode: agcMode,
-            );
+      if (ModeProperty.mode == Mode.expert) {
+        return editMode
+            ? getEnabledEditModeTools(
+                enableSubmission: enableSubmission,
+              )
+            : getDisabledEditModeTools(
+                pilotFrequencyMode: pilotFrequencyMode,
+                agcMode: agcMode,
+                isExpertMode: true,
+              );
+      } else {
+        return getDisabledEditModeTools(
+          pilotFrequencyMode: pilotFrequencyMode,
+          agcMode: agcMode,
+        );
+      }
     }
 
     bool getEditable({

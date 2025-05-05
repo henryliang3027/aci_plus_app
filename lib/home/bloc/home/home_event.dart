@@ -144,6 +144,15 @@ class DevicePeriodicUpdateCanceled extends HomeEvent {
   List<Object> get props => [];
 }
 
+class ModeChanged extends HomeEvent {
+  const ModeChanged(this.mode);
+
+  final Mode mode;
+
+  @override
+  List<Object?> get props => [mode];
+}
+
 // class NeedsDataReloaded extends HomeEvent {
 //   const NeedsDataReloaded(this.isReloadData);
 

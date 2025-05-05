@@ -283,20 +283,25 @@ class _QRToolbar extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   IconButton(
-                    onPressed: [
-                      ...state.trunkConfigs,
-                      ...state.distributionConfigs,
-                      ...state.nodeConfigs
-                    ].isNotEmpty
-                        ? () {
-                            context
-                                .read<Setting18ConfigBloc>()
-                                .add(const QRDataGenerated());
-                          }
+                    onPressed: ModeProperty.isExpertMode
+                        ? [
+                            ...state.trunkConfigs,
+                            ...state.distributionConfigs,
+                            ...state.nodeConfigs
+                          ].isNotEmpty
+                            ? () {
+                                context
+                                    .read<Setting18ConfigBloc>()
+                                    .add(const QRDataGenerated());
+                              }
+                            : null
                         : null,
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.qr_code_2,
                       size: 26,
+                      color: ModeProperty.isExpertMode
+                          ? Theme.of(context).iconTheme.color
+                          : Colors.grey,
                     ),
                   ),
                   IconButton(
@@ -312,25 +317,6 @@ class _QRToolbar extends StatelessWidget {
                                             .add(QRDataScanned(rawData));
                                       }
                                     });
-
-                                    // Navigator.push(
-                                    //     context,
-                                    //     MaterialPageRoute(
-                                    //       builder: (context) =>
-                                    //           WindowsQRCodeScanner(
-                                    //         onScanned: (res) {
-                                    //           Navigator.pop(context, res);
-                                    //         },
-                                    //       ),
-                                    //     )).then((rawData) {
-                                    //   if (rawData != null) {
-                                    //     if (rawData.isNotEmpty) {
-                                    //       context
-                                    //           .read<Setting18ConfigBloc>()
-                                    //           .add(QRDataScanned(rawData));
-                                    //     }
-                                    //   }
-                                    // });
                                   }
                                 : null
                             : null
@@ -348,29 +334,30 @@ class _QRToolbar extends StatelessWidget {
                               }
                             });
                           },
-                    icon: const Icon(
-                      Icons.qr_code_scanner_sharp,
-                      size: 26,
-                    ),
+                    icon: Icon(Icons.qr_code_scanner_sharp,
+                        size: 26, color: Theme.of(context).iconTheme.color),
                   ),
                   Platform.isWindows
-                      ? winBeta >= 6
-                          ? Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                IconButton(
-                                  onPressed: () async {
-                                    context
-                                        .read<Setting18ConfigBloc>()
-                                        .add(const QRImagePicked());
-                                  },
-                                  icon: const Icon(
-                                    CustomIcons.picture,
-                                    size: 26,
-                                  ),
-                                ),
-                              ],
-                            )
+                      ? ModeProperty.isExpertMode
+                          ? winBeta >= 6
+                              ? Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    IconButton(
+                                      onPressed: () async {
+                                        context
+                                            .read<Setting18ConfigBloc>()
+                                            .add(const QRImagePicked());
+                                      },
+                                      icon: Icon(CustomIcons.picture,
+                                          size: 26,
+                                          color: Theme.of(context)
+                                              .iconTheme
+                                              .color),
+                                    ),
+                                  ],
+                                )
+                              : Container()
                           : Container()
                       : Container(),
                   const SizedBox(

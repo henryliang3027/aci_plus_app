@@ -201,22 +201,21 @@ class Indicator extends StatelessWidget {
 
     Future<void> showAlarmDescriptionDialog({
       required List<int> severityIndexList,
+      required ACIDeviceType aciDeviceType,
     }) async {
       return showDialog<void>(
         context: context,
         barrierDismissible: false, // user must tap button!
 
         builder: (BuildContext context) {
-          var width = MediaQuery.of(context).size.width;
-          var height = MediaQuery.of(context).size.height;
-
           return Center(
             child: SizedBox(
-              width: 350,
+              width: 380,
               child: Dialog(
                 insetPadding: const EdgeInsets.all(0),
                 child: AlarmDescriptionPage(
                   severityIndexList: severityIndexList,
+                  aciDeviceType: aciDeviceType,
                 ),
               ),
             ),
@@ -246,16 +245,26 @@ class Indicator extends StatelessWidget {
       );
     }
 
+    bool getPulsatorEnabled({
+      required Alarm alarm,
+    }) {
+      return alarm == Alarm.success ? false : true;
+    }
+
     Widget getPulsator({
       required Color color,
       required List<int> severityIndexList,
+      required ACIDeviceType aciDeviceType,
       required IconData iconData,
       required bool enableTap,
     }) {
       return Pulsator(
         enableTap: enableTap,
         onTap: () {
-          showAlarmDescriptionDialog(severityIndexList: severityIndexList);
+          showAlarmDescriptionDialog(
+            severityIndexList: severityIndexList,
+            aciDeviceType: aciDeviceType,
+          );
         },
         iconData: iconData,
         size: 30, // Circle size
@@ -269,16 +278,120 @@ class Indicator extends StatelessWidget {
       );
     }
 
-    Color getPulsatorColor({
-      required Alarm alarm,
+    Widget getAmpIndicator({
+      required List<int> ampSeverityIndexList,
+      required Alarm ampUnitStatusAlarmSeverity,
+      required Alarm ampTemperatureStatusAlarmSeverity,
+      required Alarm ampVoltageStatusAlarmSeverity,
     }) {
-      return CustomStyle.alarmColor[alarm.name]!; // Ripple color
+      Color unitStatusAlarmcolor =
+          CustomStyle.alarmColor[ampUnitStatusAlarmSeverity.name]!;
+      Color temperatureStatusAlarmColor =
+          CustomStyle.alarmColor[ampTemperatureStatusAlarmSeverity.name]!;
+      Color voltageStatusAlarmcolor =
+          CustomStyle.alarmColor[ampVoltageStatusAlarmSeverity.name]!;
+      bool enableUnitStatusAlarmPulsator =
+          getPulsatorEnabled(alarm: ampUnitStatusAlarmSeverity);
+      bool enableTemperatureStatusAlarmPulsator =
+          getPulsatorEnabled(alarm: ampTemperatureStatusAlarmSeverity);
+      bool enableVoltageStatusAlarmPulsator =
+          getPulsatorEnabled(alarm: ampVoltageStatusAlarmSeverity);
+
+      ACIDeviceType aciDeviceType = ACIDeviceType.amp1P8G;
+
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            getPulsator(
+              color: unitStatusAlarmcolor,
+              severityIndexList: ampSeverityIndexList,
+              aciDeviceType: aciDeviceType,
+              iconData: CustomIcons.device,
+              enableTap: enableUnitStatusAlarmPulsator,
+            ),
+            getPulsator(
+              color: temperatureStatusAlarmColor,
+              severityIndexList: ampSeverityIndexList.contains(0) ? [0] : [],
+              aciDeviceType: aciDeviceType,
+              iconData: CustomIcons.temperature,
+              enableTap: enableTemperatureStatusAlarmPulsator,
+            ),
+            getPulsator(
+              color: voltageStatusAlarmcolor,
+              severityIndexList: ampSeverityIndexList.contains(1) ? [1] : [],
+              aciDeviceType: aciDeviceType,
+              iconData: CustomIcons.power,
+              enableTap: enableVoltageStatusAlarmPulsator,
+            ),
+            Container(
+              width: 44,
+              height: 22,
+              decoration: const BoxDecoration(color: Colors.transparent),
+            ),
+            getSetupWizardButton(),
+          ],
+        ),
+      );
     }
 
-    bool getPulsatorEnabled({
-      required Alarm alarm,
+    Widget getNodeIndicator({
+      required List<int> nodeSeverityIndexList,
+      required Alarm nodeUnitStatusAlarmSeverity,
+      required Alarm nodeTemperatureStatusAlarmSeverity,
+      required Alarm nodeVoltageStatusAlarmSeverity,
     }) {
-      return alarm == Alarm.success ? false : true;
+      Color unitStatusAlarmcolor =
+          CustomStyle.alarmColor[nodeUnitStatusAlarmSeverity.name]!;
+      Color temperatureStatusAlarmColor =
+          CustomStyle.alarmColor[nodeTemperatureStatusAlarmSeverity.name]!;
+      Color voltageStatusAlarmcolor =
+          CustomStyle.alarmColor[nodeVoltageStatusAlarmSeverity.name]!;
+      bool enableUnitStatusAlarmPulsator =
+          getPulsatorEnabled(alarm: nodeUnitStatusAlarmSeverity);
+      bool enableTemperatureStatusAlarmPulsator =
+          getPulsatorEnabled(alarm: nodeTemperatureStatusAlarmSeverity);
+      bool enableVoltageStatusAlarmPulsator =
+          getPulsatorEnabled(alarm: nodeVoltageStatusAlarmSeverity);
+
+      ACIDeviceType aciDeviceType = ACIDeviceType.ampCCorNode1P8G;
+
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            getPulsator(
+              color: unitStatusAlarmcolor,
+              severityIndexList: nodeSeverityIndexList,
+              aciDeviceType: aciDeviceType,
+              iconData: CustomIcons.device,
+              enableTap: enableUnitStatusAlarmPulsator,
+            ),
+            getPulsator(
+              color: temperatureStatusAlarmColor,
+              severityIndexList: nodeSeverityIndexList.contains(0) ? [0] : [],
+              aciDeviceType: aciDeviceType,
+              iconData: CustomIcons.temperature,
+              enableTap: enableTemperatureStatusAlarmPulsator,
+            ),
+            getPulsator(
+              color: voltageStatusAlarmcolor,
+              severityIndexList: nodeSeverityIndexList.contains(1) ? [1] : [],
+              aciDeviceType: aciDeviceType,
+              iconData: CustomIcons.power,
+              enableTap: enableVoltageStatusAlarmPulsator,
+            ),
+            Container(
+              width: 44,
+              height: 22,
+              decoration: const BoxDecoration(color: Colors.transparent),
+            ),
+            getSetupWizardButton(),
+          ],
+        ),
+      );
     }
 
     return BlocBuilder<HomeBloc, HomeState>(
@@ -288,10 +401,8 @@ class Indicator extends StatelessWidget {
           // 因此 unitStatusAlarmSeverity 不直接讀取 device 的 unitStatusAlarmSeverity
           // 依照 device 是 amp 或 node 來決定, amp 則使用 getAmpUnitStatusAlarmSeverity
           // node 則使用 getNodeUnitStatusAlarmSeverity
-
           // String unitStatusAlarmSeverity =
           //     state.characteristicData[DataKey.unitStatusAlarmSeverity] ?? '';
-
           // String splitOptionAlarmSeverity =
           //     state.characteristicData[DataKey.splitOptionAlarmSeverity] ?? '';
 
@@ -417,56 +528,21 @@ class Indicator extends StatelessWidget {
           Alarm finalVoltageAlarmSeverity =
               getSeverity(voltageAlarmState, voltageAlarmSeverity);
 
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                getPulsator(
-                  color: getPulsatorColor(
-                    alarm: state.aciDeviceType == ACIDeviceType.amp1P8G
-                        ? ampUnitStatusAlarmSeverity
-                        : nodeUnitStatusAlarmSeverity,
-                  ),
-                  severityIndexList: ampUnitStatusAlarmSeverityIndexList,
-                  iconData: CustomIcons.device,
-                  enableTap: state.aciDeviceType == ACIDeviceType.amp1P8G
-                      ? getPulsatorEnabled(alarm: ampUnitStatusAlarmSeverity)
-                      : getPulsatorEnabled(alarm: nodeUnitStatusAlarmSeverity),
-                ),
-                getPulsator(
-                  color: getPulsatorColor(
-                    alarm: finalTemperatureAlarmSeverity,
-                  ),
-                  severityIndexList:
-                      ampUnitStatusAlarmSeverityIndexList.contains(0)
-                          ? [0]
-                          : [],
-                  iconData: CustomIcons.temperature,
-                  enableTap:
-                      getPulsatorEnabled(alarm: finalTemperatureAlarmSeverity),
-                ),
-                getPulsator(
-                  color: getPulsatorColor(
-                    alarm: finalVoltageAlarmSeverity,
-                  ),
-                  severityIndexList:
-                      ampUnitStatusAlarmSeverityIndexList.contains(1)
-                          ? [1]
-                          : [],
-                  iconData: CustomIcons.power,
-                  enableTap:
-                      getPulsatorEnabled(alarm: finalVoltageAlarmSeverity),
-                ),
-                Container(
-                  width: 44,
-                  height: 22,
-                  decoration: BoxDecoration(color: Colors.transparent),
-                ),
-                getSetupWizardButton(),
-              ],
-            ),
-          );
+          return state.aciDeviceType == ACIDeviceType.amp1P8G
+              ? getAmpIndicator(
+                  ampSeverityIndexList: ampUnitStatusAlarmSeverityIndexList,
+                  ampUnitStatusAlarmSeverity: ampUnitStatusAlarmSeverity,
+                  ampTemperatureStatusAlarmSeverity:
+                      finalTemperatureAlarmSeverity,
+                  ampVoltageStatusAlarmSeverity: finalVoltageAlarmSeverity,
+                )
+              : getNodeIndicator(
+                  nodeSeverityIndexList: nodeUnitStatusAlarmSeverityIndexList,
+                  nodeUnitStatusAlarmSeverity: nodeUnitStatusAlarmSeverity,
+                  nodeTemperatureStatusAlarmSeverity:
+                      finalTemperatureAlarmSeverity,
+                  nodeVoltageStatusAlarmSeverity: finalVoltageAlarmSeverity,
+                );
         } else {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -476,18 +552,21 @@ class Indicator extends StatelessWidget {
                 getPulsator(
                   color: const Color(0xff6c757d),
                   severityIndexList: [],
+                  aciDeviceType: state.aciDeviceType,
                   iconData: CustomIcons.device,
                   enableTap: false,
                 ),
                 getPulsator(
                   color: const Color(0xff6c757d),
                   severityIndexList: [],
+                  aciDeviceType: state.aciDeviceType,
                   iconData: CustomIcons.temperature,
                   enableTap: false,
                 ),
                 getPulsator(
                   color: const Color(0xff6c757d),
                   severityIndexList: [],
+                  aciDeviceType: state.aciDeviceType,
                   iconData: CustomIcons.power,
                   enableTap: false,
                 ),
