@@ -893,6 +893,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
     }
 
+    // usb 連線時, 讀取 log chunk 時需要額外的 delay, 否則會傳出多餘的資料
+    await Future.delayed(const Duration(milliseconds: 1000));
+
     // 處理 requestCommand1p8GForLogChunk 讀取
     // 最多 retry 3 次, 連續失敗3次就視為失敗
     for (int i = 0; i < 3; i++) {

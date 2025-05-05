@@ -452,7 +452,7 @@ int getDelayByRSSI(int rssi) {
   // 則 16384 bytes 收完等於有 67 (68 - 1) 次休息 * 35 ~= 2345 ms
   // 傳送一包的時間估算約 26ms * 68 = 1768 ms
   // 所需時間 2345 + 1768 = 4113
-  if (rssi > -65) {
+  if (rssi >= -65) {
     return 26;
   } else if (rssi < -65 && rssi >= -70) {
     return 32;

@@ -234,10 +234,28 @@ class USBClient extends BLEClientBase {
 
   @override
   Future<void> closeConnectionStream() async {
-    // _isConnected = false;
-    // _connectionStateController?.close();
+    _isConnected = false;
+    cancelCompleterOnDisconnected();
+    // cancelConnectionTimer();
+    cancelCharacteristicDataTimer(name: 'connection closed');
+
+    if (_connectionReportStreamController.hasListener) {
+      if (!_connectionReportStreamController.isClosed) {
+        await _connectionReportStreamController.close();
+      }
+    }
+    _aciDeviceType = ACIDeviceType.undefined;
+    clearCombinedRawData();
     _usbPort?.close();
     _usbPort = null;
+  }
+
+  void cancelCompleterOnDisconnected() {
+    if (_completer != null) {
+      if (!_completer!.isCompleted) {
+        _completer!.completeError(false);
+      }
+    }
   }
 
   bool checkCRC(
@@ -263,13 +281,11 @@ class USBClient extends BLEClientBase {
 
   // 透過 1G/1.2G/1.8G 同樣的基本指令, 來取得回傳資料的長度
   Future<dynamic> _requestBasicInformationRawData(List<int> value) async {
-    _currentCommandIndex = -1;
-
     print('get data from request command 0');
 
     try {
       List<int> rawData = await writeSetCommandToCharacteristic(
-        commandIndex: 0,
+        commandIndex: _currentCommandIndex,
         value: value,
         timeout: const Duration(seconds: 10),
       );
@@ -331,8 +347,10 @@ class USBClient extends BLEClientBase {
 
   @override
   Future<int> getRSSI() {
-    // TODO: implement getRSSI
-    throw UnimplementedError();
+    return Future.delayed(
+      const Duration(seconds: 0),
+      () => -65,
+    );
   }
 
   @override

@@ -36,15 +36,8 @@ class ACIDeviceRepository {
   }) async {
     CRC16.calculateCRC16(command: Command.req00Cmd, usDataLength: 6);
 
-    List<dynamic> result = await _bleClient.getACIDeviceType(
-      commandIndex: -1,
-      value: Command.req00Cmd,
-      deviceId: deviceId,
-      mtu: mtu,
-    );
-
     return _bleClient.getACIDeviceType(
-      commandIndex: -1,
+      commandIndex: 80,
       value: Command.req00Cmd,
       deviceId: deviceId,
       mtu: mtu,

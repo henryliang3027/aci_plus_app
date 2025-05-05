@@ -112,6 +112,8 @@ Future<void> main() async {
   // Initialize env config
   await EnvConfig.initialize();
 
+  await BLEClientFactory.initialize();
+
   int mock = 0;
 
   if (mock == 1) {
