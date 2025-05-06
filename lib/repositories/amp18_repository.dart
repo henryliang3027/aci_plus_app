@@ -792,10 +792,16 @@ class Amp18Repository with BLECommandsMixin {
   }
 
   Future<dynamic> set1p8GPilotFrequencyMode(String value) async {
-    return set1p8GOneByteParameter(
+    bool isSuccess = await set1p8GOneByteParameter(
       value: value,
       command: Command18.setPilotFrequencyModeCmd,
     );
+
+    // 在 bench mode 切換到其他 mode 時, 需要等待 device 完成更新後再進行其他設定,
+    // 否則會導致 device 無法設定成功, 所以增加了額外的 delay, 只要有切換 mode 一律 delay
+    await Future.delayed(const Duration(milliseconds: 1000));
+
+    return isSuccess;
   }
 
   Future<dynamic> set1p8GForwardAGCMode(String value) async {

@@ -26,7 +26,7 @@ class Setting18ConfigEditBloc
         super(const Setting18ConfigEditState()) {
     on<ConfigIntitialized>(_onConfigIntitialized);
     on<ConfigAdded>(_onConfigAdded);
-    on<ConfigSubmitted>(_onConfigSubmitted);
+    // on<ConfigSubmitted>(_onConfigSubmitted);
     on<ConfigUpdated>(_onConfigUpdated);
     // on<QRCodeDataScanned>(_onQRCodeDataScanned);
     // on<QRCodeDataGenerated>(_onQRCodeDataGenerated);
@@ -461,70 +461,70 @@ class Setting18ConfigEditBloc
     ));
   }
 
-  Future<void> _onConfigSubmitted(
-    ConfigSubmitted event,
-    Emitter<Setting18ConfigEditState> emit,
-  ) async {
-    emit(state.copyWith(
-      // encodeStaus: FormStatus.none,
-      saveStatus: SubmissionStatus.none,
-      settingStatus: SubmissionStatus.submissionInProgress,
-      isInitialize: false,
-    ));
+  // Future<void> _onConfigSubmitted(
+  //   ConfigSubmitted event,
+  //   Emitter<Setting18ConfigEditState> emit,
+  // ) async {
+  //   emit(state.copyWith(
+  //     // encodeStaus: FormStatus.none,
+  //     saveStatus: SubmissionStatus.none,
+  //     settingStatus: SubmissionStatus.submissionInProgress,
+  //     isInitialize: false,
+  //   ));
 
-    List<String> settingResult = [];
+  //   List<String> settingResult = [];
 
-    bool resultOfSetPilotFrequencyMode = await _amp18Repository
-        .set1p8GPilotFrequencyMode('0'); // Full mode (auto mode)
+  //   bool resultOfSetPilotFrequencyMode = await _amp18Repository
+  //       .set1p8GPilotFrequencyMode('0'); // Full mode (auto mode)
 
-    settingResult.add(
-        '${DataKey.pilotFrequencyMode.name},$resultOfSetPilotFrequencyMode');
+  //   settingResult.add(
+  //       '${DataKey.pilotFrequencyMode.name},$resultOfSetPilotFrequencyMode');
 
-    if (state.firstChannelLoadingFrequency.value.isNotEmpty) {
-      bool resultOfSetFirstChannelLoadingFrequency =
-          await _amp18Repository.set1p8GFirstChannelLoadingFrequency(
-              state.firstChannelLoadingFrequency.value);
+  //   if (state.firstChannelLoadingFrequency.value.isNotEmpty) {
+  //     bool resultOfSetFirstChannelLoadingFrequency =
+  //         await _amp18Repository.set1p8GFirstChannelLoadingFrequency(
+  //             state.firstChannelLoadingFrequency.value);
 
-      settingResult.add(
-          '${DataKey.firstChannelLoadingFrequency.name},$resultOfSetFirstChannelLoadingFrequency');
-    }
+  //     settingResult.add(
+  //         '${DataKey.firstChannelLoadingFrequency.name},$resultOfSetFirstChannelLoadingFrequency');
+  //   }
 
-    if (state.firstChannelLoadingLevel.value.isNotEmpty) {
-      bool resultOfSetFirstChannelLoadingLevel =
-          await _amp18Repository.set1p8GFirstChannelLoadingLevel(
-              state.firstChannelLoadingLevel.value);
+  //   if (state.firstChannelLoadingLevel.value.isNotEmpty) {
+  //     bool resultOfSetFirstChannelLoadingLevel =
+  //         await _amp18Repository.set1p8GFirstChannelLoadingLevel(
+  //             state.firstChannelLoadingLevel.value);
 
-      settingResult.add(
-          '${DataKey.firstChannelLoadingLevel.name},$resultOfSetFirstChannelLoadingLevel');
-    }
+  //     settingResult.add(
+  //         '${DataKey.firstChannelLoadingLevel.name},$resultOfSetFirstChannelLoadingLevel');
+  //   }
 
-    if (state.lastChannelLoadingFrequency.value.isNotEmpty) {
-      bool resultOfSetLastChannelLoadingFrequency =
-          await _amp18Repository.set1p8GLastChannelLoadingFrequency(
-              state.lastChannelLoadingFrequency.value);
+  //   if (state.lastChannelLoadingFrequency.value.isNotEmpty) {
+  //     bool resultOfSetLastChannelLoadingFrequency =
+  //         await _amp18Repository.set1p8GLastChannelLoadingFrequency(
+  //             state.lastChannelLoadingFrequency.value);
 
-      settingResult.add(
-          '${DataKey.lastChannelLoadingFrequency.name},$resultOfSetLastChannelLoadingFrequency');
-    }
+  //     settingResult.add(
+  //         '${DataKey.lastChannelLoadingFrequency.name},$resultOfSetLastChannelLoadingFrequency');
+  //   }
 
-    if (state.lastChannelLoadingLevel.value.isNotEmpty) {
-      bool resultOfSetLastChannelLoadingLevel = await _amp18Repository
-          .set1p8GLastChannelLoadingLevel(state.lastChannelLoadingLevel.value);
+  //   if (state.lastChannelLoadingLevel.value.isNotEmpty) {
+  //     bool resultOfSetLastChannelLoadingLevel = await _amp18Repository
+  //         .set1p8GLastChannelLoadingLevel(state.lastChannelLoadingLevel.value);
 
-      settingResult.add(
-          '${DataKey.lastChannelLoadingLevel.name},$resultOfSetLastChannelLoadingLevel');
-    }
+  //     settingResult.add(
+  //         '${DataKey.lastChannelLoadingLevel.name},$resultOfSetLastChannelLoadingLevel');
+  //   }
 
-    // 等待 device 完成更新後在讀取值
-    await Future.delayed(const Duration(milliseconds: 1000));
+  //   // 等待 device 完成更新後在讀取值
+  //   await Future.delayed(const Duration(milliseconds: 1000));
 
-    await _amp18Repository.updateCharacteristics();
+  //   await _amp18Repository.updateCharacteristics();
 
-    emit(state.copyWith(
-      settingStatus: SubmissionStatus.submissionSuccess,
-      settingResult: settingResult,
-    ));
-  }
+  //   emit(state.copyWith(
+  //     settingStatus: SubmissionStatus.submissionSuccess,
+  //     settingResult: settingResult,
+  //   ));
+  // }
 
   bool _isEnabledSubmission({
     required NameInput name,
