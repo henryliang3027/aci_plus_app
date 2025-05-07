@@ -3,12 +3,9 @@ import 'package:aci_plus_app/advanced/bloc/setting18_firmware_update/setting18_f
 import 'package:aci_plus_app/advanced/shared/utils.dart';
 import 'package:aci_plus_app/chart/shared/message_dialog.dart';
 import 'package:aci_plus_app/chart/view/code_input_page.dart';
-import 'package:aci_plus_app/core/common_enum.dart';
-import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
-import 'package:aci_plus_app/core/setup_wizard_dialog.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:flutter/material.dart';
@@ -467,8 +464,7 @@ class _FilePicker extends StatelessWidget {
     }) {
       BinaryInfo selectedBinaryInfo =
           setting18FirmwareUpdateState.selectedBinaryInfo;
-      bool isValid = setting18FirmwareUpdateState.binary.isNotEmpty &&
-          setting18FirmwareUpdateState.sum != -1;
+      bool isValid = setting18FirmwareUpdateState.binaryCheckResult.isValid;
 
       return Column(
         children: [

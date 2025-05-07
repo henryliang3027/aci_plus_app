@@ -453,9 +453,9 @@ int getDelayByRSSI(int rssi) {
   // 傳送一包的時間估算約 26ms * 68 = 1768 ms
   // 所需時間 2345 + 1768 = 4113
   if (rssi > -65) {
-    return 26;
+    return 35;
   } else if (rssi < -65 && rssi >= -70) {
-    return 32;
+    return 36;
   } else if (rssi < -70 && rssi >= -75) {
     return 38;
   } else if (rssi < -75 && rssi >= -80) {

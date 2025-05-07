@@ -310,9 +310,24 @@ class _UpdateLogFloatingActionButton extends StatelessWidget {
                     color: Theme.of(context).colorScheme.onPrimary,
                   ),
                   onPressed: () {
-                    context
-                        .read<Setting18FirmwareLogBloc>()
-                        .add(const TestUpdateLogRequested());
+                    handleUpdateAction(
+                      context: context,
+                      targetBloc: context.read<Setting18FirmwareLogBloc>(),
+                      action: () {
+                        context
+                            .read<Setting18FirmwareLogBloc>()
+                            .add(const TestUpdateLogRequested());
+                      },
+                      waitForState: (state) {
+                        Setting18FirmwareLogState setting18firmwareLogState =
+                            state as Setting18FirmwareLogState;
+
+                        return setting18firmwareLogState
+                                .updateLogStatus.isRequestSuccess ||
+                            setting18firmwareLogState
+                                .updateLogStatus.isRequestFailure;
+                      },
+                    );
                   },
                 ),
                 const SizedBox(
@@ -330,9 +345,24 @@ class _UpdateLogFloatingActionButton extends StatelessWidget {
                     color: Theme.of(context).colorScheme.onPrimary,
                   ),
                   onPressed: () {
-                    context
-                        .read<Setting18FirmwareLogBloc>()
-                        .add(const TestAllUpdateLogDeleted());
+                    handleUpdateAction(
+                      context: context,
+                      targetBloc: context.read<Setting18FirmwareLogBloc>(),
+                      action: () {
+                        context
+                            .read<Setting18FirmwareLogBloc>()
+                            .add(const TestAllUpdateLogDeleted());
+                      },
+                      waitForState: (state) {
+                        Setting18FirmwareLogState setting18firmwareLogState =
+                            state as Setting18FirmwareLogState;
+
+                        return setting18firmwareLogState
+                                .updateLogStatus.isRequestSuccess ||
+                            setting18firmwareLogState
+                                .updateLogStatus.isRequestFailure;
+                      },
+                    );
                   },
                 ),
                 const SizedBox(
