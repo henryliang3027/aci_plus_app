@@ -12,37 +12,34 @@ class AlarmDescriptionForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    RichText getRichText({
+    Text getText({
       required String text,
       required String value,
       required String unit,
     }) {
-      return RichText(
-        text: TextSpan(
-          children: [
-            TextSpan(
-              text: '$text ($unit): ',
-              style: const TextStyle(
+      return Text.rich(TextSpan(
+        children: [
+          TextSpan(
+            text: '$text ($unit): ',
+            style: const TextStyle(
+              fontSize: CustomStyle.sizeL,
+            ),
+          ),
+          TextSpan(
+            text: value,
+            style: TextStyle(
                 fontSize: CustomStyle.sizeL,
-                color: Colors.black,
-              ),
-            ),
-            TextSpan(
-              text: value,
-              style: TextStyle(
-                  fontSize: CustomStyle.sizeL,
-                  color: CustomStyle.alarmColor[Alarm.danger.name]!),
-            ),
-          ],
-        ),
-      );
+                color: CustomStyle.alarmColor[Alarm.danger.name]!),
+          ),
+        ],
+      ));
     }
 
-    List<RichText> getAmpDescriptions({
+    List<Text> getAmpDescriptions({
       required TemperatureUnit temperatureUnit,
       required List<SeverityIndex> severityIndexValueList,
     }) {
-      List<RichText> alarmDescriptionList = [];
+      List<Text> alarmDescriptionList = [];
       for (SeverityIndex severityIndexValue in severityIndexValueList) {
         int index = severityIndexValue.index;
         String value = severityIndexValue.value;
@@ -51,65 +48,65 @@ class AlarmDescriptionForm extends StatelessWidget {
           String unit = temperatureUnit == TemperatureUnit.celsius
               ? CustomStyle.celciusUnit
               : CustomStyle.fahrenheitUnit;
-          RichText richText = getRichText(
+          Text text = getText(
               text: AppLocalizations.of(context)!
                   .dialogMessageTemperatureAlarmDescription,
               value: value,
               unit: unit);
-          alarmDescriptionList.add(richText);
+          alarmDescriptionList.add(text);
         } else if (index == 1) {
-          RichText richText = getRichText(
+          Text text = getText(
             text: AppLocalizations.of(context)!
                 .dialogMessageVoltageAlarmDescription,
             value: value,
             unit: CustomStyle.volt,
           );
-          alarmDescriptionList.add(richText);
+          alarmDescriptionList.add(text);
         } else if (index == 2) {
-          RichText richText = getRichText(
+          Text text = getText(
             text: AppLocalizations.of(context)!
                 .dialogMessageVoltageRippleAlarmDescription,
             value: value,
             unit: CustomStyle.milliVolt,
           );
-          alarmDescriptionList.add(richText);
+          alarmDescriptionList.add(text);
         } else if (index == 3) {
-          RichText richText = getRichText(
+          Text text = getText(
             text: AppLocalizations.of(context)!
                 .dialogMessageRFOutputPowerAlarmDescription,
             value: value,
             unit: CustomStyle.dBmV,
           );
-          alarmDescriptionList.add(richText);
+          alarmDescriptionList.add(text);
         } else if (index == 4) {
           String rfLevel = getRFLevelString(context: context, rfLevel: value);
-          RichText richText = getRichText(
+          Text text = getText(
             text: AppLocalizations.of(context)!
                 .dialogMessageRFOutputPilotLowFrequencyDescription,
             value: rfLevel,
             unit: CustomStyle.dBmV,
           );
-          alarmDescriptionList.add(richText);
+          alarmDescriptionList.add(text);
         } else if (index == 5) {
           String rfLevel = getRFLevelString(context: context, rfLevel: value);
-          RichText richText = getRichText(
+          Text text = getText(
             text: AppLocalizations.of(context)!
                 .dialogMessageRFOutputPilotHighFrequencyDescription,
             value: rfLevel,
             unit: CustomStyle.dBmV,
           );
-          alarmDescriptionList.add(richText);
+          alarmDescriptionList.add(text);
         } else {}
       }
 
       return alarmDescriptionList;
     }
 
-    List<RichText> getNodeDescriptions({
+    List<Text> getNodeDescriptions({
       required TemperatureUnit temperatureUnit,
       required List<SeverityIndex> severityIndexValueList,
     }) {
-      List<RichText> alarmDescriptionList = [];
+      List<Text> alarmDescriptionList = [];
       for (SeverityIndex severityIndexValue in severityIndexValueList) {
         int index = severityIndexValue.index;
         String value = severityIndexValue.value;
@@ -118,52 +115,52 @@ class AlarmDescriptionForm extends StatelessWidget {
           String unit = temperatureUnit == TemperatureUnit.celsius
               ? CustomStyle.celciusUnit
               : CustomStyle.fahrenheitUnit;
-          RichText richText = getRichText(
+          Text text = getText(
               text: AppLocalizations.of(context)!
                   .dialogMessageTemperatureAlarmDescription,
               value: value,
               unit: unit);
-          alarmDescriptionList.add(richText);
+          alarmDescriptionList.add(text);
         } else if (index == 1) {
-          RichText richText = getRichText(
+          Text text = getText(
             text: AppLocalizations.of(context)!
                 .dialogMessageVoltageAlarmDescription,
             value: value,
             unit: CustomStyle.volt,
           );
-          alarmDescriptionList.add(richText);
+          alarmDescriptionList.add(text);
         } else if (index == 2) {
-          RichText richText = getRichText(
+          Text text = getText(
             text: AppLocalizations.of(context)!
                 .dialogMessageRFOutputPower1AlarmDescription,
             value: value,
             unit: CustomStyle.dBmV,
           );
-          alarmDescriptionList.add(richText);
+          alarmDescriptionList.add(text);
         } else if (index == 3) {
-          RichText richText = getRichText(
+          Text text = getText(
             text: AppLocalizations.of(context)!
                 .dialogMessageRFOutputPower3AlarmDescription,
             value: value,
             unit: CustomStyle.dBmV,
           );
-          alarmDescriptionList.add(richText);
+          alarmDescriptionList.add(text);
         } else if (index == 4) {
-          RichText richText = getRichText(
+          Text text = getText(
             text: AppLocalizations.of(context)!
                 .dialogMessageRFOutputPower4AlarmDescription,
             value: value,
             unit: CustomStyle.dBmV,
           );
-          alarmDescriptionList.add(richText);
+          alarmDescriptionList.add(text);
         } else if (index == 5) {
-          RichText richText = getRichText(
+          Text text = getText(
             text: AppLocalizations.of(context)!
                 .dialogMessageRFOutputPower6AlarmDescription,
             value: value,
             unit: CustomStyle.dBmV,
           );
-          alarmDescriptionList.add(richText);
+          alarmDescriptionList.add(text);
         } else {}
       }
 
@@ -172,7 +169,7 @@ class AlarmDescriptionForm extends StatelessWidget {
 
     return BlocBuilder<AlarmDescriptionBloc, AlarmDescriptionState>(
       builder: (context, state) {
-        List<RichText> alarmDescriptions = [];
+        List<Text> alarmDescriptions = [];
 
         if (state.aciDeviceType == ACIDeviceType.amp1P8G) {
           alarmDescriptions = getAmpDescriptions(

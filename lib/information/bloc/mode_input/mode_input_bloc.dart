@@ -30,7 +30,8 @@ class ModeInputBloc extends Bloc<ModeInputEvent, ModeInputState> {
     Emitter<ModeInputState> emit,
   ) {
     bool isMatched = false;
-    if (event.code == EnvConfig.expertModePassword) {
+    if (event.code == EnvConfig.expertModePassword ||
+        event.code == EnvConfig.expertModeDeveloperPassword) {
       isMatched = true;
     } else {
       isMatched = false;

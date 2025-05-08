@@ -271,7 +271,7 @@ Future<String> getAppVersion() async {
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
   // 給部門內測試的版本會加 -beta版本文字, 例如V 2.1.2-beta2
-  String appVersion = 'V ${packageInfo.version}-beta6';
+  String appVersion = 'V ${packageInfo.version}';
   return appVersion;
 }
 
@@ -452,10 +452,10 @@ int getDelayByRSSI(int rssi) {
   // 則 16384 bytes 收完等於有 67 (68 - 1) 次休息 * 35 ~= 2345 ms
   // 傳送一包的時間估算約 26ms * 68 = 1768 ms
   // 所需時間 2345 + 1768 = 4113
-  if (rssi >= -65) {
-    return 26;
+  if (rssi > -65) {
+    return 35;
   } else if (rssi < -65 && rssi >= -70) {
-    return 32;
+    return 36;
   } else if (rssi < -70 && rssi >= -75) {
     return 38;
   } else if (rssi < -75 && rssi >= -80) {

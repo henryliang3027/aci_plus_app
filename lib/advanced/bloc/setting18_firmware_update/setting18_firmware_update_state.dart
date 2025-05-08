@@ -5,9 +5,8 @@ class Setting18FirmwareUpdateState extends Equatable {
     this.binaryLoadStatus = FormStatus.none,
     this.submissionStatus = SubmissionStatus.none,
     this.selectedBinaryInfo = const BinaryInfo.empty(),
-    this.sum = 0,
+    this.binaryCheckResult = const BinaryCheckResult.empty(),
     this.currentProgress = 0,
-    this.binary = const [],
     this.updateCanceled = false,
     this.formattedTimeElapsed = '',
     this.technicianID = '',
@@ -19,9 +18,8 @@ class Setting18FirmwareUpdateState extends Equatable {
   final FormStatus binaryLoadStatus;
   final SubmissionStatus submissionStatus;
   final BinaryInfo selectedBinaryInfo;
-  final int sum;
+  final BinaryCheckResult binaryCheckResult;
   final double currentProgress;
-  final List<int> binary;
   final bool updateCanceled;
   final String formattedTimeElapsed;
   final String technicianID;
@@ -33,9 +31,8 @@ class Setting18FirmwareUpdateState extends Equatable {
     FormStatus? binaryLoadStatus,
     SubmissionStatus? submissionStatus,
     BinaryInfo? selectedBinaryInfo,
-    int? sum,
+    BinaryCheckResult? binaryCheckResult,
     double? currentProgress,
-    List<int>? binary,
     bool? updateCanceled,
     String? formattedTimeElapsed,
     String? technicianID,
@@ -48,8 +45,7 @@ class Setting18FirmwareUpdateState extends Equatable {
       submissionStatus: submissionStatus ?? this.submissionStatus,
       selectedBinaryInfo: selectedBinaryInfo ?? this.selectedBinaryInfo,
       currentProgress: currentProgress ?? this.currentProgress,
-      sum: sum ?? this.sum,
-      binary: binary ?? this.binary,
+      binaryCheckResult: binaryCheckResult ?? this.binaryCheckResult,
       updateCanceled: updateCanceled ?? this.updateCanceled,
       formattedTimeElapsed: formattedTimeElapsed ?? this.formattedTimeElapsed,
       technicianID: technicianID ?? this.technicianID,
@@ -64,9 +60,8 @@ class Setting18FirmwareUpdateState extends Equatable {
         binaryLoadStatus,
         submissionStatus,
         selectedBinaryInfo,
-        sum,
+        binaryCheckResult,
         currentProgress,
-        binary,
         updateCanceled,
         formattedTimeElapsed,
         technicianID,

@@ -57,6 +57,7 @@ class Setting18FirmwareUpdateBloc
         _firmwareRepository.updateReport.listen((message) {
       double currentProgress = 0.0;
       String displayMessage = '';
+      BinaryCheckResult binaryCheckResult = state.binaryCheckResult;
 
       if (message.startsWith('Bootloader')) {
         _cancelEnterBootloaderTimer(); // 成功進入 Bootloader, 停止 timer
@@ -90,8 +91,8 @@ class Setting18FirmwareUpdateBloc
         // indexOfChunk == _chunkLength 時直接等於 binary size, 因為最後一個封包不一定滿244
         int currentSize = indexOfChunk < _chunkLength - 1
             ? (indexOfChunk + 1) * _chunkSize
-            : state.binary.length;
-        int totalSize = state.binary.length;
+            : binaryCheckResult.binary.length;
+        int totalSize = binaryCheckResult.binary.length;
 
         currentProgress =
             _roundToSecondDecimalPlace(0.3 + currentSize / totalSize * 0.4);
@@ -109,13 +110,13 @@ class Setting18FirmwareUpdateBloc
         String receivedHexSum = splitted[0];
         String receivedHexBinaryLength = splitted[1];
 
-        String hexSum = state.sum.toRadixString(16);
+        String hexSum = binaryCheckResult.sum.toRadixString(16);
 
         // receivedHexSum 是大寫字母, 所以轉成大寫來比較
         String targetHexSum =
             hexSum.substring(hexSum.length - 4, hexSum.length).toUpperCase();
         String targetHexBinaryLength =
-            state.binary.length.toRadixString(16).toUpperCase();
+            binaryCheckResult.binary.length.toRadixString(16).toUpperCase();
 
         print('$receivedHexSum : $targetHexSum');
         print('$receivedHexBinaryLength : $targetHexBinaryLength');
@@ -346,8 +347,11 @@ class Setting18FirmwareUpdateBloc
 
         emit(state.copyWith(
           binaryLoadStatus: FormStatus.requestSuccess,
-          sum: sum,
-          binary: binary,
+          binaryCheckResult: BinaryCheckResult(
+            isValid: true,
+            sum: sum,
+            binary: binary,
+          ),
           selectedBinaryInfo: selectedBinaryInfo,
         ));
       } else {
@@ -356,17 +360,27 @@ class Setting18FirmwareUpdateBloc
 
         emit(state.copyWith(
           binaryLoadStatus: FormStatus.requestFailure,
-          sum: -1,
-          binary: [],
+          binaryCheckResult: const BinaryCheckResult(
+            isValid: false,
+            sum: 0,
+            binary: [],
+          ),
           selectedBinaryInfo: selectedBinaryInfo,
           fileErrorMessage: 'The file you selected is invalid',
         ));
       }
     } else {
       // 使用者取消 file picker, 沒有選擇任何檔案
-      emit(state.copyWith(
-        binaryLoadStatus: FormStatus.none,
-      ));
+
+      if (state.binaryCheckResult.isValid) {
+        emit(state.copyWith(
+          binaryLoadStatus: FormStatus.requestSuccess,
+        ));
+      } else {
+        emit(state.copyWith(
+          binaryLoadStatus: FormStatus.none,
+        ));
+      }
     }
   }
 
@@ -503,7 +517,7 @@ class Setting18FirmwareUpdateBloc
     _chunkSize = chunkSize;
 
     List<List<int>> chunks = BLEUtils.divideToChunkList(
-      binary: state.binary,
+      binary: state.binaryCheckResult.binary,
       chunkSize: _chunkSize,
     );
 
@@ -547,4 +561,22 @@ class BinaryInfo {
   bool get isEmpty {
     return name.isEmpty && extensionName.isEmpty;
   }
+}
+
+// a class that present the file is valid or not base on sum and binary data
+class BinaryCheckResult {
+  const BinaryCheckResult({
+    required this.isValid,
+    required this.sum,
+    required this.binary,
+  });
+
+  const BinaryCheckResult.empty()
+      : isValid = false,
+        sum = 0,
+        binary = const [];
+
+  final bool isValid;
+  final int sum;
+  final List<int> binary;
 }
