@@ -1060,6 +1060,13 @@ class Amp18Repository with BLECommandsMixin {
     );
   }
 
+  Future<dynamic> set1p8GMTU(int mtu) async {
+    return set1p8GTwoBytesParameter(
+      value: mtu.toString(),
+      command: Command18.setMTUCmd,
+    );
+  }
+
   // 設定藍牙串口的資料傳輸延遲時間, 單位為 ms
   // 例如 MTU = 244, 則每傳輸244byte 就會休息 ms 時間再傳下一筆
   Future<dynamic> set1p8GTransmitDelayTime({int? ms}) async {

@@ -907,6 +907,20 @@ class Command18CCorNode {
     0x00,
   ];
 
+  static List<int> setMTUCmd = [
+    0xB0,
+    0x10,
+    0x00,
+    0x80,
+    0x00,
+    0x8C,
+    0x02,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+  ];
+
   static List<int> setTransmitDelayTimeCmd = [
     0xB0,
     0x10,

@@ -329,6 +329,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           loadingStatus: FormStatus.requestInProgress,
         ));
 
+        // usb 專屬的 device mtu 設置
+        bool resultOfSetMTU = await _aciDeviceRepository.setMTU(5);
+        // bool resultOfSetTransmitDelayTime =
+        //     await _aciDeviceRepository.set1p8GTransmitDelayTime(1000);
+
         List<dynamic> result = await _aciDeviceRepository.getACIDeviceType(
             deviceId: state.device.id);
 

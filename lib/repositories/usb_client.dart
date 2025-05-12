@@ -302,11 +302,11 @@ class USBClient extends BLEClientBase {
     required int commandIndex,
     required List<int> value,
     required String deviceId,
-    int mtu = 247,
+    int mtu = 128,
   }) async {
     _currentCommandIndex = commandIndex;
 
-    // 設定 mtu = 247
+    // 設定 mtu = 128
     List<dynamic> result = await _requestBasicInformationRawData(value);
 
     if (result[0]) {
