@@ -330,9 +330,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         ));
 
         // usb 專屬的 device mtu 設置
-        bool resultOfSetMTU = await _aciDeviceRepository.setMTU(5);
-        // bool resultOfSetTransmitDelayTime =
-        //     await _aciDeviceRepository.set1p8GTransmitDelayTime(1000);
+        bool resultOfSetMTU = await _aciDeviceRepository.setMTU(244);
+        bool resultOfSetTransmitDelayTime =
+            await _aciDeviceRepository.set1p8GTransmitDelayTime(58);
 
         List<dynamic> result = await _aciDeviceRepository.getACIDeviceType(
             deviceId: state.device.id);
@@ -1258,14 +1258,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       _aciDeviceRepository.connectToDevice(peripheral);
     } else {
       // BLE 連線
-      // _aciDeviceRepository.startScan();
+      _scanStreamSubscription = _aciDeviceRepository.scanReport.listen(
+        (scanReport) {
+          add(DiscoveredDeviceChanged(scanReport));
+        },
+      );
     }
-
-    // _scanStreamSubscription = _aciDeviceRepository.scanReport.listen(
-    //   (scanReport) {
-    //     add(DiscoveredDeviceChanged(scanReport));
-    //   },
-    // );
   }
 
   void _onDevicePeriodicUpdateRequested(

@@ -104,6 +104,10 @@ abstract class BLEClientBase {
     }
   }
 
+  // String decimalToHex(int decimal) {
+  //   return decimal.toRadixString(16).padLeft(2, '0').toUpperCase();
+  // }
+
   List<dynamic> _combine1p8GUSBRawData({
     required List<int> rawData,
     required int length,
@@ -112,6 +116,10 @@ abstract class BLEClientBase {
 
     _combinedRawData.addAll(rawData);
     print(_combinedRawData.length);
+    // for (int i = 0; i < _combinedRawData.length; i++) {
+    //   print('$i : ${decimalToHex(_combinedRawData[i])} ');
+    // }
+    // print(_combinedRawData);
     if (_combinedRawData.length == length) {
       List<int> finalRawData = List.from(_combinedRawData);
 

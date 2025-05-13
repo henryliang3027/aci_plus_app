@@ -31,6 +31,7 @@ class Amp18Parser {
     String mfgDate = '';
     String coordinate = '';
     String nowDateTime = '';
+    String deviceMTU = '';
     String bluetoothDelayTime = '';
 
     // 解析 partName
@@ -90,6 +91,12 @@ class Amp18Parser {
     }
     coordinate = trimString(coordinate);
 
+    // 解析 device MTU
+    List<int> rawDeviceMTU = rawData.sublist(143, 145);
+    ByteData rawDeviceMTUByteData =
+        ByteData.sublistView(Uint8List.fromList(rawDeviceMTU));
+    deviceMTU = rawDeviceMTUByteData.getInt16(0, Endian.little).toString();
+
     // 解析 bluetoothDelayTime
     List<int> rawBluetoothDelayTime = rawData.sublist(145, 147);
     ByteData rawBluetoothDelayTimeByteData =
@@ -118,6 +125,7 @@ class Amp18Parser {
       mfgDate: mfgDate,
       coordinate: coordinate,
       nowDateTime: nowDateTime,
+      deviceMTU: deviceMTU,
       bluetoothDelayTime: bluetoothDelayTime,
     );
   }
@@ -2207,6 +2215,7 @@ class A1P8G0 {
     required this.mfgDate,
     required this.coordinate,
     required this.nowDateTime,
+    required this.deviceMTU,
     required this.bluetoothDelayTime,
   });
 
@@ -2219,6 +2228,7 @@ class A1P8G0 {
   final String mfgDate;
   final String coordinate;
   final String nowDateTime;
+  final String deviceMTU;
   final String bluetoothDelayTime;
 }
 

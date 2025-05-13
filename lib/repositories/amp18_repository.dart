@@ -84,6 +84,7 @@ class Amp18Repository with BLECommandsMixin {
         DataKey.mfgDate: a1p8g0.mfgDate,
         DataKey.coordinates: a1p8g0.coordinate,
         DataKey.nowDateTime: a1p8g0.nowDateTime,
+        DataKey.deviceMTU: a1p8g0.deviceMTU,
         DataKey.bluetoothDelayTime: a1p8g0.bluetoothDelayTime,
       };
 

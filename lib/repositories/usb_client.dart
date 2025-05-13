@@ -97,6 +97,10 @@ class USBClient extends BLEClientBase {
     yield* _scanReportStreamController.stream;
   }
 
+  // String decimalToHex(int decimal) {
+  //   return decimal.toRadixString(16).padLeft(2, '0').toUpperCase();
+  // }
+
   @override
   Future<void> connectToDevice(Peripheral peripheral) async {
     _connectionReportStreamController = StreamController<ConnectionReport>();
@@ -122,8 +126,8 @@ class USBClient extends BLEClientBase {
       ));
     }
 
-    await _usbPort!.setDTR(true);
-    await _usbPort!.setRTS(true);
+    await _usbPort!.setDTR(false);
+    await _usbPort!.setRTS(false);
 
     _usbPort!.setPortParameters(
       115200,
@@ -135,6 +139,13 @@ class USBClient extends BLEClientBase {
     // print first result and close port.
     _usbPort!.inputStream!.listen((Uint8List uint8List) {
       List<int> rawData = uint8List.toList();
+
+      // List<String> hexRawData = [];
+      // for (int data in rawData) {
+      //   String hex = decimalToHex(data);
+      //   hexRawData.add(hex);
+      // }
+      // print(hexRawData);
 
       print('usb data index: $_currentCommandIndex, length:${rawData.length}');
 
