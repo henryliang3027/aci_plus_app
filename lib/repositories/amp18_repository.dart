@@ -6,6 +6,7 @@ import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/amp18_chart_cache.dart';
 import 'package:aci_plus_app/repositories/amp18_parser.dart';
+import 'package:aci_plus_app/repositories/ble_client.dart';
 import 'package:aci_plus_app/repositories/ble_client_base.dart';
 import 'package:aci_plus_app/repositories/ble_command_mixin.dart';
 import 'package:aci_plus_app/repositories/ble_factory.dart';
@@ -18,7 +19,7 @@ class Amp18Repository with BLECommandsMixin {
         _amp18Parser = Amp18Parser(),
         _amp18ChartCache = Amp18ChartCache();
 
-  final BLEClientBase _bleClient;
+  BLEClientBase _bleClient;
   final Amp18Parser _amp18Parser;
   final Amp18ChartCache _amp18ChartCache;
 
@@ -38,6 +39,10 @@ class Amp18Repository with BLECommandsMixin {
 
   Stream<Map<DataKey, String>> get characteristicData async* {
     yield* _characteristicDataStreamController.stream;
+  }
+
+  void updateClient() {
+    _bleClient = BLEClientFactory.instance;
   }
 
   void createCharacteristicDataStream() {
@@ -552,25 +557,39 @@ class Amp18Repository with BLECommandsMixin {
       usDataLength: Command18.setUserAttributeCmd.length - 2,
     );
 
-    // 將 binary 切分成每個大小為 chunkSize 的封包
-    int chunkSize = await BLEUtils.getChunkSize();
+    if (_bleClient is BLEClient) {
+      // 將 binary 切分成每個大小為 chunkSize 的封包
+      int chunkSize = await BLEUtils.getChunkSize();
 
-    List<List<int>> chunks = BLEUtils.divideToChunkList(
-      binary: Command18.setUserAttributeCmd,
-      chunkSize: chunkSize,
-    );
-
-    try {
-      List<int> rawData = await _bleClient.writeLongSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        chunks: chunks,
-        timeout: const Duration(seconds: 10),
+      List<List<int>> chunks = BLEUtils.divideToChunkList(
+        binary: Command18.setUserAttributeCmd,
+        chunkSize: chunkSize,
       );
-    } catch (e) {
-      return false;
-    }
 
-    return true;
+      try {
+        List<int> rawData =
+            await _bleClient.writeLongSetCommandToCharacteristic(
+          commandIndex: commandIndex,
+          chunks: chunks,
+          timeout: const Duration(seconds: 10),
+        );
+      } catch (e) {
+        return false;
+      }
+    } else {
+      // USBClient
+      try {
+        List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+          commandIndex: commandIndex,
+          value: Command18.setUserAttributeCmd,
+          timeout: const Duration(seconds: 10),
+        );
+      } catch (e) {
+        return false;
+      }
+
+      return true;
+    }
   }
 
   List<List<ValuePair>> get1p8GDateValueCollectionOfLogs(

@@ -19,7 +19,7 @@ class Amp18CCorNodeRepository with BLECommandsMixin {
         _amp18CCorNodeParser = Amp18CCorNodeParser(),
         _amp18CCorNodeChartCache = Amp18CCorNodeChartCache();
 
-  final BLEClientBase _bleClient;
+  BLEClientBase _bleClient;
   final Amp18CCorNodeChartCache _amp18CCorNodeChartCache;
   final Amp18CCorNodeParser _amp18CCorNodeParser;
 
@@ -39,6 +39,10 @@ class Amp18CCorNodeRepository with BLECommandsMixin {
 
   Stream<Map<DataKey, String>> get characteristicData async* {
     yield* _characteristicDataStreamController.stream;
+  }
+
+  void updateClient() {
+    _bleClient = BLEClientFactory.instance;
   }
 
   void createCharacteristicDataStream() {

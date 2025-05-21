@@ -10,11 +10,15 @@ import 'package:aci_plus_app/repositories/ble_peripheral.dart';
 class ACIDeviceRepository with BLECommandsMixin {
   ACIDeviceRepository() : _bleClient = BLEClientFactory.instance;
 
-  final BLEClientBase _bleClient;
+  BLEClientBase _bleClient;
 
   // Implement the abstract getter required by the mixin.
   @override
   BLEClientBase get bleClient => _bleClient;
+
+  void updateClient() {
+    _bleClient = BLEClientFactory.instance;
+  }
 
   Stream<ScanReport> get scanReport async* {
     yield* _bleClient.scanReport;

@@ -1,19 +1,27 @@
 import 'dart:async';
-import 'package:usb_serial/usb_serial.dart';
+import 'package:aci_plus_app/repositories/ble_factory.dart';
+import 'package:aci_plus_app/repositories/usb_client.dart';
+import 'package:ftdi_serial/serial_device.dart';
+
+enum ConnectionType {
+  ble,
+  usb,
+}
 
 class ConnectionRepository {
   ConnectionRepository();
 
   // 檢查是否有連接 usb
-  Future<bool> checkUsbConnection() async {
-    List<UsbDevice> devices = await UsbSerial.listDevices();
-    return devices.isNotEmpty ? true : false;
+  Future<ConnectionType> checkConnectionType() async {
+    final client = BLEClientFactory.instance;
+
+    return client is USBClient ? ConnectionType.usb : ConnectionType.ble;
   }
 
   // 取得 usb device
-  Future<UsbDevice> getUsbDevice() async {
-    List<UsbDevice> devices = await UsbSerial.listDevices();
+  Future<SerialDevice> getUsbDevice() async {
+    SerialDevice serialDevice = await USBClient.getAttachedDevice();
 
-    return devices.first;
+    return serialDevice;
   }
 }

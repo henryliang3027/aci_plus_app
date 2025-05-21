@@ -6,17 +6,22 @@ import 'package:aci_plus_app/core/crc16_calculate.dart';
 import 'package:aci_plus_app/repositories/ble_client_base.dart';
 import 'package:aci_plus_app/repositories/ble_peripheral.dart';
 import 'package:aci_plus_app/repositories/usb_client_base.dart';
-import 'package:usb_serial/usb_serial.dart';
+import 'package:excel/excel.dart';
+import 'package:ftdi_serial/device_list_result.dart';
+import 'package:ftdi_serial/device_status.dart';
+import 'package:ftdi_serial/ftdi_serial.dart';
+import 'package:ftdi_serial/serial_device.dart';
 
 class USBClient extends BLEClientBase {
-  USBClient();
+  USBClient() : _ftdiSerial = FtdiSerial();
 
   // 使用非 broadcast 模式的 StreamController
 
-  StreamSubscription? _usbSubscription;
+  StreamSubscription? _dataStreamSubscription;
+  StreamSubscription? _deviceStatusStreamSubscription;
   bool _isConnected = false;
 
-  UsbPort? _usbPort;
+  FtdiSerial _ftdiSerial;
   int _currentCommandIndex = 0;
 
   Completer<dynamic>? _completer;
@@ -53,16 +58,24 @@ class USBClient extends BLEClientBase {
     yield* streamWithTimeout;
   }
 
+  static Future<SerialDevice> getAttachedDevice() async {
+    SerialDevice serialDevice = await FtdiSerial.getAttachedDevice();
+    return serialDevice;
+  }
+
   // 檢查是否有連接 usb
   Future<bool> checkUsbConnection() async {
-    List<UsbDevice> devices = await UsbSerial.listDevices();
-    _isConnected = devices.isNotEmpty;
+    DeviceStatus deviceStatus = await _ftdiSerial.checkDeviceStatus();
+    _isConnected = deviceStatus == DeviceStatus.connected;
     return _isConnected;
   }
 
   // 資源清理
   void dispose() {
-    _usbSubscription?.cancel();
+    _dataStreamSubscription?.cancel();
+    _dataStreamSubscription = null;
+    _deviceStatusStreamSubscription?.cancel();
+    _deviceStatusStreamSubscription = null;
     _connectionReportStreamController.close();
   }
 
@@ -70,24 +83,20 @@ class USBClient extends BLEClientBase {
   Stream<ScanReport> get scanReport async* {
     _scanReportStreamController = StreamController<ScanReport>();
 
-    _usbSubscription = UsbSerial.usbEventStream?.listen((UsbEvent event) async {
-      if (event.event == UsbEvent.ACTION_USB_ATTACHED) {
-        UsbDevice? usbDevice = event.device;
-
-        if (usbDevice != null) {
-          _scanReportStreamController.add(
-            ScanReport(
-              scanStatus: ScanStatus.scanning,
-              peripheral: Peripheral(
-                id: usbDevice.deviceId.toString(),
-                name: usbDevice.deviceName,
-                rssi: 0,
-                usbDevice: usbDevice,
-              ),
+    _deviceStatusStreamSubscription =
+        _ftdiSerial.deviceStatusStream.listen((bool isConnected) async {
+      if (isConnected) {
+        _scanReportStreamController.add(
+          const ScanReport(
+            scanStatus: ScanStatus.scanning,
+            peripheral: Peripheral(
+              id: '1027',
+              name: 'FTDI',
+              rssi: 0,
             ),
-          );
-        }
-      } else if (event.event == UsbEvent.ACTION_USB_DETACHED) {
+          ),
+        );
+      } else {
         _scanReportStreamController.add(
           const ScanReport(scanStatus: ScanStatus.complete, peripheral: null),
         );
@@ -103,51 +112,19 @@ class USBClient extends BLEClientBase {
 
   @override
   Future<void> connectToDevice(Peripheral peripheral) async {
+    // 必須要在一開始就 initialize stream controller 才能夠正常使用
     _connectionReportStreamController = StreamController<ConnectionReport>();
 
-    UsbDevice usbDevice = peripheral.usbDevice!;
+    DeviceListResult deviceListResult = await _ftdiSerial.createDeviceList();
+    bool isConnected = await _ftdiSerial.connectToDevice();
 
-    _usbPort = await usbDevice.create();
-
-    if (_usbPort == null) {
-      print("Port is null");
-      _connectionReportStreamController.add(const ConnectionReport(
-        connectStatus: ConnectStatus.disconnected,
-        errorMessage: 'Port is null',
-      ));
-    }
-
-    bool openResult = await _usbPort!.open();
-    if (!openResult) {
-      print("Failed to open");
-      _connectionReportStreamController.add(const ConnectionReport(
-        connectStatus: ConnectStatus.disconnected,
-        errorMessage: 'Failed to open USB port',
-      ));
-    }
-
-    await _usbPort!.setDTR(false);
-    await _usbPort!.setRTS(false);
-
-    _usbPort!.setPortParameters(
-      115200,
-      UsbPort.DATABITS_8,
-      UsbPort.STOPBITS_1,
-      UsbPort.PARITY_NONE,
-    );
-
-    // print first result and close port.
-    _usbPort!.inputStream!.listen((Uint8List uint8List) {
-      List<int> rawData = uint8List.toList();
-
-      // List<String> hexRawData = [];
-      // for (int data in rawData) {
-      //   String hex = decimalToHex(data);
-      //   hexRawData.add(hex);
-      // }
-      // print(hexRawData);
+    _dataStreamSubscription = _ftdiSerial.dataStream.listen((dynamic data) {
+      List<int> rawData = data.toList();
 
       print('usb data index: $_currentCommandIndex, length:${rawData.length}');
+      if (rawData.length < 50) {
+        print("wierd data: $rawData");
+      }
 
       List<dynamic> finalResult = combineUsbRawData(
         commandIndex: _currentCommandIndex,
@@ -192,6 +169,8 @@ class USBClient extends BLEClientBase {
 
     _completer = Completer<dynamic>();
 
+    clearCombinedRawData();
+
     startCharacteristicDataTimer(
       timeout: timeout,
       commandIndex: commandIndex,
@@ -200,7 +179,7 @@ class USBClient extends BLEClientBase {
     Future.microtask(() async {
       try {
         // 寫入資料到 USB
-        await _usbPort!.write(Uint8List.fromList(value));
+        await _ftdiSerial.write(Uint8List.fromList(value));
       } catch (e) {
         cancelCharacteristicDataTimer(
             name:
@@ -257,8 +236,9 @@ class USBClient extends BLEClientBase {
     }
     _aciDeviceType = ACIDeviceType.undefined;
     clearCombinedRawData();
-    _usbPort?.close();
-    _usbPort = null;
+
+    _dataStreamSubscription?.cancel();
+    _dataStreamSubscription = null;
   }
 
   void cancelCompleterOnDisconnected() {
@@ -288,7 +268,10 @@ class USBClient extends BLEClientBase {
   }
 
   @override
-  Future<void> closeScanStream() async {}
+  Future<void> closeScanStream() async {
+    _deviceStatusStreamSubscription?.cancel();
+    _deviceStatusStreamSubscription = null;
+  }
 
   // 透過 1G/1.2G/1.8G 同樣的基本指令, 來取得回傳資料的長度
   Future<dynamic> _requestBasicInformationRawData(List<int> value) async {
@@ -368,17 +351,33 @@ class USBClient extends BLEClientBase {
   Future<void> transferBinaryChunk(
       {required int commandIndex,
       required List<int> chunk,
-      required int indexOfChunk}) {
-    // TODO: implement transferBinaryChunk
-    throw UnimplementedError();
+      required int indexOfChunk}) async {
+    _currentCommandIndex = commandIndex;
+    print('chink index: $indexOfChunk, length: ${chunk.length}');
+
+    try {
+      Stopwatch stopwatch = Stopwatch()..start();
+      await _ftdiSerial.write(Uint8List.fromList(chunk));
+
+      _updateReportStreamController.add('Sent $indexOfChunk');
+      print(
+          'transferBinaryChunk executed in ${stopwatch.elapsed.inMilliseconds}');
+    } catch (e) {
+      _updateReportStreamController.addError('Sending the chunk error');
+    }
   }
 
   @override
   Future<void> transferFirmwareCommand(
       {required int commandIndex,
       required List<int> command,
-      Duration timeout = const Duration(seconds: 10)}) {
-    // TODO: implement transferFirmwareCommand
-    throw UnimplementedError();
+      Duration timeout = const Duration(seconds: 10)}) async {
+    _currentCommandIndex = commandIndex;
+
+    try {
+      await _ftdiSerial.write(Uint8List.fromList(command));
+    } catch (e) {
+      _updateReportStreamController.addError('write data error');
+    }
   }
 }

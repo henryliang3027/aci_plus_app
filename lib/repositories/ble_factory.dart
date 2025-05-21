@@ -4,7 +4,7 @@ import 'package:aci_plus_app/repositories/ble_client.dart';
 import 'package:aci_plus_app/repositories/ble_client_base.dart';
 import 'package:aci_plus_app/repositories/ble_windows_client.dart';
 import 'package:aci_plus_app/repositories/usb_client.dart';
-import 'package:usb_serial/usb_serial.dart';
+import 'package:ftdi_serial/serial_device.dart';
 
 class BLEClientFactory {
   static late BLEClientBase _instance;
@@ -22,10 +22,8 @@ class BLEClientFactory {
   }
 
   static Future<void> initialize() async {
-    if (!_initialized) {
-      _instance = await create(); // 只在第一次初始化時創建實例
-      _initialized = true;
-    }
+    _instance = await create(); // 只在第一次初始化時創建實例
+    _initialized = true;
   }
 
   static Future<BLEClientBase> create() async {
@@ -34,8 +32,9 @@ class BLEClientFactory {
     } else if (Platform.isIOS) {
       return BLEClient();
     } else if (Platform.isAndroid) {
-      List<UsbDevice> devices = await UsbSerial.listDevices();
-      return devices.isNotEmpty ? USBClient() : BLEClient();
+      USBClient usbClient = USBClient();
+      SerialDevice serialDevice = await USBClient.getAttachedDevice();
+      return serialDevice.vendorId != -1 ? usbClient : BLEClient();
     } else {
       throw UnsupportedError('Platform not supported');
     }

@@ -22,8 +22,6 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
         super(const Information18State()) {
     on<ConfigLoaded>(_onConfigLoaded);
     on<AppVersionRequested>(_onAppVersionRequested);
-    on<TestUSBConnection>(_onTestUSBConnection);
-    on<TestUSBRead>(_onTestUSBRead);
     // on<AlarmUpdated>(_onAlarmUpdated);
     // on<AlarmPeriodicUpdateRequested>(_onAlarmPeriodicUpdateRequested);
     // on<AlarmPeriodicUpdateCanceled>(_onAlarmPeriodicUpdateCanceled);
@@ -35,36 +33,6 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
   final Amp18Repository _amp18Repository;
   final ConfigRepository _configRepository;
   final USBRepository _usbRepository;
-
-  Future<void> _onTestUSBConnection(
-    TestUSBConnection event,
-    Emitter<Information18State> emit,
-  ) async {
-    emit(state.copyWith(
-      isConnected: true,
-    ));
-  }
-
-  Future<void> _onTestUSBRead(
-    TestUSBRead event,
-    Emitter<Information18State> emit,
-  ) async {
-    List<dynamic> result = await _usbRepository.getInformation();
-
-    if (result[0]) {
-      Map<DataKey, String> characteristicDataCache = result[1];
-
-      emit(state.copyWith(
-        isConnected: true,
-        characteristicDataCache: characteristicDataCache,
-      ));
-    } else {
-      emit(state.copyWith(
-        isConnected: false,
-        errorMessage: 'Failed to read USB data.',
-      ));
-    }
-  }
 
   Future<void> _onAppVersionRequested(
     AppVersionRequested event,

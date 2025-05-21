@@ -1,5 +1,3 @@
-import 'package:usb_serial/usb_serial.dart';
-
 abstract class UsbClientBase {
   Future<bool> connectToDevice();
 

@@ -112,6 +112,7 @@ Future<void> main() async {
   // Initialize env config
   await EnvConfig.initialize();
 
+  // initialize client to determine if it is a USB or BLE connection
   await BLEClientFactory.initialize();
 
   int mock = 0;

@@ -4,6 +4,7 @@ import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/aci_device_repository.dart';
+import 'package:aci_plus_app/repositories/ble_factory.dart';
 import 'package:aci_plus_app/repositories/ble_peripheral.dart';
 import 'package:aci_plus_app/repositories/code_repository.dart';
 import 'package:aci_plus_app/repositories/connection_repository.dart';
@@ -12,12 +13,14 @@ import 'package:aci_plus_app/repositories/amp18_ccor_node_repository.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/repositories/firmware_repository.dart';
 import 'package:aci_plus_app/repositories/unit_repository.dart';
+import 'package:aci_plus_app/repositories/usb_client.dart';
 import 'package:aci_plus_app/repositories/usb_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ftdi_serial/serial_device.dart';
 import 'package:speed_chart/speed_chart.dart';
 import 'package:intl/intl.dart';
-import 'package:usb_serial/usb_serial.dart';
+
 // import 'package:assets_audio_player/assets_audio_player.dart';
 
 part 'home_event.dart';
@@ -120,26 +123,40 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     // 呼叫 _connectionRepository 的 getConnectionType() 方法, 回傳 connectionType 是 usb 還是 ble
     // ConnectionType connectionType = await _connectionRepository.getConnectionType();
 
-    bool isUsb = await _connectionRepository.checkUsbConnection();
+    // bool isUsb = await _connectionRepository.checkUsbConnection();
 
-    if (isUsb) {
-      // USB 連線
+    ConnectionType connectionType =
+        await _connectionRepository.checkConnectionType();
 
-      UsbDevice usbDevice = await _connectionRepository.getUsbDevice();
+    if (connectionType == ConnectionType.usb) {
+      SerialDevice serialDevice = await _connectionRepository.getUsbDevice();
       Peripheral peripheral = Peripheral(
-        id: usbDevice.deviceId.toString(),
-        name: usbDevice.deviceName,
-        rssi: 0,
-        usbDevice: usbDevice,
+        id: serialDevice.vendorId.toString(),
+        name: serialDevice.deviceName,
       );
+
+      emit(state.copyWith(
+        showSplash: false,
+        scanStatus: FormStatus.requestInProgress,
+        connectionStatus: FormStatus.requestInProgress,
+        loadingStatus: FormStatus.requestInProgress,
+        device: peripheral,
+      ));
 
       _connectionReportStreamSubscription =
           _aciDeviceRepository.connectionStateReport.listen((connectionReport) {
+        print('connectionReport : ${connectionReport.connectStatus}');
         add(DeviceConnectionChanged(connectionReport));
       });
-
       _aciDeviceRepository.connectToDevice(peripheral);
     } else {
+      emit(state.copyWith(
+        showSplash: false,
+        scanStatus: FormStatus.requestInProgress,
+        connectionStatus: FormStatus.requestInProgress,
+        loadingStatus: FormStatus.requestInProgress,
+      ));
+
       // BLE 連線
       _scanStreamSubscription = _aciDeviceRepository.scanReport.listen(
         (scanReport) {
@@ -148,15 +165,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         },
       );
     }
-
-    // _dsimRepository.scanDevices();
-
-    emit(state.copyWith(
-      showSplash: false,
-      scanStatus: FormStatus.requestInProgress,
-      connectionStatus: FormStatus.requestInProgress,
-      loadingStatus: FormStatus.requestInProgress,
-    ));
   }
 
   Future<void> _onDiscoveredDeviceChanged(
@@ -330,9 +338,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         ));
 
         // usb 專屬的 device mtu 設置
-        bool resultOfSetMTU = await _aciDeviceRepository.setMTU(244);
-        bool resultOfSetTransmitDelayTime =
-            await _aciDeviceRepository.set1p8GTransmitDelayTime(58);
+        // bool resultOfSetMTU = await _aciDeviceRepository.setMTU(244);
+        // bool resultOfSetTransmitDelayTime =
+        //     await _aciDeviceRepository.set1p8GTransmitDelayTime(58);
 
         List<dynamic> result = await _aciDeviceRepository.getACIDeviceType(
             deviceId: state.device.id);
@@ -1237,17 +1245,21 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       print('_characteristicDataStreamSubscription closed');
     }
 
-    bool isUsb = await _connectionRepository.checkUsbConnection();
+    // initialize client to determine if it is a USB or BLE connection
+    // await BLEClientFactory.initialize();
 
-    if (isUsb) {
-      // USB 連線
+    // _aciDeviceRepository.updateClient();
+    // _amp18Repository.updateClient();
+    // _amp18CCorNodeRepository.updateClient();
 
-      UsbDevice usbDevice = await _connectionRepository.getUsbDevice();
+    ConnectionType connectionType =
+        await _connectionRepository.checkConnectionType();
+
+    if (connectionType == ConnectionType.usb) {
+      SerialDevice serialDevice = await _connectionRepository.getUsbDevice();
       Peripheral peripheral = Peripheral(
-        id: usbDevice.deviceId.toString(),
-        name: usbDevice.deviceName,
-        rssi: 0,
-        usbDevice: usbDevice,
+        id: serialDevice.vendorId.toString(),
+        name: serialDevice.deviceName,
       );
 
       _connectionReportStreamSubscription =
@@ -1260,6 +1272,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       // BLE 連線
       _scanStreamSubscription = _aciDeviceRepository.scanReport.listen(
         (scanReport) {
+          print(scanReport);
           add(DiscoveredDeviceChanged(scanReport));
         },
       );

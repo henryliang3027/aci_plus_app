@@ -114,7 +114,11 @@ dependencies:
   firebase_core: ^2.24.0
   adaptive_theme: ^3.6.0
   file_picker: ^8.1.2
-  usb_serial: ^0.5.2
+  ftdi_serial:
+    path: /Users/henry.liang/projects_git/20250519/new/ftdi_serial
+
+  # usb_serial: ^0.5.2
+
   # image: ^4.2.0
 
 
