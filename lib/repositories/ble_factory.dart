@@ -32,9 +32,10 @@ class BLEClientFactory {
     } else if (Platform.isIOS) {
       return BLEClient();
     } else if (Platform.isAndroid) {
+      BLEClient bleClient = BLEClient();
       USBClient usbClient = USBClient();
       SerialDevice serialDevice = await USBClient.getAttachedDevice();
-      return serialDevice.vendorId != -1 ? usbClient : BLEClient();
+      return serialDevice.vendorId != -1 ? usbClient : bleClient;
     } else {
       throw UnsupportedError('Platform not supported');
     }

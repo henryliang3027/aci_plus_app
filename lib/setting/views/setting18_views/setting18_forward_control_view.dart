@@ -1354,7 +1354,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
       required String pilotFrequencyMode,
       required String agcMode,
     }) {
-      if (ModeProperty.mode == Mode.expert) {
+      if (ModeProperty.isExpertMode) {
         return editMode
             ? getEnabledEditModeTools(
                 enableSubmission: enableSubmission,

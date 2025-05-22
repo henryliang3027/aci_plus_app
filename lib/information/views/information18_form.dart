@@ -14,6 +14,7 @@ import 'package:aci_plus_app/information/shared/utils.dart';
 import 'package:aci_plus_app/information/shared/warm_reset_widget.dart';
 import 'package:aci_plus_app/information/views/information18_config_list_view.dart';
 import 'package:aci_plus_app/repositories/config.dart';
+import 'package:aci_plus_app/repositories/connection_repository.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -343,6 +344,25 @@ class _ConnectionCard extends StatelessWidget {
     );
   }
 
+  Widget usbText({
+    required String title,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: CustomStyle.sizeL,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
@@ -363,11 +383,15 @@ class _ConnectionCard extends StatelessWidget {
               //   title: '',
               //   content: AppLocalizations.of(context)!.visitWebsite,
               // ),
-              bluetoothText(
-                scanStatus: state.scanStatus,
-                title: AppLocalizations.of(context)!.bluetooth,
-                name: state.device.name.isNotEmpty ? state.device.name : '',
-              ),
+              state.connectionType == ConnectionType.usb
+                  ? usbText(
+                      title: AppLocalizations.of(context)!.usbToUartAdapter)
+                  : bluetoothText(
+                      scanStatus: state.scanStatus,
+                      title: AppLocalizations.of(context)!.bluetooth,
+                      name:
+                          state.device.name.isNotEmpty ? state.device.name : '',
+                    ),
             ],
           ),
         ),

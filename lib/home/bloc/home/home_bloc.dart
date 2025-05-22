@@ -62,7 +62,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<DevicePeriodicUpdateCanceled>(_onDevicePeriodicUpdateCanceled);
     on<DevicePeriodicUpdate>(_onDevicePeriodicUpdate);
     on<ModeChanged>(_onModeChanged);
-    on<TestUSB>(_onTestUSB);
+    on<USBAttached>(_onUSBAttached);
     // on<NeedsDataReloaded>(_onNeedsDataReloaded);
     // on<testTimeout>(_onTestTimeout);
   }
@@ -108,55 +108,24 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   //   }
   // }
 
-  void _onTestUSB(
-    TestUSB event,
-    Emitter<HomeState> emit,
-  ) {
-    _usbRepository.getInformation();
-  }
-
   // 進入首頁時播放動畫，動畫播完後掃描藍芽裝置
   Future<void> _onSplashStateChanged(
     SplashStateChanged event,
     Emitter<HomeState> emit,
   ) async {
-    // 呼叫 _connectionRepository 的 getConnectionType() 方法, 回傳 connectionType 是 usb 還是 ble
-    // ConnectionType connectionType = await _connectionRepository.getConnectionType();
-
-    // bool isUsb = await _connectionRepository.checkUsbConnection();
+    emit(state.copyWith(
+      showSplash: false,
+      scanStatus: FormStatus.requestInProgress,
+      connectionStatus: FormStatus.requestInProgress,
+      loadingStatus: FormStatus.requestInProgress,
+    ));
 
     ConnectionType connectionType =
         await _connectionRepository.checkConnectionType();
 
     if (connectionType == ConnectionType.usb) {
-      SerialDevice serialDevice = await _connectionRepository.getUsbDevice();
-      Peripheral peripheral = Peripheral(
-        id: serialDevice.vendorId.toString(),
-        name: serialDevice.deviceName,
-      );
-
-      emit(state.copyWith(
-        showSplash: false,
-        scanStatus: FormStatus.requestInProgress,
-        connectionStatus: FormStatus.requestInProgress,
-        loadingStatus: FormStatus.requestInProgress,
-        device: peripheral,
-      ));
-
-      _connectionReportStreamSubscription =
-          _aciDeviceRepository.connectionStateReport.listen((connectionReport) {
-        print('connectionReport : ${connectionReport.connectStatus}');
-        add(DeviceConnectionChanged(connectionReport));
-      });
-      _aciDeviceRepository.connectToDevice(peripheral);
+      add(const USBAttached());
     } else {
-      emit(state.copyWith(
-        showSplash: false,
-        scanStatus: FormStatus.requestInProgress,
-        connectionStatus: FormStatus.requestInProgress,
-        loadingStatus: FormStatus.requestInProgress,
-      ));
-
       // BLE 連線
       _scanStreamSubscription = _aciDeviceRepository.scanReport.listen(
         (scanReport) {
@@ -167,10 +136,41 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
   }
 
+  void _onUSBAttached(
+    USBAttached event,
+    Emitter<HomeState> emit,
+  ) async {
+    SerialDevice serialDevice = await _connectionRepository.getUsbDevice();
+    Peripheral peripheral = Peripheral(
+      id: serialDevice.vendorId.toString(),
+      name: serialDevice.deviceName,
+    );
+
+    _connectionReportStreamSubscription =
+        _aciDeviceRepository.connectionStateReport.listen((connectionReport) {
+      print('connectionReport : ${connectionReport.connectStatus}');
+      add(DeviceConnectionChanged(connectionReport));
+    });
+    _aciDeviceRepository.connectToDevice(peripheral);
+
+    emit(state.copyWith(
+      showSplash: false,
+      scanStatus: FormStatus.requestSuccess,
+      connectionStatus: FormStatus.requestInProgress,
+      loadingStatus: FormStatus.requestInProgress,
+      connectionType: ConnectionType.usb,
+      device: peripheral,
+    ));
+  }
+
   Future<void> _onDiscoveredDeviceChanged(
     DiscoveredDeviceChanged event,
     Emitter<HomeState> emit,
   ) async {
+    emit(state.copyWith(
+      connectionType: ConnectionType.ble,
+    ));
+
     switch (event.scanReport.scanStatus) {
       case ScanStatus.scanning:
         List<Peripheral> peripherals = List.from(state.peripherals);
@@ -699,6 +699,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       characteristicData: {},
     ));
 
+    ConnectionType connectionType =
+        await _connectionRepository.checkConnectionType();
+
+    if (connectionType == ConnectionType.usb) {
+      await _amp18Repository.set1p8GTransmitDelayTime(ms: 58);
+    }
+
     Map<DataKey, String> newCharacteristicData = {};
     List<dynamic> resultOf1p8G0 = [];
     List<dynamic> resultOf1p8G1 = [];
@@ -847,8 +854,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     // 處理 requestCommand1p8G3 RFInOut 讀取
     // 最多 retry 3 次, 連續失敗3次就視為失敗
     for (int i = 0; i < 3; i++) {
-      // 根據RSSI設定每個 chunk 之間的 delay
-      await _amp18Repository.set1p8GTransmitDelayTime();
+      if (connectionType == ConnectionType.ble) {
+        // 根據RSSI設定每個 chunk 之間的 delay
+        await _amp18Repository.set1p8GTransmitDelayTime();
+      }
 
       resultOf1p8G3 = await _amp18Repository.requestCommand1p8G3();
 
@@ -910,8 +919,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     // 處理 requestCommand1p8GForLogChunk 讀取
     // 最多 retry 3 次, 連續失敗3次就視為失敗
     for (int i = 0; i < 3; i++) {
-      // 根據RSSI設定每個 chunk 之間的 delay
-      await _amp18Repository.set1p8GTransmitDelayTime();
+      if (connectionType == ConnectionType.ble) {
+        // 根據RSSI設定每個 chunk 之間的 delay
+        await _amp18Repository.set1p8GTransmitDelayTime();
+      }
 
       //休息一段時間再讀取, 比較不會有 data 收不完整的情況發生
       await Future.delayed(const Duration(milliseconds: 1000));
@@ -1246,28 +1257,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
 
     // initialize client to determine if it is a USB or BLE connection
-    // await BLEClientFactory.initialize();
+    await BLEClientFactory.initialize();
 
-    // _aciDeviceRepository.updateClient();
-    // _amp18Repository.updateClient();
-    // _amp18CCorNodeRepository.updateClient();
+    _aciDeviceRepository.updateClient();
+    _amp18Repository.updateClient();
+    _amp18CCorNodeRepository.updateClient();
 
     ConnectionType connectionType =
         await _connectionRepository.checkConnectionType();
 
     if (connectionType == ConnectionType.usb) {
-      SerialDevice serialDevice = await _connectionRepository.getUsbDevice();
-      Peripheral peripheral = Peripheral(
-        id: serialDevice.vendorId.toString(),
-        name: serialDevice.deviceName,
-      );
-
-      _connectionReportStreamSubscription =
-          _aciDeviceRepository.connectionStateReport.listen((connectionReport) {
-        add(DeviceConnectionChanged(connectionReport));
-      });
-
-      _aciDeviceRepository.connectToDevice(peripheral);
+      add(const USBAttached());
     } else {
       // BLE 連線
       _scanStreamSubscription = _aciDeviceRepository.scanReport.listen(

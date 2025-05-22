@@ -4,6 +4,7 @@ import 'package:aci_plus_app/repositories/usb_client.dart';
 import 'package:ftdi_serial/serial_device.dart';
 
 enum ConnectionType {
+  none,
   ble,
   usb,
 }

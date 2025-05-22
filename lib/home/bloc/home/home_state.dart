@@ -8,11 +8,12 @@ class HomeState extends Equatable {
     this.eventLoadingStatus = FormStatus.none,
     this.dataExportStatus = FormStatus.none,
     this.dataShareStatus = FormStatus.none,
+    this.connectionType = ConnectionType.none,
     this.showSplash = true,
     this.periodicUpdateEnabled = false,
     this.ceqStatus = CEQStatus.none,
     this.aciDeviceType = ACIDeviceType.undefined,
-    this.mode = Mode.basic,
+    this.mode = Mode.expert,
     this.peripherals = const [],
     this.device = const Peripheral.empty(),
     this.characteristicData = const {},
@@ -28,6 +29,7 @@ class HomeState extends Equatable {
   final FormStatus eventLoadingStatus;
   final FormStatus dataExportStatus;
   final FormStatus dataShareStatus;
+  final ConnectionType connectionType;
   final bool showSplash;
   final bool periodicUpdateEnabled;
   final CEQStatus ceqStatus;
@@ -48,6 +50,7 @@ class HomeState extends Equatable {
     FormStatus? eventLoadingStatus,
     FormStatus? dataExportStatus,
     FormStatus? dataShareStatus,
+    ConnectionType? connectionType,
     bool? showSplash,
     bool? periodicUpdateEnabled,
     CEQStatus? ceqStatus,
@@ -67,6 +70,7 @@ class HomeState extends Equatable {
       eventLoadingStatus: eventLoadingStatus ?? this.eventLoadingStatus,
       dataExportStatus: dataExportStatus ?? this.dataExportStatus,
       dataShareStatus: dataShareStatus ?? this.dataShareStatus,
+      connectionType: connectionType ?? this.connectionType,
       showSplash: showSplash ?? this.showSplash,
       periodicUpdateEnabled:
           periodicUpdateEnabled ?? this.periodicUpdateEnabled,
@@ -93,6 +97,7 @@ class HomeState extends Equatable {
         eventLoadingStatus,
         dataExportStatus,
         dataShareStatus,
+        connectionType,
         showSplash,
         periodicUpdateEnabled,
         ceqStatus,

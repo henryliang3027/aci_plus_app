@@ -40,7 +40,7 @@ enum FunctionDescriptionType {
 }
 
 class ModeProperty {
-  static Mode mode = Mode.basic;
+  static Mode mode = Mode.expert;
   static bool get isExpertMode => ModeProperty.mode == Mode.expert;
 }
 

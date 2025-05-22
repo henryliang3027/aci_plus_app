@@ -4,8 +4,8 @@ abstract class HomeEvent extends Equatable {
   const HomeEvent();
 }
 
-class TestUSB extends HomeEvent {
-  const TestUSB();
+class USBAttached extends HomeEvent {
+  const USBAttached();
 
   @override
   List<Object?> get props => [];

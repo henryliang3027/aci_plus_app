@@ -183,6 +183,7 @@
     "website": "Sitio web",
     "connection": "Conexión",
     "bluetooth": "Bluetooth",
+    "usbToUartAdapter": "Adaptador de USB a UART",
     "shortcut": "Acceso Directo",
     "loadPreset": "Cargar Preset",
     "align": "Alinear",

@@ -185,6 +185,7 @@
     "website": "網站",
     "connection": "連接裝置",
     "bluetooth": "藍牙",
+    "usbToUartAdapter": "USB 轉 UART 轉接器",
     "shortcut": "捷徑",
     "loadPreset": "載入預設值",
     "align": "同步",

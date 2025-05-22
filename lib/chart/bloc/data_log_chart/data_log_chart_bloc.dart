@@ -3,6 +3,7 @@ import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/amp18_parser.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
+import 'package:aci_plus_app/repositories/connection_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:speed_chart/speed_chart.dart';
@@ -13,13 +14,16 @@ part 'data_log_chart_state.dart';
 class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
   DataLogChartBloc({
     required Amp18Repository amp18Repository,
+    required ConnectionRepository connectionRepository,
   })  : _amp18Repository = amp18Repository,
+        _connectionRepository = connectionRepository,
         super(const DataLogChartState()) {
     on<Initialized>(_onInitialized);
     on<MoreLogRequested>(_onMoreLogRequested);
   }
 
   final Amp18Repository _amp18Repository;
+  final ConnectionRepository _connectionRepository;
 
   Future<void> _onInitialized(
     Initialized event,
@@ -29,12 +33,18 @@ class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
       formStatus: FormStatus.requestInProgress,
     ));
 
+    ConnectionType connectionType =
+        await _connectionRepository.checkConnectionType();
+
     List<dynamic> resultOfLog1p8G = [];
 
     // 最多 retry 3 次, 連續失敗3次就視為失敗
     for (int i = 0; i < 3; i++) {
-      // 根據RSSI設定每個 chunk 之間的 delay
-      await _amp18Repository.set1p8GTransmitDelayTime();
+      if (connectionType == ConnectionType.ble) {
+        // 根據RSSI設定每個 chunk 之間的 delay
+        await _amp18Repository.set1p8GTransmitDelayTime();
+      }
+
       resultOfLog1p8G = await _amp18Repository.requestCommand1p8GForLogChunk(0);
 
       if (resultOfLog1p8G[0]) {
@@ -141,13 +151,18 @@ class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
       formStatus: FormStatus.requestInProgress,
     ));
 
+    ConnectionType connectionType =
+        await _connectionRepository.checkConnectionType();
+
     List<Log1p8G> log1p8Gs = [];
     log1p8Gs.addAll(state.log1p8Gs);
 
     // 最多 retry 3 次, 連續失敗3次就視為失敗
     for (int i = 0; i < 3; i++) {
-      // 根據RSSI設定每個 chunk 之間的 delay
-      await _amp18Repository.set1p8GTransmitDelayTime();
+      if (connectionType == ConnectionType.ble) {
+        // 根據RSSI設定每個 chunk 之間的 delay
+        await _amp18Repository.set1p8GTransmitDelayTime();
+      }
       List<dynamic> resultOfLog1p8G = await _amp18Repository
           .requestCommand1p8GForLogChunk(state.chunkIndex);
 

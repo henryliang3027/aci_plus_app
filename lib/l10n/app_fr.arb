@@ -184,6 +184,7 @@
     "website": "Site web",
     "connection": "Connexion",
     "bluetooth": "Bluetooth",
+    "usbToUartAdapter": "Adaptateur USB vers UART",
     "shortcut": "Raccourci",
     "loadPreset": "Charger Préréglage",
     "align": "Aligner",
