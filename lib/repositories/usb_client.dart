@@ -385,6 +385,7 @@ class USBClient extends BLEClientBase {
     try {
       Stopwatch stopwatch = Stopwatch()..start();
       await _ftdiSerial.write(Uint8List.fromList(chunk));
+      await Future.delayed(const Duration(milliseconds: 50));
 
       _updateReportStreamController.add('Sent $indexOfChunk');
       print(

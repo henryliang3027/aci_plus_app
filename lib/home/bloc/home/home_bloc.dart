@@ -1262,6 +1262,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     _aciDeviceRepository.updateClient();
     _amp18Repository.updateClient();
     _amp18CCorNodeRepository.updateClient();
+    _firmwareRepository.updateClient();
 
     ConnectionType connectionType =
         await _connectionRepository.checkConnectionType();

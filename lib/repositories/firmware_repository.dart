@@ -16,10 +16,14 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class FirmwareRepository {
   FirmwareRepository() : _bleClient = BLEClientFactory.instance;
 
-  final BLEClientBase _bleClient;
+  BLEClientBase _bleClient;
 
   Stream<String> get updateReport async* {
     yield* _bleClient.updateReport;
+  }
+
+  void updateClient() {
+    _bleClient = BLEClientFactory.instance;
   }
 
   List<dynamic> checkFileContent(
