@@ -120,8 +120,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       loadingStatus: FormStatus.requestInProgress,
     ));
 
-    ConnectionType connectionType =
-        await _connectionRepository.checkConnectionType();
+    ConnectionType connectionType = _connectionRepository.checkConnectionType();
 
     if (connectionType == ConnectionType.usb) {
       add(const USBAttached());
@@ -699,8 +698,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       characteristicData: {},
     ));
 
-    ConnectionType connectionType =
-        await _connectionRepository.checkConnectionType();
+    ConnectionType connectionType = _connectionRepository.checkConnectionType();
 
     if (connectionType == ConnectionType.usb) {
       await _amp18Repository.set1p8GTransmitDelayTime(ms: 58);
@@ -1264,8 +1262,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     _amp18CCorNodeRepository.updateClient();
     _firmwareRepository.updateClient();
 
-    ConnectionType connectionType =
-        await _connectionRepository.checkConnectionType();
+    ConnectionType connectionType = _connectionRepository.checkConnectionType();
 
     if (connectionType == ConnectionType.usb) {
       add(const USBAttached());

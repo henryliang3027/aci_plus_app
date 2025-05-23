@@ -13,7 +13,7 @@ class ConnectionRepository {
   ConnectionRepository();
 
   // 檢查是否有連接 usb
-  Future<ConnectionType> checkConnectionType() async {
+  ConnectionType checkConnectionType() {
     final client = BLEClientFactory.instance;
 
     return client is USBClient ? ConnectionType.usb : ConnectionType.ble;

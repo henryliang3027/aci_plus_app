@@ -33,8 +33,7 @@ class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
       formStatus: FormStatus.requestInProgress,
     ));
 
-    ConnectionType connectionType =
-        await _connectionRepository.checkConnectionType();
+    ConnectionType connectionType = _connectionRepository.checkConnectionType();
 
     List<dynamic> resultOfLog1p8G = [];
 
@@ -98,8 +97,11 @@ class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
     if (resultOfLog1p8G[0]) {
       // 最多 retry 3 次, 連續失敗3次就視為失敗
       for (int i = 0; i < 3; i++) {
-        // 根據RSSI設定每個 chunk 之間的 delay
-        await _amp18Repository.set1p8GTransmitDelayTime();
+        if (connectionType == ConnectionType.ble) {
+          // 根據RSSI設定每個 chunk 之間的 delay
+          await _amp18Repository.set1p8GTransmitDelayTime();
+        }
+
         List<dynamic> resultOfEvent1p8G =
             await _amp18Repository.requestCommand1p8GEvent();
 
@@ -151,8 +153,7 @@ class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
       formStatus: FormStatus.requestInProgress,
     ));
 
-    ConnectionType connectionType =
-        await _connectionRepository.checkConnectionType();
+    ConnectionType connectionType = _connectionRepository.checkConnectionType();
 
     List<Log1p8G> log1p8Gs = [];
     log1p8Gs.addAll(state.log1p8Gs);

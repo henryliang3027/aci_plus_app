@@ -141,9 +141,6 @@ class USBClient extends BLEClientBase {
 
         print(
             'usb data index: $_currentCommandIndex, length:${rawData.length}');
-        if (rawData.length < 50) {
-          print("wierd data: $rawData");
-        }
 
         List<dynamic> finalResult = combineUsbRawData(
           commandIndex: _currentCommandIndex,
