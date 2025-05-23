@@ -85,22 +85,22 @@ class Setting18ForwardControlBloc
         partId.isNotEmpty) {
       values = ControlItemValue
           .allValueCollections[operatingMode]![splitOption]![int.parse(partId)];
+
+      Map<Enum, DataKey> forwardControlMap =
+          SettingItemTable.controlItemDataMapCollection[partId]![0];
+
+      forwardControlMap.forEach((name, dataKey) {
+        MinMax minMax = values[dataKey]!;
+        RangeFloatPointInput rangeFloatPointInput = RangeFloatPointInput.dirty(
+          characteristicDataCache[dataKey]!,
+          minValue: minMax.min,
+          maxValue: minMax.max,
+        );
+
+        targetValues[dataKey] = rangeFloatPointInput;
+        initialValues[dataKey] = characteristicDataCache[dataKey]!;
+      });
     }
-
-    Map<Enum, DataKey> forwardControlMap =
-        SettingItemTable.controlItemDataMapCollection[partId]![0];
-
-    forwardControlMap.forEach((name, dataKey) {
-      MinMax minMax = values[dataKey]!;
-      RangeFloatPointInput rangeFloatPointInput = RangeFloatPointInput.dirty(
-        characteristicDataCache[dataKey]!,
-        minValue: minMax.min,
-        maxValue: minMax.max,
-      );
-
-      targetValues[dataKey] = rangeFloatPointInput;
-      initialValues[dataKey] = characteristicDataCache[dataKey]!;
-    });
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
