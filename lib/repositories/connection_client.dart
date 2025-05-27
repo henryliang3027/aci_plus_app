@@ -2,7 +2,7 @@ import 'package:aci_plus_app/core/crc16_calculate.dart';
 import 'package:aci_plus_app/repositories/ble_peripheral.dart';
 import 'package:flutter/foundation.dart';
 
-abstract class BLEClientBase {
+abstract class ConnectionClient {
   final List<int> _longDataHeader = [
     0xB0,
     0x03,

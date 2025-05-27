@@ -5,8 +5,8 @@ import 'package:aci_plus_app/core/command18.dart';
 import 'package:aci_plus_app/core/crc16_calculate.dart';
 import 'package:aci_plus_app/core/firmware_file_id.dart';
 import 'package:aci_plus_app/core/utils.dart';
-import 'package:aci_plus_app/repositories/ble_client_base.dart';
-import 'package:aci_plus_app/repositories/ble_factory.dart';
+import 'package:aci_plus_app/repositories/connection_client.dart';
+import 'package:aci_plus_app/repositories/connection_client_factory.dart';
 import 'package:excel/excel.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -14,16 +14,16 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FirmwareRepository {
-  FirmwareRepository() : _bleClient = BLEClientFactory.instance;
+  FirmwareRepository() : _connectionClient = ConnectionClientFactory.instance;
 
-  BLEClientBase _bleClient;
+  ConnectionClient _connectionClient;
 
   Stream<String> get updateReport async* {
-    yield* _bleClient.updateReport;
+    yield* _connectionClient.updateReport;
   }
 
   void updateClient() {
-    _bleClient = BLEClientFactory.instance;
+    _connectionClient = ConnectionClientFactory.instance;
   }
 
   List<dynamic> checkFileContent(
@@ -79,7 +79,7 @@ class FirmwareRepository {
 
     List<int> cmd = List<int>.generate(10, (index) => 0xf0);
 
-    await _bleClient.transferFirmwareCommand(
+    await _connectionClient.transferFirmwareCommand(
       commandIndex: commandIndex,
       command: cmd,
     );
@@ -93,7 +93,7 @@ class FirmwareRepository {
     // 0x4E 78 N
     // 0x59 89 Y
 
-    await _bleClient.transferFirmwareCommand(
+    await _connectionClient.transferFirmwareCommand(
       commandIndex: commandIndex,
       command: cmd,
     );
@@ -103,7 +103,7 @@ class FirmwareRepository {
     List<int> req00Cmd = [0xB0, 0x03, 0x00, 0x00, 0x00, 0x06, 0, 0]; //0
     CRC16.calculateCRC16(command: req00Cmd, usDataLength: 6);
 
-    await _bleClient.transferFirmwareCommand(
+    await _connectionClient.transferFirmwareCommand(
       commandIndex: 300,
       command: req00Cmd,
     );
@@ -113,7 +113,7 @@ class FirmwareRepository {
     required List<int> chunk,
     required int indexOfChunk,
   }) async {
-    await _bleClient.transferBinaryChunk(
+    await _connectionClient.transferBinaryChunk(
         commandIndex: 1000, chunk: chunk, indexOfChunk: indexOfChunk);
   }
 
@@ -190,7 +190,8 @@ class FirmwareRepository {
     int commandIndex = 206;
 
     try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+      List<int> rawData =
+          await _connectionClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
         value: Command18.reqFirmwareUpdateLogCmd,
         timeout: timeout,
@@ -258,7 +259,8 @@ class FirmwareRepository {
     );
 
     try {
-      List<int> rawData = await _bleClient.writeLongSetCommandToCharacteristic(
+      List<int> rawData =
+          await _connectionClient.writeLongSetCommandToCharacteristic(
         commandIndex: commandIndex,
         chunks: chunks,
         timeout: const Duration(seconds: 10),

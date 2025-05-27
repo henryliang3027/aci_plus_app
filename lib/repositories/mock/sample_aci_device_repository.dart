@@ -4,14 +4,15 @@ import 'package:aci_plus_app/core/command.dart';
 import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/crc16_calculate.dart';
 import 'package:aci_plus_app/repositories/aci_device_repository.dart';
-import 'package:aci_plus_app/repositories/ble_client_base.dart';
-import 'package:aci_plus_app/repositories/ble_factory.dart';
+import 'package:aci_plus_app/repositories/connection_client.dart';
+import 'package:aci_plus_app/repositories/connection_client_factory.dart';
 import 'package:aci_plus_app/repositories/ble_peripheral.dart';
 
 class SampleACIDeviceRepository extends ACIDeviceRepository {
-  SampleACIDeviceRepository() : _bleClient = BLEClientFactory.instance;
+  SampleACIDeviceRepository()
+      : _connectionClient = ConnectionClientFactory.instance;
 
-  final BLEClientBase _bleClient;
+  final ConnectionClient _connectionClient;
   StreamController<ScanReport>? _scanReportStreamController;
 
   StreamController<ConnectionReport>? _connectionReportStreamController;

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:aci_plus_app/repositories/ble_client_base.dart';
+import 'package:aci_plus_app/repositories/connection_client.dart';
 import 'package:aci_plus_app/repositories/ble_peripheral.dart';
 // import 'package:bluetooth_enable_fork/bluetooth_enable_fork.dart';
 import 'package:aci_plus_app/core/common_enum.dart';
@@ -12,7 +12,7 @@ import 'package:universal_ble/universal_ble.dart';
 // import 'package:win_ble/win_ble.dart';
 // import 'package:win_ble/win_file.dart';
 
-class BLEWindowsClient extends BLEClientBase {
+class BLEWindowsClient extends ConnectionClient {
   BLEWindowsClient() : super();
 
   // static final BLEWindowsClient _instance = BLEWindowsClient._();

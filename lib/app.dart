@@ -3,14 +3,12 @@ import 'package:aci_plus_app/home/views/home_page.dart';
 import 'package:aci_plus_app/repositories/aci_device_repository.dart';
 import 'package:aci_plus_app/repositories/code_repository.dart';
 import 'package:aci_plus_app/repositories/config_repository.dart';
-import 'package:aci_plus_app/repositories/connection_repository.dart';
 import 'package:aci_plus_app/repositories/dsim_repository.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_repository.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/repositories/gps_repository.dart';
 import 'package:aci_plus_app/repositories/unit_repository.dart';
 import 'package:aci_plus_app/repositories/firmware_repository.dart';
-import 'package:aci_plus_app/repositories/usb_repository.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,8 +27,6 @@ class App extends StatelessWidget {
     required this.configRepository,
     required this.firmwareRepository,
     required this.codeRepository,
-    required this.usbRepository,
-    required this.connectionRepository,
   });
 
   final AdaptiveThemeMode savedAdaptiveThemeMode;
@@ -43,8 +39,6 @@ class App extends StatelessWidget {
   final ConfigRepository configRepository;
   final FirmwareRepository firmwareRepository;
   final CodeRepository codeRepository;
-  final USBRepository usbRepository;
-  final ConnectionRepository connectionRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -77,12 +71,6 @@ class App extends StatelessWidget {
         RepositoryProvider<CodeRepository>(
           create: (context) => codeRepository,
         ),
-        RepositoryProvider<USBRepository>(
-          create: (context) => usbRepository,
-        ),
-        RepositoryProvider<ConnectionRepository>(
-          create: (context) => connectionRepository,
-        ),
       ],
       child: BlocProvider(
         create: (context) => HomeBloc(
@@ -93,8 +81,6 @@ class App extends StatelessWidget {
           firmwareRepository: firmwareRepository,
           codeRepository: codeRepository,
           unitRepository: unitRepository,
-          usbRepository: usbRepository,
-          connectionRepository: connectionRepository,
         ),
         child: _AppView(
           savedAdaptiveThemeMode: savedAdaptiveThemeMode,

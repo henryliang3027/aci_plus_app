@@ -7,25 +7,25 @@ import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/amp18_chart_cache.dart';
 import 'package:aci_plus_app/repositories/amp18_parser.dart';
 import 'package:aci_plus_app/repositories/ble_client.dart';
-import 'package:aci_plus_app/repositories/ble_client_base.dart';
+import 'package:aci_plus_app/repositories/connection_client.dart';
 import 'package:aci_plus_app/repositories/ble_command_mixin.dart';
-import 'package:aci_plus_app/repositories/ble_factory.dart';
+import 'package:aci_plus_app/repositories/connection_client_factory.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:speed_chart/speed_chart.dart';
 
 class Amp18Repository with BLECommandsMixin {
   Amp18Repository()
-      : _bleClient = BLEClientFactory.instance,
+      : _connectionClient = ConnectionClientFactory.instance,
         _amp18Parser = Amp18Parser(),
         _amp18ChartCache = Amp18ChartCache();
 
-  BLEClientBase _bleClient;
+  ConnectionClient _connectionClient;
   final Amp18Parser _amp18Parser;
   final Amp18ChartCache _amp18ChartCache;
 
   // Implement the abstract getter required by the mixin.
   @override
-  BLEClientBase get bleClient => _bleClient;
+  ConnectionClient get bleClient => _connectionClient;
 
   // 給設定頁面用來初始化預設值用
   final Map<DataKey, String> _characteristicDataCache = {};
@@ -42,7 +42,7 @@ class Amp18Repository with BLECommandsMixin {
   }
 
   void updateClient() {
-    _bleClient = BLEClientFactory.instance;
+    _connectionClient = ConnectionClientFactory.instance;
   }
 
   void createCharacteristicDataStream() {
@@ -70,7 +70,8 @@ class Amp18Repository with BLECommandsMixin {
     print('get data from request command 1p8G0');
 
     try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+      List<int> rawData =
+          await _connectionClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
         value: _amp18Parser.command18Collection[commandIndex - 80],
       );
@@ -114,7 +115,8 @@ class Amp18Repository with BLECommandsMixin {
     print('get data from request command 1p8G1');
 
     try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+      List<int> rawData =
+          await _connectionClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
         value: _amp18Parser.command18Collection[commandIndex - 80],
         timeout: timeout,
@@ -203,7 +205,8 @@ class Amp18Repository with BLECommandsMixin {
     print('get data from request command 1p8G2');
 
     try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+      List<int> rawData =
+          await _connectionClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
         value: _amp18Parser.command18Collection[commandIndex - 80],
         timeout: timeout,
@@ -268,7 +271,8 @@ class Amp18Repository with BLECommandsMixin {
     print('get data from request command 1p8G_Alarm');
 
     try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+      List<int> rawData =
+          await _connectionClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
         value: _amp18Parser.command18Collection[commandIndex - 80],
         timeout: const Duration(seconds: 1),
@@ -295,7 +299,8 @@ class Amp18Repository with BLECommandsMixin {
     print('get data from request command 1p8G3');
 
     try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+      List<int> rawData =
+          await _connectionClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
         value: _amp18Parser.command18Collection[commandIndex - 180],
       );
@@ -331,7 +336,8 @@ class Amp18Repository with BLECommandsMixin {
 
     if (commandIndex == 184) {
       try {
-        List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        List<int> rawData =
+            await _connectionClient.writeSetCommandToCharacteristic(
           commandIndex: commandIndex,
           value: _amp18Parser.command18Collection[commandIndex - 180],
           timeout: const Duration(seconds: 8),
@@ -374,7 +380,8 @@ class Amp18Repository with BLECommandsMixin {
       }
     } else {
       try {
-        List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        List<int> rawData =
+            await _connectionClient.writeSetCommandToCharacteristic(
           commandIndex: commandIndex,
           value: _amp18Parser.command18Collection[commandIndex - 180],
           timeout: const Duration(seconds: 8),
@@ -407,7 +414,8 @@ class Amp18Repository with BLECommandsMixin {
     print('get data from request command 1p8G_Event');
 
     try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+      List<int> rawData =
+          await _connectionClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
         value: _amp18Parser.command18Collection[commandIndex - 180],
         timeout: const Duration(seconds: 8),
@@ -433,7 +441,8 @@ class Amp18Repository with BLECommandsMixin {
     print('get data from request command 1p8G_RFOuts');
 
     try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+      List<int> rawData =
+          await _connectionClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
         value: _amp18Parser.command18Collection[commandIndex - 180],
       );
@@ -465,7 +474,8 @@ class Amp18Repository with BLECommandsMixin {
     print('get data from request command 1p8GUserAttribute');
 
     try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+      List<int> rawData =
+          await _connectionClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
         value: _amp18Parser.command18Collection[commandIndex - 180],
         timeout: timeout,
@@ -557,7 +567,7 @@ class Amp18Repository with BLECommandsMixin {
       usDataLength: Command18.setUserAttributeCmd.length - 2,
     );
 
-    if (_bleClient is BLEClient) {
+    if (_connectionClient is BLEClient) {
       // 將 binary 切分成每個大小為 chunkSize 的封包
       int chunkSize = await BLEUtils.getChunkSize();
 
@@ -568,7 +578,7 @@ class Amp18Repository with BLECommandsMixin {
 
       try {
         List<int> rawData =
-            await _bleClient.writeLongSetCommandToCharacteristic(
+            await _connectionClient.writeLongSetCommandToCharacteristic(
           commandIndex: commandIndex,
           chunks: chunks,
           timeout: const Duration(seconds: 10),
@@ -579,7 +589,8 @@ class Amp18Repository with BLECommandsMixin {
     } else {
       // USBClient
       try {
-        List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        List<int> rawData =
+            await _connectionClient.writeSetCommandToCharacteristic(
           commandIndex: commandIndex,
           value: Command18.setUserAttributeCmd,
           timeout: const Duration(seconds: 10),
@@ -1094,7 +1105,7 @@ class Amp18Repository with BLECommandsMixin {
 
     print('get data from request command 1p8G$commandIndex');
 
-    int rssi = await _bleClient.getRSSI();
+    int rssi = await _connectionClient.getRSSI();
 
     // 依據藍牙訊號強度來決定延遲時間, RSSI 為一個負的數值
     ms ??= getDelayByRSSI(rssi);
@@ -1206,6 +1217,6 @@ class Amp18Repository with BLECommandsMixin {
 
   // 定時更新被取消時, 也同時取消 command 的 timer 和 completer
   void cancelPeriodicUpdateCommand() {
-    _bleClient.cancelCharacteristicDataTimer(name: "Periodic Update");
+    _connectionClient.cancelCharacteristicDataTimer(name: "Periodic Update");
   }
 }

@@ -6,8 +6,9 @@ import 'dart:typed_data';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/utils.dart';
+import 'package:aci_plus_app/repositories/aci_device_repository.dart';
 import 'package:aci_plus_app/repositories/code_repository.dart';
-import 'package:aci_plus_app/repositories/connection_repository.dart';
+import 'package:aci_plus_app/repositories/connection_client_factory.dart';
 import 'package:aci_plus_app/repositories/firmware_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:file_picker/file_picker.dart';
@@ -23,10 +24,10 @@ class Setting18FirmwareUpdateBloc
     required AppLocalizations appLocalizations,
     required FirmwareRepository firmwareRepository,
     required CodeRepository codeRepository,
-    required ConnectionRepository connectionRepository,
+    required ACIDeviceRepository aciDeviceRepository,
   })  : _appLocalizations = appLocalizations,
         _firmwareRepository = firmwareRepository,
-        _connectionRepository = connectionRepository,
+        _aciDeviceRepository = aciDeviceRepository,
         _codeRepository = codeRepository,
         super(const Setting18FirmwareUpdateState()) {
     on<BootloaderStarted>(_onBootloaderStarted);
@@ -45,7 +46,7 @@ class Setting18FirmwareUpdateBloc
   final AppLocalizations _appLocalizations;
   final FirmwareRepository _firmwareRepository;
   final CodeRepository _codeRepository;
-  final ConnectionRepository _connectionRepository;
+  final ACIDeviceRepository _aciDeviceRepository;
   StreamSubscription<String>? _updateReportStreamSubscription;
   Timer? _enterBootloaderTimer;
   final Stopwatch _stopwatch = Stopwatch();
@@ -516,7 +517,7 @@ class Setting18FirmwareUpdateBloc
   }
 
   Future<void> _transferBinary() async {
-    ConnectionType connectionType = _connectionRepository.checkConnectionType();
+    ConnectionType connectionType = _aciDeviceRepository.checkConnectionType();
 
     if (connectionType == ConnectionType.usb) {
       _chunkSize = 8192;

@@ -1,5 +1,4 @@
 import 'package:aci_plus_app/about/about18_page.dart';
-import 'package:aci_plus_app/core/custom_dialog.dart';
 import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
@@ -14,7 +13,7 @@ import 'package:aci_plus_app/information/shared/utils.dart';
 import 'package:aci_plus_app/information/shared/warm_reset_widget.dart';
 import 'package:aci_plus_app/information/views/information18_config_list_view.dart';
 import 'package:aci_plus_app/repositories/config.dart';
-import 'package:aci_plus_app/repositories/connection_repository.dart';
+import 'package:aci_plus_app/repositories/connection_client_factory.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

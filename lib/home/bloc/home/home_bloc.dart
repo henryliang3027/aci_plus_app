@@ -4,17 +4,14 @@ import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/aci_device_repository.dart';
-import 'package:aci_plus_app/repositories/ble_factory.dart';
+import 'package:aci_plus_app/repositories/connection_client_factory.dart';
 import 'package:aci_plus_app/repositories/ble_peripheral.dart';
 import 'package:aci_plus_app/repositories/code_repository.dart';
-import 'package:aci_plus_app/repositories/connection_repository.dart';
 import 'package:aci_plus_app/repositories/dsim_repository.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_repository.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/repositories/firmware_repository.dart';
 import 'package:aci_plus_app/repositories/unit_repository.dart';
-import 'package:aci_plus_app/repositories/usb_client.dart';
-import 'package:aci_plus_app/repositories/usb_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ftdi_serial/serial_device.dart';
@@ -35,8 +32,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     required FirmwareRepository firmwareRepository,
     required CodeRepository codeRepository,
     required UnitRepository unitRepository,
-    required USBRepository usbRepository,
-    required ConnectionRepository connectionRepository,
   })  : _aciDeviceRepository = aciDeviceRepository,
         _dsimRepository = dsimRepository,
         _amp18Repository = amp18Repository,
@@ -44,8 +39,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         _firmwareRepository = firmwareRepository,
         _codeRepository = codeRepository,
         _unitRepository = unitRepository,
-        _usbRepository = usbRepository,
-        _connectionRepository = connectionRepository,
         super(const HomeState()) {
     on<SplashStateChanged>(_onSplashStateChanged);
     on<DiscoveredDeviceChanged>(_onDiscoveredDeviceChanged);
@@ -63,8 +56,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<DevicePeriodicUpdate>(_onDevicePeriodicUpdate);
     on<ModeChanged>(_onModeChanged);
     on<USBAttached>(_onUSBAttached);
-    // on<NeedsDataReloaded>(_onNeedsDataReloaded);
-    // on<testTimeout>(_onTestTimeout);
   }
 
   final ACIDeviceRepository _aciDeviceRepository;
@@ -74,8 +65,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final FirmwareRepository _firmwareRepository;
   final CodeRepository _codeRepository;
   final UnitRepository _unitRepository;
-  final USBRepository _usbRepository;
-  final ConnectionRepository _connectionRepository;
   StreamSubscription<ScanReport>? _scanStreamSubscription;
   StreamSubscription<ConnectionReport>? _connectionReportStreamSubscription;
   StreamSubscription<Map<DataKey, String>>?
@@ -120,7 +109,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       loadingStatus: FormStatus.requestInProgress,
     ));
 
-    ConnectionType connectionType = _connectionRepository.checkConnectionType();
+    ConnectionType connectionType = _aciDeviceRepository.checkConnectionType();
 
     if (connectionType == ConnectionType.usb) {
       add(const USBAttached());
@@ -139,7 +128,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     USBAttached event,
     Emitter<HomeState> emit,
   ) async {
-    SerialDevice serialDevice = await _connectionRepository.getUsbDevice();
+    SerialDevice serialDevice = await _aciDeviceRepository.getUsbDevice();
     Peripheral peripheral = Peripheral(
       id: serialDevice.vendorId.toString(),
       name: serialDevice.deviceName,
@@ -335,11 +324,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           connectionStatus: FormStatus.requestSuccess,
           loadingStatus: FormStatus.requestInProgress,
         ));
-
-        // usb 專屬的 device mtu 設置
-        // bool resultOfSetMTU = await _aciDeviceRepository.setMTU(244);
-        // bool resultOfSetTransmitDelayTime =
-        //     await _aciDeviceRepository.set1p8GTransmitDelayTime(58);
 
         List<dynamic> result = await _aciDeviceRepository.getACIDeviceType(
             deviceId: state.device.id);
@@ -698,7 +682,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       characteristicData: {},
     ));
 
-    ConnectionType connectionType = _connectionRepository.checkConnectionType();
+    ConnectionType connectionType = _aciDeviceRepository.checkConnectionType();
 
     if (connectionType == ConnectionType.usb) {
       await _amp18Repository.set1p8GTransmitDelayTime(ms: 58);
@@ -974,6 +958,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       characteristicData: {},
     ));
 
+    ConnectionType connectionType = _aciDeviceRepository.checkConnectionType();
+
+    if (connectionType == ConnectionType.usb) {
+      await _amp18Repository.set1p8GTransmitDelayTime(ms: 58);
+    }
+
     Map<DataKey, String> newCharacteristicData = {};
     List<dynamic> resultOf1p8GCCorNode80 = [];
     List<dynamic> resultOf1p8GCCorNode91 = [];
@@ -1146,7 +1136,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     // 處理 requestCommand1p8GCCorNodeLogChunk 讀取
     // 最多 retry 3 次, 連續失敗3次就視為失敗
     for (int i = 0; i < 3; i++) {
-      await _amp18CCorNodeRepository.set1p8GCCorNodeTransmitDelayTime();
+      if (connectionType == ConnectionType.ble) {
+        // 根據RSSI設定每個 chunk 之間的 delay
+        await _amp18CCorNodeRepository.set1p8GCCorNodeTransmitDelayTime();
+      }
 
       //休息一段時間再讀取, 比較不會有 data 收不完整的情況發生
       await Future.delayed(const Duration(milliseconds: 1000));
@@ -1255,14 +1248,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
 
     // initialize client to determine if it is a USB or BLE connection
-    await BLEClientFactory.initialize();
+    await ConnectionClientFactory.initialize();
 
     _aciDeviceRepository.updateClient();
     _amp18Repository.updateClient();
     _amp18CCorNodeRepository.updateClient();
     _firmwareRepository.updateClient();
 
-    ConnectionType connectionType = _connectionRepository.checkConnectionType();
+    ConnectionType connectionType = _aciDeviceRepository.checkConnectionType();
 
     if (connectionType == ConnectionType.usb) {
       add(const USBAttached());

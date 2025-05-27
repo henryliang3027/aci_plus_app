@@ -8,19 +8,19 @@ import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/amp18_chart_cache.dart';
 import 'package:aci_plus_app/repositories/amp18_parser.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
-import 'package:aci_plus_app/repositories/ble_client_base.dart';
-import 'package:aci_plus_app/repositories/ble_factory.dart';
+import 'package:aci_plus_app/repositories/connection_client.dart';
+import 'package:aci_plus_app/repositories/connection_client_factory.dart';
 import 'package:aci_plus_app/repositories/mock/amp18_repository_data.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:speed_chart/speed_chart.dart';
 
 class SampleAmp18Repository extends Amp18Repository {
   SampleAmp18Repository()
-      : _bleClient = BLEClientFactory.instance,
+      : _connectionClient = ConnectionClientFactory.instance,
         _amp18Parser = Amp18Parser(),
         _amp18ChartCache = Amp18ChartCache();
 
-  final BLEClientBase _bleClient;
+  final ConnectionClient _connectionClient;
   final Amp18Parser _amp18Parser;
   final Amp18ChartCache _amp18ChartCache;
 
@@ -289,7 +289,8 @@ class SampleAmp18Repository extends Amp18Repository {
         }
       ];
     } else {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+      List<int> rawData =
+          await _connectionClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
         value: _amp18Parser.command18Collection[commandIndex - 180],
         // timeout: Duration(minutes: 1),
@@ -1779,7 +1780,7 @@ class SampleAmp18Repository extends Amp18Repository {
     // if (difference >= 30) {
     //   print('sync time on device id $partId');
     //   try {
-    //     List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+    //     List<int> rawData = await _connectionClient.writeSetCommandToCharacteristic(
     //       commandIndex: commandIndex,
     //       value: Command18.setNowDateTimeCmd,
     //     );

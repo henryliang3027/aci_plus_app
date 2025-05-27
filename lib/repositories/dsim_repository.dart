@@ -4,18 +4,18 @@ import 'package:aci_plus_app/core/command.dart';
 import 'package:aci_plus_app/core/crc16_calculate.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/shared_preference_key.dart';
-import 'package:aci_plus_app/repositories/ble_client_base.dart';
-import 'package:aci_plus_app/repositories/ble_factory.dart';
+import 'package:aci_plus_app/repositories/connection_client.dart';
+import 'package:aci_plus_app/repositories/connection_client_factory.dart';
 import 'package:aci_plus_app/repositories/dsim_parser.dart';
 import 'package:speed_chart/speed_chart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DsimRepository {
   DsimRepository()
-      : _bleClient = BLEClientFactory.instance,
+      : _connectionClient = ConnectionClientFactory.instance,
         _dsimParser = DsimParser();
 
-  final BLEClientBase _bleClient;
+  final ConnectionClient _connectionClient;
   final DsimParser _dsimParser;
 
   late StreamController<Map<DataKey, String>>
@@ -56,7 +56,8 @@ class DsimRepository {
     print('get data from request command 0');
 
     try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+      List<int> rawData =
+          await _connectionClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
         value: _dsimParser.commandCollection[commandIndex],
       );
@@ -75,7 +76,8 @@ class DsimRepository {
     int commandIndex = 1;
 
     try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+      List<int> rawData =
+          await _connectionClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
         value: _dsimParser.commandCollection[commandIndex],
       );
@@ -100,7 +102,8 @@ class DsimRepository {
     print('get data from request command 2');
 
     try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+      List<int> rawData =
+          await _connectionClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
         value: _dsimParser.commandCollection[commandIndex],
       );
@@ -124,7 +127,8 @@ class DsimRepository {
     print('get data from request command 3');
 
     try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+      List<int> rawData =
+          await _connectionClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
         value: _dsimParser.commandCollection[commandIndex],
       );
@@ -148,7 +152,8 @@ class DsimRepository {
     print('get data from request command 4');
 
     try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+      List<int> rawData =
+          await _connectionClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
         value: _dsimParser.commandCollection[commandIndex],
       );
@@ -173,7 +178,8 @@ class DsimRepository {
     int commandIndex = 5;
 
     try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+      List<int> rawData =
+          await _connectionClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
         value: _dsimParser.commandCollection[commandIndex],
       );
@@ -203,7 +209,8 @@ class DsimRepository {
     int commandIndex = 6;
 
     try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+      List<int> rawData =
+          await _connectionClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
         value: _dsimParser.commandCollection[commandIndex],
       );
@@ -226,7 +233,8 @@ class DsimRepository {
     int commandIndex = 6;
 
     try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+      List<int> rawData =
+          await _connectionClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
         value: _dsimParser.commandCollection[commandIndex],
       );
@@ -251,7 +259,8 @@ class DsimRepository {
     for (int i = 9; i <= 12; i++) {
       int commandIndex = i;
       try {
-        List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        List<int> rawData =
+            await _connectionClient.writeSetCommandToCharacteristic(
           commandIndex: commandIndex,
           value: _dsimParser.commandCollection[commandIndex],
         );
@@ -280,7 +289,8 @@ class DsimRepository {
     print('get data from request command $chunkIndex');
 
     try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+      List<int> rawData =
+          await _connectionClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
         value: _dsimParser.commandCollection[commandIndex],
       );
@@ -322,7 +332,8 @@ class DsimRepository {
 
       print('get data from request command $i');
       try {
-        List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        List<int> rawData =
+            await _connectionClient.writeSetCommandToCharacteristic(
           commandIndex: commandIndex,
           value: _dsimParser.commandCollection[commandIndex],
         );
@@ -420,7 +431,8 @@ class DsimRepository {
     for (int i = 0; i <= 3; i++) {
       int commandIndex = i + 40;
       try {
-        List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        List<int> rawData =
+            await _connectionClient.writeSetCommandToCharacteristic(
           commandIndex: commandIndex,
           value: locationCommand[i],
         );
@@ -465,7 +477,8 @@ class DsimRepository {
 
     try {
       int commandIndex = 44;
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+      List<int> rawData =
+          await _connectionClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
         value: Command.set04Cmd,
       );
@@ -506,7 +519,8 @@ class DsimRepository {
 
     try {
       int commandIndex = 45;
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+      List<int> rawData =
+          await _connectionClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
         value: Command.set04Cmd,
       );
@@ -575,7 +589,8 @@ class DsimRepository {
     if (workingModeId == 1) {
       // AGC
       try {
-        List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        List<int> rawData =
+            await _connectionClient.writeSetCommandToCharacteristic(
           commandIndex: commandIndex,
           value: Command.set04Cmd,
         );
@@ -587,7 +602,8 @@ class DsimRepository {
       }
     } else {
       try {
-        List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        List<int> rawData =
+            await _connectionClient.writeSetCommandToCharacteristic(
           commandIndex: commandIndex,
           value: Command.set04Cmd,
         );

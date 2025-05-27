@@ -4,9 +4,8 @@ import 'package:aci_plus_app/app.dart';
 import 'package:aci_plus_app/core/shared_preference_key.dart';
 import 'package:aci_plus_app/env_config.dart';
 import 'package:aci_plus_app/repositories/aci_device_repository.dart';
-import 'package:aci_plus_app/repositories/ble_factory.dart';
+import 'package:aci_plus_app/repositories/connection_client_factory.dart';
 import 'package:aci_plus_app/repositories/code_repository.dart';
-import 'package:aci_plus_app/repositories/connection_repository.dart';
 import 'package:aci_plus_app/repositories/distribution_config.dart';
 import 'package:aci_plus_app/repositories/mock/sample_aci_device_repository.dart';
 import 'package:aci_plus_app/repositories/mock/sample_amp18_repository.dart';
@@ -19,13 +18,10 @@ import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/repositories/gps_repository.dart';
 import 'package:aci_plus_app/repositories/unit_repository.dart';
 import 'package:aci_plus_app/repositories/firmware_repository.dart';
-import 'package:aci_plus_app/repositories/usb_repository.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -113,7 +109,7 @@ Future<void> main() async {
   await EnvConfig.initialize();
 
   // initialize client to determine if it is a USB or BLE connection
-  await BLEClientFactory.initialize();
+  await ConnectionClientFactory.initialize();
 
   int mock = 0;
 
@@ -129,8 +125,6 @@ Future<void> main() async {
       configRepository: ConfigRepository(),
       firmwareRepository: FirmwareRepository(),
       codeRepository: CodeRepository(),
-      usbRepository: USBRepository(),
-      connectionRepository: ConnectionRepository(),
     ));
   } else {
     runApp(App(
@@ -144,8 +138,6 @@ Future<void> main() async {
       configRepository: ConfigRepository(),
       firmwareRepository: FirmwareRepository(),
       codeRepository: CodeRepository(),
-      usbRepository: USBRepository(),
-      connectionRepository: ConnectionRepository(),
     ));
   }
 }

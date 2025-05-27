@@ -1,11 +1,11 @@
 import 'dart:typed_data';
 import 'package:aci_plus_app/core/crc16_calculate.dart';
 import 'package:aci_plus_app/repositories/ble_client.dart';
-import 'package:aci_plus_app/repositories/ble_client_base.dart';
+import 'package:aci_plus_app/repositories/connection_client.dart';
 
 mixin BLECommandsMixin {
   // Define an abstract getter for the BLE client.
-  BLEClientBase get bleClient;
+  ConnectionClient get bleClient;
 
   // [factor]: 如果是浮點數則 factor = 10, 乘以十倍再帶入 command, 如果是整數則 factor = 1
   Future<dynamic> set1p8GTwoBytesParameter({
