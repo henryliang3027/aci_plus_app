@@ -64,13 +64,6 @@ class USBClient extends ConnectionClient {
     return isPermissionGranted;
   }
 
-  // 檢查是否有連接 usb
-  Future<bool> checkUsbConnection() async {
-    DeviceStatus deviceStatus = await _ftdiSerial.checkDeviceStatus();
-    _isConnected = deviceStatus == DeviceStatus.connected;
-    return _isConnected;
-  }
-
   // 資源清理
   void dispose() {
     _dataStreamSubscription?.cancel();
@@ -93,56 +86,66 @@ class USBClient extends ConnectionClient {
     bool isPermissionGranted = await requestUsbPermission();
 
     if (isPermissionGranted) {
-      DeviceListResult deviceListResult = await _ftdiSerial.createDeviceList();
+      await _ftdiSerial.createDeviceList();
       bool isConnected = await _ftdiSerial.connectToDevice();
 
-      _deviceStatusStreamSubscription =
-          _ftdiSerial.deviceStatusStream.listen((bool isConnected) async {
-        if (!isConnected) {
-          _connectionReportStreamController.add(const ConnectionReport(
-            connectStatus: ConnectStatus.disconnected,
-            errorMessage: 'Device connection failed',
-          ));
-        }
-      });
+      if (isConnected) {
+        _deviceStatusStreamSubscription =
+            _ftdiSerial.deviceStatusStream.listen((bool isConnected) async {
+          if (!isConnected) {
+            _connectionReportStreamController.add(const ConnectionReport(
+              connectStatus: ConnectStatus.disconnected,
+              errorMessage: 'Device connection failed',
+            ));
 
-      _dataStreamSubscription = _ftdiSerial.dataStream.listen((dynamic data) {
-        List<int> rawData = data.toList();
+            closeScanStream();
+            closeConnectionStream();
+          }
+        });
 
-        print(
-            'usb data index: $_currentCommandIndex, length:${rawData.length}');
+        _dataStreamSubscription = _ftdiSerial.dataStream.listen((dynamic data) {
+          List<int> rawData = data.toList();
 
-        List<dynamic> finalResult = combineUsbRawData(
-          commandIndex: _currentCommandIndex,
-          rawData: rawData,
-        );
+          print(
+              'usb data index: $_currentCommandIndex, length:${rawData.length}');
 
-        if (_currentCommandIndex >= 1000) {
-          List<int> finalRawData = finalResult[1];
-          String message = String.fromCharCodes(finalRawData);
-          _updateReportStreamController.add(message);
-        } else {
-          if (finalResult[0]) {
-            cancelCharacteristicDataTimer(name: 'cmd $_currentCommandIndex');
+          List<dynamic> finalResult = combineUsbRawData(
+            commandIndex: _currentCommandIndex,
+            rawData: rawData,
+          );
+
+          if (_currentCommandIndex >= 1000) {
             List<int> finalRawData = finalResult[1];
+            String message = String.fromCharCodes(finalRawData);
+            _updateReportStreamController.add(message);
+          } else {
+            if (finalResult[0]) {
+              cancelCharacteristicDataTimer(name: 'cmd $_currentCommandIndex');
+              List<int> finalRawData = finalResult[1];
 
-            bool isValidCRC = checkCRC(finalRawData);
-            if (isValidCRC) {
-              if (!_completer!.isCompleted) {
-                _completer!.complete(finalRawData);
-              }
-            } else {
-              if (!_completer!.isCompleted) {
-                _completer!.completeError(CharacteristicError.invalidData);
+              bool isValidCRC = checkCRC(finalRawData);
+              if (isValidCRC) {
+                if (!_completer!.isCompleted) {
+                  _completer!.complete(finalRawData);
+                }
+              } else {
+                if (!_completer!.isCompleted) {
+                  _completer!.completeError(CharacteristicError.invalidData);
+                }
               }
             }
           }
-        }
-      });
+        });
 
-      _connectionReportStreamController.add(const ConnectionReport(
-        connectStatus: ConnectStatus.connected,
-      ));
+        _connectionReportStreamController.add(const ConnectionReport(
+          connectStatus: ConnectStatus.connected,
+        ));
+      } else {
+        _connectionReportStreamController.add(const ConnectionReport(
+          connectStatus: ConnectStatus.disconnected,
+          errorMessage: 'Device connection failed',
+        ));
+      }
     } else {
       _connectionReportStreamController.add(const ConnectionReport(
         connectStatus: ConnectStatus.disconnected,

@@ -969,10 +969,12 @@ class Amp18CCorNodeRepository with BLECommandsMixin {
 
     print('set data from request command 1p8G CCor Node $commandIndex');
 
-    int rssi = await _connectionClient.getRSSI();
-
     // 依據藍牙訊號強度來決定延遲時間, RSSI 為一個負的數值
-    ms ??= getDelayByRSSI(rssi);
+    if (ms == null) {
+      int rssi = await _connectionClient.getRSSI();
+      ms = getDelayByRSSI(rssi);
+      print('RSSI: $rssi, Delay: $ms');
+    }
 
     if (Platform.isIOS) {
       DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
@@ -986,8 +988,6 @@ class Amp18CCorNodeRepository with BLECommandsMixin {
         ms = 59;
       }
     }
-
-    print('RSSI: $rssi, Delay: $ms');
 
     return set1p8GTwoBytesParameter(
       value: ms.toString(),
