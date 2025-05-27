@@ -7,6 +7,7 @@ import 'package:aci_plus_app/core/firmware_file_id.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/connection_client.dart';
 import 'package:aci_plus_app/repositories/connection_client_factory.dart';
+import 'package:aci_plus_app/repositories/usb_client.dart';
 import 'package:excel/excel.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -250,26 +251,42 @@ class FirmwareRepository {
       usDataLength: Command18.setFirmwareUpdateLogCmd.length - 2,
     );
 
-    // 將 binary 切分成每個大小為 chunkSize 的封包
-    int chunkSize = await BLEUtils.getChunkSize();
+    if (_connectionClient is USBClient) {
+      try {
+        List<int> rawData =
+            await _connectionClient.writeSetCommandToCharacteristic(
+          commandIndex: commandIndex,
+          value: Command18.setFirmwareUpdateLogCmd,
+          timeout: const Duration(seconds: 10),
+        );
+      } catch (e) {
+        return false;
+      }
 
-    List<List<int>> chunks = BLEUtils.divideToChunkList(
-      binary: Command18.setFirmwareUpdateLogCmd,
-      chunkSize: chunkSize,
-    );
+      return true;
+    } else {
+      // BLE client
+      // 將 binary 切分成每個大小為 chunkSize 的封包
+      int chunkSize = await BLEUtils.getChunkSize();
 
-    try {
-      List<int> rawData =
-          await _connectionClient.writeLongSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        chunks: chunks,
-        timeout: const Duration(seconds: 10),
+      List<List<int>> chunks = BLEUtils.divideToChunkList(
+        binary: Command18.setFirmwareUpdateLogCmd,
+        chunkSize: chunkSize,
       );
-    } catch (e) {
-      return false;
-    }
 
-    return true;
+      try {
+        List<int> rawData =
+            await _connectionClient.writeLongSetCommandToCharacteristic(
+          commandIndex: commandIndex,
+          chunks: chunks,
+          timeout: const Duration(seconds: 10),
+        );
+      } catch (e) {
+        return false;
+      }
+
+      return true;
+    }
   }
 
   Future<dynamic> exportFirmwareUpdateLogs({

@@ -1,13 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as p;
 import 'package:permission_handler/permission_handler.dart';
-import 'package:simple_barcode_scanner/constant.dart';
 import 'package:webview_windows/webview_windows.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -234,8 +232,8 @@ class _WindowsQRCodeScannerState extends State<WindowsQRCodeScanner> {
 
     try {
       await controller.initialize();
-      await controller
-          .loadUrl(getAssetFileUrl(asset: PackageConstant.barcodeFilePath));
+      await controller.loadUrl(getAssetFileUrl(
+          asset: "packages/simple_barcode_scanner/assets/barcode.html"));
 
       /// Listen to web to receive barcode
       controller.webMessage.listen((event) {

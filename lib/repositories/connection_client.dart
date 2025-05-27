@@ -13,6 +13,7 @@ abstract class ConnectionClient {
     0x03,
     0xB0
   ]; // 176 bytes 回傳資料 header
+
   final List<int> _combinedRawData = [];
   Stream<ScanReport> get scanReport;
   Stream<ConnectionReport> get connectionStateReport;
@@ -28,7 +29,7 @@ abstract class ConnectionClient {
     required int commandIndex,
     required List<int> value,
     required String deviceId,
-    int mtu = 247,
+    int mtu = 244,
   });
 
   Future<int> getRSSI();

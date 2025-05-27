@@ -90,7 +90,7 @@ class SampleACIDeviceRepository extends ACIDeviceRepository {
   @override
   Future<dynamic> getACIDeviceType({
     required String deviceId,
-    int mtu = 247,
+    int mtu = 244,
   }) async {
     return Future.delayed(Duration.zero).then((_) {
       return [

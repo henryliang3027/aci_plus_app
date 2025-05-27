@@ -1,16 +1,9 @@
 import 'dart:async';
-import 'dart:io';
-
 import 'package:aci_plus_app/repositories/connection_client.dart';
 import 'package:aci_plus_app/repositories/ble_peripheral.dart';
-// import 'package:bluetooth_enable_fork/bluetooth_enable_fork.dart';
 import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:flutter/foundation.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:universal_ble/universal_ble.dart';
-// import 'package:quick_blue/quick_blue.dart';
-// import 'package:win_ble/win_ble.dart';
-// import 'package:win_ble/win_file.dart';
 
 class BLEWindowsClient extends ConnectionClient {
   BLEWindowsClient() : super();
@@ -24,8 +17,6 @@ class BLEWindowsClient extends ConnectionClient {
   late StreamController<ScanReport> _scanReportStreamController;
   StreamController<ConnectionReport> _connectionReportStreamController =
       StreamController<ConnectionReport>();
-  // StreamController<Map<DataKey, String>> _characteristicDataStreamController =
-  //     StreamController<Map<DataKey, String>>();
 
   late StreamController<String> _updateReportStreamController;
 
@@ -103,7 +94,6 @@ class BLEWindowsClient extends ConnectionClient {
 
   @override
   Future<int> getRSSI() async {
-    print('RSSI: ${_peripheral!.rssi}');
     return _peripheral!.rssi;
   }
 
@@ -137,90 +127,11 @@ class BLEWindowsClient extends ConnectionClient {
 
   @override
   Stream<ScanReport> get scanReport async* {
-    // _ble ??= FlutterReactiveBle();
     _scanReportStreamController = StreamController<ScanReport>();
-
     await enableBluetooth();
-
-    // if (isPermissionGranted) {
-
     startScanTimer();
-
     UniversalBle.startScan();
     UniversalBle.onScanResult = _handleScanResult;
-
-    // _discoveredDeviceStreamSubscription =
-    //     QuickBlue.scanResultStream.listen((device) {
-    //   print('${device.name}, ${device.deviceId}');
-
-    //   if (device.name.startsWith(_aciPrefix)) {
-    //     if (!_scanReportStreamController.isClosed) {
-    //       // scanTimer.cancel();
-    //       // WinBle.stopScanning();
-    //       print('Device: ${device.name}');
-
-    //       // _peripheral = Peripheral(
-    //       //   id: device.address,
-    //       //   name: device.name,
-    //       // );
-
-    //       _scanReportStreamController.add(
-    //         ScanReport(
-    //           scanStatus: ScanStatus.scanning,
-    //           peripheral: Peripheral(
-    //             id: device.deviceId,
-    //             name: device.name,
-    //             rssi: device.rssi,
-    //           ),
-    //         ),
-    //       );
-    //     }
-    //   }
-    // }, onError: (error) {
-    //   print('Scan Error $error');
-    //   _scanReportStreamController.add(
-    //     const ScanReport(
-    //       scanStatus: ScanStatus.failure,
-    //       peripheral: null,
-    //     ),
-    //   );
-    // });
-
-    //   _discoveredDeviceStreamSubscription =
-    //       _ble!.scanForDevices(withServices: []).listen((device) {
-    //     if (device.name.startsWith(_aciPrefix)) {
-    //       if (!_scanReportStreamController.isClosed) {
-    //         scanTimer.cancel();
-    //         print('Device: ${device.name}');
-    //         _scanReportStreamController.add(
-    //           ScanReport(
-    //             scanStatus: ScanStatus.success,
-    //             perigheral: Perigheral(
-    //               id: device.id,
-    //               name: device.name,
-    //             ),
-    //           ),
-    //         );
-    //       }
-    //     }
-    //   }, onError: (error) {
-    //     print('Scan Error $error');
-    //     _scanReportStreamController.add(
-    //       const ScanReport(
-    //         scanStatus: ScanStatus.failure,
-    //         perigheral: null,
-    //       ),
-    //     );
-    //   });
-    // } else {
-    // print('bluetooth disable');
-    // _scanReportStreamController.add(
-    //   const ScanReport(
-    //     scanStatus: ScanStatus.disable,
-    //     perigheral: null,
-    //   ),
-    // );
-    // }
 
     yield* _scanReportStreamController.stream;
   }
@@ -282,13 +193,6 @@ class BLEWindowsClient extends ConnectionClient {
         break;
       case false:
         if (_connectionState) {
-          // UniversalBle.setNotifiable(
-          //   deviceId,
-          //   _serviceId,
-          //   _characteristicId,
-          //   BleInputProperty.disabled,
-          // );
-
           _connectionReportStreamController.add(const ConnectionReport(
             connectStatus: ConnectStatus.disconnected,
             errorMessage: 'Device connection failed',
@@ -322,124 +226,12 @@ class BLEWindowsClient extends ConnectionClient {
     _connectionReportStreamController = StreamController<ConnectionReport>();
     UniversalBle.onConnectionChange = _handleConnectionChange;
     UniversalBle.connect(_peripheral!.id);
-
-    // _connectionStreamSubscription = WinBle.connectionStreamOf(_peripheral!.id)
-    //     .listen((connectionStateUpdate) async {
-    //   print('current connection state: $connectionStateUpdate');
-    //   switch (connectionStateUpdate) {
-    //     case false:
-    //       if (_connectionState == true) {
-    //         _connectionReportStreamController.add(const ConnectionReport(
-    //           connectStatus: ConnectStatus.disconnected,
-    //           errorMessage: 'Device connection failed',
-    //         ));
-
-    //         await closeConnectionStream();
-    //       }
-
-    //       break;
-    //     case true:
-    //       _connectionState = true;
-    //       cancelConnectionTimer();
-
-    //       // To Get Characteristic
-    //       List<BleCharacteristic> bleCharacteristics =
-    //           await WinBle.discoverCharacteristics(
-    //         address: _peripheral!.id,
-    //         serviceId: _serviceId,
-    //       );
-
-    //       for (BleCharacteristic bleCharacteristic in bleCharacteristics) {
-    //         print('Characteristic: ${bleCharacteristic.uuid}');
-    //       }
-
-    //       WinBle.subscribeToCharacteristic(
-    //         address: _peripheral!.id,
-    //         serviceId: _serviceId,
-    //         characteristicId: _characteristicId,
-    //       );
-
-    //       _characteristicStreamSubscription =
-    //           WinBle.characteristicValueStream.listen((data) async {
-    //         print('data: $data');
-    //         if (data['value'] != null) {
-    //           List<dynamic> dynamicData = data['value'];
-    //           List<int> rawData = dynamicData.map((e) => e as int).toList();
-    //           print(_currentCommandIndex);
-    //           // print('data length: ${rawData.length}, $rawData');
-
-    //           List<dynamic> finalResult = combineRawData(
-    //             commandIndex: _currentCommandIndex,
-    //             rawData: rawData,
-    //           );
-
-    //           if (_currentCommandIndex >= 1000) {
-    //             List<int> finalRawData = finalResult[1];
-    //             String message = String.fromCharCodes(finalRawData);
-    //             _updateReportStreamController.add(message);
-    //             // cancelCharacteristicDataTimer(name: 'cmd $_currentCommandIndex');
-    //             // List<int> finalRawData = finalResult[1];
-
-    //             // if (!_completer!.isCompleted) {
-    //             //   _completer!.complete(finalRawData);
-    //             // }
-    //           } else {
-    //             if (finalResult[0]) {
-    //               cancelCharacteristicDataTimer(
-    //                   name: 'cmd $_currentCommandIndex');
-    //               List<int> finalRawData = finalResult[1];
-
-    //               bool isValidCRC = checkCRC(finalRawData);
-    //               if (isValidCRC) {
-    //                 if (!_completer!.isCompleted) {
-    //                   _completer!.complete(finalRawData);
-    //                 }
-    //               } else {
-    //                 if (!_completer!.isCompleted) {
-    //                   _completer!
-    //                       .completeError(CharacteristicError.invalidData);
-    //                 }
-    //               }
-    //             }
-    //           }
-    //         }
-    //       }, onError: (error) async {
-    //         print('lisetn to Characteristic failed');
-    //         _connectionReportStreamController.add(const ConnectionReport(
-    //           connectStatus: ConnectStatus.disconnected,
-    //           errorMessage: 'lisetn to Characteristic failed',
-    //         ));
-
-    //         await closeConnectionStream();
-    //       });
-
-    //       _connectionReportStreamController.add(const ConnectionReport(
-    //         connectStatus: ConnectStatus.connected,
-    //       ));
-
-    //       break;
-    //     default:
-    //       break;
-    //   }
-    // }, onError: (error) {
-    //   // cancelConnectionTimer();
-    //   // cancelCharacteristicDataTimer(name: 'connection closed');
-    //   // cancelCompleterOnDisconnected();
-    //   _connectionReportStreamController.add(ConnectionReport(
-    //     connectStatus: ConnectStatus.disconnected,
-    //     errorMessage: error.toString(),
-    //   ));
-    // });
   }
 
   @override
   Stream<ConnectionReport> get connectionStateReport async* {
     yield* _connectionReportStreamController.stream;
   }
-
-  // Stream<Map<DataKey, String>> get characteristicData async* {
-  //   yield* _characteristicDataStreamController.stream;
-  // }
 
   @override
   Future<void> closeScanStream() async {
@@ -495,24 +287,6 @@ class BLEWindowsClient extends ConnectionClient {
     clearCombinedRawData();
   }
 
-  // bool checkCRC(
-  //   List<int> rawData,
-  // ) {
-  //   List<int> crcData = List<int>.from(rawData);
-  //   CRC16.calculateCRC16(command: crcData, usDataLength: crcData.length - 2);
-  //   if (rawData.isNotEmpty) {
-  //     if (crcData[crcData.length - 1] == rawData[rawData.length - 1] &&
-  //         crcData[crcData.length - 2] == rawData[rawData.length - 2]) {
-  //       return true;
-  //     } else {
-  //       return false;
-  //     }
-  //   } else {
-  //     // 如果 rawData 是空的
-  //     return false;
-  //   }
-  // }
-
   // 透過 1G/1.2G/1.8G 同樣的基本指令, 來取得回傳資料的長度
   Future<dynamic> _requestBasicInformationRawData(List<int> value) async {
     _currentCommandIndex = -1;
@@ -538,10 +312,10 @@ class BLEWindowsClient extends ConnectionClient {
     required int commandIndex,
     required List<int> value,
     required String deviceId,
-    int mtu = 247,
+    int mtu = 244,
   }) async {
     _currentCommandIndex = commandIndex;
-    final maxMtu = await UniversalBle.requestMtu(_peripheral!.id, mtu);
+    final maxMtu = await UniversalBle.requestMtu(deviceId, mtu);
     print('Max MTU: $maxMtu');
 
     // 設定 mtu = 247
@@ -701,46 +475,6 @@ class BLEWindowsClient extends ConnectionClient {
     } catch (e) {
       _updateReportStreamController.addError('Sending the chunk error');
     }
-
-    // int chunkSize = 244;
-
-    // List<List<int>> chunks = divideToChunkList(
-    //   binary: binary,
-    //   chunkSize: chunkSize,
-    // );
-
-    // print('binary.length: ${binary.length}, chunks.length: ${chunks.length}');
-    // for (int i = 0; i < chunks.length; i++) {
-    //   List<int> chunk = chunks[i];
-    //   print('chink index: $i, length: ${chunks[i].length}');
-
-    //   try {
-    //     Stopwatch stopwatch = Stopwatch()..start();
-    //     await WinBle.write(
-    //       address: _peripheral!.id,
-    //       service: _serviceId,
-    //       characteristic: _characteristicId,
-    //       data: Uint8List.fromList(chunk),
-    //       writeWithResponse: true,
-    //     );
-    //     // if (i == 10) {
-    //     //   await Future.delayed(Duration(milliseconds: 500));
-    //     // }
-
-    //     _updateReportStreamController
-    //         .add('Sending ${i * chunkSize} ${binary.length}');
-    //     print('doSomething() executed in ${stopwatch.elapsed.inMilliseconds}');
-    //     int elapsedMs = stopwatch.elapsed.inMilliseconds;
-    //     if (elapsedMs >= 400) {
-    //       // _updateReportStreamController
-    //       //     .addError('Sending the chunk $i takes too long, $elapsedMs');
-
-    //       break;
-    //     }
-    //   } catch (e) {
-    //     _updateReportStreamController.addError('Sending the chunk $i error');
-    //   }
-    // }
   }
 
   @override
@@ -763,31 +497,6 @@ class BLEWindowsClient extends ConnectionClient {
       _updateReportStreamController.addError('write data error');
     }
   }
-
-  // Future getCompleter() {
-  //   _completer = Completer<dynamic>();
-  //   return _completer.future;
-  // }
-
-  // void testTimeout() {
-  //   print(1111);
-  //   _characteristicDataTimer = Timer(Duration(seconds: 1), () {
-  //     if (!_completer.isCompleted) {
-  //       _completer.completeError('Timeout occurred');
-  //     }
-  //   });
-  //   print(1111);
-  // }
-
-  // void setTimeout({required Duration duration, required String name}) {
-  //   _characteristicDataTimer = Timer(duration, () {
-  //     print('$name: ${_characteristicDataTimer!.tick.toString()}');
-  //     if (!_completer.isCompleted) {
-  //       _completer.completeError('Timeout occurred');
-  //       print('$name Timeout occurred');
-  //     }
-  //   });
-  // }
 
   void startScanTimer() {
     // 設定 scan timeout
@@ -853,29 +562,6 @@ class BLEWindowsClient extends ConnectionClient {
       if (!_completer!.isCompleted) {
         _completer!.completeError(false);
       }
-    }
-  }
-
-  Future<bool> _requestPermission() async {
-    if (Platform.isAndroid) {
-      Map<Permission, PermissionStatus> statuses = await [
-        Permission.bluetoothConnect,
-        Permission.bluetoothScan,
-        Permission.bluetoothAdvertise,
-        Permission.location,
-      ].request();
-
-      // 所有權限都允許, 才return true
-      if (statuses.values.contains(PermissionStatus.denied)) {
-        return false;
-      } else {
-        return true;
-      }
-    } else if (Platform.isIOS) {
-      return true;
-    } else {
-      // neither android nor ios
-      return false;
     }
   }
 }

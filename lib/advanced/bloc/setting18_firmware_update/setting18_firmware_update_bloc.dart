@@ -517,49 +517,25 @@ class Setting18FirmwareUpdateBloc
   }
 
   Future<void> _transferBinary() async {
-    ConnectionType connectionType = _aciDeviceRepository.checkConnectionType();
+    // 將 binary 切分成每個大小為 chunkSize 的封包
+    int chunkSize = await BLEUtils.getChunkSize();
+    _chunkSize = chunkSize;
 
-    if (connectionType == ConnectionType.usb) {
-      _chunkSize = 8192;
+    List<List<int>> chunks = BLEUtils.divideToChunkList(
+      binary: state.binaryCheckResult.binary,
+      chunkSize: _chunkSize,
+    );
 
-      List<List<int>> chunks = BLEUtils.divideToChunkList(
-        binary: state.binaryCheckResult.binary,
-        chunkSize: _chunkSize,
-      );
+    _chunkLength = chunks.length;
 
-      _chunkLength = chunks.length;
-
-      for (int i = 0; i < _chunkLength; i++) {
-        if (!_isReceivedChecksumOrDisconnected) {
-          await _firmwareRepository.transferBinaryChunk(
-            chunk: chunks[i],
-            indexOfChunk: i,
-          );
-        } else {
-          break;
-        }
-      }
-    } else {
-      // 將 binary 切分成每個大小為 chunkSize 的封包
-      int chunkSize = await BLEUtils.getChunkSize();
-      _chunkSize = chunkSize;
-
-      List<List<int>> chunks = BLEUtils.divideToChunkList(
-        binary: state.binaryCheckResult.binary,
-        chunkSize: _chunkSize,
-      );
-
-      _chunkLength = chunks.length;
-
-      for (int i = 0; i < _chunkLength; i++) {
-        if (!_isReceivedChecksumOrDisconnected) {
-          await _firmwareRepository.transferBinaryChunk(
-            chunk: chunks[i],
-            indexOfChunk: i,
-          );
-        } else {
-          break;
-        }
+    for (int i = 0; i < _chunkLength; i++) {
+      if (!_isReceivedChecksumOrDisconnected) {
+        await _firmwareRepository.transferBinaryChunk(
+          chunk: chunks[i],
+          indexOfChunk: i,
+        );
+      } else {
+        break;
       }
     }
   }

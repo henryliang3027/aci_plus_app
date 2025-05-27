@@ -300,7 +300,13 @@ class _QRToolbar extends StatelessWidget {
                       Icons.qr_code_2,
                       size: 26,
                       color: ModeProperty.isExpertMode
-                          ? Theme.of(context).iconTheme.color
+                          ? [
+                              ...state.trunkConfigs,
+                              ...state.distributionConfigs,
+                              ...state.nodeConfigs
+                            ].isNotEmpty
+                              ? Theme.of(context).iconTheme.color
+                              : Colors.grey
                           : Colors.grey,
                     ),
                   ),

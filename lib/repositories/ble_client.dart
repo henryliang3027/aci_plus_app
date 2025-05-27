@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:aci_plus_app/repositories/connection_client.dart';
 import 'package:aci_plus_app/repositories/ble_peripheral.dart';
-// import 'package:bluetooth_enable_fork/bluetooth_enable_fork.dart';
 import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:bluetooth_enable/bluetooth_enable.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
@@ -13,11 +12,6 @@ class BLEClient extends ConnectionClient {
   BLEClient()
       : _ble = FlutterReactiveBle(),
         super();
-  // BLEClient._() : _ble = FlutterReactiveBle();
-
-  // static final BLEClient _instance = BLEClient._();
-
-  // static BLEClient get instance => _instance;
 
   FlutterReactiveBle? _ble;
   final _scanTimeout = 15; // sec
@@ -236,8 +230,6 @@ class BLEClient extends ConnectionClient {
           await closeConnectionStream();
 
           break;
-        default:
-          break;
       }
     }, onError: (error) {
       // cancelConnectionTimer();
@@ -254,10 +246,6 @@ class BLEClient extends ConnectionClient {
   Stream<ConnectionReport> get connectionStateReport async* {
     yield* _connectionReportStreamController.stream;
   }
-
-  // Stream<Map<DataKey, String>> get characteristicData async* {
-  //   yield* _characteristicDataStreamController.stream;
-  // }
 
   @override
   Future<void> closeScanStream() async {
@@ -306,24 +294,6 @@ class BLEClient extends ConnectionClient {
     // _combinedRawData.clear();
   }
 
-  // bool checkCRC(
-  //   List<int> rawData,
-  // ) {
-  //   List<int> crcData = List<int>.from(rawData);
-  //   CRC16.calculateCRC16(command: crcData, usDataLength: crcData.length - 2);
-  //   if (rawData.isNotEmpty) {
-  //     if (crcData[crcData.length - 1] == rawData[rawData.length - 1] &&
-  //         crcData[crcData.length - 2] == rawData[rawData.length - 2]) {
-  //       return true;
-  //     } else {
-  //       return false;
-  //     }
-  //   } else {
-  //     // 如果 rawData 是空的
-  //     return false;
-  //   }
-  // }
-
   // 透過 1G/1.2G/1.8G 同樣的基本指令, 來取得回傳資料的長度
   Future<dynamic> _requestBasicInformationRawData(List<int> value) async {
     _currentCommandIndex = -1;
@@ -349,7 +319,7 @@ class BLEClient extends ConnectionClient {
     required int commandIndex,
     required List<int> value,
     required String deviceId,
-    int mtu = 247,
+    int mtu = 244,
   }) async {
     _currentCommandIndex = commandIndex;
     final negotiatedMtu = await _ble!.requestMtu(deviceId: deviceId, mtu: mtu);
@@ -500,49 +470,6 @@ class BLEClient extends ConnectionClient {
     } catch (e) {
       _updateReportStreamController.addError('Sending the chunk error');
     }
-
-    // negotiatedMtu = 247
-    // 送 chunck0 的時候會出現 status 13 (GATT_INVALID_ATTR_LEN) 的錯誤
-    // final negotiatedMtu =
-    //     await _ble!.requestMtu(deviceId: _perigheral.id, mtu: 244);
-
-    // print('binary.length: ${binary.length}, chunks.length: ${chunks.length}');
-    // for (int i = 0; i < chunks.length; i++) {
-    //   List<int> chunk = chunks[i];
-    //   print('chink index: $i, length: ${chunks[i].length}');
-
-    //   try {
-    //     Stopwatch stopwatch = Stopwatch()..start();
-    //     if (Platform.isAndroid) {
-    //       await _ble!.writeCharacteristicWithResponse(
-    //         _qualifiedCharacteristic,
-    //         value: chunk,
-    //       );
-    //     } else {
-    //       // iOS
-    //       await _ble!.writeCharacteristicWithoutResponse(
-    //         _qualifiedCharacteristic,
-    //         value: chunk,
-    //       );
-    //     }
-    //     // if (i == 10) {
-    //     //   await Future.delayed(Duration(milliseconds: 500));
-    //     // }
-    //     int elapsedMs = stopwatch.elapsed.inMilliseconds;
-    //     if (elapsedMs >= 400) {
-    //       // _updateReportStreamController
-    //       //     .addError('Sending the chunk $i takes too long, $elapsedMs');
-
-    //       break;
-    //     }
-
-    //     _updateReportStreamController
-    //         .add('Sending ${i * chunkSize} ${binary.length}');
-    //     print('doSomething() executed in ${stopwatch.elapsed.inMilliseconds}');
-    //   } catch (e) {
-    //     _updateReportStreamController.addError('Sending the chunk $i error');
-    //   }
-    // }
   }
 
   @override
@@ -569,31 +496,6 @@ class BLEClient extends ConnectionClient {
       _updateReportStreamController.addError('write data error');
     }
   }
-
-  // Future getCompleter() {
-  //   _completer = Completer<dynamic>();
-  //   return _completer.future;
-  // }
-
-  // void testTimeout() {
-  //   print(1111);
-  //   _characteristicDataTimer = Timer(Duration(seconds: 1), () {
-  //     if (!_completer.isCompleted) {
-  //       _completer.completeError('Timeout occurred');
-  //     }
-  //   });
-  //   print(1111);
-  // }
-
-  // void setTimeout({required Duration duration, required String name}) {
-  //   _characteristicDataTimer = Timer(duration, () {
-  //     print('$name: ${_characteristicDataTimer!.tick.toString()}');
-  //     if (!_completer.isCompleted) {
-  //       _completer.completeError('Timeout occurred');
-  //       print('$name Timeout occurred');
-  //     }
-  //   });
-  // }
 
   void startScanTimer() {
     // 設定 scan timeout

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:aci_plus_app/core/utils.dart';
-import 'package:aci_plus_app/repositories/amp18_ccor_node_repository.dart';
 import 'package:aci_plus_app/repositories/config_repository.dart';
 import 'package:aci_plus_app/repositories/node_config.dart';
 import 'package:equatable/equatable.dart';

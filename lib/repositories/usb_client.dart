@@ -5,8 +5,6 @@ import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/crc16_calculate.dart';
 import 'package:aci_plus_app/repositories/connection_client.dart';
 import 'package:aci_plus_app/repositories/ble_peripheral.dart';
-import 'package:aci_plus_app/repositories/usb_client_base.dart';
-import 'package:excel/excel.dart';
 import 'package:ftdi_serial/device_list_result.dart';
 import 'package:ftdi_serial/device_status.dart';
 import 'package:ftdi_serial/ftdi_serial.dart';
@@ -21,7 +19,7 @@ class USBClient extends ConnectionClient {
   StreamSubscription? _deviceStatusStreamSubscription;
   bool _isConnected = false;
 
-  FtdiSerial _ftdiSerial;
+  final FtdiSerial _ftdiSerial;
   int _currentCommandIndex = 0;
 
   Completer<dynamic>? _completer;
@@ -41,8 +39,6 @@ class USBClient extends ConnectionClient {
 
   // 獲取當前連接狀態
   bool get isConnected => _isConnected;
-
-  ACIDeviceType _aciDeviceType = ACIDeviceType.undefined;
 
   @override
   Stream<String> get updateReport async* {
@@ -86,34 +82,8 @@ class USBClient extends ConnectionClient {
 
   @override
   Stream<ScanReport> get scanReport async* {
-    _scanReportStreamController = StreamController<ScanReport>();
-
-    _deviceStatusStreamSubscription =
-        _ftdiSerial.deviceStatusStream.listen((bool isConnected) async {
-      if (isConnected) {
-        _scanReportStreamController.add(
-          const ScanReport(
-            scanStatus: ScanStatus.scanning,
-            peripheral: Peripheral(
-              id: '1027',
-              name: 'FTDI',
-              rssi: 0,
-            ),
-          ),
-        );
-      } else {
-        _scanReportStreamController.add(
-          const ScanReport(scanStatus: ScanStatus.complete, peripheral: null),
-        );
-      }
-    });
-
-    yield* _scanReportStreamController.stream;
+    throw UnimplementedError('USBClient does not support scanReport stream');
   }
-
-  // String decimalToHex(int decimal) {
-  //   return decimal.toRadixString(16).padLeft(2, '0').toUpperCase();
-  // }
 
   @override
   Future<void> connectToDevice(Peripheral peripheral) async {
@@ -221,7 +191,8 @@ class USBClient extends ConnectionClient {
       {required int commandIndex,
       required List<List<int>> chunks,
       Duration timeout = const Duration(seconds: 10)}) {
-    return Future.delayed(const Duration(seconds: 0));
+    throw UnimplementedError(
+        'USBClient does not support writeLongSetCommandToCharacteristic');
   }
 
   void startCharacteristicDataTimer({
@@ -236,6 +207,7 @@ class USBClient extends ConnectionClient {
     });
   }
 
+  @override
   void cancelCharacteristicDataTimer({required String name}) {
     if (_streamDataTimer != null) {
       _streamDataTimer!.cancel();
@@ -256,7 +228,6 @@ class USBClient extends ConnectionClient {
         await _connectionReportStreamController.close();
       }
     }
-    _aciDeviceType = ACIDeviceType.undefined;
     clearCombinedRawData();
 
     _deviceStatusStreamSubscription?.cancel();
@@ -270,24 +241,6 @@ class USBClient extends ConnectionClient {
       if (!_completer!.isCompleted) {
         _completer!.completeError(false);
       }
-    }
-  }
-
-  bool checkCRC(
-    List<int> rawData,
-  ) {
-    List<int> crcData = List<int>.from(rawData);
-    CRC16.calculateCRC16(command: crcData, usDataLength: crcData.length - 2);
-    if (rawData.isNotEmpty) {
-      if (crcData[crcData.length - 1] == rawData[rawData.length - 1] &&
-          crcData[crcData.length - 2] == rawData[rawData.length - 2]) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      // 如果 rawData 是空的
-      return false;
     }
   }
 
@@ -320,11 +273,10 @@ class USBClient extends ConnectionClient {
     required int commandIndex,
     required List<int> value,
     required String deviceId,
-    int mtu = 128,
+    int mtu = 244,
   }) async {
     _currentCommandIndex = commandIndex;
 
-    // 設定 mtu = 128
     List<dynamic> result = await _requestBasicInformationRawData(value);
 
     if (result[0]) {
@@ -333,7 +285,6 @@ class USBClient extends ConnectionClient {
 
       if (length == 17) {
         // 1G/1.2G data length = 17
-        _aciDeviceType = ACIDeviceType.dsim1G1P2G;
         return [
           true,
           ACIDeviceType.dsim1G1P2G,
@@ -343,13 +294,11 @@ class USBClient extends ConnectionClient {
         int partId = rawData[71];
 
         if (partId == 4) {
-          _aciDeviceType = ACIDeviceType.ampCCorNode1P8G;
           return [
             true,
             ACIDeviceType.ampCCorNode1P8G,
           ];
         } else {
-          _aciDeviceType = ACIDeviceType.amp1P8G;
           return [
             true,
             ACIDeviceType.amp1P8G,
@@ -365,10 +314,7 @@ class USBClient extends ConnectionClient {
 
   @override
   Future<int> getRSSI() {
-    return Future.delayed(
-      const Duration(seconds: 0),
-      () => -65,
-    );
+    throw UnimplementedError('RSSI does not support for USB connection');
   }
 
   @override

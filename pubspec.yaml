@@ -40,8 +40,7 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   formz: ^0.6.1
-
-  universal_ble: ^0.12.0 # for windows
+  permission_handler: ^12.0.0+1
   flutter_reactive_ble: ^5.4.0
   bluetooth_enable:
     git:
@@ -69,17 +68,16 @@ dependencies:
   geolocator: ^10.1.0
   touchable: ^1.0.2
   xml: ^6.3.0
-  simple_barcode_scanner: ^0.3.0 # for windows
-  zxing2: ^0.2.3 # fow windows qr code image
+
+  
   camera_checker:
     git:
       url: https://github.com/henryliang3027/camera_checker.git
       ref: main
   qr_code_scanner:
     git:
-      url: https://github.com/samnbd/qr_code_scanner
+      url: https://github.com/henryliang3027/qr_code_scanner
       ref: master
-      version: ^1.0.0
   qr_flutter: ^4.1.0
   json_annotation: ^4.8.1
 
@@ -88,19 +86,6 @@ dependencies:
     git:
       url: https://github.com/henryliang3027/flutter_speed_chart.git
       ref: revise1
-
-  win_outlook:
-    git:
-      url: https://github.com/henryliang3027/win_outlook.git
-      ref: main
-
-  # window_manager: ^0.4.3 # for windows
-
-  # path_drawing:
-  #   git:
-  #     url: https://github.com/henryliang3027/flutter_path_drawing.git
-  #     ref: master
-  # assets_audio_player: ^3.1.0
 
   # speed_chart:
   #   path: /Users/henry.liang/projects/flutter_speed_chart
@@ -117,10 +102,13 @@ dependencies:
   ftdi_serial:
     path: /Users/henry.liang/projects_git/20250519/new/ftdi_serial
 
-  # usb_serial: ^0.5.2
-
-  # image: ^4.2.0
-
+  universal_ble: ^0.12.0 # for windows
+  webview_windows: ^0.4.0 # for windows
+  zxing2: ^0.2.3 # for windows qr code image
+  win_outlook: # for windows share file by email
+    git:
+      url: https://github.com/henryliang3027/win_outlook.git
+      ref: main
 
 dev_dependencies:
   flutter_test:
