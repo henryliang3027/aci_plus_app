@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:aci_plus_app/advanced/bloc/setting18_config/setting18_config_bloc.dart';
-import 'package:aci_plus_app/advanced/shared/utils.dart';
+
 import 'package:aci_plus_app/advanced/view/description_input_page.dart';
 import 'package:aci_plus_app/advanced/view/qr_code_image_viewer.dart';
 import 'package:aci_plus_app/advanced/view/qr_code_scanner_win.dart';
@@ -13,6 +13,7 @@ import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/config.dart';
+import 'package:aci_plus_app/setting/views/custom_setting_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -168,7 +169,7 @@ class Setting18ConfigForm extends StatelessWidget {
         } else if (state.decodeStatus.isRequestFailure) {
           showDecodeFailureDialog();
         } else if (state.pickImageStatus.isRequestInProgress) {
-          showProgressingDialog(context);
+          showInProgressDialog(context);
         } else if (state.pickImageStatus.isRequestSuccess) {
           Navigator.of(context).pop();
           if (state.imageFilePath.isNotEmpty) {

@@ -40,6 +40,8 @@
     "pilotFrequencyBandwidthSettings": "Configuración Intervalo",
     "pilotFrequencyUserSettings": "Configuración Usuario",
     "pilotFrequencyBenchMode": "Modo de prueba",
+    "pilotFrequencyBenchMode1p8G": "Modo de prueba 1.8G",
+    "pilotFrequencyBenchMode1p2G": "Modo de prueba 1.2G",
     "pilotFrequencySmartSettings": "Configuraciones inteligentes",
     "pilotFrequency1": "Baja Frecuencia",
     "pilotFrequency2": "Alta Frecuencia",

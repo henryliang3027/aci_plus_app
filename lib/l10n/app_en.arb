@@ -40,6 +40,8 @@
     "pilotFrequencyBandwidthSettings": "Bandwidth Settings",
     "pilotFrequencyUserSettings": "User Settings",
     "pilotFrequencyBenchMode": "Bench Mode",
+    "pilotFrequencyBenchMode1p8G": "Bench Mode 1.8G",
+    "pilotFrequencyBenchMode1p2G": "Bench Mode 1.2G",
     "pilotFrequencySmartSettings": "Smart Settings",
     "pilotFrequency1": "Low Pilot",
     "pilotFrequency2": "High Pilot",

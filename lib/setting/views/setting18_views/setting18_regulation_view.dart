@@ -146,43 +146,6 @@ class Setting18RegulationView extends StatelessWidget {
       return rows;
     }
 
-    Future<void> showFailureDialog(String msg) async {
-      return showDialog<void>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              AppLocalizations.of(context)!.dialogTitleError,
-              style: const TextStyle(
-                color: CustomStyle.customRed,
-              ),
-            ),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  Text(
-                    getMessageLocalization(
-                      msg: msg,
-                      context: context,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              ElevatedButton(
-                child: const Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop(); // pop dialog
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
-
     List<Widget> getConfigurationParameterWidgetsByPartId(String partId) {
       List<Enum> items = SettingItemTable.itemsMap[partId] ?? [];
       List<Widget> widgets = [];
@@ -377,18 +340,30 @@ class _PilotFrequencyMode extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<String> pilotFrequencyModeTexts = [
-      AppLocalizations.of(context)!.pilotFrequencyBandwidthSettings,
-      AppLocalizations.of(context)!.pilotFrequencyUserSettings,
-      AppLocalizations.of(context)!.pilotFrequencyBenchMode,
-      //  AppLocalizations.of(context)!.pilotFrequencySmartSettings,
-    ];
-
     return BlocBuilder<Setting18RegulationBloc, Setting18RegulationState>(
       buildWhen: (previous, current) =>
           previous.pilotFrequencyMode != current.pilotFrequencyMode ||
           previous.editMode != current.editMode,
       builder: (context, state) {
+        List<String> pilotFrequencyModeTexts = [];
+
+        if (state.eqType == EQType.board) {
+          pilotFrequencyModeTexts = [
+            AppLocalizations.of(context)!.pilotFrequencyBandwidthSettings,
+            AppLocalizations.of(context)!.pilotFrequencyUserSettings,
+            AppLocalizations.of(context)!.pilotFrequencyBenchMode1p8G,
+            AppLocalizations.of(context)!.pilotFrequencyBenchMode1p8G,
+            //  AppLocalizations.of(context)!.pilotFrequencySmartSettings,
+          ];
+        } else {
+          pilotFrequencyModeTexts = [
+            AppLocalizations.of(context)!.pilotFrequencyBandwidthSettings,
+            AppLocalizations.of(context)!.pilotFrequencyUserSettings,
+            AppLocalizations.of(context)!.pilotFrequencyBenchMode,
+            //  AppLocalizations.of(context)!.pilotFrequencySmartSettings,
+          ];
+        }
+
         return pilotFrequencyModeGridViewButton(
           context: context,
           crossAxisCount: 1,

@@ -1,6 +1,5 @@
 import 'package:aci_plus_app/advanced/bloc/setting18_advanced/setting18_advanced_bloc.dart';
 import 'package:aci_plus_app/advanced/bloc/setting18_firmware_update/setting18_firmware_update_bloc.dart';
-import 'package:aci_plus_app/advanced/shared/utils.dart';
 import 'package:aci_plus_app/chart/shared/message_dialog.dart';
 import 'package:aci_plus_app/chart/view/code_input_page.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
@@ -8,6 +7,7 @@ import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
+import 'package:aci_plus_app/setting/views/custom_setting_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -544,7 +544,7 @@ class _FilePicker extends StatelessWidget {
           previous.binaryLoadStatus != current.binaryLoadStatus,
       listener: (context, state) {
         if (state.binaryLoadStatus.isRequestInProgress) {
-          showProgressingDialog(context);
+          showInProgressDialog(context);
         } else if (state.binaryLoadStatus.isRequestSuccess) {
           if (ModalRoute.of(context)?.isCurrent == false) {
             Navigator.of(context).pop();

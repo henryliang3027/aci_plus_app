@@ -41,6 +41,8 @@
     "pilotFrequencyBandwidthSettings": "頻寬設定",
     "pilotFrequencyUserSettings": "使用者設定",
     "pilotFrequencyBenchMode": "調測模式",
+    "pilotFrequencyBenchMode1p8G": "調測模式 1.8G",
+    "pilotFrequencyBenchMode1p2G": "調測模式 1.2G",
     "pilotFrequencySmartSettings": "智慧設定",
     "pilotFrequency1": "低頻",
     "pilotFrequency2": "高頻",

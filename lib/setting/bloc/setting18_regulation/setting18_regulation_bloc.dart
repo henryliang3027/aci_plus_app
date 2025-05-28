@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
+import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/setting/model/custom_input.dart';
 import 'package:aci_plus_app/setting/model/setting_widgets.dart';
@@ -83,6 +84,9 @@ class Setting18RegulationBloc
     String tgcCableLength =
         characteristicDataCache[DataKey.tgcCableLength] ?? '';
 
+    String partId = characteristicDataCache[DataKey.partId] ?? '';
+    EQType eqType = eqTypeMap[partId] ?? EQType.none;
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       splitOption: splitOption,
@@ -96,6 +100,7 @@ class Setting18RegulationBloc
       lastChannelLoadingLevel:
           RangeFloatPointInput.dirty(lastChannelLoadingLevel),
       pilotFrequencyMode: pilotFrequencyMode,
+      eqType: eqType,
       pilotFrequency1: RangeIntegerInput.dirty(pilotFrequency1),
       pilotFrequency2: RangeIntegerInput.dirty(pilotFrequency2),
       manualModePilot1RFOutputPower: manualModePilot1RFOutputPower,

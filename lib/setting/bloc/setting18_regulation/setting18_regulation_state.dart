@@ -9,6 +9,7 @@ class Setting18RegulationState extends Equatable {
     this.lastChannelLoadingFrequency = const RangeIntegerInput.pure(),
     this.lastChannelLoadingLevel = const RangeFloatPointInput.pure(),
     this.pilotFrequencyMode = '',
+    this.eqType = EQType.none,
     this.pilotFrequency1 = const RangeIntegerInput.pure(),
     this.pilotFrequency2 = const RangeIntegerInput.pure(),
     this.manualModePilot1RFOutputPower = '',
@@ -34,6 +35,7 @@ class Setting18RegulationState extends Equatable {
   final RangeIntegerInput lastChannelLoadingFrequency;
   final RangeFloatPointInput lastChannelLoadingLevel;
   final String pilotFrequencyMode;
+  final EQType eqType;
   final RangeIntegerInput pilotFrequency1;
   final RangeIntegerInput pilotFrequency2;
   final String manualModePilot1RFOutputPower;
@@ -59,6 +61,7 @@ class Setting18RegulationState extends Equatable {
     RangeIntegerInput? lastChannelLoadingFrequency,
     RangeFloatPointInput? lastChannelLoadingLevel,
     String? pilotFrequencyMode,
+    EQType? eqType,
     RangeIntegerInput? pilotFrequency1,
     RangeIntegerInput? pilotFrequency2,
     String? manualModePilot1RFOutputPower,
@@ -89,6 +92,7 @@ class Setting18RegulationState extends Equatable {
       lastChannelLoadingLevel:
           lastChannelLoadingLevel ?? this.lastChannelLoadingLevel,
       pilotFrequencyMode: pilotFrequencyMode ?? this.pilotFrequencyMode,
+      eqType: eqType ?? this.eqType,
       pilotFrequency1: pilotFrequency1 ?? this.pilotFrequency1,
       pilotFrequency2: pilotFrequency2 ?? this.pilotFrequency2,
       manualModePilot1RFOutputPower:
@@ -120,6 +124,7 @@ class Setting18RegulationState extends Equatable {
         lastChannelLoadingFrequency,
         lastChannelLoadingLevel,
         pilotFrequencyMode,
+        eqType,
         pilotFrequency1,
         pilotFrequency2,
         manualModePilot1RFOutputPower,

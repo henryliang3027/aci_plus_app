@@ -174,7 +174,17 @@ class USBClient extends ConnectionClient {
     Future.microtask(() async {
       try {
         // 寫入資料到 USB
-        await _ftdiSerial.write(Uint8List.fromList(value));
+
+        bool isSuccess = await _ftdiSerial.write(Uint8List.fromList(value));
+        if (!isSuccess) {
+          cancelCharacteristicDataTimer(
+              name:
+                  'cmd $commandIndex, ${CharacteristicError.writeDataError.name}');
+          if (!_completer!.isCompleted) {
+            print('writeCharacteristic failed: ftdev does not open');
+            _completer!.completeError(CharacteristicError.writeDataError.name);
+          }
+        }
       } catch (e) {
         cancelCharacteristicDataTimer(
             name:

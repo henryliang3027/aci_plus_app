@@ -110,6 +110,12 @@ enum SettingControl {
   returnIngressSetting5And6,
 }
 
+enum EQType {
+  none,
+  board,
+  module,
+}
+
 // 0: MFTJ (預留, app不適用)
 // 1: SDLE
 // 2: MOTO BLE
@@ -122,19 +128,30 @@ enum SettingControl {
 // 9: SDAM
 // 10: MFT8
 
-const Map<String, String> partIdMap = {
-  'd': 'DSIM',
-  '0': 'MFTJ',
-  '1': 'SDLE',
-  '2': 'AMT BLE',
-  '3': 'AMT MB',
-  '4': 'AFM Node',
-  '5': 'AFM TR',
-  '6': 'AFM BR',
-  '7': 'AFM LE',
-  '8': 'SDAT',
-  '9': 'SDAM',
-  '10': 'MFT8',
+const Map<String, EQType> eqTypeMap = {
+  'd': EQType.none, // DSIM
+  '0': EQType.module, // MFTJ (預留, app不適用)
+  '1': EQType.module, // SDLE
+  '2': EQType.module, // MOTO BLE
+  '3': EQType.module, // MOTO MB
+  '4': EQType.module, // C-Cor Node
+  '5': EQType.module, // C-Cor TR
+  '6': EQType.module, // C-Cor BR
+  '7': EQType.module, // C-Cor LE
+  '8': EQType.module, // SDAT
+  '9': EQType.module, // SDAM
+  '10': EQType.board, // MFT8
+  '11': EQType.board, // SDLE EQ on board
+  '12': EQType.board, // MOTO BLE EQ on board
+  '13': EQType.board, // MOTO MB EQ on board
+  '15': EQType.module, // C-Cor TR EQ on board
+  '16': EQType.module, // C-Cor BR EQ on board
+  '17': EQType.module, // C-Cor LE EQ on board
+  '18': EQType.module, // SDAT EQ on board
+  '19': EQType.module, // SDAM EQ on board
+  '21': EQType.module, // SA BT EQ on board
+  '22': EQType.module, // SA HD EQ on board
+  '23': EQType.module, // SA LE EQ on board
 };
 
 const Map<String, String> settingGraphFilePath = {

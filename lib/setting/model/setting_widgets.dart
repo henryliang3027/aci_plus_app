@@ -1,4 +1,5 @@
 import 'package:aci_plus_app/core/custom_style.dart';
+import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/setting/model/custom_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -2409,6 +2410,14 @@ List<String> pilotFrequencyModeValues = const [
   '1',
   // '2',
   '3',
+];
+
+List<String> onBoardPilotFrequencyModeValues = [
+  '0',
+  '1',
+  // '2',
+  EQType.board.name,
+  EQType.module.name,
 ];
 
 // 給 widget 用, 由 grid item index 找 text
