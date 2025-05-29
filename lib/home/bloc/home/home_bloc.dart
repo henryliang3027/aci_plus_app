@@ -685,7 +685,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     ConnectionType connectionType = _aciDeviceRepository.checkConnectionType();
 
     if (connectionType == ConnectionType.usb) {
-      await _amp18Repository.set1p8GTransmitDelayTime(ms: 58);
+      await _amp18Repository.set1p8GTransmitDelayTime(ms: 30);
     }
 
     Map<DataKey, String> newCharacteristicData = {};

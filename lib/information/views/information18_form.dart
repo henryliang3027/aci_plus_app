@@ -86,7 +86,7 @@ class Information18Form extends StatelessWidget {
 
 enum HomeMenu {
   refresh,
-  mode,
+  // mode,
   theme,
   warmReset,
   about,
@@ -126,38 +126,39 @@ class __PopupMenuState extends State<_PopupMenu> {
                     context.read<HomeBloc>().add(const DeviceRefreshed());
                   },
                 ),
-                menuItem(
-                  value: HomeMenu.mode,
-                  iconData: Icons.safety_divider,
-                  title: state.mode == Mode.basic
-                      ? AppLocalizations.of(context)!.expertMode
-                      : AppLocalizations.of(context)!.basicMode,
-                  onTap: () {
-                    if (state.mode == Mode.basic) {
-                      showEnterExpertModeDialog(context: context)
-                          .then((bool? isMatch) {
-                        if (isMatch != null) {
-                          if (isMatch) {
-                            context
-                                .read<HomeBloc>()
-                                .add(const ModeChanged(Mode.expert));
-                          }
-                        }
-                      });
-                    } else {
-                      showToggleBasicModeDialog(context: context)
-                          .then((bool? isConfirm) {
-                        if (isConfirm != null) {
-                          if (isConfirm) {
-                            context
-                                .read<HomeBloc>()
-                                .add(const ModeChanged(Mode.basic));
-                          }
-                        }
-                      });
-                    }
-                  },
-                ),
+                // 20250529 取消 mode 功能
+                // menuItem(
+                //   value: HomeMenu.mode,
+                //   iconData: Icons.safety_divider,
+                //   title: state.mode == Mode.basic
+                //       ? AppLocalizations.of(context)!.expertMode
+                //       : AppLocalizations.of(context)!.basicMode,
+                //   onTap: () {
+                //     if (state.mode == Mode.basic) {
+                //       showEnterExpertModeDialog(context: context)
+                //           .then((bool? isMatch) {
+                //         if (isMatch != null) {
+                //           if (isMatch) {
+                //             context
+                //                 .read<HomeBloc>()
+                //                 .add(const ModeChanged(Mode.expert));
+                //           }
+                //         }
+                //       });
+                //     } else {
+                //       showToggleBasicModeDialog(context: context)
+                //           .then((bool? isConfirm) {
+                //         if (isConfirm != null) {
+                //           if (isConfirm) {
+                //             context
+                //                 .read<HomeBloc>()
+                //                 .add(const ModeChanged(Mode.basic));
+                //           }
+                //         }
+                //       });
+                //     }
+                //   },
+                // ),
                 menuItem(
                   value: HomeMenu.theme,
                   iconData: Icons.colorize_rounded,
