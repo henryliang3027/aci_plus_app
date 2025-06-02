@@ -116,6 +116,11 @@ enum EQType {
   module,
 }
 
+enum BenchMode {
+  frequency1p8G,
+  frequency1p2G,
+}
+
 // 0: MFTJ (預留, app不適用)
 // 1: SDLE
 // 2: MOTO BLE

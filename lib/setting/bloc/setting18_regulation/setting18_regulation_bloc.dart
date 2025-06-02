@@ -53,6 +53,8 @@ class Setting18RegulationBloc
     Map<DataKey, String> characteristicDataCache =
         _amp18Repository.characteristicDataCache;
 
+    String partId = characteristicDataCache[DataKey.partId] ?? '';
+
     String splitOption = characteristicDataCache[DataKey.splitOption] ?? '';
     String firstChannelLoadingFrequency =
         characteristicDataCache[DataKey.firstChannelLoadingFrequency] ?? '';
@@ -62,8 +64,29 @@ class Setting18RegulationBloc
         characteristicDataCache[DataKey.firstChannelLoadingLevel] ?? '';
     String lastChannelLoadingLevel =
         characteristicDataCache[DataKey.lastChannelLoadingLevel] ?? '';
+
+    EQType eqType = eqTypeMap[partId] ?? EQType.none;
+
     String pilotFrequencyMode =
         characteristicDataCache[DataKey.pilotFrequencyMode] ?? '';
+
+    if (eqType == EQType.board) {
+      // 如果是 onboard 放大器，則 pilotFrequencyMode 根據
+      // lastChannelLoadingFrequency 來決定是 frequency1p2G 或 frequency1p8G
+      if (pilotFrequencyMode == '3') {
+        int frequency = int.tryParse(lastChannelLoadingFrequency) ?? 0;
+        if (frequency <= 1218) {
+          pilotFrequencyMode = BenchMode.frequency1p2G.name;
+          characteristicDataCache[DataKey.pilotFrequencyMode] =
+              BenchMode.frequency1p2G.name;
+        } else {
+          pilotFrequencyMode = BenchMode.frequency1p8G.name;
+          characteristicDataCache[DataKey.pilotFrequencyMode] =
+              BenchMode.frequency1p8G.name;
+        }
+      }
+    }
+
     String pilotFrequency1 =
         characteristicDataCache[DataKey.pilotFrequency1] ?? '';
     String pilotFrequency2 =
@@ -83,9 +106,6 @@ class Setting18RegulationBloc
             state.rfOutputLogInterval;
     String tgcCableLength =
         characteristicDataCache[DataKey.tgcCableLength] ?? '';
-
-    String partId = characteristicDataCache[DataKey.partId] ?? '';
-    EQType eqType = eqTypeMap[partId] ?? EQType.none;
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
@@ -168,6 +188,8 @@ class Setting18RegulationBloc
     PilotFrequencyModeChanged event,
     Emitter<Setting18RegulationState> emit,
   ) {
+    print(
+        'PilotFrequencyModeChanged: ${event.pilotFrequencyMode}, ${state.initialValues[DataKey.pilotFrequencyMode]}');
     Set<DataKey> tappedSet = Set.from(state.tappedSet);
     tappedSet.add(DataKey.pilotFrequencyMode);
 
@@ -807,6 +829,33 @@ class Setting18RegulationBloc
     }
   }
 
+  Future<void> _setBoardPilotFrequencyOnBenchMode({
+    required String benchModeName,
+    required List<String> settingResult,
+  }) async {
+    bool resultOfSetPilotFrequencyMode = false;
+    bool resultOfSetLastChannelLoadingFrequency = false;
+    if (benchModeName == BenchMode.frequency1p2G.name) {
+      resultOfSetPilotFrequencyMode =
+          await _amp18Repository.set1p8GPilotFrequencyMode('3');
+
+      resultOfSetLastChannelLoadingFrequency =
+          await _amp18Repository.set1p8GLastChannelLoadingFrequency('1218');
+    } else {
+      resultOfSetPilotFrequencyMode =
+          await _amp18Repository.set1p8GPilotFrequencyMode('3');
+
+      resultOfSetLastChannelLoadingFrequency =
+          await _amp18Repository.set1p8GLastChannelLoadingFrequency('1794');
+    }
+
+    // Add results to setting result list
+    settingResult.addAll([
+      '${DataKey.pilotFrequencyMode.name},$resultOfSetPilotFrequencyMode',
+      '${DataKey.lastChannelLoadingFrequency.name},$resultOfSetLastChannelLoadingFrequency',
+    ]);
+  }
+
   void _onSettingSubmitted(
     SettingSubmitted event,
     Emitter<Setting18RegulationState> emit,
@@ -869,11 +918,22 @@ class Setting18RegulationBloc
 
     if (state.pilotFrequencyMode !=
         state.initialValues[DataKey.pilotFrequencyMode]) {
-      bool resultOfSetPilotFrequencyMode = await _amp18Repository
-          .set1p8GPilotFrequencyMode(state.pilotFrequencyMode);
+      if (state.eqType == EQType.board) {
+        if (state.pilotFrequencyMode == BenchMode.frequency1p2G.name ||
+            state.pilotFrequencyMode == BenchMode.frequency1p8G.name) {
+          // 在 bench mode 下設定 lastChannelLoadingFrequency
+          await _setBoardPilotFrequencyOnBenchMode(
+            benchModeName: state.pilotFrequencyMode,
+            settingResult: settingResult,
+          );
+        }
+      } else {
+        bool resultOfSetPilotFrequencyMode = await _amp18Repository
+            .set1p8GPilotFrequencyMode(state.pilotFrequencyMode);
 
-      settingResult.add(
-          '${DataKey.pilotFrequencyMode.name},$resultOfSetPilotFrequencyMode');
+        settingResult.add(
+            '${DataKey.pilotFrequencyMode.name},$resultOfSetPilotFrequencyMode');
+      }
     }
 
     if (state.pilotFrequency1.value !=

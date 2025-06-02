@@ -135,6 +135,11 @@ class USBClient extends ConnectionClient {
               }
             }
           }
+        }, onError: (error) {
+          print('USB data stream error: $error');
+          if (!_completer!.isCompleted) {
+            _completer!.completeError(CharacteristicError.writeDataError);
+          }
         });
 
         _connectionReportStreamController.add(const ConnectionReport(

@@ -352,9 +352,26 @@ class _PilotFrequencyMode extends StatelessWidget {
             AppLocalizations.of(context)!.pilotFrequencyBandwidthSettings,
             AppLocalizations.of(context)!.pilotFrequencyUserSettings,
             AppLocalizations.of(context)!.pilotFrequencyBenchMode1p8G,
-            AppLocalizations.of(context)!.pilotFrequencyBenchMode1p8G,
+            AppLocalizations.of(context)!.pilotFrequencyBenchMode1p2G,
             //  AppLocalizations.of(context)!.pilotFrequencySmartSettings,
           ];
+
+          return pilotFrequencyModeGridViewButton(
+            context: context,
+            crossAxisCount: 1,
+            texts: pilotFrequencyModeTexts,
+            values: onBoardPilotFrequencyModeValues,
+            editMode: state.editMode,
+            pilotFrequencyMode: state.pilotFrequencyMode,
+            onGridPressed: (index) => context
+                .read<Setting18RegulationBloc>()
+                .add(PilotFrequencyModeChanged(
+                    onBoardPilotFrequencyModeValues[index])),
+            color: getSettingListCardColor(
+              context: context,
+              isTap: state.tappedSet.contains(DataKey.pilotFrequencyMode),
+            ),
+          );
         } else {
           pilotFrequencyModeTexts = [
             AppLocalizations.of(context)!.pilotFrequencyBandwidthSettings,
@@ -362,23 +379,24 @@ class _PilotFrequencyMode extends StatelessWidget {
             AppLocalizations.of(context)!.pilotFrequencyBenchMode,
             //  AppLocalizations.of(context)!.pilotFrequencySmartSettings,
           ];
-        }
 
-        return pilotFrequencyModeGridViewButton(
-          context: context,
-          crossAxisCount: 1,
-          texts: pilotFrequencyModeTexts,
-          values: pilotFrequencyModeValues,
-          editMode: state.editMode,
-          pilotFrequencyMode: state.pilotFrequencyMode,
-          onGridPressed: (index) => context
-              .read<Setting18RegulationBloc>()
-              .add(PilotFrequencyModeChanged(pilotFrequencyModeValues[index])),
-          color: getSettingListCardColor(
+          return pilotFrequencyModeGridViewButton(
             context: context,
-            isTap: state.tappedSet.contains(DataKey.pilotFrequencyMode),
-          ),
-        );
+            crossAxisCount: 1,
+            texts: pilotFrequencyModeTexts,
+            values: pilotFrequencyModeValues,
+            editMode: state.editMode,
+            pilotFrequencyMode: state.pilotFrequencyMode,
+            onGridPressed: (index) => context
+                .read<Setting18RegulationBloc>()
+                .add(
+                    PilotFrequencyModeChanged(pilotFrequencyModeValues[index])),
+            color: getSettingListCardColor(
+              context: context,
+              isTap: state.tappedSet.contains(DataKey.pilotFrequencyMode),
+            ),
+          );
+        }
       },
     );
   }

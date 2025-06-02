@@ -2120,25 +2120,25 @@ Widget pilotFrequencyModeGridViewButton({
                       foregroundColor: getForegroundColor(
                         context: context,
                         targetValue: pilotFrequencyMode,
-                        value: pilotFrequencyModeValues[index],
+                        value: values[index],
                       ),
                       backgroundColor: editMode
                           ? getBackgroundColor(
                               context: context,
                               targetValue: pilotFrequencyMode,
-                              value: pilotFrequencyModeValues[index],
+                              value: values[index],
                             )
                           : getDisabledBackgroundColor(
                               context: context,
                               targetValue: pilotFrequencyMode,
-                              value: pilotFrequencyModeValues[index],
+                              value: values[index],
                             ),
                       side: BorderSide(
                         color: editMode
                             ? getBorderColor(
                                 context: context,
                                 targetValue: pilotFrequencyMode,
-                                value: pilotFrequencyModeValues[index],
+                                value: values[index],
                               )
                             : getDisabledBorderColor(),
                         width: 1.0,
@@ -2416,8 +2416,8 @@ List<String> onBoardPilotFrequencyModeValues = [
   '0',
   '1',
   // '2',
-  EQType.board.name,
-  EQType.module.name,
+  BenchMode.frequency1p8G.name,
+  BenchMode.frequency1p2G.name,
 ];
 
 // 給 widget 用, 由 grid item index 找 text
