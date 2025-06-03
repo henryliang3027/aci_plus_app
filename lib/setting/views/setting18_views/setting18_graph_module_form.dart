@@ -2,6 +2,7 @@ import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
+import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_graph_module/setting18_graph_module_bloc.dart';
@@ -1223,20 +1224,54 @@ class _PilotFrequencyMode extends StatelessWidget {
           previous.pilotFrequencyMode != current.pilotFrequencyMode ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        return pilotFrequencyModeGridViewButton(
-          context: context,
-          crossAxisCount: 1,
-          texts: pilotFrequencyModeTexts,
-          values: pilotFrequencyModeValues,
-          editMode: ModeProperty.isExpertMode ? state.editMode : false,
-          pilotFrequencyMode: state.pilotFrequencyMode,
-          onGridPressed: (index) => context
-              .read<Setting18GraphModuleBloc>()
-              .add(PilotFrequencyModeChanged(
-                  pilotFrequencyMode: pilotFrequencyModeValues[index])),
-          elevation: CustomStyle.graphSettingCardElevation,
-          color: CustomStyle.graphSettingCardColor,
-        );
+        List<String> pilotFrequencyModeTexts = [];
+        if (state.eqType == EQType.board) {
+          pilotFrequencyModeTexts = [
+            AppLocalizations.of(context)!.pilotFrequencyBandwidthSettings,
+            AppLocalizations.of(context)!.pilotFrequencyUserSettings,
+            AppLocalizations.of(context)!.pilotFrequencyBenchMode1p8G,
+            AppLocalizations.of(context)!.pilotFrequencyBenchMode1p2G,
+            //  AppLocalizations.of(context)!.pilotFrequencySmartSettings,
+          ];
+
+          return pilotFrequencyModeGridViewButton(
+            context: context,
+            crossAxisCount: 1,
+            texts: pilotFrequencyModeTexts,
+            values: onBoardPilotFrequencyModeValues,
+            editMode: ModeProperty.isExpertMode ? state.editMode : false,
+            pilotFrequencyMode: state.pilotFrequencyMode,
+            onGridPressed: (index) => context
+                .read<Setting18GraphModuleBloc>()
+                .add(PilotFrequencyModeChanged(
+                    pilotFrequencyMode:
+                        onBoardPilotFrequencyModeValues[index])),
+            elevation: CustomStyle.graphSettingCardElevation,
+            color: CustomStyle.graphSettingCardColor,
+          );
+        } else {
+          pilotFrequencyModeTexts = [
+            AppLocalizations.of(context)!.pilotFrequencyBandwidthSettings,
+            AppLocalizations.of(context)!.pilotFrequencyUserSettings,
+            AppLocalizations.of(context)!.pilotFrequencyBenchMode,
+            //  AppLocalizations.of(context)!.pilotFrequencySmartSettings,
+          ];
+
+          return pilotFrequencyModeGridViewButton(
+            context: context,
+            crossAxisCount: 1,
+            texts: pilotFrequencyModeTexts,
+            values: pilotFrequencyModeValues,
+            editMode: ModeProperty.isExpertMode ? state.editMode : false,
+            pilotFrequencyMode: state.pilotFrequencyMode,
+            onGridPressed: (index) => context
+                .read<Setting18GraphModuleBloc>()
+                .add(PilotFrequencyModeChanged(
+                    pilotFrequencyMode: pilotFrequencyModeValues[index])),
+            elevation: CustomStyle.graphSettingCardElevation,
+            color: CustomStyle.graphSettingCardColor,
+          );
+        }
       },
     );
   }

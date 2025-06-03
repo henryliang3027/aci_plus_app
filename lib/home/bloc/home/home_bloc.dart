@@ -686,6 +686,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     if (connectionType == ConnectionType.usb) {
       await _amp18Repository.set1p8GTransmitDelayTime(ms: 30);
+    } else {
+      // BLE 連線時, 根據 RSSI 設定 delay
+      await _amp18Repository.set1p8GTransmitDelayTime();
     }
 
     Map<DataKey, String> newCharacteristicData = {};
@@ -836,10 +839,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     // 處理 requestCommand1p8G3 RFInOut 讀取
     // 最多 retry 3 次, 連續失敗3次就視為失敗
     for (int i = 0; i < 3; i++) {
-      if (connectionType == ConnectionType.ble) {
-        // 根據RSSI設定每個 chunk 之間的 delay
-        await _amp18Repository.set1p8GTransmitDelayTime();
-      }
+      // if (connectionType == ConnectionType.ble) {
+      //   // 根據RSSI設定每個 chunk 之間的 delay
+      //   await _amp18Repository.set1p8GTransmitDelayTime();
+      // }
 
       resultOf1p8G3 = await _amp18Repository.requestCommand1p8G3();
 
@@ -901,10 +904,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     // 處理 requestCommand1p8GForLogChunk 讀取
     // 最多 retry 3 次, 連續失敗3次就視為失敗
     for (int i = 0; i < 3; i++) {
-      if (connectionType == ConnectionType.ble) {
-        // 根據RSSI設定每個 chunk 之間的 delay
-        await _amp18Repository.set1p8GTransmitDelayTime();
-      }
+      // if (connectionType == ConnectionType.ble) {
+      //   // 根據RSSI設定每個 chunk 之間的 delay
+      //   await _amp18Repository.set1p8GTransmitDelayTime();
+      // }
 
       //休息一段時間再讀取, 比較不會有 data 收不完整的情況發生
       await Future.delayed(const Duration(milliseconds: 1000));
@@ -962,6 +965,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     if (connectionType == ConnectionType.usb) {
       await _amp18Repository.set1p8GTransmitDelayTime(ms: 58);
+    } else {
+      // BLE 連線時, 根據 RSSI 設定 delay
+      await _amp18Repository.set1p8GTransmitDelayTime();
     }
 
     Map<DataKey, String> newCharacteristicData = {};
@@ -1136,10 +1142,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     // 處理 requestCommand1p8GCCorNodeLogChunk 讀取
     // 最多 retry 3 次, 連續失敗3次就視為失敗
     for (int i = 0; i < 3; i++) {
-      if (connectionType == ConnectionType.ble) {
-        // 根據RSSI設定每個 chunk 之間的 delay
-        await _amp18CCorNodeRepository.set1p8GCCorNodeTransmitDelayTime();
-      }
+      // if (connectionType == ConnectionType.ble) {
+      //   // 根據RSSI設定每個 chunk 之間的 delay
+      //   await _amp18CCorNodeRepository.set1p8GCCorNodeTransmitDelayTime();
+      // }
 
       //休息一段時間再讀取, 比較不會有 data 收不完整的情況發生
       await Future.delayed(const Duration(milliseconds: 1000));

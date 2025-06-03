@@ -167,12 +167,11 @@ class BLEClient extends ConnectionClient {
           _characteristicStreamSubscription = _ble!
               .subscribeToCharacteristic(_qualifiedCharacteristic)
               .listen((data) async {
-            List<int> rawData = data;
-            print('index: $_currentCommandIndex, length:${rawData.length}');
+            // print('index: $_currentCommandIndex, length:${data.length}');
 
             List<dynamic> finalResult = combineRawData(
               commandIndex: _currentCommandIndex,
-              rawData: rawData,
+              rawData: data,
             );
 
             if (_currentCommandIndex >= 1000) {

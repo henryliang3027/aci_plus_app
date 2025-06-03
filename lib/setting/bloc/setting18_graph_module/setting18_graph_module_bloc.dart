@@ -105,8 +105,23 @@ class Setting18GraphModuleBloc
         characteristicDataCache[DataKey.firstChannelLoadingLevel] ?? '';
     String lastChannelLoadingLevel =
         characteristicDataCache[DataKey.lastChannelLoadingLevel] ?? '';
+
+    EQType eqType = eqTypeMap[partId] ?? EQType.none;
     String pilotFrequencyMode =
         characteristicDataCache[DataKey.pilotFrequencyMode] ?? '';
+
+    if (eqType == EQType.board) {
+      // 如果是 onboard 放大器，則 pilotFrequencyMode 根據
+      // lastChannelLoadingFrequency 來決定是 frequency1p2G 或 frequency1p8G
+      if (pilotFrequencyMode == '3') {
+        int frequency = int.tryParse(lastChannelLoadingFrequency) ?? 0;
+        pilotFrequencyMode =
+            _getBoardBenchModeNameByFrequency(frequency: frequency);
+        characteristicDataCache[DataKey.pilotFrequencyMode] =
+            pilotFrequencyMode;
+      }
+    }
+
     String pilotFrequency1 =
         characteristicDataCache[DataKey.pilotFrequency1] ?? '';
     String pilotFrequency2 =
@@ -125,6 +140,7 @@ class Setting18GraphModuleBloc
       targetValues: targetValues,
       targetIngressValues: targetIngressValues,
       pilotFrequencyMode: pilotFrequencyMode,
+      eqType: eqType,
       firstChannelLoadingFrequency: firstChannelLoadingFrequency.isNotEmpty
           ? RangeIntegerInput.dirty(firstChannelLoadingFrequency)
           : const RangeIntegerInput.pure(),
@@ -788,6 +804,36 @@ class Setting18GraphModuleBloc
     }
   }
 
+  String _getBoardBenchModeNameByFrequency({required int frequency}) {
+    if (frequency <= 1218) {
+      return BenchMode.frequency1p2G.name;
+    } else {
+      return BenchMode.frequency1p8G.name;
+    }
+  }
+
+  Future<bool> _setBoardPilotFrequencyOnBenchMode({
+    required String benchModeName,
+  }) async {
+    bool resultOfSetPilotFrequencyMode = false;
+    bool resultOfSetLastChannelLoadingFrequency = false;
+    if (benchModeName == BenchMode.frequency1p2G.name) {
+      resultOfSetPilotFrequencyMode =
+          await _amp18Repository.set1p8GPilotFrequencyMode('3');
+
+      resultOfSetLastChannelLoadingFrequency =
+          await _amp18Repository.set1p8GLastChannelLoadingFrequency('1218');
+    } else {
+      resultOfSetPilotFrequencyMode =
+          await _amp18Repository.set1p8GPilotFrequencyMode('3');
+
+      resultOfSetLastChannelLoadingFrequency =
+          await _amp18Repository.set1p8GLastChannelLoadingFrequency('1794');
+    }
+    return resultOfSetPilotFrequencyMode &&
+        resultOfSetLastChannelLoadingFrequency;
+  }
+
   void _onSettingSubmitted(
     SettingSubmitted event,
     Emitter<Setting18GraphModuleState> emit,
@@ -938,11 +984,24 @@ class Setting18GraphModuleBloc
 
     if (state.pilotFrequencyMode !=
         state.initialValues[DataKey.pilotFrequencyMode]) {
-      bool resultOfSetPilotFrequencyMode = await _amp18Repository
-          .set1p8GPilotFrequencyMode(state.pilotFrequencyMode);
+      if (state.eqType == EQType.board &&
+          (state.pilotFrequencyMode == BenchMode.frequency1p2G.name ||
+              state.pilotFrequencyMode == BenchMode.frequency1p8G.name)) {
+        // 在 bench mode 下設定 lastChannelLoadingFrequency
+        bool resultOfSetBoardPilotFrequencyMode =
+            await _setBoardPilotFrequencyOnBenchMode(
+          benchModeName: state.pilotFrequencyMode,
+        );
 
-      settingResult.add(
-          '${DataKey.pilotFrequencyMode.name},$resultOfSetPilotFrequencyMode');
+        settingResult.add(
+            '${DataKey.pilotFrequencyMode.name},$resultOfSetBoardPilotFrequencyMode');
+      } else {
+        bool resultOfSetPilotFrequencyMode = await _amp18Repository
+            .set1p8GPilotFrequencyMode(state.pilotFrequencyMode);
+
+        settingResult.add(
+            '${DataKey.pilotFrequencyMode.name},$resultOfSetPilotFrequencyMode');
+      }
     }
 
     if (state.firstChannelLoadingFrequency.value !=

@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
@@ -13,7 +10,6 @@ import 'package:aci_plus_app/setting/bloc/setting18_ccor_node_regulation/setting
 import 'package:aci_plus_app/setting/model/card_color.dart';
 import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
 import 'package:aci_plus_app/setting/model/setting_widgets.dart';
-import 'package:aci_plus_app/setting/shared/utils.dart';
 import 'package:aci_plus_app/setting/views/custom_setting_dialog.dart';
 import 'package:aci_plus_app/setting/views/setting18_ccor_node_views/setting18_ccor_node_graph_page.dart';
 import 'package:flutter/foundation.dart';

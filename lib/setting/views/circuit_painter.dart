@@ -55,6 +55,11 @@ class CircuitPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    // Add null/zero size check
+    if (size.isEmpty || size.width == 0 || size.height == 0) {
+      return;
+    }
+
     print('Canvas size: $size');
 
     double scaleFactorX = size.width / svgImage.width;
@@ -68,66 +73,8 @@ class CircuitPainter extends CustomPainter {
     print('offsetX : ${offsetX}');
     print('offsetY: : ${offsetY}');
 
-    // canvas.scale(scaleFactor);
-
-    // canvas.translate(offsetX, offsetY);
-
-    // final translateM = Float64List.fromList([
-    //   scaleFactor,
-    //   0,
-    //   0,
-    //   0,
-    //   0,
-    //   scaleFactor,
-    //   0,
-    //   0,
-    //   0,
-    //   0,
-    //   1,
-    //   0,
-    //   offsetX,
-    //   offsetY,
-    //   0,
-    //   1,
-    // ]);
-
-    // canvas.transform(translateM);
-
-    // for (Component component in svgImage.components) {
-    //   final Path path = parseSvgPathData(component.path);
-    //   int decimalColor = int.parse(component.color, radix: 16);
-    //   canvas.drawPath(
-    //     path,
-    //     Paint()..color = Color(decimalColor),
-    //   );
-    // }
-
     var myCanvas = TouchyCanvas(context, canvas);
     for (Box box in svgImage.boxes) {
-      // final textStyle = TextStyle(
-      //   background: Paint()..color = Color.fromARGB(255, 170, 214, 255),
-      //   color: Colors.black,
-      //   fontSize: 12,
-      // );
-      // final textSpan = TextSpan(
-      //   text: '12 dB',
-      //   style: textStyle,
-      // );
-
-      // final textPainter = TextPainter(
-      //   text: textSpan,
-      //   textDirection: TextDirection.ltr,
-      // );
-      // textPainter.layout(
-      //   minWidth: 0,
-      //   maxWidth: size.width,
-      // );
-
-      // textPainter.paint(
-      //     canvas,
-      //     Offset((box.x + box.width - 50) * scaleFactor + offsetX,
-      //         (box.y + box.height - 50) * scaleFactor + offsetY));
-
       Rect rect = Rect.fromLTWH(
           box.x * scaleFactor + offsetX,
           box.y * scaleFactor + offsetY,
@@ -155,7 +102,6 @@ class CircuitPainter extends CustomPainter {
     }
 
     print('scaleFactor: $scaleFactor');
-    // print('colorScheme:  ${Theme.of(context).colorScheme.onSurface}');
 
     for (ValueText valueText in svgImage.valueTexts) {
       // final int colorHex = int.parse(valueText.color);
@@ -178,12 +124,6 @@ class CircuitPainter extends CustomPainter {
         maxWidth: size.width,
       );
 
-      if (valueText.moduleName == 'usVCA1') {
-        print('textPainter.height: ${textPainter.height}');
-        print('textPainter.width: ${textPainter.width}');
-      }
-
-      // print('valueText.x = ${valueText.x}');
       textPainter.paint(
           canvas,
           Offset(
@@ -194,30 +134,6 @@ class CircuitPainter extends CustomPainter {
                   offsetY -
                   (textPainter.height / 2)));
     }
-
-    // TextStyle textStyle2 = TextStyle(
-    //   fontSize: 82 * scaleFactor,
-    //   fontWeight: FontWeight.bold,
-    //   color: Theme.of(context).colorScheme.onSurface,
-    // );
-    // final textSpan = TextSpan(
-    //   text: '17.9dB',
-    //   style: textStyle2,
-    // );
-
-    // final textPainter2 = TextPainter(
-    //   text: textSpan,
-    //   textDirection: TextDirection.ltr,
-    // );
-    // textPainter2.layout(
-    //   minWidth: 0,
-    //   maxWidth: size.width,
-    // );
-
-    // print(textPainter.height);
-
-    // print('valueText.x = ${valueText.x}');
-    // textPainter2.paint(canvas, Offset(0, 0));
   }
 
   @override

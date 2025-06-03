@@ -107,7 +107,9 @@ class Setting18RegulationState extends Equatable {
       editMode: editMode ?? this.editMode,
       enableSubmission: enableSubmission ?? this.enableSubmission,
       isInitialize: isInitialize ?? this.isInitialize,
-      initialValues: initialValues ?? this.initialValues,
+      initialValues: initialValues != null
+          ? Map<DataKey, String>.from(initialValues)
+          : this.initialValues,
       isInitialPilotFrequencyLevelValues: isInitialPilotFrequencyLevelValues ??
           this.isInitialPilotFrequencyLevelValues,
       tappedSet: tappedSet ?? this.tappedSet,

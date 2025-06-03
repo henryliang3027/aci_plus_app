@@ -75,15 +75,10 @@ class Setting18RegulationBloc
       // lastChannelLoadingFrequency 來決定是 frequency1p2G 或 frequency1p8G
       if (pilotFrequencyMode == '3') {
         int frequency = int.tryParse(lastChannelLoadingFrequency) ?? 0;
-        if (frequency <= 1218) {
-          pilotFrequencyMode = BenchMode.frequency1p2G.name;
-          characteristicDataCache[DataKey.pilotFrequencyMode] =
-              BenchMode.frequency1p2G.name;
-        } else {
-          pilotFrequencyMode = BenchMode.frequency1p8G.name;
-          characteristicDataCache[DataKey.pilotFrequencyMode] =
-              BenchMode.frequency1p8G.name;
-        }
+        pilotFrequencyMode =
+            _getBoardBenchModeNameByFrequency(frequency: frequency);
+        characteristicDataCache[DataKey.pilotFrequencyMode] =
+            pilotFrequencyMode;
       }
     }
 
@@ -188,8 +183,6 @@ class Setting18RegulationBloc
     PilotFrequencyModeChanged event,
     Emitter<Setting18RegulationState> emit,
   ) {
-    print(
-        'PilotFrequencyModeChanged: ${event.pilotFrequencyMode}, ${state.initialValues[DataKey.pilotFrequencyMode]}');
     Set<DataKey> tappedSet = Set.from(state.tappedSet);
     tappedSet.add(DataKey.pilotFrequencyMode);
 
@@ -829,9 +822,16 @@ class Setting18RegulationBloc
     }
   }
 
-  Future<void> _setBoardPilotFrequencyOnBenchMode({
+  String _getBoardBenchModeNameByFrequency({required int frequency}) {
+    if (frequency <= 1218) {
+      return BenchMode.frequency1p2G.name;
+    } else {
+      return BenchMode.frequency1p8G.name;
+    }
+  }
+
+  Future<bool> _setBoardPilotFrequencyOnBenchMode({
     required String benchModeName,
-    required List<String> settingResult,
   }) async {
     bool resultOfSetPilotFrequencyMode = false;
     bool resultOfSetLastChannelLoadingFrequency = false;
@@ -848,12 +848,8 @@ class Setting18RegulationBloc
       resultOfSetLastChannelLoadingFrequency =
           await _amp18Repository.set1p8GLastChannelLoadingFrequency('1794');
     }
-
-    // Add results to setting result list
-    settingResult.addAll([
-      '${DataKey.pilotFrequencyMode.name},$resultOfSetPilotFrequencyMode',
-      '${DataKey.lastChannelLoadingFrequency.name},$resultOfSetLastChannelLoadingFrequency',
-    ]);
+    return resultOfSetPilotFrequencyMode &&
+        resultOfSetLastChannelLoadingFrequency;
   }
 
   void _onSettingSubmitted(
@@ -918,15 +914,17 @@ class Setting18RegulationBloc
 
     if (state.pilotFrequencyMode !=
         state.initialValues[DataKey.pilotFrequencyMode]) {
-      if (state.eqType == EQType.board) {
-        if (state.pilotFrequencyMode == BenchMode.frequency1p2G.name ||
-            state.pilotFrequencyMode == BenchMode.frequency1p8G.name) {
-          // 在 bench mode 下設定 lastChannelLoadingFrequency
-          await _setBoardPilotFrequencyOnBenchMode(
-            benchModeName: state.pilotFrequencyMode,
-            settingResult: settingResult,
-          );
-        }
+      if (state.eqType == EQType.board &&
+          (state.pilotFrequencyMode == BenchMode.frequency1p2G.name ||
+              state.pilotFrequencyMode == BenchMode.frequency1p8G.name)) {
+        // 在 bench mode 下設定 lastChannelLoadingFrequency
+        bool resultOfSetBoardPilotFrequencyMode =
+            await _setBoardPilotFrequencyOnBenchMode(
+          benchModeName: state.pilotFrequencyMode,
+        );
+
+        settingResult.add(
+            '${DataKey.pilotFrequencyMode.name},$resultOfSetBoardPilotFrequencyMode');
       } else {
         bool resultOfSetPilotFrequencyMode = await _amp18Repository
             .set1p8GPilotFrequencyMode(state.pilotFrequencyMode);
