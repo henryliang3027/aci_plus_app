@@ -8,7 +8,6 @@ import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/aci_device_repository.dart';
 import 'package:aci_plus_app/repositories/code_repository.dart';
-import 'package:aci_plus_app/repositories/connection_client_factory.dart';
 import 'package:aci_plus_app/repositories/firmware_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:file_picker/file_picker.dart';
@@ -371,7 +370,7 @@ class Setting18FirmwareUpdateBloc
             binary: [],
           ),
           selectedBinaryInfo: selectedBinaryInfo,
-          fileErrorMessage: 'The file you selected is invalid',
+          fileErrorMessage: resultOfcheckFileContent[1],
         ));
       }
     } else {

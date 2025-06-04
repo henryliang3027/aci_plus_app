@@ -103,44 +103,42 @@ class USBClient extends ConnectionClient {
           }
         });
 
-        _dataStreamSubscription = _ftdiSerial.dataStream.listen((dynamic data) {
-          List<int> rawData = data.toList();
+        _dataStreamSubscription = _ftdiSerial.dataStream.listen(
+          (dynamic data) {
+            List<int> rawData = data.toList();
 
-          print(
-              'usb data index: $_currentCommandIndex, length:${rawData.length}');
+            print(
+                'usb data index: $_currentCommandIndex, length:${rawData.length}');
 
-          List<dynamic> finalResult = combineUsbRawData(
-            commandIndex: _currentCommandIndex,
-            rawData: rawData,
-          );
+            List<dynamic> finalResult = combineUsbRawData(
+              commandIndex: _currentCommandIndex,
+              rawData: rawData,
+            );
 
-          if (_currentCommandIndex >= 1000) {
-            List<int> finalRawData = finalResult[1];
-            String message = String.fromCharCodes(finalRawData);
-            _updateReportStreamController.add(message);
-          } else {
-            if (finalResult[0]) {
-              cancelCharacteristicDataTimer(name: 'cmd $_currentCommandIndex');
+            if (_currentCommandIndex >= 1000) {
               List<int> finalRawData = finalResult[1];
+              String message = String.fromCharCodes(finalRawData);
+              _updateReportStreamController.add(message);
+            } else {
+              if (finalResult[0]) {
+                cancelCharacteristicDataTimer(
+                    name: 'cmd $_currentCommandIndex');
+                List<int> finalRawData = finalResult[1];
 
-              bool isValidCRC = checkCRC(finalRawData);
-              if (isValidCRC) {
-                if (!_completer!.isCompleted) {
-                  _completer!.complete(finalRawData);
-                }
-              } else {
-                if (!_completer!.isCompleted) {
-                  _completer!.completeError(CharacteristicError.invalidData);
+                bool isValidCRC = checkCRC(finalRawData);
+                if (isValidCRC) {
+                  if (!_completer!.isCompleted) {
+                    _completer!.complete(finalRawData);
+                  }
+                } else {
+                  if (!_completer!.isCompleted) {
+                    _completer!.completeError(CharacteristicError.invalidData);
+                  }
                 }
               }
             }
-          }
-        }, onError: (error) {
-          print('USB data stream error: $error');
-          if (!_completer!.isCompleted) {
-            _completer!.completeError(CharacteristicError.writeDataError);
-          }
-        });
+          },
+        );
 
         _connectionReportStreamController.add(const ConnectionReport(
           connectStatus: ConnectStatus.connected,
