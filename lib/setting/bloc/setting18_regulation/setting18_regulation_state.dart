@@ -8,6 +8,8 @@ class Setting18RegulationState extends Equatable {
     this.firstChannelLoadingLevel = const RangeFloatPointInput.pure(),
     this.lastChannelLoadingFrequency = const RangeIntegerInput.pure(),
     this.lastChannelLoadingLevel = const RangeFloatPointInput.pure(),
+    this.minFirstChannelLoadingFrequency = 0,
+    this.maxLastChannelLoadingFrequency = 0,
     this.pilotFrequencyMode = '',
     this.eqType = EQType.none,
     this.pilotFrequency1 = const RangeIntegerInput.pure(),
@@ -34,6 +36,8 @@ class Setting18RegulationState extends Equatable {
   final RangeFloatPointInput firstChannelLoadingLevel;
   final RangeIntegerInput lastChannelLoadingFrequency;
   final RangeFloatPointInput lastChannelLoadingLevel;
+  final int minFirstChannelLoadingFrequency;
+  final int maxLastChannelLoadingFrequency;
   final String pilotFrequencyMode;
   final EQType eqType;
   final RangeIntegerInput pilotFrequency1;
@@ -60,6 +64,8 @@ class Setting18RegulationState extends Equatable {
     RangeFloatPointInput? firstChannelLoadingLevel,
     RangeIntegerInput? lastChannelLoadingFrequency,
     RangeFloatPointInput? lastChannelLoadingLevel,
+    int? minFirstChannelLoadingFrequency,
+    int? maxLastChannelLoadingFrequency,
     String? pilotFrequencyMode,
     EQType? eqType,
     RangeIntegerInput? pilotFrequency1,
@@ -91,6 +97,10 @@ class Setting18RegulationState extends Equatable {
           lastChannelLoadingFrequency ?? this.lastChannelLoadingFrequency,
       lastChannelLoadingLevel:
           lastChannelLoadingLevel ?? this.lastChannelLoadingLevel,
+      minFirstChannelLoadingFrequency: minFirstChannelLoadingFrequency ??
+          this.minFirstChannelLoadingFrequency,
+      maxLastChannelLoadingFrequency:
+          maxLastChannelLoadingFrequency ?? this.maxLastChannelLoadingFrequency,
       pilotFrequencyMode: pilotFrequencyMode ?? this.pilotFrequencyMode,
       eqType: eqType ?? this.eqType,
       pilotFrequency1: pilotFrequency1 ?? this.pilotFrequency1,
@@ -125,6 +135,8 @@ class Setting18RegulationState extends Equatable {
         firstChannelLoadingLevel,
         lastChannelLoadingFrequency,
         lastChannelLoadingLevel,
+        minFirstChannelLoadingFrequency,
+        maxLastChannelLoadingFrequency,
         pilotFrequencyMode,
         eqType,
         pilotFrequency1,

@@ -169,7 +169,15 @@ const Map<String, String> settingGraphFilePath = {
   '7': 'assets/circuits/LE_1.8G_20240822.svg', // C-Cor LE
   '8': 'assets/circuits/SDAT_1.8G_20240822.svg', // SDAT
   '9': 'assets/circuits/SDAM_1.8G_20240822.svg', // SDAM
-  '10': 'assets/circuits/MFT8_1.8G_20250206.svg' // MFT8
+  '10': 'assets/circuits/MFT8_1.8G_20250206.svg', // MFT8
+  '11': 'assets/circuits/SDLE_1.8G_20240822.svg', // SDLE (EQ on board)
+  '12': 'assets/circuits/BLE_1.8G_20240822.svg', // BLE (EQ on board)
+  '13': 'assets/circuits/MB_1.8G_20240822.svg', // MB (EQ on board)
+  '15': 'assets/circuits/TR_1.8G_20240822.svg', // C-Cor TR (EQ on board)
+  '16': 'assets/circuits/BR_1.8G_20250411.svg', // C-Cor BR (EQ on board)
+  '17': 'assets/circuits/LE_1.8G_20240822.svg', // C-Cor LE (EQ on board)
+  '18': 'assets/circuits/SDAT_1.8G_20240822.svg', // SDAT (EQ on board)
+  '19': 'assets/circuits/SDAM_1.8G_20240822.svg', // SDAM (EQ on board)
 };
 
 const Map<String, String> namePlateFilePath = {

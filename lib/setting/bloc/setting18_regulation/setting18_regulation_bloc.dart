@@ -2,9 +2,9 @@ import 'dart:async';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/setting_items_table.dart';
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/setting/model/custom_input.dart';
-import 'package:aci_plus_app/setting/model/setting_widgets.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -102,6 +102,16 @@ class Setting18RegulationBloc
     String tgcCableLength =
         characteristicDataCache[DataKey.tgcCableLength] ?? '';
 
+    String currentDetectedSplitOption =
+        characteristicDataCache[DataKey.currentDetectedSplitOption] ?? '0';
+
+    int minFirstChannelLoadingFrequency = getMinFirstChannelLoadingFrequency(
+        currentDetectedSplitOption: currentDetectedSplitOption);
+    int maxLastChannelLoadingFrequency = getMaxLastChannelLoadingFrequency(
+      partId: partId,
+      currentDetectedSplitOption: currentDetectedSplitOption,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       splitOption: splitOption,
@@ -114,6 +124,8 @@ class Setting18RegulationBloc
           RangeIntegerInput.dirty(lastChannelLoadingFrequency),
       lastChannelLoadingLevel:
           RangeFloatPointInput.dirty(lastChannelLoadingLevel),
+      minFirstChannelLoadingFrequency: minFirstChannelLoadingFrequency,
+      maxLastChannelLoadingFrequency: maxLastChannelLoadingFrequency,
       pilotFrequencyMode: pilotFrequencyMode,
       eqType: eqType,
       pilotFrequency1: RangeIntegerInput.dirty(pilotFrequency1),
@@ -152,31 +164,6 @@ class Setting18RegulationBloc
         splitOption: event.splitOption,
       ),
     ));
-  }
-
-  int _getMinForwardStartFrequency() {
-    Map<DataKey, String> characteristicDataCache =
-        _amp18Repository.characteristicDataCache;
-
-    String currentDetectedSplitOption =
-        characteristicDataCache[DataKey.currentDetectedSplitOption] ?? '0';
-
-    int startFrequency = splitBaseLine[currentDetectedSplitOption]?.$2 ?? 0;
-
-    return startFrequency;
-  }
-
-  int _getMaxForwardStopFrequency() {
-    Map<DataKey, String> characteristicDataCache =
-        _amp18Repository.characteristicDataCache;
-
-    String currentDetectedSplitOption =
-        characteristicDataCache[DataKey.currentDetectedSplitOption] ?? '0';
-
-    int stopFrequency =
-        maxStopFrequencyByDFUType[currentDetectedSplitOption] ?? 1794;
-
-    return stopFrequency;
   }
 
   void _onPilotFrequencyModeChanged(
@@ -222,13 +209,10 @@ class Setting18RegulationBloc
       pilotFrequency2Value = state.pilotFrequency2.value;
     }
 
-    int forwardStartFrequency = _getMinForwardStartFrequency();
-    int forwardStopFrequency = _getMaxForwardStopFrequency();
-
     RangeIntegerInput firstChannelLoadingFrequency = RangeIntegerInput.dirty(
       firstChannelLoadingFrequencyValue,
-      minValue: forwardStartFrequency,
-      maxValue: forwardStopFrequency,
+      minValue: state.minFirstChannelLoadingFrequency,
+      maxValue: state.maxLastChannelLoadingFrequency,
     );
 
     RangeFloatPointInput firstChannelLoadingLevel = RangeFloatPointInput.dirty(
@@ -239,8 +223,8 @@ class Setting18RegulationBloc
 
     RangeIntegerInput lastChannelLoadingFrequency = RangeIntegerInput.dirty(
       lastChannelLoadingFrequencyValue,
-      minValue: forwardStartFrequency,
-      maxValue: forwardStopFrequency,
+      minValue: state.minFirstChannelLoadingFrequency,
+      maxValue: state.maxLastChannelLoadingFrequency,
     );
 
     RangeFloatPointInput lastChannelLoadingLevel = RangeFloatPointInput.dirty(
@@ -251,14 +235,14 @@ class Setting18RegulationBloc
 
     RangeIntegerInput pilotFrequency1 = RangeIntegerInput.dirty(
       pilotFrequency1Value,
-      minValue: forwardStartFrequency,
-      maxValue: forwardStopFrequency,
+      minValue: state.minFirstChannelLoadingFrequency,
+      maxValue: state.maxLastChannelLoadingFrequency,
     );
 
     RangeIntegerInput pilotFrequency2 = RangeIntegerInput.dirty(
       pilotFrequency2Value,
-      minValue: forwardStartFrequency,
-      maxValue: forwardStopFrequency,
+      minValue: state.minFirstChannelLoadingFrequency,
+      maxValue: state.maxLastChannelLoadingFrequency,
     );
 
     emit(state.copyWith(
@@ -289,63 +273,36 @@ class Setting18RegulationBloc
     FirstChannelLoadingFrequencyChanged event,
     Emitter<Setting18RegulationState> emit,
   ) {
-    // 根據 偵測到的 splitOption 來決定 minimum forwardStartFrequency 和 maximum forwardStopFrequency
-    int minForwardStartFrequency = _getMinForwardStartFrequency();
-    int maxForwardStopFrequency = _getMaxForwardStopFrequency();
-
-    // 偵測到的 splitOption的起始頻率 <= firstChannelLoadingFrequency <= lastChannelLoadingFrequency
-    // 截止頻率輸入內容不符時即 int.tryParse(state.lastChannelLoadingFrequency.value) 回傳 null,
-    // 則判斷方式為: 偵測到的splitOption的起始頻率 <= firstChannelLoadingFrequency <= maxForwardStopFrequency
     RangeIntegerInput firstChannelLoadingFrequency = RangeIntegerInput.dirty(
       event.firstChannelLoadingFrequency,
-      minValue: minForwardStartFrequency,
+      minValue: state.minFirstChannelLoadingFrequency,
       maxValue: int.tryParse(state.lastChannelLoadingFrequency.value) ??
-          maxForwardStopFrequency,
+          state.maxLastChannelLoadingFrequency,
     );
 
-    // firstChannelLoadingFrequency <= lastChannelLoadingFrequency <= maxForwardStopFrequency
-    // 起始頻率輸入內容不符時即 int.tryParse(state.firstChannelLoadingFrequency.value) 回傳 null,
-    // 則判斷方式為: minForwardStartFrequency <= lastChannelLoadingFrequency <= maxForwardStopFrequency
     RangeIntegerInput lastChannelLoadingFrequency = RangeIntegerInput.dirty(
       state.lastChannelLoadingFrequency.value,
       minValue: int.tryParse(event.firstChannelLoadingFrequency) ??
-          minForwardStartFrequency,
-      maxValue: maxForwardStopFrequency,
+          state.minFirstChannelLoadingFrequency,
+      maxValue: state.maxLastChannelLoadingFrequency,
     );
 
-    // pilotFrequency1
-    // minValue 判斷優先順序
-    // firstChannelLoadingFrequency <= pilotFrequency1
-    // 如果也沒輸入 firstChannelLoadingFrequency 則 minForwardStartFrequency <= pilotFrequency1
-
-    // maxValue 判斷優先順序
-    // pilotFrequency1 <= pilotFrequency2
-    // 如果沒輸入 pilotFrequency2 則 pilotFrequency1 <= lastChannelLoadingFrequency
-    // 如果也沒輸入 lastChannelLoadingFrequency 則 pilotFrequency1 <= maxForwardStopFrequency
     RangeIntegerInput pilotFrequency1 = RangeIntegerInput.dirty(
       state.pilotFrequency1.value,
       minValue: int.tryParse(event.firstChannelLoadingFrequency) ??
-          minForwardStartFrequency,
+          state.minFirstChannelLoadingFrequency,
       maxValue: int.tryParse(state.pilotFrequency2.value) ??
           int.tryParse(state.lastChannelLoadingFrequency.value) ??
-          maxForwardStopFrequency,
+          state.maxLastChannelLoadingFrequency,
     );
 
-    // minValue 判斷優先順序
-    // pilotFrequency1 <= pilotFrequency2
-    // 如果沒輸入 pilotFrequency1 則 firstChannelLoadingFrequency <= pilotFrequency2
-    // 如果也沒輸入 firstChannelLoadingFrequency 則 minForwardStartFrequency <= pilotFrequency2
-
-    // maxValue 判斷優先順序
-    // pilotFrequency2 <= lastChannelLoadingFrequency
-    // 如果沒輸入 lastChannelLoadingFrequency 則 pilotFrequency2 <= maxForwardStopFrequency
     RangeIntegerInput pilotFrequency2 = RangeIntegerInput.dirty(
       state.pilotFrequency2.value,
       minValue: int.tryParse(state.pilotFrequency1.value) ??
           int.tryParse(event.firstChannelLoadingFrequency) ??
-          minForwardStartFrequency,
+          state.minFirstChannelLoadingFrequency,
       maxValue: int.tryParse(state.lastChannelLoadingFrequency.value) ??
-          maxForwardStopFrequency,
+          state.maxLastChannelLoadingFrequency,
     );
 
     Set<DataKey> tappedSet = Set.from(state.tappedSet);
@@ -407,39 +364,36 @@ class Setting18RegulationBloc
     LastChannelLoadingFrequencyChanged event,
     Emitter<Setting18RegulationState> emit,
   ) {
-    int minForwardStartFrequency = _getMinForwardStartFrequency();
-    int maxForwardStopFrequency = _getMaxForwardStopFrequency();
-
     RangeIntegerInput firstChannelLoadingFrequency = RangeIntegerInput.dirty(
       state.firstChannelLoadingFrequency.value,
-      minValue: minForwardStartFrequency,
+      minValue: state.minFirstChannelLoadingFrequency,
       maxValue: int.tryParse(event.lastChannelLoadingFrequency) ??
-          maxForwardStopFrequency,
+          state.maxLastChannelLoadingFrequency,
     );
 
     RangeIntegerInput lastChannelLoadingFrequency = RangeIntegerInput.dirty(
       event.lastChannelLoadingFrequency,
       minValue: int.tryParse(state.firstChannelLoadingFrequency.value) ??
-          minForwardStartFrequency,
-      maxValue: maxForwardStopFrequency,
+          state.minFirstChannelLoadingFrequency,
+      maxValue: state.maxLastChannelLoadingFrequency,
     );
 
     RangeIntegerInput pilotFrequency1 = RangeIntegerInput.dirty(
       state.pilotFrequency1.value,
       minValue: int.tryParse(state.firstChannelLoadingFrequency.value) ??
-          minForwardStartFrequency,
+          state.minFirstChannelLoadingFrequency,
       maxValue: int.tryParse(state.pilotFrequency2.value) ??
           int.tryParse(state.lastChannelLoadingFrequency.value) ??
-          maxForwardStopFrequency,
+          state.maxLastChannelLoadingFrequency,
     );
 
     RangeIntegerInput pilotFrequency2 = RangeIntegerInput.dirty(
       state.pilotFrequency2.value,
       minValue: int.tryParse(state.pilotFrequency1.value) ??
           int.tryParse(state.firstChannelLoadingFrequency.value) ??
-          minForwardStartFrequency,
+          state.minFirstChannelLoadingFrequency,
       maxValue: int.tryParse(event.lastChannelLoadingFrequency) ??
-          maxForwardStopFrequency,
+          state.maxLastChannelLoadingFrequency,
     );
 
     Set<DataKey> tappedSet = Set.from(state.tappedSet);
@@ -500,38 +454,22 @@ class Setting18RegulationBloc
     PilotFrequency1Changed event,
     Emitter<Setting18RegulationState> emit,
   ) {
-    // minValue 判斷優先順序
-    // firstChannelLoadingFrequency <= pilotFrequency1
-    // 如果也沒輸入 firstChannelLoadingFrequency 則 forwardStartFrequency <= pilotFrequency1
-
-    // maxValue 判斷優先順序
-    // pilotFrequency1 <= pilotFrequency2
-    // 如果沒輸入 pilotFrequency2 則 pilotFrequency1 <= lastChannelLoadingFrequency
-    // 如果也沒輸入 lastChannelLoadingFrequency 則 pilotFrequency1 <= 1794
-    int forwardStartFrequency = _getMinForwardStartFrequency();
     RangeIntegerInput pilotFrequency1 = RangeIntegerInput.dirty(
       event.pilotFrequency1,
       minValue: int.tryParse(state.firstChannelLoadingFrequency.value) ??
-          forwardStartFrequency,
+          state.minFirstChannelLoadingFrequency,
       maxValue: int.tryParse(state.pilotFrequency2.value) ??
           int.tryParse(state.lastChannelLoadingFrequency.value) ??
-          1794,
+          state.maxLastChannelLoadingFrequency,
     );
 
-    // minValue 判斷優先順序
-    // pilotFrequency1 <= pilotFrequency2
-    // 如果沒輸入 pilotFrequency1 則 firstChannelLoadingFrequency <= pilotFrequency2
-    // 如果也沒輸入 firstChannelLoadingFrequency 則 forwardStartFrequency <= pilotFrequency2
-
-    // maxValue 判斷優先順序
-    // pilotFrequency2 <= lastChannelLoadingFrequency
-    // 如果沒輸入 lastChannelLoadingFrequency 則 pilotFrequency2 <= 1794
     RangeIntegerInput pilotFrequency2 = RangeIntegerInput.dirty(
       state.pilotFrequency2.value,
       minValue: int.tryParse(event.pilotFrequency1) ??
           int.tryParse(state.firstChannelLoadingFrequency.value) ??
-          forwardStartFrequency,
-      maxValue: int.tryParse(state.lastChannelLoadingFrequency.value) ?? 1794,
+          state.minFirstChannelLoadingFrequency,
+      maxValue: int.tryParse(state.lastChannelLoadingFrequency.value) ??
+          state.maxLastChannelLoadingFrequency,
     );
 
     Set<DataKey> tappedSet = Set.from(state.tappedSet);
@@ -555,38 +493,22 @@ class Setting18RegulationBloc
     PilotFrequency2Changed event,
     Emitter<Setting18RegulationState> emit,
   ) {
-    // minValue 判斷優先順序
-    // firstChannelLoadingFrequency <= pilotFrequency1
-    // 如果也沒輸入 firstChannelLoadingFrequency 則 forwardStartFrequency <= pilotFrequency1
-
-    // maxValue 判斷優先順序
-    // pilotFrequency1 <= pilotFrequency2
-    // 如果沒輸入 pilotFrequency2 則 pilotFrequency1 <= lastChannelLoadingFrequency
-    // 如果也沒輸入 lastChannelLoadingFrequency 則 pilotFrequency1 <= 1794
-    int forwardStartFrequency = _getMinForwardStartFrequency();
     RangeIntegerInput pilotFrequency1 = RangeIntegerInput.dirty(
       state.pilotFrequency1.value,
       minValue: int.tryParse(state.firstChannelLoadingFrequency.value) ??
-          forwardStartFrequency,
+          state.minFirstChannelLoadingFrequency,
       maxValue: int.tryParse(event.pilotFrequency2) ??
           int.tryParse(state.lastChannelLoadingFrequency.value) ??
-          1794,
+          state.maxLastChannelLoadingFrequency,
     );
 
-    // minValue 判斷優先順序
-    // pilotFrequency1 <= pilotFrequency2
-    // 如果沒輸入 pilotFrequency1 則 firstChannelLoadingFrequency <= pilotFrequency2
-    // 如果也沒輸入 firstChannelLoadingFrequency 則 forwardStartFrequency <= pilotFrequency2
-
-    // maxValue 判斷優先順序
-    // pilotFrequency2 <= lastChannelLoadingFrequency
-    // 如果沒輸入 lastChannelLoadingFrequency 則 pilotFrequency2 <= 1794
     RangeIntegerInput pilotFrequency2 = RangeIntegerInput.dirty(
       event.pilotFrequency2,
       minValue: int.tryParse(state.pilotFrequency1.value) ??
           int.tryParse(state.firstChannelLoadingFrequency.value) ??
-          forwardStartFrequency,
-      maxValue: int.tryParse(state.lastChannelLoadingFrequency.value) ?? 1794,
+          state.minFirstChannelLoadingFrequency,
+      maxValue: int.tryParse(state.lastChannelLoadingFrequency.value) ??
+          state.maxLastChannelLoadingFrequency,
     );
 
     Set<DataKey> tappedSet = Set.from(state.tappedSet);
@@ -771,6 +693,7 @@ class Setting18RegulationBloc
 
     bool isValid = false;
 
+    // 如果 pilotFrequencyMode == '1'，則 pilotFrequency1 和 pilotFrequency2 也要驗證
     if (pilotFrequencyMode == '1') {
       isValid = Formz.validate([
         firstChannelLoadingFrequency,

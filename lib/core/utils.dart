@@ -6,6 +6,7 @@ import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/notice_dialog.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/setting/model/custom_input.dart';
+import 'package:aci_plus_app/setting/model/setting_widgets.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -447,6 +448,26 @@ bool isNotValidFrequency({
     return firstChannelLoadingFrequency.isNotValid ||
         lastChannelLoadingFrequency.isNotValid;
   }
+}
+
+int getMinFirstChannelLoadingFrequency(
+    {required String currentDetectedSplitOption}) {
+  int startFrequency = splitBaseLine[currentDetectedSplitOption]?.$2 ?? 0;
+
+  return startFrequency;
+}
+
+int getMaxLastChannelLoadingFrequency({
+  required String partId,
+  required String currentDetectedSplitOption,
+}) {
+  int maxStopFrequency = 1794;
+
+  // 如果是 MFT8 而且 currentDetectedSplitOption 是 85/105
+  if (partId == '10' && currentDetectedSplitOption == '6') {
+    maxStopFrequency = 1218;
+  }
+  return maxStopFrequency;
 }
 
 int getDelayByRSSI(int rssi) {

@@ -2420,6 +2420,13 @@ List<String> onBoardPilotFrequencyModeValues = [
   BenchMode.frequency1p2G.name,
 ];
 
+// MFT8 機種 DFU=85/105 時適用的 PilotFrequencyMode
+List<String> onBoard1P2GPilotFrequencyModeValues = [
+  '0',
+  '1',
+  BenchMode.frequency1p2G.name,
+];
+
 // 給 widget 用, 由 grid item index 找 text
 const Map<String, String> forwardConfigTexts = {
   '0': '1 X 4',

@@ -106,6 +106,16 @@ class Setting18GraphModuleBloc
     String lastChannelLoadingLevel =
         characteristicDataCache[DataKey.lastChannelLoadingLevel] ?? '';
 
+    String currentDetectedSplitOption =
+        characteristicDataCache[DataKey.currentDetectedSplitOption] ?? '0';
+
+    int minFirstChannelLoadingFrequency = getMinFirstChannelLoadingFrequency(
+        currentDetectedSplitOption: currentDetectedSplitOption);
+    int maxLastChannelLoadingFrequency = getMaxLastChannelLoadingFrequency(
+      partId: partId,
+      currentDetectedSplitOption: currentDetectedSplitOption,
+    );
+
     EQType eqType = eqTypeMap[partId] ?? EQType.none;
     String pilotFrequencyMode =
         characteristicDataCache[DataKey.pilotFrequencyMode] ?? '';
@@ -150,6 +160,8 @@ class Setting18GraphModuleBloc
           RangeIntegerInput.dirty(lastChannelLoadingFrequency),
       lastChannelLoadingLevel:
           RangeFloatPointInput.dirty(lastChannelLoadingLevel),
+      minFirstChannelLoadingFrequency: minFirstChannelLoadingFrequency,
+      maxLastChannelLoadingFrequency: maxLastChannelLoadingFrequency,
       pilotFrequency1: RangeIntegerInput.dirty(pilotFrequency1),
       pilotFrequency2: RangeIntegerInput.dirty(pilotFrequency2),
       manualModePilot1RFOutputPower: manualModePilot1RFOutputPower,
@@ -258,12 +270,10 @@ class Setting18GraphModuleBloc
       pilotFrequency2Value = state.pilotFrequency2.value;
     }
 
-    int forwardStartFrequency = _getMinForwardStartFrequency();
-
     RangeIntegerInput firstChannelLoadingFrequency = RangeIntegerInput.dirty(
       firstChannelLoadingFrequencyValue,
-      minValue: forwardStartFrequency,
-      maxValue: 1794,
+      minValue: state.minFirstChannelLoadingFrequency,
+      maxValue: state.maxLastChannelLoadingFrequency,
     );
 
     RangeFloatPointInput firstChannelLoadingLevel = RangeFloatPointInput.dirty(
@@ -274,8 +284,8 @@ class Setting18GraphModuleBloc
 
     RangeIntegerInput lastChannelLoadingFrequency = RangeIntegerInput.dirty(
       lastChannelLoadingFrequencyValue,
-      minValue: forwardStartFrequency,
-      maxValue: 1794,
+      minValue: state.minFirstChannelLoadingFrequency,
+      maxValue: state.maxLastChannelLoadingFrequency,
     );
 
     RangeFloatPointInput lastChannelLoadingLevel = RangeFloatPointInput.dirty(
@@ -286,14 +296,14 @@ class Setting18GraphModuleBloc
 
     RangeIntegerInput pilotFrequency1 = RangeIntegerInput.dirty(
       pilotFrequency1Value,
-      minValue: forwardStartFrequency,
-      maxValue: 1794,
+      minValue: state.minFirstChannelLoadingFrequency,
+      maxValue: state.maxLastChannelLoadingFrequency,
     );
 
     RangeIntegerInput pilotFrequency2 = RangeIntegerInput.dirty(
       pilotFrequency2Value,
-      minValue: forwardStartFrequency,
-      maxValue: 1794,
+      minValue: state.minFirstChannelLoadingFrequency,
+      maxValue: state.maxLastChannelLoadingFrequency,
     );
 
     emit(state.copyWith(
@@ -320,72 +330,40 @@ class Setting18GraphModuleBloc
     ));
   }
 
-  int _getMinForwardStartFrequency() {
-    Map<DataKey, String> characteristicDataCache =
-        _amp18Repository.characteristicDataCache;
-
-    String currentDetectedSplitOption =
-        characteristicDataCache[DataKey.currentDetectedSplitOption] ?? '0';
-
-    int startFrequency = splitBaseLine[currentDetectedSplitOption]?.$2 ?? 0;
-
-    return startFrequency;
-  }
-
   void _onFirstChannelLoadingFrequencyChanged(
     FirstChannelLoadingFrequencyChanged event,
     Emitter<Setting18GraphModuleState> emit,
   ) {
-    int forwardStartFrequency = _getMinForwardStartFrequency();
-
-    // 偵測到的splitOption的起始頻率 <= event.firstChannelLoadingFrequency <= 偵測到的splitOption的截止頻率\
-    // 截止頻率輸入內容不符時, event.lastChannelLoadingFrequency <= 1794
     RangeIntegerInput firstChannelLoadingFrequency = RangeIntegerInput.dirty(
       event.firstChannelLoadingFrequency,
-      minValue: forwardStartFrequency,
-      maxValue: int.tryParse(state.lastChannelLoadingFrequency.value) ?? 1794,
+      minValue: state.minFirstChannelLoadingFrequency,
+      maxValue: int.tryParse(state.lastChannelLoadingFrequency.value) ??
+          state.maxLastChannelLoadingFrequency,
     );
 
-    // 輸入的起始頻率 <= event.lastChannelLoadingFrequency <= 1794
-    // 起始頻率輸入內容不符時, 偵測到的splitOption的起始頻率 <= event.lastChannelLoadingFrequency
     RangeIntegerInput lastChannelLoadingFrequency = RangeIntegerInput.dirty(
       state.lastChannelLoadingFrequency.value,
       minValue: int.tryParse(event.firstChannelLoadingFrequency) ??
-          forwardStartFrequency,
-      maxValue: 1794,
+          state.minFirstChannelLoadingFrequency,
+      maxValue: state.maxLastChannelLoadingFrequency,
     );
 
-    // minValue 判斷優先順序
-    // firstChannelLoadingFrequency <= pilotFrequency1
-    // 如果也沒輸入 firstChannelLoadingFrequency 則 forwardStartFrequency <= pilotFrequency1
-
-    // maxValue 判斷優先順序
-    // pilotFrequency1 <= pilotFrequency2
-    // 如果沒輸入 pilotFrequency2 則 pilotFrequency1 <= lastChannelLoadingFrequency
-    // 如果也沒輸入 lastChannelLoadingFrequency 則 pilotFrequency1 <= 1794
     RangeIntegerInput pilotFrequency1 = RangeIntegerInput.dirty(
       state.pilotFrequency1.value,
       minValue: int.tryParse(event.firstChannelLoadingFrequency) ??
-          forwardStartFrequency,
+          state.minFirstChannelLoadingFrequency,
       maxValue: int.tryParse(state.pilotFrequency2.value) ??
           int.tryParse(state.lastChannelLoadingFrequency.value) ??
-          1794,
+          state.maxLastChannelLoadingFrequency,
     );
 
-    // minValue 判斷優先順序
-    // pilotFrequency1 <= pilotFrequency2
-    // 如果沒輸入 pilotFrequency1 則 firstChannelLoadingFrequency <= pilotFrequency2
-    // 如果也沒輸入 firstChannelLoadingFrequency 則 forwardStartFrequency <= pilotFrequency2
-
-    // maxValue 判斷優先順序
-    // pilotFrequency2 <= lastChannelLoadingFrequency
-    // 如果沒輸入 lastChannelLoadingFrequency 則 pilotFrequency2 <= 1794
     RangeIntegerInput pilotFrequency2 = RangeIntegerInput.dirty(
       state.pilotFrequency2.value,
       minValue: int.tryParse(state.pilotFrequency1.value) ??
           int.tryParse(event.firstChannelLoadingFrequency) ??
-          forwardStartFrequency,
-      maxValue: int.tryParse(state.lastChannelLoadingFrequency.value) ?? 1794,
+          state.minFirstChannelLoadingFrequency,
+      maxValue: int.tryParse(state.lastChannelLoadingFrequency.value) ??
+          state.maxLastChannelLoadingFrequency,
     );
     Set<DataKey> tappedSet = Set.from(state.tappedSet);
     tappedSet.add(DataKey.firstChannelLoadingFrequency);
@@ -452,56 +430,36 @@ class Setting18GraphModuleBloc
     LastChannelLoadingFrequencyChanged event,
     Emitter<Setting18GraphModuleState> emit,
   ) {
-    int forwardStartFrequency = _getMinForwardStartFrequency();
-
-    // 偵測到的splitOption的起始頻率 <= event.firstChannelLoadingFrequency <= 輸入的截止頻率
-    // 截止頻率輸入內容不符時, event.lastChannelLoadingFrequency <= 1794
     RangeIntegerInput firstChannelLoadingFrequency = RangeIntegerInput.dirty(
       state.firstChannelLoadingFrequency.value,
-      minValue: forwardStartFrequency,
-      maxValue: int.tryParse(event.lastChannelLoadingFrequency) ?? 1794,
+      minValue: state.minFirstChannelLoadingFrequency,
+      maxValue: int.tryParse(event.lastChannelLoadingFrequency) ??
+          state.maxLastChannelLoadingFrequency,
     );
 
-    // 輸入的起始頻率 <= event.lastChannelLoadingFrequency <= 1794
-    // 起始頻率輸入內容不符時, 偵測到的splitOption的起始頻率 <= event.lastChannelLoadingFrequency
     RangeIntegerInput lastChannelLoadingFrequency = RangeIntegerInput.dirty(
       event.lastChannelLoadingFrequency,
       minValue: int.tryParse(state.firstChannelLoadingFrequency.value) ??
-          forwardStartFrequency,
-      maxValue: 1794,
+          state.minFirstChannelLoadingFrequency,
+      maxValue: state.maxLastChannelLoadingFrequency,
     );
 
-    // minValue 判斷優先順序
-    // firstChannelLoadingFrequency <= pilotFrequency1
-    // 如果也沒輸入 firstChannelLoadingFrequency 則 forwardStartFrequency <= pilotFrequency1
-
-    // maxValue 判斷優先順序
-    // pilotFrequency1 <= pilotFrequency2
-    // 如果沒輸入 pilotFrequency2 則 pilotFrequency1 <= lastChannelLoadingFrequency
-    // 如果也沒輸入 lastChannelLoadingFrequency 則 pilotFrequency1 <= 1794
     RangeIntegerInput pilotFrequency1 = RangeIntegerInput.dirty(
       state.pilotFrequency1.value,
       minValue: int.tryParse(state.firstChannelLoadingFrequency.value) ??
-          forwardStartFrequency,
+          state.minFirstChannelLoadingFrequency,
       maxValue: int.tryParse(state.pilotFrequency2.value) ??
           int.tryParse(state.lastChannelLoadingFrequency.value) ??
-          1794,
+          state.maxLastChannelLoadingFrequency,
     );
 
-    // minValue 判斷優先順序
-    // pilotFrequency1 <= pilotFrequency2
-    // 如果沒輸入 pilotFrequency1 則 firstChannelLoadingFrequency <= pilotFrequency2
-    // 如果也沒輸入 firstChannelLoadingFrequency 則 forwardStartFrequency <= pilotFrequency2
-
-    // maxValue 判斷優先順序
-    // pilotFrequency2 <= lastChannelLoadingFrequency
-    // 如果沒輸入 lastChannelLoadingFrequency 則 pilotFrequency2 <= 1794
     RangeIntegerInput pilotFrequency2 = RangeIntegerInput.dirty(
       state.pilotFrequency2.value,
       minValue: int.tryParse(state.pilotFrequency1.value) ??
           int.tryParse(state.firstChannelLoadingFrequency.value) ??
-          forwardStartFrequency,
-      maxValue: int.tryParse(event.lastChannelLoadingFrequency) ?? 1794,
+          state.minFirstChannelLoadingFrequency,
+      maxValue: int.tryParse(event.lastChannelLoadingFrequency) ??
+          state.maxLastChannelLoadingFrequency,
     );
 
     Set<DataKey> tappedSet = Set.from(state.tappedSet);
@@ -569,38 +527,22 @@ class Setting18GraphModuleBloc
     PilotFrequency1Changed event,
     Emitter<Setting18GraphModuleState> emit,
   ) {
-    // minValue 判斷優先順序
-    // firstChannelLoadingFrequency <= pilotFrequency1
-    // 如果也沒輸入 firstChannelLoadingFrequency 則 forwardStartFrequency <= pilotFrequency1
-
-    // maxValue 判斷優先順序
-    // pilotFrequency1 <= pilotFrequency2
-    // 如果沒輸入 pilotFrequency2 則 pilotFrequency1 <= lastChannelLoadingFrequency
-    // 如果也沒輸入 lastChannelLoadingFrequency 則 pilotFrequency1 <= 1794
-    int forwardStartFrequency = _getMinForwardStartFrequency();
     RangeIntegerInput pilotFrequency1 = RangeIntegerInput.dirty(
       event.pilotFrequency1,
       minValue: int.tryParse(state.firstChannelLoadingFrequency.value) ??
-          forwardStartFrequency,
+          state.minFirstChannelLoadingFrequency,
       maxValue: int.tryParse(state.pilotFrequency2.value) ??
           int.tryParse(state.lastChannelLoadingFrequency.value) ??
-          1794,
+          state.maxLastChannelLoadingFrequency,
     );
 
-    // minValue 判斷優先順序
-    // pilotFrequency1 <= pilotFrequency2
-    // 如果沒輸入 pilotFrequency1 則 firstChannelLoadingFrequency <= pilotFrequency2
-    // 如果也沒輸入 firstChannelLoadingFrequency 則 forwardStartFrequency <= pilotFrequency2
-
-    // maxValue 判斷優先順序
-    // pilotFrequency2 <= lastChannelLoadingFrequency
-    // 如果沒輸入 lastChannelLoadingFrequency 則 pilotFrequency2 <= 1794
     RangeIntegerInput pilotFrequency2 = RangeIntegerInput.dirty(
       state.pilotFrequency2.value,
       minValue: int.tryParse(event.pilotFrequency1) ??
           int.tryParse(state.firstChannelLoadingFrequency.value) ??
-          forwardStartFrequency,
-      maxValue: int.tryParse(state.lastChannelLoadingFrequency.value) ?? 1794,
+          state.minFirstChannelLoadingFrequency,
+      maxValue: int.tryParse(state.lastChannelLoadingFrequency.value) ??
+          state.maxLastChannelLoadingFrequency,
     );
 
     Set<DataKey> tappedSet = Set.from(state.tappedSet);
@@ -624,38 +566,22 @@ class Setting18GraphModuleBloc
     PilotFrequency2Changed event,
     Emitter<Setting18GraphModuleState> emit,
   ) {
-    // minValue 判斷優先順序
-    // firstChannelLoadingFrequency <= pilotFrequency1
-    // 如果也沒輸入 firstChannelLoadingFrequency 則 forwardStartFrequency <= pilotFrequency1
-
-    // maxValue 判斷優先順序
-    // pilotFrequency1 <= pilotFrequency2
-    // 如果沒輸入 pilotFrequency2 則 pilotFrequency1 <= lastChannelLoadingFrequency
-    // 如果也沒輸入 lastChannelLoadingFrequency 則 pilotFrequency1 <= 1794
-    int forwardStartFrequency = _getMinForwardStartFrequency();
     RangeIntegerInput pilotFrequency1 = RangeIntegerInput.dirty(
       state.pilotFrequency1.value,
       minValue: int.tryParse(state.firstChannelLoadingFrequency.value) ??
-          forwardStartFrequency,
+          state.minFirstChannelLoadingFrequency,
       maxValue: int.tryParse(event.pilotFrequency2) ??
           int.tryParse(state.lastChannelLoadingFrequency.value) ??
-          1794,
+          state.maxLastChannelLoadingFrequency,
     );
 
-    // minValue 判斷優先順序
-    // pilotFrequency1 <= pilotFrequency2
-    // 如果沒輸入 pilotFrequency1 則 firstChannelLoadingFrequency <= pilotFrequency2
-    // 如果也沒輸入 firstChannelLoadingFrequency 則 forwardStartFrequency <= pilotFrequency2
-
-    // maxValue 判斷優先順序
-    // pilotFrequency2 <= lastChannelLoadingFrequency
-    // 如果沒輸入 lastChannelLoadingFrequency 則 pilotFrequency2 <= 1794
     RangeIntegerInput pilotFrequency2 = RangeIntegerInput.dirty(
       event.pilotFrequency2,
       minValue: int.tryParse(state.pilotFrequency1.value) ??
           int.tryParse(state.firstChannelLoadingFrequency.value) ??
-          forwardStartFrequency,
-      maxValue: int.tryParse(state.lastChannelLoadingFrequency.value) ?? 1794,
+          state.minFirstChannelLoadingFrequency,
+      maxValue: int.tryParse(state.lastChannelLoadingFrequency.value) ??
+          state.maxLastChannelLoadingFrequency,
     );
 
     Set<DataKey> tappedSet = Set.from(state.tappedSet);

@@ -160,7 +160,10 @@ class Setting18RegulationView extends StatelessWidget {
             widgets.add(const _SplitOption());
             break;
           case SettingConfiruration.pilotFrequencySelect:
-            widgets.add(const _PilotFrequencyMode());
+            widgets.add(_PilotFrequencyMode(
+              partId: partId,
+              currentDetectedSplitOption: currentDetectedSplitOption,
+            ));
             break;
           case SettingConfiruration.startFrequency:
             widgets.add(
@@ -220,7 +223,10 @@ class Setting18RegulationView extends StatelessWidget {
               //   textEditingController: coordinateTextEditingController,
               // ),
               // const _SplitOption(),
-              const _PilotFrequencyMode(),
+              _PilotFrequencyMode(
+                partId: partId,
+                currentDetectedSplitOption: currentDetectedSplitOption,
+              ),
               const _FirstChannelLoading(
                 currentDetectedSplitOption: '0', // null
               ),
@@ -336,7 +342,13 @@ class _SplitOption extends StatelessWidget {
 }
 
 class _PilotFrequencyMode extends StatelessWidget {
-  const _PilotFrequencyMode();
+  const _PilotFrequencyMode({
+    required this.partId,
+    required this.currentDetectedSplitOption,
+  });
+
+  final String partId;
+  final String currentDetectedSplitOption;
 
   @override
   Widget build(BuildContext context) {
@@ -345,58 +357,52 @@ class _PilotFrequencyMode extends StatelessWidget {
           previous.pilotFrequencyMode != current.pilotFrequencyMode ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        List<String> pilotFrequencyModeTexts = [];
+        List<String> texts = [];
+        List<String> values = [];
 
         if (state.eqType == EQType.board) {
-          pilotFrequencyModeTexts = [
-            AppLocalizations.of(context)!.pilotFrequencyBandwidthSettings,
-            AppLocalizations.of(context)!.pilotFrequencyUserSettings,
-            AppLocalizations.of(context)!.pilotFrequencyBenchMode1p8G,
-            AppLocalizations.of(context)!.pilotFrequencyBenchMode1p2G,
-            //  AppLocalizations.of(context)!.pilotFrequencySmartSettings,
-          ];
+          if (partId == '10' && currentDetectedSplitOption == '6') {
+            // MFT8 DFU = 85/105
+            texts = [
+              AppLocalizations.of(context)!.pilotFrequencyBandwidthSettings,
+              AppLocalizations.of(context)!.pilotFrequencyUserSettings,
+              AppLocalizations.of(context)!.pilotFrequencyBenchMode1p2G,
+            ];
+            values = onBoard1P2GPilotFrequencyModeValues;
+          } else {
+            texts = [
+              AppLocalizations.of(context)!.pilotFrequencyBandwidthSettings,
+              AppLocalizations.of(context)!.pilotFrequencyUserSettings,
+              AppLocalizations.of(context)!.pilotFrequencyBenchMode1p8G,
+              AppLocalizations.of(context)!.pilotFrequencyBenchMode1p2G,
+            ];
 
-          return pilotFrequencyModeGridViewButton(
-            context: context,
-            crossAxisCount: 1,
-            texts: pilotFrequencyModeTexts,
-            values: onBoardPilotFrequencyModeValues,
-            editMode: state.editMode,
-            pilotFrequencyMode: state.pilotFrequencyMode,
-            onGridPressed: (index) => context
-                .read<Setting18RegulationBloc>()
-                .add(PilotFrequencyModeChanged(
-                    onBoardPilotFrequencyModeValues[index])),
-            color: getSettingListCardColor(
-              context: context,
-              isTap: state.tappedSet.contains(DataKey.pilotFrequencyMode),
-            ),
-          );
+            values = onBoardPilotFrequencyModeValues;
+          }
         } else {
-          pilotFrequencyModeTexts = [
+          texts = [
             AppLocalizations.of(context)!.pilotFrequencyBandwidthSettings,
             AppLocalizations.of(context)!.pilotFrequencyUserSettings,
             AppLocalizations.of(context)!.pilotFrequencyBenchMode,
-            //  AppLocalizations.of(context)!.pilotFrequencySmartSettings,
           ];
-
-          return pilotFrequencyModeGridViewButton(
-            context: context,
-            crossAxisCount: 1,
-            texts: pilotFrequencyModeTexts,
-            values: pilotFrequencyModeValues,
-            editMode: state.editMode,
-            pilotFrequencyMode: state.pilotFrequencyMode,
-            onGridPressed: (index) => context
-                .read<Setting18RegulationBloc>()
-                .add(
-                    PilotFrequencyModeChanged(pilotFrequencyModeValues[index])),
-            color: getSettingListCardColor(
-              context: context,
-              isTap: state.tappedSet.contains(DataKey.pilotFrequencyMode),
-            ),
-          );
+          values = pilotFrequencyModeValues;
         }
+
+        return pilotFrequencyModeGridViewButton(
+          context: context,
+          crossAxisCount: 1,
+          texts: texts,
+          values: values,
+          editMode: state.editMode,
+          pilotFrequencyMode: state.pilotFrequencyMode,
+          onGridPressed: (index) => context
+              .read<Setting18RegulationBloc>()
+              .add(PilotFrequencyModeChanged(values[index])),
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.pilotFrequencyMode),
+          ),
+        );
       },
     );
   }
