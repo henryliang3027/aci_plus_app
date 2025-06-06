@@ -7,7 +7,6 @@ import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/setting/model/custom_input.dart';
-import 'package:aci_plus_app/setting/model/setting_widgets.dart';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -83,8 +82,10 @@ class Setting18ForwardControlBloc
         splitOption.isNotEmpty &&
         splitOption != '0' && // '0' indicates no DFU
         partId.isNotEmpty) {
+      print(ControlItemValue.allValueCollections[operatingMode]![splitOption]!);
+
       values = ControlItemValue
-          .allValueCollections[operatingMode]![splitOption]![int.parse(partId)];
+          .allValueCollections[operatingMode]![splitOption]![partId]!;
 
       Map<Enum, DataKey> forwardControlMap =
           SettingItemTable.controlItemDataMapCollection[partId]![0];

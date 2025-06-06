@@ -771,14 +771,7 @@ class Setting18RegulationBloc
 
     bool isValid = false;
 
-    if (pilotFrequencyMode == '0') {
-      isValid = Formz.validate([
-        firstChannelLoadingFrequency,
-        firstChannelLoadingLevel,
-        lastChannelLoadingFrequency,
-        lastChannelLoadingLevel,
-      ]);
-    } else if (pilotFrequencyMode == '1') {
+    if (pilotFrequencyMode == '1') {
       isValid = Formz.validate([
         firstChannelLoadingFrequency,
         firstChannelLoadingLevel,
@@ -788,7 +781,18 @@ class Setting18RegulationBloc
         pilotFrequency2,
       ]);
     } else {
-      isValid = true;
+      // pilotFrequencyMode == '0'
+      // pilotFrequencyMode == '3'
+
+      // EQ on Board
+      // pilotFrequencyMode == 'BenchMode.frequency1p2G'
+      // pilotFrequencyMode == 'BenchMode.frequency1p8G'
+      isValid = Formz.validate([
+        firstChannelLoadingFrequency,
+        firstChannelLoadingLevel,
+        lastChannelLoadingFrequency,
+        lastChannelLoadingLevel,
+      ]);
     }
 
     if (isValid) {

@@ -431,16 +431,21 @@ bool isNotValidFrequency({
   required RangeIntegerInput pilotFrequency1,
   required RangeIntegerInput pilotFrequency2,
 }) {
-  if (pilotFrequencyMode == '0' || pilotFrequencyMode == '3') {
-    return firstChannelLoadingFrequency.isNotValid ||
-        lastChannelLoadingFrequency.isNotValid;
-  } else if (pilotFrequencyMode == '1') {
+  if (pilotFrequencyMode == '1') {
     return firstChannelLoadingFrequency.isNotValid ||
         lastChannelLoadingFrequency.isNotValid ||
         pilotFrequency1.isNotValid ||
         pilotFrequency2.isNotValid;
   } else {
-    return false;
+    // pilotFrequencyMode == '0'
+    // pilotFrequencyMode == '3'
+
+    // EQ on Board
+    // pilotFrequencyMode == 'BenchMode.frequency1p2G'
+    // pilotFrequencyMode == 'BenchMode.frequency1p8G'
+
+    return firstChannelLoadingFrequency.isNotValid ||
+        lastChannelLoadingFrequency.isNotValid;
   }
 }
 

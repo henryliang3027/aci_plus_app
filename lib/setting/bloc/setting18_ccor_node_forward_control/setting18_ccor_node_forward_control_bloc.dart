@@ -64,7 +64,7 @@ class Setting18CCorNodeForwardControlBloc extends Bloc<
         splitOption != '0' && // '0' indicates no DFU
         partId.isNotEmpty) {
       values = ControlItemValue
-          .allValueCollections[operatingMode]![splitOption]![int.parse(partId)];
+          .allValueCollections[operatingMode]![splitOption]![partId]!;
     }
 
     MinMax dsVVA1MinMax = values[DataKey.dsVVA1] ??

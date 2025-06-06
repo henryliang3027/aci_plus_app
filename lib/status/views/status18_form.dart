@@ -9,6 +9,7 @@ import 'package:aci_plus_app/core/working_mode_table.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_buttom_navigation_bar18.dart';
 import 'package:aci_plus_app/repositories/unit_repository.dart';
+import 'package:aci_plus_app/setting/model/setting_widgets.dart';
 import 'package:aci_plus_app/status/bloc/status18/status18_bloc.dart';
 import 'package:aci_plus_app/status/shared/utils.dart';
 import 'package:flutter/material.dart';
@@ -599,21 +600,13 @@ class _SplitOptionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Map<String, String> types = const {
-      '0': 'N/A',
-      '1': '204/258 MHz',
-      '2': '300/372 MHz',
-      '3': '396/492 MHz',
-      '4': '492/606 MHz',
-      '5': '684/834 MHz',
-    };
-
     return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
       String currentSplitOption =
-          state.characteristicData[DataKey.currentDetectedSplitOption] ?? '';
+          state.characteristicData[DataKey.currentDetectedSplitOption] ?? '0';
 
-      String splitOption =
-          currentSplitOption == '' ? '' : types[currentSplitOption] ?? 'N/A';
+      String splitOption = currentSplitOption == '0'
+          ? 'N/A'
+          : '${splitBaseLine[currentSplitOption]!.$1}/${splitBaseLine[currentSplitOption]!.$2} ${CustomStyle.mHz}';
 
       String splitOptionAlarmState =
           state.characteristicData[DataKey.splitOptionAlarmState] ?? '1';

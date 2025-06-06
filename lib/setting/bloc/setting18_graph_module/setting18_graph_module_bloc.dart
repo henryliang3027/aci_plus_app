@@ -70,7 +70,7 @@ class Setting18GraphModuleBloc
         splitOption != '0' && // '0' indicates no DFU
         partId.isNotEmpty) {
       values = ControlItemValue
-          .allValueCollections[operatingMode]![splitOption]![int.parse(partId)];
+          .allValueCollections[operatingMode]![splitOption]![partId]!;
     }
 
     // Combine them into one map:

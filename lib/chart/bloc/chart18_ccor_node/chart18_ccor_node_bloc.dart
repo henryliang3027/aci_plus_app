@@ -4,8 +4,10 @@ import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/core/utils.dart';
+import 'package:aci_plus_app/repositories/aci_device_repository.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_parser.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_repository.dart';
+import 'package:aci_plus_app/repositories/connection_client_factory.dart';
 import 'package:aci_plus_app/setting/model/setting_widgets.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,8 +22,10 @@ class Chart18CCorNodeBloc
   Chart18CCorNodeBloc({
     required AppLocalizations appLocalizations,
     required Amp18CCorNodeRepository amp18CCorNodeRepository,
+    required ACIDeviceRepository aciDeviceRepository,
   })  : _appLocalizations = appLocalizations,
         _amp18CCorNodeRepository = amp18CCorNodeRepository,
+        _aciDeviceRepository = aciDeviceRepository,
         super(const Chart18CCorNodeState()) {
     on<Initialized>(_onInitialized);
     on<MoreLogRequested>(_onMoreLogRequested);
@@ -32,6 +36,7 @@ class Chart18CCorNodeBloc
 
   final AppLocalizations _appLocalizations;
   final Amp18CCorNodeRepository _amp18CCorNodeRepository;
+  final ACIDeviceRepository _aciDeviceRepository;
 
   Future<void> _onInitialized(
     Initialized event,
@@ -44,12 +49,12 @@ class Chart18CCorNodeBloc
       allDataExportStatus: FormStatus.none,
     ));
 
+    ConnectionType connectionType = _aciDeviceRepository.checkConnectionType();
+
     List<dynamic> resultOfLog1p8G = [];
 
     // 最多 retry 3 次, 連續失敗3次就視為失敗
     for (int i = 0; i < 3; i++) {
-      await _amp18CCorNodeRepository.set1p8GCCorNodeTransmitDelayTime();
-
       resultOfLog1p8G =
           await _amp18CCorNodeRepository.requestCommand1p8GCCorNodeLogChunk(0);
 
@@ -94,7 +99,10 @@ class Chart18CCorNodeBloc
             ));
             break;
           } else {
-            continue;
+            if (connectionType == ConnectionType.ble) {
+              // 根據RSSI設定每個 chunk 之間的 delay
+              await _amp18CCorNodeRepository.set1p8GCCorNodeTransmitDelayTime();
+            }
           }
         }
       }
@@ -104,8 +112,6 @@ class Chart18CCorNodeBloc
     if (resultOfLog1p8G[0]) {
       // 最多 retry 3 次, 連續失敗3次就視為失敗
       for (int i = 0; i < 3; i++) {
-        await _amp18CCorNodeRepository.set1p8GCCorNodeTransmitDelayTime();
-
         List<dynamic> resultOfEvent1p8G =
             await _amp18CCorNodeRepository.requestCommand1p8GCCorNodeEvent();
 
@@ -141,7 +147,11 @@ class Chart18CCorNodeBloc
               ));
               break;
             } else {
-              continue;
+              if (connectionType == ConnectionType.ble) {
+                // 根據RSSI設定每個 chunk 之間的 delay
+                await _amp18CCorNodeRepository
+                    .set1p8GCCorNodeTransmitDelayTime();
+              }
             }
           }
         }
@@ -160,13 +170,13 @@ class Chart18CCorNodeBloc
       allDataExportStatus: FormStatus.none,
     ));
 
+    ConnectionType connectionType = _aciDeviceRepository.checkConnectionType();
+
     List<Log1p8GCCorNode> log1p8Gs = [];
     log1p8Gs.addAll(state.log1p8Gs);
 
     // 最多 retry 3 次, 連續失敗3次就視為失敗
     for (int i = 0; i < 3; i++) {
-      await _amp18CCorNodeRepository.set1p8GCCorNodeTransmitDelayTime();
-
       List<dynamic> resultOfLog1p8G = await _amp18CCorNodeRepository
           .requestCommand1p8GCCorNodeLogChunk(state.chunkIndex);
 
@@ -206,7 +216,10 @@ class Chart18CCorNodeBloc
             ));
             break;
           } else {
-            continue;
+            if (connectionType == ConnectionType.ble) {
+              // 根據RSSI設定每個 chunk 之間的 delay
+              await _amp18CCorNodeRepository.set1p8GCCorNodeTransmitDelayTime();
+            }
           }
         }
       }

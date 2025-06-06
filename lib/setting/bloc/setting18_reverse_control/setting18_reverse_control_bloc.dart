@@ -64,7 +64,7 @@ class Setting18ReverseControlBloc
         splitOption != '0' && // '0' indicates no DFU
         partId.isNotEmpty) {
       values = ControlItemValue
-          .allValueCollections[operatingMode]![splitOption]![int.parse(partId)];
+          .allValueCollections[operatingMode]![splitOption]![partId]!;
     }
 
     Map<Enum, DataKey> reverseControlMap =

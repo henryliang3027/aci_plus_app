@@ -40,11 +40,6 @@ class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
 
     // 最多 retry 3 次, 連續失敗3次就視為失敗
     for (int i = 0; i < 3; i++) {
-      if (connectionType == ConnectionType.ble) {
-        // 根據RSSI設定每個 chunk 之間的 delay
-        await _amp18Repository.set1p8GTransmitDelayTime();
-      }
-
       resultOfLog1p8G = await _amp18Repository.requestCommand1p8GForLogChunk(0);
 
       if (resultOfLog1p8G[0]) {
@@ -88,7 +83,10 @@ class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
             ));
             break;
           } else {
-            continue;
+            if (connectionType == ConnectionType.ble) {
+              // 根據RSSI設定每個 chunk 之間的 delay
+              await _amp18Repository.set1p8GTransmitDelayTime();
+            }
           }
         }
       }
@@ -98,11 +96,6 @@ class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
     if (resultOfLog1p8G[0]) {
       // 最多 retry 3 次, 連續失敗3次就視為失敗
       for (int i = 0; i < 3; i++) {
-        if (connectionType == ConnectionType.ble) {
-          // 根據RSSI設定每個 chunk 之間的 delay
-          await _amp18Repository.set1p8GTransmitDelayTime();
-        }
-
         List<dynamic> resultOfEvent1p8G =
             await _amp18Repository.requestCommand1p8GEvent();
 
@@ -138,7 +131,10 @@ class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
               ));
               break;
             } else {
-              continue;
+              if (connectionType == ConnectionType.ble) {
+                // 根據RSSI設定每個 chunk 之間的 delay
+                await _amp18Repository.set1p8GTransmitDelayTime();
+              }
             }
           }
         }
@@ -161,10 +157,6 @@ class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
 
     // 最多 retry 3 次, 連續失敗3次就視為失敗
     for (int i = 0; i < 3; i++) {
-      if (connectionType == ConnectionType.ble) {
-        // 根據RSSI設定每個 chunk 之間的 delay
-        await _amp18Repository.set1p8GTransmitDelayTime();
-      }
       List<dynamic> resultOfLog1p8G = await _amp18Repository
           .requestCommand1p8GForLogChunk(state.chunkIndex);
 
@@ -202,7 +194,10 @@ class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
             ));
             break;
           } else {
-            continue;
+            if (connectionType == ConnectionType.ble) {
+              // 根據RSSI設定每個 chunk 之間的 delay
+              await _amp18Repository.set1p8GTransmitDelayTime();
+            }
           }
         }
       }
