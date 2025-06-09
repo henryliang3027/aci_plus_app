@@ -6,7 +6,6 @@ import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_graph_module/setting18_graph_module_bloc.dart';
-import 'package:aci_plus_app/setting/model/card_color.dart';
 import 'package:aci_plus_app/setting/model/graph_module_form_color.dart';
 import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
 import 'package:aci_plus_app/setting/model/setting18_result_text.dart';
@@ -51,7 +50,7 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
 
   @override
   Widget build(BuildContext context) {
-    HomeState homeState = context.read<HomeBloc>().state;
+    HomeState homeState = context.watch<HomeBloc>().state;
     String partId = homeState.characteristicData[DataKey.partId] ?? '';
     String agcMode = homeState.characteristicData[DataKey.agcMode] ?? '0';
     String currentInputAttenuation =
@@ -78,7 +77,10 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
 
     Map<String, List<Widget>> forwardSettingWidgetsMap = {
       DataKey.agcMode.name: [
-        const _PilotFrequencyMode(),
+        _PilotFrequencyMode(
+          partId: partId,
+          currentDetectedSplitOption: currentDetectedSplitOption,
+        ),
         _FirstChannelLoading(
           currentDetectedSplitOption: currentDetectedSplitOption,
         ),
@@ -1208,70 +1210,66 @@ class _ReturnInputAttenuation5And6 extends StatelessWidget {
 // }
 
 class _PilotFrequencyMode extends StatelessWidget {
-  const _PilotFrequencyMode();
+  const _PilotFrequencyMode({
+    required this.partId,
+    required this.currentDetectedSplitOption,
+  });
+
+  final String partId;
+  final String currentDetectedSplitOption;
 
   @override
   Widget build(BuildContext context) {
-    List<String> pilotFrequencyModeTexts = [
-      AppLocalizations.of(context)!.pilotFrequencyBandwidthSettings,
-      AppLocalizations.of(context)!.pilotFrequencyUserSettings,
-      AppLocalizations.of(context)!.pilotFrequencyBenchMode,
-      //  AppLocalizations.of(context)!.pilotFrequencySmartSettings,
-    ];
-
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       buildWhen: (previous, current) =>
           previous.pilotFrequencyMode != current.pilotFrequencyMode ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        List<String> pilotFrequencyModeTexts = [];
-        if (state.eqType == EQType.board) {
-          pilotFrequencyModeTexts = [
-            AppLocalizations.of(context)!.pilotFrequencyBandwidthSettings,
-            AppLocalizations.of(context)!.pilotFrequencyUserSettings,
-            AppLocalizations.of(context)!.pilotFrequencyBenchMode1p8G,
-            AppLocalizations.of(context)!.pilotFrequencyBenchMode1p2G,
-            //  AppLocalizations.of(context)!.pilotFrequencySmartSettings,
-          ];
+        List<String> texts = [];
+        List<String> values = [];
 
-          return pilotFrequencyModeGridViewButton(
-            context: context,
-            crossAxisCount: 1,
-            texts: pilotFrequencyModeTexts,
-            values: onBoardPilotFrequencyModeValues,
-            editMode: ModeProperty.isExpertMode ? state.editMode : false,
-            pilotFrequencyMode: state.pilotFrequencyMode,
-            onGridPressed: (index) => context
-                .read<Setting18GraphModuleBloc>()
-                .add(PilotFrequencyModeChanged(
-                    pilotFrequencyMode:
-                        onBoardPilotFrequencyModeValues[index])),
-            elevation: CustomStyle.graphSettingCardElevation,
-            color: CustomStyle.graphSettingCardColor,
-          );
+        if (state.eqType == EQType.board) {
+          if (partId == '10' && currentDetectedSplitOption == '6') {
+            // MFT8 DFU = 85/105
+            texts = [
+              AppLocalizations.of(context)!.pilotFrequencyBandwidthSettings,
+              AppLocalizations.of(context)!.pilotFrequencyUserSettings,
+              AppLocalizations.of(context)!.pilotFrequencyBenchMode1p2G,
+            ];
+            values = onBoard1P2GPilotFrequencyModeValues;
+          } else {
+            texts = [
+              AppLocalizations.of(context)!.pilotFrequencyBandwidthSettings,
+              AppLocalizations.of(context)!.pilotFrequencyUserSettings,
+              AppLocalizations.of(context)!.pilotFrequencyBenchMode1p8G,
+              AppLocalizations.of(context)!.pilotFrequencyBenchMode1p2G,
+            ];
+
+            values = onBoardPilotFrequencyModeValues;
+          }
         } else {
-          pilotFrequencyModeTexts = [
+          texts = [
             AppLocalizations.of(context)!.pilotFrequencyBandwidthSettings,
             AppLocalizations.of(context)!.pilotFrequencyUserSettings,
             AppLocalizations.of(context)!.pilotFrequencyBenchMode,
-            //  AppLocalizations.of(context)!.pilotFrequencySmartSettings,
           ];
-
-          return pilotFrequencyModeGridViewButton(
-            context: context,
-            crossAxisCount: 1,
-            texts: pilotFrequencyModeTexts,
-            values: pilotFrequencyModeValues,
-            editMode: ModeProperty.isExpertMode ? state.editMode : false,
-            pilotFrequencyMode: state.pilotFrequencyMode,
-            onGridPressed: (index) => context
-                .read<Setting18GraphModuleBloc>()
-                .add(PilotFrequencyModeChanged(
-                    pilotFrequencyMode: pilotFrequencyModeValues[index])),
-            elevation: CustomStyle.graphSettingCardElevation,
-            color: CustomStyle.graphSettingCardColor,
-          );
+          values = pilotFrequencyModeValues;
         }
+
+        return pilotFrequencyModeGridViewButton(
+          context: context,
+          crossAxisCount: 1,
+          texts: texts,
+          values: values,
+          editMode: ModeProperty.isExpertMode ? state.editMode : false,
+          pilotFrequencyMode: state.pilotFrequencyMode,
+          onGridPressed: (index) => context
+              .read<Setting18GraphModuleBloc>()
+              .add(
+                  PilotFrequencyModeChanged(pilotFrequencyMode: values[index])),
+          elevation: CustomStyle.graphSettingCardElevation,
+          color: CustomStyle.graphSettingCardColor,
+        );
       },
     );
   }

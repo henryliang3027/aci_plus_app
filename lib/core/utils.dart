@@ -395,18 +395,12 @@ Future<void> handleUpdateAction({
 // agcMode 開啟的話 forward setting 不可以編輯
 // agcMode 關閉的話 forward setting 可以編輯
 
-// 20240404 agcMode == '1' 也是可以編輯的
+// 20240404 agcMode == 不論開啟或關閉都可以編輯
 bool getForwardSettingEditable({
   required String pilotFrequencyMode,
   required String agcMode,
 }) {
-  bool isEnableEdit = pilotFrequencyMode == '3'
-      ? true
-      : agcMode == '0'
-          ? true
-          : true;
-
-  return isEnableEdit;
+  return true;
 }
 
 // 判斷 forward input port (VVA1, Slope1)是否可以編輯

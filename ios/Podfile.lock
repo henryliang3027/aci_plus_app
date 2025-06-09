@@ -124,7 +124,7 @@ PODS:
   - PromisesObjC (2.4.0)
   - PromisesSwift (2.4.0):
     - PromisesObjC (= 2.4.0)
-  - Protobuf (3.29.3)
+  - Protobuf (3.29.5)
   - qr_code_scanner (0.2.0):
     - Flutter
     - MTBBarcodeScanner
@@ -133,17 +133,15 @@ PODS:
     - FlutterMacOS
     - Protobuf (~> 3.5)
     - SwiftProtobuf (~> 1.0)
-  - SDWebImage (5.19.7):
-    - SDWebImage/Core (= 5.19.7)
-  - SDWebImage/Core (5.19.7)
+  - SDWebImage (5.21.0):
+    - SDWebImage/Core (= 5.21.0)
+  - SDWebImage/Core (5.21.0)
   - share_plus (0.0.1):
     - Flutter
   - shared_preferences_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
-  - simple_barcode_scanner (0.1.7):
-    - Flutter
-  - SwiftProtobuf (1.28.2)
+  - SwiftProtobuf (1.30.0)
   - SwiftyGif (5.4.5)
   - universal_ble (0.0.1):
     - Flutter
@@ -170,7 +168,6 @@ DEPENDENCIES:
   - reactive_ble_mobile (from `.symlinks/plugins/reactive_ble_mobile/darwin`)
   - share_plus (from `.symlinks/plugins/share_plus/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
-  - simple_barcode_scanner (from `.symlinks/plugins/simple_barcode_scanner/ios`)
   - universal_ble (from `.symlinks/plugins/universal_ble/darwin`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
 
@@ -234,8 +231,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/share_plus/ios"
   shared_preferences_foundation:
     :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
-  simple_barcode_scanner:
-    :path: ".symlinks/plugins/simple_barcode_scanner/ios"
   universal_ble:
     :path: ".symlinks/plugins/universal_ble/darwin"
   url_launcher_ios:
@@ -272,14 +267,13 @@ SPEC CHECKSUMS:
   permission_handler_apple: 9878588469a2b0d0fc1e048d9f43605f92e6cec2
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   PromisesSwift: 9d77319bbe72ebf6d872900551f7eeba9bce2851
-  Protobuf: e2de96d939c642ce8da186343ff8929b35223212
+  Protobuf: 164aea2ae380c3951abdc3e195220c01d17400e0
   qr_code_scanner: bb67d64904c3b9658ada8c402e8b4d406d5d796e
   reactive_ble_mobile: 856183aeda09f2a676bbaecbea8915c3cb1d33df
-  SDWebImage: 8a6b7b160b4d710e2a22b6900e25301075c34cb3
+  SDWebImage: f84b0feeb08d2d11e6a9b843cb06d75ebf5b8868
   share_plus: 8b6f8b3447e494cca5317c8c3073de39b3600d1f
   shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78
-  simple_barcode_scanner: bb2603ae5228a007bd066e9f955911858ae55755
-  SwiftProtobuf: 4dbaffec76a39a8dc5da23b40af1a5dc01a4c02d
+  SwiftProtobuf: 3697407f0d5b23bedeba9c2eaaf3ec6fdff69349
   SwiftyGif: 706c60cf65fa2bc5ee0313beece843c8eb8194d4
   universal_ble: cf52a7b3fd2e7c14d6d7262e9fdadb72ab6b88a6
   url_launcher_ios: 5334b05cef931de560670eeae103fd3e431ac3fe
