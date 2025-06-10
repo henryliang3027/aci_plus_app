@@ -507,7 +507,7 @@ class Amp18Repository with BLECommandsMixin {
     }
   }
 
-  Future<dynamic> set1p8GUserAttribute({
+  Future<bool> set1p8GUserAttribute({
     required String technicianID,
     required String inputSignalLevel,
     required String inputAttenuation,
@@ -598,9 +598,9 @@ class Amp18Repository with BLECommandsMixin {
       } catch (e) {
         return false;
       }
-
-      return true;
     }
+
+    return true;
   }
 
   List<List<ValuePair>> get1p8GDateValueCollectionOfLogs(

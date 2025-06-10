@@ -56,7 +56,11 @@ class CircuitPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     // Add null/zero size check
-    if (size.isEmpty || size.width == 0 || size.height == 0) {
+    if (size.isEmpty ||
+        size.width == 0 ||
+        size.height == 0 ||
+        svgImage.width == 0 ||
+        svgImage.height == 0) {
       return;
     }
 
@@ -69,7 +73,7 @@ class CircuitPainter extends CustomPainter {
     double scaleFactor = min(scaleFactorX, scaleFactorY);
     double offsetX = (size.width - svgImage.width * scaleFactor) / 2;
     double offsetY = (size.height - svgImage.height * scaleFactor) / 2;
-
+    print('offsetX : ${size.width}, ${svgImage.width}, ${scaleFactor}');
     print('offsetX : ${offsetX}');
     print('offsetY: : ${offsetY}');
 

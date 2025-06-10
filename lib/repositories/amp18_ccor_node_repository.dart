@@ -7,6 +7,7 @@ import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_chart_cache.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_parser.dart';
+import 'package:aci_plus_app/repositories/ble_client.dart';
 import 'package:aci_plus_app/repositories/connection_client.dart';
 import 'package:aci_plus_app/repositories/ble_command_mixin.dart';
 import 'package:aci_plus_app/repositories/connection_client_factory.dart';
@@ -493,7 +494,7 @@ class Amp18CCorNodeRepository with BLECommandsMixin {
     }
   }
 
-  Future<dynamic> set1p8GCCorNodeUserAttribute({
+  Future<bool> set1p8GCCorNodeUserAttribute({
     required String technicianID,
     // required String inputSignalLevel,
     // required String inputAttenuation,
@@ -553,23 +554,37 @@ class Amp18CCorNodeRepository with BLECommandsMixin {
       usDataLength: Command18CCorNode.setUserAttributeCmd.length - 2,
     );
 
-    // 將 binary 切分成每個大小為 chunkSize 的封包
-    int chunkSize = await BLEUtils.getChunkSize();
+    if (_connectionClient is BLEClient) {
+      // 將 binary 切分成每個大小為 chunkSize 的封包
+      int chunkSize = await BLEUtils.getChunkSize();
 
-    List<List<int>> chunks = BLEUtils.divideToChunkList(
-      binary: Command18CCorNode.setUserAttributeCmd,
-      chunkSize: chunkSize,
-    );
-
-    try {
-      List<int> rawData =
-          await _connectionClient.writeLongSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        chunks: chunks,
-        timeout: const Duration(seconds: 10),
+      List<List<int>> chunks = BLEUtils.divideToChunkList(
+        binary: Command18CCorNode.setUserAttributeCmd,
+        chunkSize: chunkSize,
       );
-    } catch (e) {
-      return false;
+
+      try {
+        List<int> rawData =
+            await _connectionClient.writeLongSetCommandToCharacteristic(
+          commandIndex: commandIndex,
+          chunks: chunks,
+          timeout: const Duration(seconds: 10),
+        );
+      } catch (e) {
+        return false;
+      }
+    } else {
+      // USBClient
+      try {
+        List<int> rawData =
+            await _connectionClient.writeSetCommandToCharacteristic(
+          commandIndex: commandIndex,
+          value: Command18CCorNode.setUserAttributeCmd,
+          timeout: const Duration(seconds: 10),
+        );
+      } catch (e) {
+        return false;
+      }
     }
 
     return true;
