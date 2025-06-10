@@ -64,7 +64,7 @@ class CircuitPainter extends CustomPainter {
       return;
     }
 
-    print('Canvas size: $size');
+    // print('Canvas size: $size');
 
     double scaleFactorX = size.width / svgImage.width;
 
@@ -73,9 +73,9 @@ class CircuitPainter extends CustomPainter {
     double scaleFactor = min(scaleFactorX, scaleFactorY);
     double offsetX = (size.width - svgImage.width * scaleFactor) / 2;
     double offsetY = (size.height - svgImage.height * scaleFactor) / 2;
-    print('offsetX : ${size.width}, ${svgImage.width}, ${scaleFactor}');
-    print('offsetX : ${offsetX}');
-    print('offsetY: : ${offsetY}');
+    // print('offsetX : ${size.width}, ${svgImage.width}, ${scaleFactor}');
+    // print('offsetX : ${offsetX}');
+    // print('offsetY: : ${offsetY}');
 
     var myCanvas = TouchyCanvas(context, canvas);
     for (Box box in svgImage.boxes) {
@@ -105,7 +105,7 @@ class CircuitPainter extends CustomPainter {
       );
     }
 
-    print('scaleFactor: $scaleFactor');
+    // print('scaleFactor: $scaleFactor');
 
     for (ValueText valueText in svgImage.valueTexts) {
       // final int colorHex = int.parse(valueText.color);
