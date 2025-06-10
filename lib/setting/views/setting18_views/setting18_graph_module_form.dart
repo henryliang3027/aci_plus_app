@@ -1229,24 +1229,14 @@ class _PilotFrequencyMode extends StatelessWidget {
         List<String> values = [];
 
         if (state.eqType == EQType.board) {
-          if (partId == '10' && currentDetectedSplitOption == '6') {
-            // MFT8 DFU = 85/105
-            texts = [
-              AppLocalizations.of(context)!.pilotFrequencyBandwidthSettings,
-              AppLocalizations.of(context)!.pilotFrequencyUserSettings,
-              AppLocalizations.of(context)!.pilotFrequencyBenchMode1p2G,
-            ];
-            values = onBoard1P2GPilotFrequencyModeValues;
-          } else {
-            texts = [
-              AppLocalizations.of(context)!.pilotFrequencyBandwidthSettings,
-              AppLocalizations.of(context)!.pilotFrequencyUserSettings,
-              AppLocalizations.of(context)!.pilotFrequencyBenchMode1p8G,
-              AppLocalizations.of(context)!.pilotFrequencyBenchMode1p2G,
-            ];
+          texts = [
+            AppLocalizations.of(context)!.pilotFrequencyBandwidthSettings,
+            AppLocalizations.of(context)!.pilotFrequencyUserSettings,
+            AppLocalizations.of(context)!.pilotFrequencyBenchMode1p8G,
+            AppLocalizations.of(context)!.pilotFrequencyBenchMode1p2G,
+          ];
 
-            values = onBoardPilotFrequencyModeValues;
-          }
+          values = onBoardPilotFrequencyModeValues;
         } else {
           texts = [
             AppLocalizations.of(context)!.pilotFrequencyBandwidthSettings,
