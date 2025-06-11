@@ -274,7 +274,7 @@ class USBClient extends ConnectionClient {
       List<int> rawData = await writeSetCommandToCharacteristic(
         commandIndex: _currentCommandIndex,
         value: value,
-        timeout: const Duration(seconds: 10),
+        timeout: const Duration(seconds: 5),
       );
       return [true, rawData];
     } catch (e) {
@@ -293,39 +293,38 @@ class USBClient extends ConnectionClient {
   }) async {
     _currentCommandIndex = commandIndex;
 
-    List<dynamic> result = await _requestBasicInformationRawData(value);
+    // 因為在 pixel 5 上面發現, 有時候 USB 連接後, 第一次下指令無法取得資料
+    // 所以這邊重試 3 次
+    for (int retry = 0; retry < 3; retry++) {
+      List<dynamic> result = await _requestBasicInformationRawData(value);
 
-    if (result[0]) {
-      List<int> rawData = result[1];
-      int length = rawData.length;
+      if (result[0]) {
+        List<int> rawData = result[1];
+        int length = rawData.length;
 
-      if (length == 17) {
-        // 1G/1.2G data length = 17
-        return [
-          true,
-          ACIDeviceType.dsim1G1P2G,
-        ];
-      } else {
-        // 1.8G data length = 181
-        int partId = rawData[71];
-
-        if (partId == 4) {
+        if (length == 17) {
+          // 1G/1.2G data length = 17
           return [
             true,
-            ACIDeviceType.ampCCorNode1P8G,
+            ACIDeviceType.dsim1G1P2G,
           ];
         } else {
+          // 1.8G data length = 181
+          int partId = rawData[71];
+
           return [
             true,
-            ACIDeviceType.amp1P8G,
+            partId == 4 ? ACIDeviceType.ampCCorNode1P8G : ACIDeviceType.amp1P8G,
           ];
         }
       }
-    } else {
-      return [
-        false,
-      ];
+
+      if (retry < 2) {
+        print('GetACIDeviceType attempt ${retry + 1} failed, retrying...');
+      }
     }
+    // 如果 retry 次數達到 3 次仍然失敗
+    return [false];
   }
 
   @override

@@ -336,30 +336,22 @@ class BLEClient extends ConnectionClient {
         _aciDeviceType = ACIDeviceType.dsim1G1P2G;
         return [
           true,
-          ACIDeviceType.dsim1G1P2G,
+          _aciDeviceType,
         ];
       } else {
         // 1.8G data length = 181
         int partId = rawData[71];
+        partId == 4
+            ? _aciDeviceType = ACIDeviceType.ampCCorNode1P8G
+            : _aciDeviceType = ACIDeviceType.amp1P8G;
 
-        if (partId == 4) {
-          _aciDeviceType = ACIDeviceType.ampCCorNode1P8G;
-          return [
-            true,
-            ACIDeviceType.ampCCorNode1P8G,
-          ];
-        } else {
-          _aciDeviceType = ACIDeviceType.amp1P8G;
-          return [
-            true,
-            ACIDeviceType.amp1P8G,
-          ];
-        }
+        return [
+          true,
+          _aciDeviceType,
+        ];
       }
     } else {
-      return [
-        false,
-      ];
+      return [false];
     }
   }
 
