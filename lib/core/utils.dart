@@ -458,9 +458,10 @@ int getMaxLastChannelLoadingFrequency({
   int maxStopFrequency = 1794;
 
   // 如果是 MFT8 而且 currentDetectedSplitOption 是 85/105
-  if (partId == '10' && currentDetectedSplitOption == '6') {
-    maxStopFrequency = 1218;
-  }
+  // 20250613 不使用此規則
+  // if (partId == '10' && currentDetectedSplitOption == '6') {
+  //   maxStopFrequency = 1218;
+  // }
   return maxStopFrequency;
 }
 

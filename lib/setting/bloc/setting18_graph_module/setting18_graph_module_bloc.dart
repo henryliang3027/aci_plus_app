@@ -259,6 +259,19 @@ class Setting18GraphModuleBloc
           state.initialValues[DataKey.lastChannelLoadingLevel] ?? '';
       pilotFrequency1Value = state.initialValues[DataKey.pilotFrequency1] ?? '';
       pilotFrequency2Value = state.initialValues[DataKey.pilotFrequency2] ?? '';
+
+      if (state.eqType == EQType.board) {
+        // 如果是 onboard 放大器，則
+        // pilotFrequencyMode = BencMhMode.frequency1p2G 時 lastChannelLoadingLevelValue = 1218
+        // pilotFrequencyMode = BencMhMode.frequency1p8G 時 lastChannelLoadingLevelValue = 1794
+        if (event.pilotFrequencyMode == BenchMode.frequency1p2G.name) {
+          lastChannelLoadingFrequencyValue = '1218';
+          tappedSet.add(DataKey.lastChannelLoadingFrequency);
+        } else if (event.pilotFrequencyMode == BenchMode.frequency1p8G.name) {
+          lastChannelLoadingFrequencyValue = '1794';
+          tappedSet.add(DataKey.lastChannelLoadingFrequency);
+        } else {}
+      }
     } else {
       firstChannelLoadingFrequencyValue =
           state.firstChannelLoadingFrequency.value;
@@ -426,6 +439,38 @@ class Setting18GraphModuleBloc
     ));
   }
 
+  String _updatePilotFrequencyModeForBoard(
+    RangeIntegerInput lastChannelLoadingFrequency,
+    Set<DataKey> tappedSet,
+  ) {
+    // Return current mode if not a valid board scenario
+    if (!_isBoardWithBenchMode()) {
+      return state.pilotFrequencyMode;
+    }
+
+    // Return current mode if frequency is invalid
+    if (!lastChannelLoadingFrequency.isValid) {
+      return state.pilotFrequencyMode;
+    }
+
+    // Determine mode based on frequency threshold
+    final frequency = int.parse(lastChannelLoadingFrequency.value);
+    final newMode = frequency <= 1218
+        ? BenchMode.frequency1p2G.name
+        : BenchMode.frequency1p8G.name;
+
+    // Mark as changed
+    tappedSet.add(DataKey.pilotFrequencyMode);
+
+    return newMode;
+  }
+
+  bool _isBoardWithBenchMode() {
+    return state.eqType == EQType.board &&
+        (state.pilotFrequencyMode == BenchMode.frequency1p2G.name ||
+            state.pilotFrequencyMode == BenchMode.frequency1p8G.name);
+  }
+
   void _onLastChannelLoadingFrequencyChanged(
     LastChannelLoadingFrequencyChanged event,
     Emitter<Setting18GraphModuleState> emit,
@@ -465,8 +510,14 @@ class Setting18GraphModuleBloc
     Set<DataKey> tappedSet = Set.from(state.tappedSet);
     tappedSet.add(DataKey.lastChannelLoadingFrequency);
 
+    String targetPilotFrequencyMode = _updatePilotFrequencyModeForBoard(
+      lastChannelLoadingFrequency,
+      tappedSet,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      pilotFrequencyMode: targetPilotFrequencyMode,
       firstChannelLoadingFrequency: firstChannelLoadingFrequency,
       lastChannelLoadingFrequency: lastChannelLoadingFrequency,
       pilotFrequency1: pilotFrequency1,
@@ -475,6 +526,7 @@ class Setting18GraphModuleBloc
       isInitialPilotFrequencyLevelValues: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
+        pilotFrequencyMode: targetPilotFrequencyMode,
         firstChannelLoadingFrequency: firstChannelLoadingFrequency,
         lastChannelLoadingFrequency: lastChannelLoadingFrequency,
         pilotFrequency1: pilotFrequency1,
