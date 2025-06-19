@@ -9,7 +9,30 @@ class ControlItemValue {
   };
 
   static Map<String, Map<String, Map<DataKey, MinMax>>> valueCollection = {
+    '0': {
+      // no DFU
+      '0': Item1P8G.mftj1_0,
+      '1': Item1P8G.sdle1_1,
+      '2': Item1P8G.ble1_2,
+      '3': Item1P8G.mb1_3,
+      '4': Item1P8G.ccorNode1_4,
+      '5': Item1P8G.tr1_5,
+      '6': Item1P8G.br1_6,
+      '7': Item1P8G.le1_7,
+      '8': Item1P8G.sdat1_8,
+      '9': Item1P8G.sdam1_9,
+      '10': Item1P8G.mft8_1_10,
+      '11': Item1P8G.sdleOnBoard1_11,
+      '12': Item1P8G.bleOnBoard1_12,
+      '13': Item1P8G.mbOnBoard1_13,
+      '15': Item1P8G.trOnBoard1_15,
+      '16': Item1P8G.brOnBoard1_16,
+      '17': Item1P8G.leOnBoard1_17,
+      '18': Item1P8G.sdatOnBoard1_18,
+      '19': Item1P8G.sdamOnBoard1_19,
+    },
     '1': {
+      //204/258
       '0': Item1P8G.mftj1_0,
       '1': Item1P8G.sdle1_1,
       '2': Item1P8G.ble1_2,
@@ -143,7 +166,30 @@ class ControlItemValue {
   };
 
   static Map<String, Map<String, Map<DataKey, MinMax>>> valueCollection1P2G = {
+    '0': {
+      // no DFU
+      '0': Item1P2G.mftj1_0,
+      '1': Item1P2G.sdle1_1,
+      '2': Item1P2G.ble1_2,
+      '3': Item1P2G.mb1_3,
+      '4': Item1P2G.ccorNode1_4,
+      '5': Item1P2G.tr1_5,
+      '6': Item1P2G.br1_6,
+      '7': Item1P2G.le1_7,
+      '8': Item1P2G.sdat1_8,
+      '9': Item1P2G.sdam1_9,
+      '10': Item1P2G.mft8_1_10,
+      '11': Item1P2G.sdleOnBoard1_11,
+      '12': Item1P2G.bleOnBoard1_12,
+      '13': Item1P2G.mbOnBoard1_13,
+      '15': Item1P2G.trOnBoard1_15,
+      '16': Item1P2G.brOnBoard1_16,
+      '17': Item1P2G.leOnBoard1_17,
+      '18': Item1P2G.sdatOnBoard1_18,
+      '19': Item1P2G.sdamOnBoard1_19,
+    },
     '1': {
+      // 204/258
       '0': Item1P2G.mftj1_0,
       '1': Item1P2G.sdle1_1,
       '2': Item1P2G.ble1_2,

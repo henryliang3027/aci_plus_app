@@ -34,21 +34,21 @@ class Setting18IngressControlBloc
     Map<DataKey, String> characteristicDataCache =
         _amp18Repository.characteristicDataCache;
 
-    String partId = characteristicDataCache[DataKey.partId] ?? '';
-
-    Map<Enum, DataKey> reverseControlMap =
-        SettingItemTable.controlItemDataMapCollection[partId]![1];
-
     Map<DataKey, String> initialValues = {};
     Map<DataKey, String> targetValues = {};
 
-    reverseControlMap.forEach((name, dataKey) {
-      initialValues[dataKey] = characteristicDataCache[dataKey]!;
+    String partId = characteristicDataCache[DataKey.partId] ?? '';
 
-      if (dataKey.name.startsWith('ingress')) {
+    if (partId.isNotEmpty) {
+      Map<Enum, DataKey> ingressControlMap =
+          SettingItemTable.controlItemDataMapCollection[partId]![2];
+
+      ingressControlMap.forEach((name, dataKey) {
+        initialValues[dataKey] = characteristicDataCache[dataKey]!;
+
         targetValues[dataKey] = characteristicDataCache[dataKey]!;
-      }
-    });
+      });
+    }
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,

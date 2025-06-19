@@ -43,43 +43,27 @@ class Setting18ReverseControlBloc
     Map<DataKey, String> characteristicDataCache =
         _amp18Repository.characteristicDataCache;
 
-    // ex: C-coe LE 沒有 VCA3, VCA4, 讀到的值是 -0.1, 不符合範圍, 所以改成 0.0 作為初始值
-    characteristicDataCache.forEach((key, value) {
-      if (value == '-0.1') {
-        characteristicDataCache[key] = '0.0';
-      }
-    });
-
-// 當斷線的時候重新初始化時讀取 map 元素會有 null 的情況, null 時就 assign 空字串
+    // splitOption = '0' 代表沒有 DFU
     String splitOption =
-        characteristicDataCache[DataKey.currentDetectedSplitOption] ?? '';
+        characteristicDataCache[DataKey.currentDetectedSplitOption] ?? '0';
     String partId = characteristicDataCache[DataKey.partId] ?? '';
     String operatingMode = getOperatingModeFromForwardCEQIndex(
         characteristicDataCache[DataKey.forwardCEQIndex] ?? '');
 
-    Map<DataKey, MinMax> values = {};
-
-    if (operatingMode.isNotEmpty &&
-        splitOption.isNotEmpty &&
-        splitOption != '0' && // '0' indicates no DFU
-        partId.isNotEmpty) {
-      values = ControlItemValue
-          .allValueCollections[operatingMode]![splitOption]![partId]!;
-    }
-
-    Map<Enum, DataKey> reverseControlMap =
-        SettingItemTable.controlItemDataMapCollection[partId]![1];
-
     Map<DataKey, String> initialValues = {};
     Map<DataKey, RangeFloatPointInput> targetValues = {};
-    Map<DataKey, String> targetIngressValues = {};
+    Map<DataKey, MinMax> values = {};
 
-    reverseControlMap.forEach((name, dataKey) {
-      initialValues[dataKey] = characteristicDataCache[dataKey]!;
+    if (partId.isNotEmpty) {
+      values = ControlItemValue
+          .allValueCollections[operatingMode]![splitOption]![partId]!;
 
-      if (dataKey.name.startsWith('ingress')) {
-        targetIngressValues[dataKey] = characteristicDataCache[dataKey]!;
-      } else {
+      Map<Enum, DataKey> reverseControlMap =
+          SettingItemTable.controlItemDataMapCollection[partId]![1];
+
+      reverseControlMap.forEach((name, dataKey) {
+        initialValues[dataKey] = characteristicDataCache[dataKey]!;
+
         MinMax minMax = values[dataKey]!;
         RangeFloatPointInput rangeFloatPointInput = RangeFloatPointInput.dirty(
           characteristicDataCache[dataKey]!,
@@ -88,15 +72,13 @@ class Setting18ReverseControlBloc
         );
 
         targetValues[dataKey] = rangeFloatPointInput;
-      }
-    });
-
+      });
+    }
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       initialValues: initialValues,
       targetValues: targetValues,
-      targetIngressValues: targetIngressValues,
       editMode: false,
       enableSubmission: false,
       tappedSet: const {},
@@ -137,55 +119,34 @@ class Setting18ReverseControlBloc
     ControlItemChanged event,
     Emitter<Setting18ReverseControlState> emit,
   ) {
-    if (event.dataKey.name.startsWith('ingress')) {
-      Map<DataKey, String> targetIngressValues =
-          Map<DataKey, String>.from(state.targetIngressValues);
+    Map<DataKey, RangeFloatPointInput> targetValues =
+        Map<DataKey, RangeFloatPointInput>.from(state.targetValues);
 
-      targetIngressValues[event.dataKey] = event.value;
+    RangeFloatPointInput rangeFloatPointInput = RangeFloatPointInput.dirty(
+      event.value,
+      minValue: state.targetValues[event.dataKey]!.minValue,
+      maxValue: state.targetValues[event.dataKey]!.maxValue,
+    );
 
-      Set<DataKey> tappedSet = Set.from(state.tappedSet);
-      tappedSet.add(event.dataKey);
+    targetValues[event.dataKey] = rangeFloatPointInput;
 
-      emit(state.copyWith(
-        submissionStatus: SubmissionStatus.none,
-        targetIngressValues: targetIngressValues,
-        tappedSet: tappedSet,
-        enableSubmission: _isEnabledSubmission(
-          targetIngressValues: targetIngressValues,
-        ),
-      ));
-    } else {
-      Map<DataKey, RangeFloatPointInput> targetValues =
-          Map<DataKey, RangeFloatPointInput>.from(state.targetValues);
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(event.dataKey);
 
-      RangeFloatPointInput rangeFloatPointInput = RangeFloatPointInput.dirty(
-        event.value,
-        minValue: state.targetValues[event.dataKey]!.minValue,
-        maxValue: state.targetValues[event.dataKey]!.maxValue,
-      );
-
-      targetValues[event.dataKey] = rangeFloatPointInput;
-
-      Set<DataKey> tappedSet = Set.from(state.tappedSet);
-      tappedSet.add(event.dataKey);
-
-      emit(state.copyWith(
-        submissionStatus: SubmissionStatus.none,
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      targetValues: targetValues,
+      tappedSet: tappedSet,
+      enableSubmission: _isEnabledSubmission(
         targetValues: targetValues,
-        tappedSet: tappedSet,
-        enableSubmission: _isEnabledSubmission(
-          targetValues: targetValues,
-        ),
-      ));
-    }
+      ),
+    ));
   }
 
   bool _isEnabledSubmission({
     Map<DataKey, RangeFloatPointInput>? targetValues,
-    Map<DataKey, String>? targetIngressValues,
   }) {
     targetValues ??= state.targetValues;
-    targetIngressValues ??= state.targetIngressValues;
 
     bool isValid = false;
     bool isChanged = false;
@@ -197,12 +158,6 @@ class Setting18ReverseControlBloc
     if (isValid) {
       targetValues.forEach((dataKey, rangeFloatPointInput) {
         if (rangeFloatPointInput.value != state.initialValues[dataKey]) {
-          isChanged = true;
-        }
-      });
-
-      targetIngressValues.forEach((dataKey, value) {
-        if (value != state.initialValues[dataKey]) {
           isChanged = true;
         }
       });
@@ -227,23 +182,18 @@ class Setting18ReverseControlBloc
     Emitter<Setting18ReverseControlState> emit,
   ) {
     Map<DataKey, RangeFloatPointInput> targetValues = {};
-    Map<DataKey, String> targetIngressValues = {};
 
     for (MapEntry entry in state.initialValues.entries) {
       DataKey dataKey = entry.key;
       String value = entry.value;
 
-      if (dataKey.name.startsWith('ingress')) {
-        targetIngressValues[dataKey] = value;
-      } else {
-        RangeFloatPointInput rangeFloatPointInput = RangeFloatPointInput.dirty(
-          value,
-          minValue: state.targetValues[dataKey]!.minValue,
-          maxValue: state.targetValues[dataKey]!.maxValue,
-        );
+      RangeFloatPointInput rangeFloatPointInput = RangeFloatPointInput.dirty(
+        value,
+        minValue: state.targetValues[dataKey]!.minValue,
+        maxValue: state.targetValues[dataKey]!.maxValue,
+      );
 
-        targetValues[dataKey] = rangeFloatPointInput;
-      }
+      targetValues[dataKey] = rangeFloatPointInput;
     }
 
     emit(state.copyWith(
@@ -252,7 +202,6 @@ class Setting18ReverseControlBloc
       editMode: false,
       enableSubmission: false,
       targetValues: targetValues,
-      targetIngressValues: targetIngressValues,
       tappedSet: {},
     ));
   }
@@ -270,12 +219,6 @@ class Setting18ReverseControlBloc
 
     state.targetValues.forEach((dataKey, rangeFloatPointInput) {
       if (rangeFloatPointInput.value != state.initialValues[dataKey]) {
-        changedSettingItem.add(dataKey);
-      }
-    });
-
-    state.targetIngressValues.forEach((dataKey, value) {
-      if (value != state.initialValues[dataKey]) {
         changedSettingItem.add(dataKey);
       }
     });
@@ -314,30 +257,6 @@ class Setting18ReverseControlBloc
             .set1p8GEREQ(state.targetValues[dataKey]!.value);
 
         settingResult.add('${DataKey.eREQ.name},$resultOfSetEREQ');
-      }
-
-      if (dataKey == DataKey.ingressSetting2) {
-        bool resultOfSetReturnIngress2 = await _amp18Repository
-            .set1p8GReturnIngress2(state.targetIngressValues[dataKey]!);
-
-        settingResult
-            .add('${DataKey.ingressSetting2.name},$resultOfSetReturnIngress2');
-      }
-
-      if (dataKey == DataKey.ingressSetting3) {
-        bool resultOfSetReturnIngress3 = await _amp18Repository
-            .set1p8GReturnIngress3(state.targetIngressValues[dataKey]!);
-
-        settingResult
-            .add('${DataKey.ingressSetting3.name},$resultOfSetReturnIngress3');
-      }
-
-      if (dataKey == DataKey.ingressSetting4) {
-        bool resultOfSetReturnIngress4 = await _amp18Repository
-            .set1p8GReturnIngress4(state.targetIngressValues[dataKey]!);
-
-        settingResult
-            .add('${DataKey.ingressSetting4.name},$resultOfSetReturnIngress4');
       }
     }
 

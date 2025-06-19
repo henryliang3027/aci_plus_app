@@ -601,8 +601,10 @@ class SettingItemTable {
       SettingControl.returnOutputAttenuation1: DataKey.usVCA2,
       SettingControl.returnOutputEqualizer1: DataKey.eREQ,
       SettingControl.returnInputAttenuation2: DataKey.usVCA1,
+    },
+    {
       SettingControl.returnIngressSetting2: DataKey.ingressSetting2,
-    }
+    },
   ];
 
   static List<Map<Enum, DataKey>> bleControlItem = [
@@ -615,8 +617,10 @@ class SettingItemTable {
       SettingControl.returnOutputAttenuation1: DataKey.usVCA2,
       SettingControl.returnOutputEqualizer1: DataKey.eREQ,
       SettingControl.returnInputAttenuation2: DataKey.usVCA1,
+    },
+    {
       SettingControl.returnIngressSetting2: DataKey.ingressSetting2,
-    }
+    },
   ];
 
   static List<Map<Enum, DataKey>> mbControlItem = [
@@ -632,6 +636,8 @@ class SettingItemTable {
       SettingControl.returnInputAttenuation2: DataKey.usVCA1,
       SettingControl.returnInputAttenuation3: DataKey.usVCA3,
       SettingControl.returnInputAttenuation4: DataKey.usVCA4,
+    },
+    {
       SettingControl.returnIngressSetting2: DataKey.ingressSetting2,
       SettingControl.returnIngressSetting3: DataKey.ingressSetting3,
       SettingControl.returnIngressSetting4: DataKey.ingressSetting4,
@@ -659,6 +665,8 @@ class SettingItemTable {
       SettingControl.returnInputAttenuation3: DataKey.usVCA3,
       SettingControl.returnInputAttenuation4: DataKey.usVCA4,
       SettingControl.returnInputAttenuation6: DataKey.usVCA6,
+    },
+    {
       SettingControl.returnIngressSetting1: DataKey.ingressSetting1,
       SettingControl.returnIngressSetting3: DataKey.ingressSetting3,
       SettingControl.returnIngressSetting4: DataKey.ingressSetting4,
@@ -682,10 +690,12 @@ class SettingItemTable {
       SettingControl.returnInputAttenuation4: DataKey.usVCA1,
       SettingControl.returnInputAttenuation2And3: DataKey.usVCA3,
       SettingControl.returnInputAttenuation5And6: DataKey.usVCA4,
+    },
+    {
       SettingControl.returnIngressSetting4: DataKey.ingressSetting2,
       SettingControl.returnIngressSetting2And3: DataKey.ingressSetting3,
       SettingControl.returnIngressSetting5And6: DataKey.ingressSetting4,
-    }
+    },
   ];
 
   static List<Map<Enum, DataKey>> brControlItem = [
@@ -703,9 +713,11 @@ class SettingItemTable {
       SettingControl.returnOutputEqualizer1: DataKey.eREQ,
       SettingControl.returnInputAttenuation2And3: DataKey.usVCA3,
       SettingControl.returnInputAttenuation5And6: DataKey.usVCA4,
+    },
+    {
       SettingControl.returnIngressSetting2And3: DataKey.ingressSetting3,
       SettingControl.returnIngressSetting5And6: DataKey.ingressSetting4,
-    }
+    },
   ];
 
   static List<Map<Enum, DataKey>> leControlItem = [
@@ -718,8 +730,10 @@ class SettingItemTable {
       SettingControl.returnOutputAttenuation1: DataKey.usVCA2,
       SettingControl.returnOutputEqualizer1: DataKey.eREQ,
       SettingControl.returnInputAttenuation2: DataKey.usVCA1,
+    },
+    {
       SettingControl.returnIngressSetting2: DataKey.ingressSetting2,
-    }
+    },
   ];
 
   static List<Map<Enum, DataKey>> sdatControlItem = [
@@ -738,10 +752,12 @@ class SettingItemTable {
       SettingControl.returnInputAttenuation2: DataKey.usVCA1,
       SettingControl.returnInputAttenuation3: DataKey.usVCA3,
       SettingControl.returnInputAttenuation4: DataKey.usVCA4,
+    },
+    {
       SettingControl.returnIngressSetting2: DataKey.ingressSetting2,
       SettingControl.returnIngressSetting3: DataKey.ingressSetting3,
       SettingControl.returnIngressSetting4: DataKey.ingressSetting4,
-    }
+    },
   ];
 
   static List<Map<Enum, DataKey>> sdamControlItem = [
@@ -757,6 +773,8 @@ class SettingItemTable {
       SettingControl.returnInputAttenuation2: DataKey.usVCA1,
       SettingControl.returnInputAttenuation3: DataKey.usVCA3,
       SettingControl.returnInputAttenuation4: DataKey.usVCA4,
+    },
+    {
       SettingControl.returnIngressSetting2: DataKey.ingressSetting2,
       SettingControl.returnIngressSetting3: DataKey.ingressSetting3,
       SettingControl.returnIngressSetting4: DataKey.ingressSetting4,
@@ -773,7 +791,9 @@ class SettingItemTable {
       SettingControl.returnOutputAttenuation1: DataKey.usVCA2,
       SettingControl.returnOutputEqualizer1: DataKey.eREQ,
       SettingControl.returnInputAttenuation2: DataKey.usVCA1,
+    },
+    {
       SettingControl.returnIngressSetting2: DataKey.ingressSetting2,
-    }
+    },
   ];
 }

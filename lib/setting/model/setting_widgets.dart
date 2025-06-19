@@ -2416,8 +2416,8 @@ List<String> onBoardPilotFrequencyModeValues = [
   '0',
   '1',
   // '2',
-  BenchMode.frequency1p8G.name,
   BenchMode.frequency1p2G.name,
+  BenchMode.frequency1p8G.name,
 ];
 
 // MFT8 機種 DFU=85/105 時適用的 PilotFrequencyMode

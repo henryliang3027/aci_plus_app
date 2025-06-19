@@ -50,14 +50,10 @@ class Setting18ForwardControlView extends StatelessWidget {
       context.read<Setting18ForwardControlBloc>().add(const Initialized());
     }
 
-    // 當 emit 的內容有變時才會執行, 執行時判斷 ceq 是否有變, 如果沒有則代表其他內容有變,
-    // 例如 ingress 有變則繼續判斷是否正在編輯模式, 如果不在編輯模式才更新
-    if (homeState.ceqStatus != CEQStatus.none) {
+    // 當 emit 的 state 內容有變時才會執行
+    // 設定項目有變則繼續判斷是否正在編輯模式, 如果不在編輯模式才更新
+    if (!context.read<Setting18ForwardControlBloc>().state.editMode) {
       context.read<Setting18ForwardControlBloc>().add(const Initialized());
-    } else {
-      if (!context.read<Setting18ForwardControlBloc>().state.editMode) {
-        context.read<Setting18ForwardControlBloc>().add(const Initialized());
-      }
     }
 
     List<Widget> getForwardControlParameterWidgetsByPartId(String partId) {

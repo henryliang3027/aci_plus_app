@@ -52,10 +52,11 @@ class Setting18ForwardControlBloc
 
     Map<DataKey, String> initialValues = {};
     Map<DataKey, RangeFloatPointInput> targetValues = {};
+    Map<DataKey, MinMax> values = {};
 
-    // 當斷線的時候重新初始化時讀取 map 元素會有 null 的情況, null 時就 assign 空字串
+    // splitOption = '0' 代表沒有 DFU
     String splitOption =
-        characteristicDataCache[DataKey.currentDetectedSplitOption] ?? '';
+        characteristicDataCache[DataKey.currentDetectedSplitOption] ?? '0';
     String partId = characteristicDataCache[DataKey.partId] ?? '';
     String operatingMode = getOperatingModeFromForwardCEQIndex(
         characteristicDataCache[DataKey.forwardCEQIndex] ?? '');
@@ -76,14 +77,7 @@ class Setting18ForwardControlBloc
     initialValues[DataKey.firstChannelLoadingLevel] = firstChannelLoadingLevel;
     initialValues[DataKey.lastChannelLoadingLevel] = lastChannelLoadingLevel;
 
-    Map<DataKey, MinMax> values = {};
-
-    if (operatingMode.isNotEmpty &&
-        splitOption.isNotEmpty &&
-        splitOption != '0' && // '0' indicates no DFU
-        partId.isNotEmpty) {
-      print(ControlItemValue.allValueCollections[operatingMode]![splitOption]!);
-
+    if (partId.isNotEmpty) {
       values = ControlItemValue
           .allValueCollections[operatingMode]![splitOption]![partId]!;
 

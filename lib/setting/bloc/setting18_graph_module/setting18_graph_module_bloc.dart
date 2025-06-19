@@ -7,7 +7,6 @@ import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/setting/model/custom_input.dart';
-import 'package:aci_plus_app/setting/model/setting_widgets.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -55,20 +54,17 @@ class Setting18GraphModuleBloc
     Map<DataKey, String> characteristicDataCache =
         _amp18Repository.characteristicDataCache;
 
+    String splitOption =
+        characteristicDataCache[DataKey.currentDetectedSplitOption] ?? '0';
+
+    String partId = characteristicDataCache[DataKey.partId]!;
     String forwardCEQIndex =
         characteristicDataCache[DataKey.forwardCEQIndex] ?? '';
-
-    String splitOption =
-        characteristicDataCache[DataKey.currentDetectedSplitOption]!;
-    String partId = characteristicDataCache[DataKey.partId]!;
     String operatingMode = getOperatingModeFromForwardCEQIndex(forwardCEQIndex);
 
     Map<DataKey, MinMax> values = {};
 
-    if (operatingMode.isNotEmpty &&
-        splitOption.isNotEmpty &&
-        splitOption != '0' && // '0' indicates no DFU
-        partId.isNotEmpty) {
+    if (partId.isNotEmpty) {
       values = ControlItemValue
           .allValueCollections[operatingMode]![splitOption]![partId]!;
     }

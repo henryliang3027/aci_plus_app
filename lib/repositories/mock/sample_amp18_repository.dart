@@ -1699,7 +1699,7 @@ class SampleAmp18Repository extends Amp18Repository {
     int rssi = -60;
 
     // 依據藍牙訊號強度來決定延遲時間, RSSI 為一個負的數值
-    ms ??= getDelayByRSSI(rssi);
+    ms ??= await BLEUtils.getDelayByRSSI(rssi);
 
     // int ms = 200;
 

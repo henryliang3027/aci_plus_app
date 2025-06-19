@@ -276,17 +276,18 @@ class _HomeFormState extends State<HomeForm> {
             }
           },
         ),
-        BlocListener<HomeBloc, HomeState>(
-          listenWhen: (previous, current) =>
-              previous.ceqStatus != current.ceqStatus,
-          listener: (context, state) {
-            if (state.ceqStatus != CEQStatus.none) {
-              if (ModalRoute.of(context)?.isCurrent == true) {
-                showCurrentForwardCEQChangedDialog(context);
-              }
-            }
-          },
-        )
+        // 20250618 移除 EQ 更換的 dialog 提醒
+        // BlocListener<HomeBloc, HomeState>(
+        //   listenWhen: (previous, current) =>
+        //       previous.ceqStatus != current.ceqStatus,
+        //   listener: (context, state) {
+        //     if (state.ceqStatus != CEQStatus.none) {
+        //       if (ModalRoute.of(context)?.isCurrent == true) {
+        //         showCurrentForwardCEQChangedDialog(context);
+        //       }
+        //     }
+        //   },
+        // )
       ],
       child: PopScope(
         canPop: false,

@@ -1232,8 +1232,8 @@ class _PilotFrequencyMode extends StatelessWidget {
           texts = [
             AppLocalizations.of(context)!.pilotFrequencyBandwidthSettings,
             AppLocalizations.of(context)!.pilotFrequencyUserSettings,
-            AppLocalizations.of(context)!.pilotFrequencyBenchMode1p8G,
             AppLocalizations.of(context)!.pilotFrequencyBenchMode1p2G,
+            AppLocalizations.of(context)!.pilotFrequencyBenchMode1p8G,
           ];
 
           values = onBoardPilotFrequencyModeValues;

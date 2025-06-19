@@ -5,7 +5,7 @@ import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
-import 'package:aci_plus_app/setting/bloc/setting18/setting18_ingress_control/setting18_ingress_control_bloc.dart';
+import 'package:aci_plus_app/setting/bloc/setting18_ingress_control/setting18_ingress_control_bloc.dart';
 import 'package:aci_plus_app/setting/model/card_color.dart';
 import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
 import 'package:aci_plus_app/setting/model/setting18_result_text.dart';
@@ -33,14 +33,10 @@ class Setting18IngressControlView extends StatelessWidget {
       context.read<Setting18IngressControlBloc>().add(const Initialized());
     }
 
-    // 當 emit 的內容有變時才會執行, 執行時判斷 ceq 是否有變, 如果沒有則代表其他內容有變,
-    // 例如 ingress 有變則繼續判斷是否正在編輯模式, 如果不在編輯模式才更新
-    if (homeState.ceqStatus != CEQStatus.none) {
+    // 當 emit 的 state 內容有變時才會執行
+    // 設定項目有變則繼續判斷是否正在編輯模式, 如果不在編輯模式才更新
+    if (!context.read<Setting18IngressControlBloc>().state.editMode) {
       context.read<Setting18IngressControlBloc>().add(const Initialized());
-    } else {
-      if (!context.read<Setting18IngressControlBloc>().state.editMode) {
-        context.read<Setting18IngressControlBloc>().add(const Initialized());
-      }
     }
 
     List<Widget> getReturnControlParameterWidgetsByPartId(String partId) {

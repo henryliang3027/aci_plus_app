@@ -1343,6 +1343,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         Map<DataKey, String> currentValues = resultOf1p8G2[1];
         _amp18Repository.updateDataWithGivenValuePairs(currentValues);
 
+        /* 
+        // 使用假資料測試 CEQStatus 的變化
+        //
         // String currentForwardCEQ = fakeData[_timer!.tick % fakeData.length];
 
         // CEQStatus ceqStatus;
@@ -1362,30 +1365,37 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         // ));
 
         // fakePreviousCEQ = currentForwardCEQ;
+        */
 
-        String currentCEQType = getCEQTypeFromForwardCEQIndex(
-            currentValues[DataKey.currentForwardCEQIndex] ?? '255');
+        /*
+        // 20250618 移除 CEQStatus 的判斷, 因為 EQ 模組會隨著 stop frequency 的變化而變化
+        // stop frequency 小於等於 1218 MHz 時, CEQType 為 1.2
+        // stop frequency 大於 1218 MHz 時, CEQType 為 1.8
+        //
+        // String currentCEQType = getCEQTypeFromForwardCEQIndex(
+        //     currentValues[DataKey.currentForwardCEQIndex] ?? '255');
 
-        if (currentCEQType != 'N/A') {
-          CEQStatus ceqStatus;
-          if (ForwardCEQFlag.forwardCEQType == '1.2' &&
-              currentCEQType == '1.8') {
-            ceqStatus = CEQStatus.from1P2GTo1P8G;
-          } else if (ForwardCEQFlag.forwardCEQType == '1.8' &&
-              currentCEQType == '1.2') {
-            ceqStatus = CEQStatus.from1P8GTo1P2G;
-          } else {
-            ceqStatus = CEQStatus.none;
-          }
+        // if (currentCEQType != 'N/A') {
+        //   CEQStatus ceqStatus;
+        //   if (ForwardCEQFlag.forwardCEQType == '1.2' &&
+        //       currentCEQType == '1.8') {
+        //     ceqStatus = CEQStatus.from1P2GTo1P8G;
+        //   } else if (ForwardCEQFlag.forwardCEQType == '1.8' &&
+        //       currentCEQType == '1.2') {
+        //     ceqStatus = CEQStatus.from1P8GTo1P2G;
+        //   } else {
+        //     ceqStatus = CEQStatus.none;
+        //   }
 
-          if (ForwardCEQFlag.forwardCEQType != currentCEQType) {
-            ForwardCEQFlag.forwardCEQType = currentCEQType;
-          }
+        //   if (ForwardCEQFlag.forwardCEQType != currentCEQType) {
+        //     ForwardCEQFlag.forwardCEQType = currentCEQType;
+        //   }
 
-          emit(state.copyWith(
-            ceqStatus: ceqStatus,
-          ));
-        }
+        //   emit(state.copyWith(
+        //     ceqStatus: ceqStatus,
+        //   ));
+        // }
+        */
       } else {
         print('requestCommand1p8G2() alarm updated failed');
       }

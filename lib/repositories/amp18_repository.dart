@@ -1108,7 +1108,7 @@ class Amp18Repository with BLECommandsMixin {
     // 依據藍牙訊號強度來決定延遲時間, RSSI 為一個負的數值
     if (ms == null) {
       int rssi = await _connectionClient.getRSSI();
-      ms = getDelayByRSSI(rssi);
+      ms = await BLEUtils.getDelayByRSSI(rssi);
       print('RSSI: $rssi, Delay: $ms');
     }
 

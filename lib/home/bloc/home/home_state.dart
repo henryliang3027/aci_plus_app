@@ -11,7 +11,7 @@ class HomeState extends Equatable {
     this.connectionType = ConnectionType.none,
     this.showSplash = true,
     this.periodicUpdateEnabled = false,
-    this.ceqStatus = CEQStatus.none,
+    // this.ceqStatus = CEQStatus.none,
     this.aciDeviceType = ACIDeviceType.undefined,
     this.mode = Mode.expert,
     this.peripherals = const [],
@@ -32,7 +32,7 @@ class HomeState extends Equatable {
   final ConnectionType connectionType;
   final bool showSplash;
   final bool periodicUpdateEnabled;
-  final CEQStatus ceqStatus;
+  // final CEQStatus ceqStatus;
   final ACIDeviceType aciDeviceType;
   final Mode mode;
   final List<Peripheral> peripherals;
@@ -74,7 +74,7 @@ class HomeState extends Equatable {
       showSplash: showSplash ?? this.showSplash,
       periodicUpdateEnabled:
           periodicUpdateEnabled ?? this.periodicUpdateEnabled,
-      ceqStatus: ceqStatus ?? this.ceqStatus,
+      // ceqStatus: ceqStatus ?? this.ceqStatus,
       aciDeviceType: aciDeviceType ?? this.aciDeviceType,
       mode: mode ?? this.mode,
       peripherals: peripherals ?? this.peripherals,
@@ -100,7 +100,7 @@ class HomeState extends Equatable {
         connectionType,
         showSplash,
         periodicUpdateEnabled,
-        ceqStatus,
+        // ceqStatus,
         aciDeviceType,
         mode,
         peripherals,

@@ -89,14 +89,14 @@ class RegexUtil {
 }
 
 class BLEUtils {
+  static final DeviceInfoPlugin _deviceInfo = DeviceInfoPlugin();
   // 取得藍牙 mtu size
   static Future<int> getChunkSize() async {
     // ios version < 16 mtu 為 182, 其餘為 244
     // android 為 247, 3 個 byte 用在 header, 所以實際可容納的量為 244
 
     if (Platform.isIOS) {
-      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-      IosDeviceInfo iosDeviceInfo = await deviceInfo.iosInfo;
+      IosDeviceInfo iosDeviceInfo = await _deviceInfo.iosInfo;
 
       // ipad version ex: 16.6.1
       // ios version ex: 16.5
@@ -124,6 +124,64 @@ class BLEUtils {
       chunks.add(binary.sublist(i, end));
     }
     return chunks;
+  }
+
+  static Future<int> getDelayByRSSI(int rssi) async {
+    String manufacturer = '';
+    if (Platform.isAndroid) {
+      AndroidDeviceInfo androidDeviceInfo = await _deviceInfo.androidInfo;
+      manufacturer = androidDeviceInfo.manufacturer.toLowerCase();
+    }
+
+    if (manufacturer.contains('google')) {
+      // baud rate = 115200 bit/s = 14400 byte/s
+      // 如果 delay = 35 ms, 每次送完一個封包休息一次,
+      // 16384 bytes / 244 bytes ~= 68,
+      // 則 16384 bytes 收完等於有 67 (68 - 1) 次休息 * 35 ~= 2345 ms
+      // 傳送一包的時間估算約 26ms * 68 = 1768 ms
+      // 所需時間 2345 + 1768 = 4113
+      if (rssi > -65) {
+        return 40;
+      } else if (rssi < -65 && rssi >= -70) {
+        return 41;
+      } else if (rssi < -70 && rssi >= -75) {
+        return 43;
+      } else if (rssi < -75 && rssi >= -80) {
+        return 49;
+      } else if (rssi < -80 && rssi >= -85) {
+        return 55;
+      } else if (rssi < -85 && rssi >= -90) {
+        return 61;
+      } else if (rssi < 90 && rssi >= -95) {
+        return 67;
+      } else {
+        return 73;
+      }
+    } else {
+      // baud rate = 115200 bit/s = 14400 byte/s
+      // 如果 delay = 35 ms, 每次送完一個封包休息一次,
+      // 16384 bytes / 244 bytes ~= 68,
+      // 則 16384 bytes 收完等於有 67 (68 - 1) 次休息 * 35 ~= 2345 ms
+      // 傳送一包的時間估算約 26ms * 68 = 1768 ms
+      // 所需時間 2345 + 1768 = 4113
+      if (rssi > -65) {
+        return 35;
+      } else if (rssi < -65 && rssi >= -70) {
+        return 36;
+      } else if (rssi < -70 && rssi >= -75) {
+        return 38;
+      } else if (rssi < -75 && rssi >= -80) {
+        return 44;
+      } else if (rssi < -80 && rssi >= -85) {
+        return 50;
+      } else if (rssi < -85 && rssi >= -90) {
+        return 56;
+      } else if (rssi < 90 && rssi >= -95) {
+        return 62;
+      } else {
+        return 68;
+      }
+    }
   }
 }
 
@@ -463,33 +521,6 @@ int getMaxLastChannelLoadingFrequency({
   //   maxStopFrequency = 1218;
   // }
   return maxStopFrequency;
-}
-
-int getDelayByRSSI(int rssi) {
-  // baud rate = 115200 bit/s = 14400 byte/s
-
-  // 如果 delay = 35 ms, 每次送完一個封包休息一次,
-  // 16384 bytes / 244 bytes ~= 68,
-  // 則 16384 bytes 收完等於有 67 (68 - 1) 次休息 * 35 ~= 2345 ms
-  // 傳送一包的時間估算約 26ms * 68 = 1768 ms
-  // 所需時間 2345 + 1768 = 4113
-  if (rssi > -65) {
-    return 35;
-  } else if (rssi < -65 && rssi >= -70) {
-    return 36;
-  } else if (rssi < -70 && rssi >= -75) {
-    return 38;
-  } else if (rssi < -75 && rssi >= -80) {
-    return 44;
-  } else if (rssi < -80 && rssi >= -85) {
-    return 50;
-  } else if (rssi < -85 && rssi >= -90) {
-    return 56;
-  } else if (rssi < 90 && rssi >= -95) {
-    return 62;
-  } else {
-    return 68;
-  }
 }
 
 void closeKeyboard({required BuildContext context}) {

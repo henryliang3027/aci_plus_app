@@ -234,7 +234,7 @@ Color? _getCurrentValueColor({
   return alarmState == '0' ? CustomStyle.alarmColor[alarmSeverity]! : null;
 }
 
-Color? _getSplitOptionColor(
+Color? _getEmptyValueValueColor(
   String value,
 ) {
   return value == 'N/A' ? CustomStyle.customRed : null;
@@ -311,16 +311,11 @@ class _OperatingModeCard extends StatelessWidget {
             );
     } else if (loadingStatus == FormStatus.requestSuccess) {
       return Text(
-        currentOperatingMode.isEmpty ? 'N/A' : currentOperatingMode,
+        currentOperatingMode,
         textAlign: TextAlign.center,
         style: TextStyle(
           fontSize: fontSize,
-          // color: currentWorkingModeColor(
-          //   voltageAlarmState: voltageAlarmState,
-          //   minVoltage: minVoltage,
-          //   maxVoltage: maxVoltage,
-          //   currentVoltage: currentVoltage,
-          // ),
+          color: _getEmptyValueValueColor(currentOperatingMode),
         ),
       );
     } else {
@@ -545,7 +540,7 @@ class _SplitOptionCard extends StatelessWidget {
         currentSplitOption,
         style: TextStyle(
           fontSize: fontSize,
-          color: _getSplitOptionColor(currentSplitOption),
+          color: _getEmptyValueValueColor(currentSplitOption),
           // 20240821 不顯示顏色
           // _getCurrentValueColor(
           //   alarmState: splitOptionAlarmState,
