@@ -133,13 +133,15 @@ class BLEUtils {
       manufacturer = androidDeviceInfo.manufacturer.toLowerCase();
     }
 
+    // baud rate = 115200 bit/s = 14400 byte/s
+    // 如果 delay = 35 ms, 每次送完一個封包休息一次,
+    // 16384 bytes / 244 bytes ~= 68,
+    // 則 16384 bytes 收完等於有 67 (68 - 1) 次休息 * 35 ~= 2345 ms
+    // 傳送一包的時間估算約 26ms * 68 = 1768 ms
+    // 所需時間 2345 + 1768 = 4113
+
+    // 針對 Google 製造的裝置, 根據 RSSI 訊號強度調整 delay 時間
     if (manufacturer.contains('google')) {
-      // baud rate = 115200 bit/s = 14400 byte/s
-      // 如果 delay = 35 ms, 每次送完一個封包休息一次,
-      // 16384 bytes / 244 bytes ~= 68,
-      // 則 16384 bytes 收完等於有 67 (68 - 1) 次休息 * 35 ~= 2345 ms
-      // 傳送一包的時間估算約 26ms * 68 = 1768 ms
-      // 所需時間 2345 + 1768 = 4113
       if (rssi > -65) {
         return 40;
       } else if (rssi < -65 && rssi >= -70) {
@@ -158,12 +160,6 @@ class BLEUtils {
         return 73;
       }
     } else {
-      // baud rate = 115200 bit/s = 14400 byte/s
-      // 如果 delay = 35 ms, 每次送完一個封包休息一次,
-      // 16384 bytes / 244 bytes ~= 68,
-      // 則 16384 bytes 收完等於有 67 (68 - 1) 次休息 * 35 ~= 2345 ms
-      // 傳送一包的時間估算約 26ms * 68 = 1768 ms
-      // 所需時間 2345 + 1768 = 4113
       if (rssi > -65) {
         return 35;
       } else if (rssi < -65 && rssi >= -70) {
