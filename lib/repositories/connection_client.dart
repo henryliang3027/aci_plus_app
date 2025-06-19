@@ -167,7 +167,13 @@ abstract class ConnectionClient {
     required commandIndex,
     required List<int> rawData,
   }) {
-    if (commandIndex <= 13) {
+    if (commandIndex == 0) {
+      if (rawData.length == 17 || rawData.length == 181) {
+        return [true, rawData];
+      } else {
+        return [false];
+      }
+    } else if (commandIndex >= 1 && commandIndex <= 13) {
       return [true, rawData];
     } else if (commandIndex >= 14 && commandIndex <= 37) {
       _combinedRawData.addAll(rawData);
