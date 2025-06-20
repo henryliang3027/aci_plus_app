@@ -40,6 +40,7 @@ class Setting18FirmwareUpdateBloc
     // on<BinaryLoaded>(_onBinaryLoaded);
     on<BinaryCanceled>(_onBinaryCanceled);
     on<UpdateLogAdded>(_onUpdateLogAdded);
+    on<BinaryCheckToggleChanged>(_onBinaryCheckToggleChanged);
   }
 
   final AppLocalizations _appLocalizations;
@@ -331,11 +332,15 @@ class Setting18FirmwareUpdateBloc
       String binaryPath = filePickerResult.files.single.path!;
       Uint8List binaryData = await File(binaryPath).readAsBytes();
 
-      List<dynamic> resultOfcheckFileContent =
-          _firmwareRepository.checkFileContent(
-        partId: partId,
-        binaryData: binaryData,
-      );
+      List<dynamic> resultOfcheckFileContent = [true];
+
+      // Only check file content if validation is enabled
+      if (state.enableBinaryCheck) {
+        resultOfcheckFileContent = _firmwareRepository.checkFileContent(
+          partId: partId,
+          binaryData: binaryData,
+        );
+      }
 
       if (resultOfcheckFileContent[0]) {
         print('binaryPath: $binaryPath');
@@ -463,6 +468,13 @@ class Setting18FirmwareUpdateBloc
     } else {
       emit(state.copyWith(errorMessage: 'Failed to write update log'));
     }
+  }
+
+  void _onBinaryCheckToggleChanged(
+    BinaryCheckToggleChanged event,
+    Emitter<Setting18FirmwareUpdateState> emit,
+  ) {
+    emit(state.copyWith(enableBinaryCheck: event.enableBinaryCheck));
   }
 
   Future<void> _onBinaryCanceled(

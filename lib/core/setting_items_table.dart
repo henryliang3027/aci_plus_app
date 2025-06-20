@@ -149,14 +149,14 @@ const Map<String, EQType> eqTypeMap = {
   '11': EQType.board, // SDLE EQ on board
   '12': EQType.board, // MOTO BLE EQ on board
   '13': EQType.board, // MOTO MB EQ on board
-  '15': EQType.module, // C-Cor TR EQ on board
-  '16': EQType.module, // C-Cor BR EQ on board
-  '17': EQType.module, // C-Cor LE EQ on board
-  '18': EQType.module, // SDAT EQ on board
-  '19': EQType.module, // SDAM EQ on board
-  '21': EQType.module, // SA BT EQ on board
-  '22': EQType.module, // SA HD EQ on board
-  '23': EQType.module, // SA LE EQ on board
+  '15': EQType.board, // C-Cor TR EQ on board
+  '16': EQType.board, // C-Cor BR EQ on board
+  '17': EQType.board, // C-Cor LE EQ on board
+  '18': EQType.board, // SDAT EQ on board
+  '19': EQType.board, // SDAM EQ on board
+  '21': EQType.board, // SA BT EQ on board
+  '22': EQType.board, // SA HD EQ on board
+  '23': EQType.board, // SA LE EQ on board
 };
 
 const Map<String, String> settingGraphFilePath = {

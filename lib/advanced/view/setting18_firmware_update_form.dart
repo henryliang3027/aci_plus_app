@@ -8,6 +8,7 @@ import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/setting/views/custom_setting_dialog.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -251,6 +252,7 @@ class Setting18FirmwareUpdateForm extends StatelessWidget {
                 children: [
                   const _UserCaution(),
                   const _ProgressBar(),
+                  kDebugMode ? const _ValidationToggle() : const SizedBox(),
                   _FilePicker(partId: partId),
                   _StartButton(
                     pageController: pageController,
@@ -592,6 +594,77 @@ class _FilePicker extends StatelessWidget {
           }
         },
       ),
+    );
+  }
+}
+
+class _ValidationToggle extends StatelessWidget {
+  const _ValidationToggle({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18FirmwareUpdateBloc,
+        Setting18FirmwareUpdateState>(
+      builder: (context, state) {
+        return Column(
+          children: [
+            Card(
+              elevation: 1.0,
+              color: null,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 10.0,
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Flexible(
+                      flex: 4,
+                      child: Text(
+                        'Binary Check',
+                        style: TextStyle(
+                          fontSize: CustomStyle.sizeXL,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Flexible(
+                      child: Switch(
+                          thumbIcon: WidgetStateProperty.resolveWith<Icon?>(
+                            (Set<WidgetState> states) {
+                              if (states.contains(WidgetState.selected)) {
+                                return const Icon(Icons.check);
+                              }
+                              return const Icon(Icons.close);
+                            },
+                          ),
+                          value: state.enableBinaryCheck,
+                          onChanged: (bool value) {
+                            context.read<Setting18FirmwareUpdateBloc>().add(
+                                BinaryCheckToggleChanged(
+                                    enableBinaryCheck: value));
+                          }),
+                    ),
+                    const SizedBox(
+                      height: CustomStyle.size24,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: CustomStyle.size24,
+            ),
+          ],
+        );
+      },
     );
   }
 }

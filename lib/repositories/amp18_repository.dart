@@ -1095,6 +1095,7 @@ class Amp18Repository with BLECommandsMixin {
     return set1p8GTwoBytesParameter(
       value: mtu.toString(),
       command: Command18.setMTUCmd,
+      factor: 1,
     );
   }
 

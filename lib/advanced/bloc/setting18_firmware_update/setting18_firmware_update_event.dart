@@ -39,6 +39,17 @@ class UpdateStarted extends Setting18FirmwareUpdateEvent {
   List<Object> get props => [];
 }
 
+class BinaryCheckToggleChanged extends Setting18FirmwareUpdateEvent {
+  const BinaryCheckToggleChanged({
+    required this.enableBinaryCheck,
+  });
+
+  final bool enableBinaryCheck;
+
+  @override
+  List<Object> get props => [enableBinaryCheck];
+}
+
 class MessageReceived extends Setting18FirmwareUpdateEvent {
   const MessageReceived({
     required this.message,

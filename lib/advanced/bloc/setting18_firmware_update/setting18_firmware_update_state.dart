@@ -10,6 +10,7 @@ class Setting18FirmwareUpdateState extends Equatable {
     this.updateCanceled = false,
     this.formattedTimeElapsed = '',
     this.technicianID = '',
+    this.enableBinaryCheck = true,
     this.updateMessage = '',
     this.errorMessage = '',
     this.fileErrorMessage = '',
@@ -23,6 +24,7 @@ class Setting18FirmwareUpdateState extends Equatable {
   final bool updateCanceled;
   final String formattedTimeElapsed;
   final String technicianID;
+  final bool enableBinaryCheck;
   final String updateMessage;
   final String errorMessage;
   final String fileErrorMessage;
@@ -36,6 +38,7 @@ class Setting18FirmwareUpdateState extends Equatable {
     bool? updateCanceled,
     String? formattedTimeElapsed,
     String? technicianID,
+    bool? enableBinaryCheck,
     String? updateMessage,
     String? errorMessage,
     String? fileErrorMessage,
@@ -49,6 +52,7 @@ class Setting18FirmwareUpdateState extends Equatable {
       updateCanceled: updateCanceled ?? this.updateCanceled,
       formattedTimeElapsed: formattedTimeElapsed ?? this.formattedTimeElapsed,
       technicianID: technicianID ?? this.technicianID,
+      enableBinaryCheck: enableBinaryCheck ?? this.enableBinaryCheck,
       updateMessage: updateMessage ?? this.updateMessage,
       errorMessage: errorMessage ?? this.errorMessage,
       fileErrorMessage: fileErrorMessage ?? this.fileErrorMessage,
@@ -65,6 +69,7 @@ class Setting18FirmwareUpdateState extends Equatable {
         updateCanceled,
         formattedTimeElapsed,
         technicianID,
+        enableBinaryCheck,
         updateMessage,
         errorMessage,
         fileErrorMessage,
