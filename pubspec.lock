@@ -466,6 +466,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.4.0"
+  flutter_speed_chart:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: master
+      resolved-ref: eeab9f4eb4be2ab3b8190fb43fdd8afb71df6de2
+      url: "https://github.com/henryliang3027/flutter_speed_chart.git"
+    source: git
+    version: "0.0.1"
   flutter_svg:
     dependency: "direct main"
     description:
@@ -1182,15 +1191,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.10.1"
-  speed_chart:
-    dependency: "direct main"
-    description:
-      path: "."
-      ref: revise1
-      resolved-ref: "86ec820964d68c77c25a9986e97d47b6c78597b3"
-      url: "https://github.com/henryliang3027/flutter_speed_chart.git"
-    source: git
-    version: "1.0.4"
   sprintf:
     dependency: transitive
     description:

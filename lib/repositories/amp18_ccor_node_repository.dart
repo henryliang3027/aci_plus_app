@@ -12,7 +12,7 @@ import 'package:aci_plus_app/repositories/connection_client.dart';
 import 'package:aci_plus_app/repositories/ble_command_mixin.dart';
 import 'package:aci_plus_app/repositories/connection_client_factory.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:speed_chart/speed_chart.dart';
+import 'package:flutter_speed_chart/speed_chart.dart';
 
 class Amp18CCorNodeRepository with BLECommandsMixin {
   Amp18CCorNodeRepository()

@@ -82,13 +82,13 @@ dependencies:
   json_annotation: ^4.8.1
 
   flutter_svg: 2.0.10+1
-  speed_chart:
+  flutter_speed_chart:
     git:
       url: https://github.com/henryliang3027/flutter_speed_chart.git
-      ref: revise1
+      ref: master
 
-  # speed_chart:
-  #   path: /Users/henry.liang/projects/flutter_speed_chart
+  # flutter_speed_chart:
+  #   path: /Users/henry.liang/projects_git/20241223/flutter_speed_chart
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

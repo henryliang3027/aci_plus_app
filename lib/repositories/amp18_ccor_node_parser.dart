@@ -8,7 +8,7 @@ import 'package:aci_plus_app/repositories/amp18_parser.dart';
 import 'package:aci_plus_app/repositories/unit_converter.dart';
 import 'package:excel/excel.dart';
 import 'package:flutter/foundation.dart';
-import 'package:speed_chart/speed_chart.dart';
+import 'package:flutter_speed_chart/speed_chart.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 
