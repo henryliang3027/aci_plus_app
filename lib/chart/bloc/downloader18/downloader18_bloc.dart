@@ -50,6 +50,10 @@ class Downloader18Bloc extends Bloc<Downloader18Event, Downloader18State> {
     List<Log1p8G> log1p8Gs = [];
 
     for (int i = 0; i < 10; i++) {
+      if (i > 0) {
+        // 每個 command 之間 等待 100 ms
+        await Future.delayed(const Duration(milliseconds: 100));
+      }
       List<dynamic> resultOfLog = await getLogChunkWithRetry(i);
       print('resultOfLog $i: ${resultOfLog[0]}');
 

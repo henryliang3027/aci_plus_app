@@ -685,7 +685,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     ConnectionType connectionType = _aciDeviceRepository.checkConnectionType();
 
     if (connectionType == ConnectionType.usb) {
-      await _amp18Repository.set1p8GTransmitDelayTime(ms: 30);
+      // await _amp18Repository.set1p8GMTU(244);
+      await _amp18Repository.set1p8GTransmitDelayTime(ms: 22);
     } else {
       // BLE 連線時, 根據 RSSI 設定 delay
       await _amp18Repository.set1p8GTransmitDelayTime();
