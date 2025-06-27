@@ -1029,8 +1029,11 @@ class Amp18Parser {
     return rfInOuts;
   }
 
+  // DFU != 6 (85/105) 時使用
+  // RF Log 最多有 30 筆, 每筆 log 有 546 bytes
   List<RFOutputLog> parse1P8GRFOutputLogs(List<int> rawData) {
     List<RFOutputLog> rfOutputLogs = [];
+    int step = 546; // 每筆 log 的長度
 
     rawData.removeRange(rawData.length - 2, rawData.length);
     rawData.removeRange(0, 3);
@@ -1043,21 +1046,21 @@ class Amp18Parser {
 
       // 如果檢查到有一筆log 的內容全部是 255, 則視為沒有更多log資料了
       bool isEmptyLog = rawData
-          .sublist(i * 546, i * 546 + 546)
+          .sublist(i * step, (i + 1) * step)
           .every((element) => element == 255);
       if (isEmptyLog) {
         break;
       }
 
-      List<int> rawYear = rawData.sublist(i * 546 + oi, i * 546 + 2 + oi);
+      List<int> rawYear = rawData.sublist(i * step + oi, i * step + 2 + oi);
       ByteData rawYearByteData =
           ByteData.sublistView(Uint8List.fromList(rawYear));
       String strYear = rawYearByteData.getInt16(0, Endian.little).toString();
 
-      String strMonth = rawData[i * 546 + 2 + oi].toString().padLeft(2, '0');
-      String strDay = rawData[i * 546 + 3 + oi].toString().padLeft(2, '0');
-      String strHour = rawData[i * 546 + 4 + oi].toString().padLeft(2, '0');
-      String strMinute = rawData[i * 546 + 5 + oi].toString().padLeft(2, '0');
+      String strMonth = rawData[i * step + 2 + oi].toString().padLeft(2, '0');
+      String strDay = rawData[i * step + 3 + oi].toString().padLeft(2, '0');
+      String strHour = rawData[i * step + 4 + oi].toString().padLeft(2, '0');
+      String strMinute = rawData[i * step + 5 + oi].toString().padLeft(2, '0');
 
       final DateTime dateTime =
           DateTime.parse('$strYear-$strMonth-$strDay $strHour:$strMinute:00');
@@ -1070,7 +1073,70 @@ class Amp18Parser {
       for (int j = 0; j < 256; j++) {
         int frequency = 261 + 6 * j;
         // 解析 rfOuts
-        int rfIndex = (i * 546 + 6 + oi) + j * 2;
+        int rfIndex = (i * step + 6 + oi) + j * 2;
+        // print('$rfIndex, ${rawData[rfIndex]}, ${rawData[rfIndex + 1]}');
+        List<int> rawOutput = rawData.sublist(rfIndex, rfIndex + 2);
+        ByteData rawOutputByteData =
+            ByteData.sublistView(Uint8List.fromList(rawOutput));
+        double output = rawOutputByteData.getInt16(0, Endian.little) / 10;
+
+        rfOuts.add(RFOut(
+          frequency: frequency,
+          output: output,
+        ));
+      }
+
+      rfOutputLogs.add(RFOutputLog(
+        dateTime: dateTime,
+        rfOuts: rfOuts,
+      ));
+    }
+
+    return rfOutputLogs;
+  }
+
+  // DFU = 6 (85/105) 時使用
+  // RF Log 最多有 27 筆, 每筆 log 有 606 bytes
+  List<RFOutputLog> parse1P8GRFOutputLogsForDFU6(List<int> rawData) {
+    List<RFOutputLog> rfOutputLogs = [];
+    int step = 606; // 每筆 log 的長度
+
+    rawData.removeRange(rawData.length - 2, rawData.length);
+    rawData.removeRange(0, 3);
+
+    for (int i = 0; i < 27; i++) {
+      List<RFOut> rfOuts = [];
+
+      // 如果檢查到有一筆log 的內容全部是 255, 則視為沒有更多log資料了
+      bool isEmptyLog = rawData
+          .sublist(i * step, (i + 1) * step)
+          .every((element) => element == 255);
+      if (isEmptyLog) {
+        break;
+      }
+
+      List<int> rawYear = rawData.sublist(i * step, i * step + 2);
+      ByteData rawYearByteData =
+          ByteData.sublistView(Uint8List.fromList(rawYear));
+      String strYear = rawYearByteData.getInt16(0, Endian.little).toString();
+
+      String strMonth = rawData[i * step + 2].toString().padLeft(2, '0');
+      String strDay = rawData[i * step + 3].toString().padLeft(2, '0');
+      String strHour = rawData[i * step + 4].toString().padLeft(2, '0');
+      String strMinute = rawData[i * step + 5].toString().padLeft(2, '0');
+
+      final DateTime dateTime =
+          DateTime.parse('$strYear-$strMonth-$strDay $strHour:$strMinute:00');
+
+      // String timeStamp =
+      //     DateFormat('yyyy_MM_dd_HH_mm_ss').format(dateTime).toString();
+
+      // print('timeStamp: $timeStamp ');
+
+      for (int j = 0; j < 256; j++) {
+        int frequency = 105 + 6 * j;
+        // 解析 rfOuts
+        int rfIndex = (i * step + 6) + j * 2;
         // print('$rfIndex, ${rawData[rfIndex]}, ${rawData[rfIndex + 1]}');
         List<int> rawOutput = rawData.sublist(rfIndex, rfIndex + 2);
         ByteData rawOutputByteData =
