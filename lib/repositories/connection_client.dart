@@ -82,8 +82,8 @@ abstract class ConnectionClient {
     required List<int> rawData,
     required int length,
   }) {
-    // 如過接收到一半失敗, 則重傳時遇到 header 就清除 _combinedRawData
-
+    // 處理指令之前, 先檢查是否為長資料的 header
+    // 如果是長資料的 header, 則清除 _combinedRawData,
     if (listEquals(rawData.sublist(0, 3), _longDataHeader)) {
       _combinedRawData.clear();
       _combinedRawData.addAll(rawData);
@@ -113,8 +113,8 @@ abstract class ConnectionClient {
     required List<int> rawData,
     required int length,
   }) {
-    // 如過接收到一半失敗, 則重傳時遇到 header 就清除 _combinedRawData
-
+    // 處理指令之前, 先檢查是否為長資料的 header
+    // 如果是長資料的 header, 則清除 _combinedRawData,
     _combinedRawData.addAll(rawData);
     print(_combinedRawData.length);
     // for (int i = 0; i < _combinedRawData.length; i++) {
@@ -150,9 +150,13 @@ abstract class ConnectionClient {
     } else if (commandIndex >= 195 && commandIndex <= 204) {
       // _currentCommandIndex 195 ~ 204 用來接收 10 組 RFOut 資料流, 每一組 RFOut 總長 16389
       return _combine1p8GUSBRawData(rawData: rawData, length: 16389);
-    } else if (commandIndex >= 205 && commandIndex <= 206) {
+    } else if (commandIndex == 205) {
       // 接收 User Attribute 資料流
       // User Attribute 資料流總長度 1029
+      return _combine1p8GUSBRawData(rawData: rawData, length: 1029);
+    } else if (commandIndex == 206) {
+      // 接收 DFU = 6 (85/105)  RF input/output power 資料流
+      // RF input/output power 資料流總長度 1029
       return _combine1p8GUSBRawData(rawData: rawData, length: 1029);
     } else if (commandIndex >= 300 && commandIndex <= 999) {
       return _combine1p8GUSBRawData(rawData: rawData, length: 8);
@@ -167,6 +171,7 @@ abstract class ConnectionClient {
     required commandIndex,
     required List<int> rawData,
   }) {
+    print('commandIndex: $commandIndex');
     if (commandIndex == 0) {
       if (rawData.length == 17 || rawData.length == 181) {
         return [true, rawData];
@@ -208,9 +213,13 @@ abstract class ConnectionClient {
     } else if (commandIndex >= 195 && commandIndex <= 204) {
       // _currentCommandIndex 195 ~ 204 用來接收 10 組 RFOut 資料流, 每一組 RFOut 總長 16389
       return _combine1p8GRawData(rawData: rawData, length: 16389);
-    } else if (commandIndex >= 205 && commandIndex <= 206) {
+    } else if (commandIndex == 205) {
       // 接收 User Attribute 資料流
       // User Attribute 資料流總長度 1029
+      return _combine1p8GRawData(rawData: rawData, length: 1029);
+    } else if (commandIndex == 206) {
+      // 接收 DFU = 6 (85/105) RF input/output power 資料流
+      // RF input/output power 資料流總長度 1029
       return _combine1p8GRawData(rawData: rawData, length: 1029);
     } else if (commandIndex >= 300 && commandIndex <= 999) {
       return [true, rawData];

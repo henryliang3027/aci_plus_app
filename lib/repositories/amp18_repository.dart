@@ -327,6 +327,52 @@ class Amp18Repository with BLECommandsMixin {
     }
   }
 
+  Future<dynamic> requestCommand1p8G3ForDFU6() async {
+    print('get data from request command 1p8G3 For DFU6 ');
+
+    try {
+      List<int> rawData1 =
+          await _connectionClient.writeSetCommandToCharacteristic(
+        commandIndex: 183,
+        value: _amp18Parser.command18Collection[183 - 180],
+      );
+
+      List<int> rawData2 =
+          await _connectionClient.writeSetCommandToCharacteristic(
+        commandIndex: 206,
+        value: _amp18Parser.command18Collection[206 - 180],
+      );
+
+      List<RFInOut> rfInOuts261To1791 = _amp18Parser.parse1P8GRFInOut(rawData1);
+      List<RFInOut> rfInOuts105To255 =
+          _amp18Parser.parse1P8GRFInOutForDFU6(rawData2);
+
+      List<RFInOut> rfInOuts = [
+        ...rfInOuts105To255,
+        ...rfInOuts261To1791,
+      ];
+
+      A1P8GRFOutputPowerStatistic a1p8grfOutputPowerStatistic =
+          _amp18Parser.getA1p8GRFOutputPowerStatistic(rfInOuts);
+
+      return [
+        true,
+        rfInOuts,
+        <DataKey, String>{
+          DataKey.historicalMinRFOutputPower:
+              a1p8grfOutputPowerStatistic.historicalMinRFOutputPower,
+          DataKey.historicalMaxRFOutputPower:
+              a1p8grfOutputPowerStatistic.historicalMaxRFOutputPower,
+        }
+      ];
+    } catch (e) {
+      return [
+        false,
+        e.toString(),
+      ];
+    }
+  }
+
   // commandIndex range from 184 to 193;
   // commandIndex = 184 時獲取最新的1024筆Log的統計資料跟 log
   Future<dynamic> requestCommand1p8GForLogChunk(int chunkIndex) async {
@@ -435,6 +481,7 @@ class Amp18Repository with BLECommandsMixin {
     }
   }
 
+  // commandIndex range from 195 to 204;
   Future<dynamic> requestCommand1p8GRFOutputLogChunk(int chunkIndex) async {
     int commandIndex = chunkIndex + 195;
 

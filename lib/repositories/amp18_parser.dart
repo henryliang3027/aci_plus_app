@@ -1029,6 +1029,43 @@ class Amp18Parser {
     return rfInOuts;
   }
 
+  // DFU = 6 (85/105) 時使用
+  // RF In 有 26 筆, RF Out 有 26 筆
+  List<RFInOut> parse1P8GRFInOutForDFU6(List<int> rawData) {
+    List<RFInOut> rfInOuts = [];
+    rawData.removeRange(rawData.length - 2, rawData.length);
+    rawData.removeRange(0, 3);
+
+    for (var i = 0; i < 26; i++) {
+      int frequency = 105 + 6 * i;
+      // double outputValue = rfOutputs[frequency]!;
+      // double inputValue = rfInputs[frequency]!;
+
+      // 解析 input
+      List<int> rawInput = rawData.sublist(i * 2, i * 2 + 2);
+      ByteData rawInputByteData =
+          ByteData.sublistView(Uint8List.fromList(rawInput));
+      double input = rawInputByteData.getInt16(0, Endian.little) / 10;
+      // double input = inputValue;
+
+      // 解析 output
+      List<int> rawOutput = rawData.sublist(i * 2 + 52, i * 2 + 2 + 52);
+      ByteData rawOutputByteData =
+          ByteData.sublistView(Uint8List.fromList(rawOutput));
+      double output = rawOutputByteData.getInt16(0, Endian.little) / 10;
+
+      // double output = outputValue;
+
+      rfInOuts.add(RFInOut(
+        frequency: frequency,
+        input: input,
+        output: output,
+      ));
+    }
+
+    return rfInOuts;
+  }
+
   // DFU != 6 (85/105) 時使用
   // RF Log 最多有 30 筆, 每筆 log 有 546 bytes
   List<RFOutputLog> parse1P8GRFOutputLogs(List<int> rawData) {
@@ -2153,6 +2190,7 @@ class Amp18Parser {
     CRC16.calculateCRC16(command: Command18.req90Cmd, usDataLength: 6);
     CRC16.calculateCRC16(command: Command18.reqA0Cmd, usDataLength: 6);
     CRC16.calculateCRC16(command: Command18.reqRFInOutCmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command18.reqRFInOutDFU6Cmd, usDataLength: 6);
     CRC16.calculateCRC16(command: Command18.reqLog00Cmd, usDataLength: 6);
     CRC16.calculateCRC16(command: Command18.reqLog01Cmd, usDataLength: 6);
     CRC16.calculateCRC16(command: Command18.reqLog02Cmd, usDataLength: 6);
@@ -2179,32 +2217,33 @@ class Amp18Parser {
     CRC16.calculateCRC16(
         command: Command18.reqFirmwareUpdateLogCmd, usDataLength: 6);
 
-    _command18Collection.add(Command18.req00Cmd);
-    _command18Collection.add(Command18.req90Cmd);
-    _command18Collection.add(Command18.reqA0Cmd);
-    _command18Collection.add(Command18.reqRFInOutCmd);
-    _command18Collection.add(Command18.reqLog00Cmd);
-    _command18Collection.add(Command18.reqLog01Cmd);
-    _command18Collection.add(Command18.reqLog02Cmd);
-    _command18Collection.add(Command18.reqLog03Cmd);
-    _command18Collection.add(Command18.reqLog04Cmd);
-    _command18Collection.add(Command18.reqLog05Cmd);
-    _command18Collection.add(Command18.reqLog06Cmd);
-    _command18Collection.add(Command18.reqLog07Cmd);
-    _command18Collection.add(Command18.reqLog08Cmd);
-    _command18Collection.add(Command18.reqLog09Cmd);
-    _command18Collection.add(Command18.reqEvent00Cmd);
-    _command18Collection.add(Command18.reqRFOutput00Cmd);
-    _command18Collection.add(Command18.reqRFOutput01Cmd);
-    _command18Collection.add(Command18.reqRFOutput02Cmd);
-    _command18Collection.add(Command18.reqRFOutput03Cmd);
-    _command18Collection.add(Command18.reqRFOutput04Cmd);
-    _command18Collection.add(Command18.reqRFOutput05Cmd);
-    _command18Collection.add(Command18.reqRFOutput06Cmd);
-    _command18Collection.add(Command18.reqRFOutput07Cmd);
-    _command18Collection.add(Command18.reqRFOutput08Cmd);
-    _command18Collection.add(Command18.reqRFOutput09Cmd);
-    _command18Collection.add(Command18.reqUserAttributeCmd);
+    _command18Collection.add(Command18.req00Cmd); // #0
+    _command18Collection.add(Command18.req90Cmd); // #1
+    _command18Collection.add(Command18.reqA0Cmd); // #2
+    _command18Collection.add(Command18.reqRFInOutCmd); // #3
+    _command18Collection.add(Command18.reqLog00Cmd); // #4
+    _command18Collection.add(Command18.reqLog01Cmd); // #5
+    _command18Collection.add(Command18.reqLog02Cmd); // #6
+    _command18Collection.add(Command18.reqLog03Cmd); // #7
+    _command18Collection.add(Command18.reqLog04Cmd); // #8
+    _command18Collection.add(Command18.reqLog05Cmd); // #9
+    _command18Collection.add(Command18.reqLog06Cmd); // #10
+    _command18Collection.add(Command18.reqLog07Cmd); // #11
+    _command18Collection.add(Command18.reqLog08Cmd); // #12
+    _command18Collection.add(Command18.reqLog09Cmd); // #13
+    _command18Collection.add(Command18.reqEvent00Cmd); // #14
+    _command18Collection.add(Command18.reqRFOutput00Cmd); // #15
+    _command18Collection.add(Command18.reqRFOutput01Cmd); // #16
+    _command18Collection.add(Command18.reqRFOutput02Cmd); // #17
+    _command18Collection.add(Command18.reqRFOutput03Cmd); // #18
+    _command18Collection.add(Command18.reqRFOutput04Cmd); // #19
+    _command18Collection.add(Command18.reqRFOutput05Cmd); // #20
+    _command18Collection.add(Command18.reqRFOutput06Cmd); // #21
+    _command18Collection.add(Command18.reqRFOutput07Cmd); // #22
+    _command18Collection.add(Command18.reqRFOutput08Cmd); // #23
+    _command18Collection.add(Command18.reqRFOutput09Cmd); // #24
+    _command18Collection.add(Command18.reqUserAttributeCmd); // #25
+    _command18Collection.add(Command18.reqRFInOutDFU6Cmd); // #26
   }
 }
 
