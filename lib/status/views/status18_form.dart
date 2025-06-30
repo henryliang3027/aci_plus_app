@@ -2,7 +2,6 @@ import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
-import 'package:aci_plus_app/core/notice_dialog.dart';
 import 'package:aci_plus_app/core/status_items_table.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/core/working_mode_table.dart';
@@ -11,7 +10,6 @@ import 'package:aci_plus_app/home/views/home_buttom_navigation_bar18.dart';
 import 'package:aci_plus_app/repositories/unit_repository.dart';
 import 'package:aci_plus_app/setting/model/setting_widgets.dart';
 import 'package:aci_plus_app/status/bloc/status18/status18_bloc.dart';
-import 'package:aci_plus_app/status/shared/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -645,8 +643,6 @@ class _TemperatureCard extends StatelessWidget {
       required FormStatus loadingStatus,
       required String temperatureAlarmState,
       required String temperatureAlarmSeverity,
-      required String minTemperature,
-      required String maxTemperature,
       required String currentTemperature,
       required String unit,
       double fontSize = 16,
@@ -771,9 +767,7 @@ class _TemperatureCard extends StatelessWidget {
       required String currentTemperatureTitle,
       required String currentTemperature,
       required String minTemperatureTitle,
-      required String minTemperature,
       required String maxTemperatureTitle,
-      required String maxTemperature,
       required String historicalMinTemperature,
       required String historicalMaxTemperature,
       required String unit,
@@ -805,8 +799,6 @@ class _TemperatureCard extends StatelessWidget {
                       loadingStatus: loadingStatus,
                       temperatureAlarmState: temperatureAlarmState,
                       temperatureAlarmSeverity: temperatureAlarmSeverity,
-                      minTemperature: minTemperature,
-                      maxTemperature: maxTemperature,
                       currentTemperature: currentTemperature,
                       unit: unit,
                       fontSize: CustomStyle.size4XL,
@@ -900,18 +892,12 @@ class _TemperatureCard extends StatelessWidget {
             homeState.characteristicData[DataKey.temperatureAlarmSeverity] ??
                 '0';
         String currentTemperature = '';
-        String maxTemperature = '';
-        String minTemperature = '';
         String historicalMaxTemperature = '';
         String historicalMinTemperature = '';
 
         if (status18State.temperatureUnit == TemperatureUnit.celsius) {
           currentTemperature =
               homeState.characteristicData[DataKey.currentTemperatureC] ?? '';
-          maxTemperature =
-              homeState.characteristicData[DataKey.maxTemperatureC] ?? '';
-          minTemperature =
-              homeState.characteristicData[DataKey.minTemperatureC] ?? '';
           historicalMaxTemperature =
               homeState.characteristicData[DataKey.historicalMaxTemperatureC] ??
                   '';
@@ -921,10 +907,6 @@ class _TemperatureCard extends StatelessWidget {
         } else {
           currentTemperature =
               homeState.characteristicData[DataKey.currentTemperatureF] ?? '';
-          maxTemperature =
-              homeState.characteristicData[DataKey.maxTemperatureF] ?? '';
-          minTemperature =
-              homeState.characteristicData[DataKey.minTemperatureF] ?? '';
           historicalMaxTemperature =
               homeState.characteristicData[DataKey.historicalMaxTemperatureF] ??
                   '';
@@ -1000,10 +982,8 @@ class _TemperatureCard extends StatelessWidget {
                   currentTemperature: currentTemperature,
                   minTemperatureTitle:
                       AppLocalizations.of(context)!.minTemperature,
-                  minTemperature: minTemperature,
                   maxTemperatureTitle:
                       AppLocalizations.of(context)!.maxTemperature,
-                  maxTemperature: maxTemperature,
                   historicalMinTemperature: historicalMinTemperature,
                   historicalMaxTemperature: historicalMaxTemperature,
                   unit: status18State.temperatureUnit == TemperatureUnit.celsius
@@ -1026,8 +1006,6 @@ class _PowerSupplyCard extends StatelessWidget {
     required FormStatus loadingStatus,
     required String voltageAlarmState,
     required String voltageAlarmSeverity,
-    required String minVoltage,
-    required String maxVoltage,
     required String currentVoltage,
     double fontSize = 16,
   }) {
@@ -1148,9 +1126,7 @@ class _PowerSupplyCard extends StatelessWidget {
     required String currentVoltageTitle,
     required String currentVoltage,
     required String minVoltageTitle,
-    required String minVoltage,
     required String maxVoltageTitle,
-    required String maxVoltage,
     required String historicalMinVoltage,
     required String historicalMaxVoltage,
     required Color borderColor,
@@ -1184,8 +1160,6 @@ class _PowerSupplyCard extends StatelessWidget {
                       loadingStatus: loadingStatus,
                       voltageAlarmState: voltageAlarmState,
                       voltageAlarmSeverity: voltageAlarmSeverity,
-                      minVoltage: minVoltage,
-                      maxVoltage: maxVoltage,
                       currentVoltage: currentVoltage,
                       fontSize: CustomStyle.size4XL,
                     ),
@@ -1273,9 +1247,7 @@ class _PowerSupplyCard extends StatelessWidget {
               currentVoltage:
                   state.characteristicData[DataKey.currentVoltage] ?? '',
               minVoltageTitle: AppLocalizations.of(context)!.minVoltage,
-              minVoltage: state.characteristicData[DataKey.minVoltage] ?? '',
               maxVoltageTitle: AppLocalizations.of(context)!.maxVoltage,
-              maxVoltage: state.characteristicData[DataKey.maxVoltage] ?? '',
               historicalMinVoltage:
                   state.characteristicData[DataKey.historicalMinVoltage] ?? '',
               historicalMaxVoltage:
@@ -1299,8 +1271,6 @@ class _VoltageRippleCard extends StatelessWidget {
     required FormStatus loadingStatus,
     required String voltageRippleAlarmState,
     required String voltageRippleAlarmSeverity,
-    required String minVoltageRipple,
-    required String maxVoltageRipple,
     required String currentVoltageRipple,
     double fontSize = 16,
   }) {
@@ -1421,9 +1391,7 @@ class _VoltageRippleCard extends StatelessWidget {
     required String currentVoltageRippleTitle,
     required String currentVoltageRipple,
     required String minVoltageRippleTitle,
-    required String minVoltageRipple,
     required String maxVoltageRippleTitle,
-    required String maxVoltageRipple,
     required String historicalMinVoltageRipple,
     required String historicalMaxVoltageRipple,
     required Color borderColor,
@@ -1457,8 +1425,6 @@ class _VoltageRippleCard extends StatelessWidget {
                       loadingStatus: loadingStatus,
                       voltageRippleAlarmState: voltageRippleAlarmState,
                       voltageRippleAlarmSeverity: voltageRippleAlarmSeverity,
-                      minVoltageRipple: minVoltageRipple,
-                      maxVoltageRipple: maxVoltageRipple,
                       currentVoltageRipple: currentVoltageRipple,
                       fontSize: CustomStyle.size4XL,
                     ),
@@ -1549,12 +1515,8 @@ class _VoltageRippleCard extends StatelessWidget {
               currentVoltageRipple:
                   state.characteristicData[DataKey.currentVoltageRipple] ?? '',
               minVoltageRippleTitle: AppLocalizations.of(context)!.minVoltage,
-              minVoltageRipple:
-                  state.characteristicData[DataKey.minVoltageRipple] ?? '',
               maxVoltageRippleTitle:
                   AppLocalizations.of(context)!.maxVoltageRipple,
-              maxVoltageRipple:
-                  state.characteristicData[DataKey.maxVoltageRipple] ?? '',
               historicalMinVoltageRipple: state
                       .characteristicData[DataKey.historicalMinVoltageRipple] ??
                   '',
@@ -1580,8 +1542,6 @@ class _RFOutputPowerCard extends StatelessWidget {
     required FormStatus loadingStatus,
     required String rfOutputPowerAlarmState,
     required String rfOutputPowerAlarmSeverity,
-    required String minRFOutputPower,
-    required String maxRFOutputPower,
     required String currentRFOutputPower,
     double fontSize = 16,
   }) {
@@ -1702,9 +1662,7 @@ class _RFOutputPowerCard extends StatelessWidget {
     required String currentRFOutputPowerTitle,
     required String currentRFOutputPower,
     required String minRFOutputPowerTitle,
-    required String minRFOutputPower,
     required String maxRFOutputPowerTitle,
-    required String maxRFOutputPower,
     required String historicalMinRFOutputPower,
     required String historicalMaxRFOutputPower,
     required Color borderColor,
@@ -1738,8 +1696,6 @@ class _RFOutputPowerCard extends StatelessWidget {
                       loadingStatus: loadingStatus,
                       rfOutputPowerAlarmState: rfOutputPowerAlarmState,
                       rfOutputPowerAlarmSeverity: rfOutputPowerAlarmSeverity,
-                      minRFOutputPower: minRFOutputPower,
-                      maxRFOutputPower: maxRFOutputPower,
                       currentRFOutputPower: currentRFOutputPower,
                       fontSize: CustomStyle.size4XL,
                     ),
@@ -1830,12 +1786,8 @@ class _RFOutputPowerCard extends StatelessWidget {
               currentRFOutputPower:
                   state.characteristicData[DataKey.currentRFOutputPower] ?? '',
               minRFOutputPowerTitle: AppLocalizations.of(context)!.minVoltage,
-              minRFOutputPower:
-                  state.characteristicData[DataKey.minRFOutputPower] ?? '',
               maxRFOutputPowerTitle:
                   AppLocalizations.of(context)!.maxRFOutputPower,
-              maxRFOutputPower:
-                  state.characteristicData[DataKey.maxRFOutputPower] ?? '',
               historicalMinRFOutputPower: state
                       .characteristicData[DataKey.historicalMinRFOutputPower] ??
                   '',
