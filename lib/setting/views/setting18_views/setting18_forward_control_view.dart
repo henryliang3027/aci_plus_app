@@ -650,7 +650,7 @@ class _ForwardInputEqualizer1 extends StatelessWidget {
           editMode: state.editMode && isEnableForwardInputSetting,
           title:
               '${AppLocalizations.of(context)!.forwardInputEqualizer1} (${CustomStyle.dB}):',
-          subTitle: getForwardCEQText(forwardCEQIndex),
+          // subTitle: getForwardCEQText(forwardCEQIndex), 20250701 改爲不顯示
           minValue: minValue,
           currentValue: inputEqualizer,
           maxValue: maxValue,

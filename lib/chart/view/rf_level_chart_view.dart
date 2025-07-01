@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:aci_plus_app/chart/bloc/chart18/chart18_bloc.dart';
 import 'package:aci_plus_app/chart/bloc/rf_level_chart/rf_level_chart_bloc.dart';
 import 'package:aci_plus_app/chart/shared/message_dialog.dart';
-import 'package:aci_plus_app/chart/shared/utils.dart';
 import 'package:aci_plus_app/chart/view/full_screen_chart_form.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
