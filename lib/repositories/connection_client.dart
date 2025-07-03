@@ -105,68 +105,6 @@ abstract class ConnectionClient {
     }
   }
 
-  // String decimalToHex(int decimal) {
-  //   return decimal.toRadixString(16).padLeft(2, '0').toUpperCase();
-  // }
-
-  List<dynamic> _combine1p8GUSBRawData({
-    required List<int> rawData,
-    required int length,
-  }) {
-    // 處理指令之前, 先檢查是否為長資料的 header
-    // 如果是長資料的 header, 則清除 _combinedRawData,
-    _combinedRawData.addAll(rawData);
-    print(_combinedRawData.length);
-    // for (int i = 0; i < _combinedRawData.length; i++) {
-    //   print('$i : ${decimalToHex(_combinedRawData[i])} ');
-    // }
-    // print(_combinedRawData);
-    if (_combinedRawData.length == length) {
-      List<int> finalRawData = List.from(_combinedRawData);
-
-      //清除 _combinedRawData, 給下一個任一需要 combine 的 command 使用
-      _combinedRawData.clear();
-
-      return [true, finalRawData];
-    } else {
-      return [false];
-    }
-  }
-
-  List<dynamic> combineUsbRawData({
-    required commandIndex,
-    required List<int> rawData,
-  }) {
-    if (commandIndex >= 80 && commandIndex <= 83) {
-      return _combine1p8GUSBRawData(rawData: rawData, length: 181);
-    } else if (commandIndex == 183) {
-      // 接收 RF input/output power 資料流
-      // RF input/output power 資料流總長度 1029
-      return _combine1p8GUSBRawData(rawData: rawData, length: 1029);
-    } else if (commandIndex >= 184 && commandIndex <= 194) {
-      // _currentCommandIndex 184 ~ 193 用來接收 10 組 Log 資料流, 每一組 Log 總長 16389
-      // _currentCommandIndex 194 用來接收 1 組 Event 資料流, Event 總長 16389
-      return _combine1p8GUSBRawData(rawData: rawData, length: 16389);
-    } else if (commandIndex >= 195 && commandIndex <= 204) {
-      // _currentCommandIndex 195 ~ 204 用來接收 10 組 RFOut 資料流, 每一組 RFOut 總長 16389
-      return _combine1p8GUSBRawData(rawData: rawData, length: 16389);
-    } else if (commandIndex == 205) {
-      // 接收 User Attribute 資料流
-      // User Attribute 資料流總長度 1029
-      return _combine1p8GUSBRawData(rawData: rawData, length: 1029);
-    } else if (commandIndex == 206) {
-      // 接收 DFU = 6 (85/105)  RF input/output power 資料流
-      // RF input/output power 資料流總長度 1029
-      return _combine1p8GUSBRawData(rawData: rawData, length: 1029);
-    } else if (commandIndex >= 300 && commandIndex <= 999) {
-      return _combine1p8GUSBRawData(rawData: rawData, length: 8);
-    } else if (commandIndex >= 1000 && commandIndex <= 1100) {
-      return [true, rawData];
-    } else {
-      return [false];
-    }
-  }
-
   List<dynamic> combineRawData({
     required commandIndex,
     required List<int> rawData,
