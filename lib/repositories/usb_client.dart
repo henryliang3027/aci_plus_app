@@ -110,7 +110,7 @@ class USBClient extends ConnectionClient {
             print(
                 'usb data index: $_currentCommandIndex, length:${rawData.length}');
 
-            List<dynamic> finalResult = combineRawData(
+            List<dynamic> finalResult = combineUSBRawData(
               commandIndex: _currentCommandIndex,
               rawData: rawData,
             );
