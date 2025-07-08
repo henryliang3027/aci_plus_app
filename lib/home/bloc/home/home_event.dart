@@ -11,6 +11,15 @@ class USBAttached extends HomeEvent {
   List<Object?> get props => [];
 }
 
+class ConnectionTypeChanged extends HomeEvent {
+  const ConnectionTypeChanged(this.connectionType);
+
+  final ConnectionType connectionType;
+
+  @override
+  List<Object?> get props => [connectionType];
+}
+
 class SplashStateChanged extends HomeEvent {
   const SplashStateChanged();
 

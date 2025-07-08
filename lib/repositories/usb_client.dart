@@ -90,8 +90,9 @@ class USBClient extends ConnectionClient {
       bool isConnected = await _ftdiSerial.connectToDevice();
 
       if (isConnected) {
-        _deviceStatusStreamSubscription =
-            _ftdiSerial.deviceStatusStream.listen((bool isConnected) async {
+        _deviceStatusStreamSubscription = _ftdiSerial
+            .deviceConnectionStatusStream
+            .listen((bool isConnected) async {
           if (!isConnected) {
             _connectionReportStreamController.add(const ConnectionReport(
               connectStatus: ConnectStatus.disconnected,

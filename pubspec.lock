@@ -520,11 +520,9 @@ packages:
   ftdi_serial:
     dependency: "direct main"
     description:
-      path: "."
-      ref: master
-      resolved-ref: ceb8b4ec567c61b7c8b3ebc9f149436cf112aa1d
-      url: "https://github.com/henryliang3027/ftdi_serial.git"
-    source: git
+      path: "/Users/henry.liang/projects_git/20250519/new/ftdi_serial"
+      relative: false
+    source: path
     version: "0.0.1"
   fuchsia_remote_debug_protocol:
     dependency: transitive

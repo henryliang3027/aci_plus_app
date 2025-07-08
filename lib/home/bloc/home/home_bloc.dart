@@ -56,6 +56,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<DevicePeriodicUpdate>(_onDevicePeriodicUpdate);
     on<ModeChanged>(_onModeChanged);
     on<USBAttached>(_onUSBAttached);
+    on<ConnectionTypeChanged>(_onConnectionTypeChanged);
   }
 
   final ACIDeviceRepository _aciDeviceRepository;
@@ -109,6 +110,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       loadingStatus: FormStatus.requestInProgress,
     ));
 
+    ConnectionClientFactory.connectionTypeStream.listen((connectionType) {
+      add(ConnectionTypeChanged(connectionType));
+    });
+
     ConnectionType connectionType = _aciDeviceRepository.checkConnectionType();
 
     if (connectionType == ConnectionType.usb) {
@@ -121,6 +126,19 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           add(DiscoveredDeviceChanged(scanReport));
         },
       );
+    }
+  }
+
+  void _onConnectionTypeChanged(
+    ConnectionTypeChanged event,
+    Emitter<HomeState> emit,
+  ) {
+    print('ConnectionTypeChanged: ${event.connectionType}');
+    if (event.connectionType == ConnectionType.usb) {
+      if (state.connectionStatus.isRequestFailure ||
+          state.connectionStatus.isNone) {
+        add(const DeviceRefreshed());
+      }
     }
   }
 
