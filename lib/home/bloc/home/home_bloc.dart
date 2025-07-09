@@ -110,10 +110,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       loadingStatus: FormStatus.requestInProgress,
     ));
 
+    // 只會在 app 啟動時, 註冊 connectionTypeStream 的變化
+    // 因此插拔 USB 裝置時, 會收到 stream
+    // android 平台會收到 stream 變化, ble 或 usb
+    // ios 和 windows 平台不支援 USB 連線, 所以不會收到 stream 變化
     ConnectionClientFactory.connectionTypeStream.listen((connectionType) {
       add(ConnectionTypeChanged(connectionType));
     });
 
+    // 只會在 app 啟動時, 檢查 connectionType
+    // android 平台會收到 stream 變化, ble 或 usb
+    // ios 和 windows 平台的 ConnectionType 只會有 ble
     ConnectionType connectionType = _aciDeviceRepository.checkConnectionType();
 
     if (connectionType == ConnectionType.usb) {

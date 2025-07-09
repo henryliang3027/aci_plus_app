@@ -41,7 +41,10 @@ class ConnectionClientFactory {
 
   static Future<void> initialize() async {
     if (!_initialized) {
-      await _startUsbMonitoring();
+      // Only start USB monitoring on Android platform
+      if (Platform.isAndroid) {
+        await _startUsbMonitoring();
+      }
     }
 
     _instance = await create();
