@@ -2,11 +2,8 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:aci_plus_app/core/common_enum.dart';
-import 'package:aci_plus_app/core/crc16_calculate.dart';
 import 'package:aci_plus_app/repositories/connection_client.dart';
 import 'package:aci_plus_app/repositories/ble_peripheral.dart';
-import 'package:ftdi_serial/device_list_result.dart';
-import 'package:ftdi_serial/device_status.dart';
 import 'package:ftdi_serial/ftdi_serial.dart';
 import 'package:ftdi_serial/serial_device.dart';
 
@@ -59,6 +56,11 @@ class USBClient extends ConnectionClient {
     return serialDevice;
   }
 
+  Future<bool> hasUsbPermission() async {
+    bool hasPermission = await _ftdiSerial.hasUsbPermission();
+    return hasPermission;
+  }
+
   Future<bool> requestUsbPermission() async {
     bool isPermissionGranted = await _ftdiSerial.requestUsbPermission();
     return isPermissionGranted;
@@ -83,7 +85,7 @@ class USBClient extends ConnectionClient {
     // 必須要在一開始就 initialize stream controller 才能夠正常使用
     _connectionReportStreamController = StreamController<ConnectionReport>();
 
-    bool isPermissionGranted = await requestUsbPermission();
+    bool isPermissionGranted = await _ftdiSerial.requestUsbPermission();
 
     if (isPermissionGranted) {
       await _ftdiSerial.createDeviceList();

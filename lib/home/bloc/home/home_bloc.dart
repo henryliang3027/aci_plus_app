@@ -136,15 +136,18 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
   }
 
-  void _onConnectionTypeChanged(
+  Future<void> _onConnectionTypeChanged(
     ConnectionTypeChanged event,
     Emitter<HomeState> emit,
-  ) {
+  ) async {
     print('ConnectionTypeChanged: ${event.connectionType}');
     if (event.connectionType == ConnectionType.usb) {
       if (state.connectionStatus.isRequestFailure ||
           state.connectionStatus.isNone) {
-        add(const DeviceRefreshed());
+        bool hasPermission = await _aciDeviceRepository.hasUSBPermission();
+        if (hasPermission) {
+          add(const DeviceRefreshed());
+        }
       }
     }
   }

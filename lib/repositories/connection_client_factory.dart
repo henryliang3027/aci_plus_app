@@ -20,6 +20,8 @@ class ConnectionClientFactory {
 
   static StreamSubscription? _usbStatusSubscription;
   static Stream<bool>? _usbStatusDataStream;
+  static StreamSubscription? _usbPermissionSubscription;
+  static Stream<bool>? _usbPermissionStream;
 
   static final StreamController<ConnectionType> _connectionTypeController =
       StreamController<ConnectionType>.broadcast();
@@ -53,19 +55,17 @@ class ConnectionClientFactory {
 
   /// 開始監控 USB 設備狀態
   static Future<void> _startUsbMonitoring() async {
-    if (Platform.isAndroid) {
-      _usbStatusDataStream = FtdiSerial.usbStatusStream;
+    _usbStatusDataStream = FtdiSerial.usbStatusStream;
 
-      _usbStatusSubscription = _usbStatusDataStream?.listen(
-        (isUsbConnected) {
-          print('USB status changed: $isUsbConnected');
-          _onUsbStatusChanged(isUsbConnected);
-        },
-        onError: (error) {
-          print('USB monitoring error: $error');
-        },
-      );
-    }
+    _usbStatusSubscription = _usbStatusDataStream?.listen(
+      (isUsbConnected) {
+        print('USB status changed: $isUsbConnected');
+        _onUsbStatusChanged(isUsbConnected);
+      },
+      onError: (error) {
+        print('USB monitoring error: $error');
+      },
+    );
   }
 
   /// 處理 USB 狀態變化
