@@ -111,11 +111,14 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
         ),
       ],
       DataKey.dsVVA4.name: [
-        if (partId == '5' || partId == '6') ...[
+        if (partId == '5' ||
+            partId == '15' ||
+            partId == '6' ||
+            partId == '16') ...[
           _ForwardOutputAttenuation2And3(
             isEnableForwardSetting: isEnableForwardSetting,
           )
-        ] else if (partId == '8') ...[
+        ] else if (partId == '8' || partId == '18') ...[
           _ForwardOutputAttenuation3(
             isEnableForwardSetting: isEnableForwardSetting,
           )
@@ -126,7 +129,10 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
         ]
       ],
       DataKey.dsVVA5.name: [
-        if (partId == '5' || partId == '6') ...[
+        if (partId == '5' ||
+            partId == '15' ||
+            partId == '6' ||
+            partId == '16') ...[
           _ForwardOutputAttenuation5And6(
             partId: partId,
             agcMode: agcMode,
@@ -149,7 +155,10 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
         ),
       ],
       DataKey.dsSlope3.name: [
-        if (partId == '5' || partId == '6') ...[
+        if (partId == '5' ||
+            partId == '15' ||
+            partId == '6' ||
+            partId == '16') ...[
           _ForwardOutputEqualizer2And3(
             isEnableForwardSetting: isEnableForwardSetting,
           ),
@@ -160,7 +169,10 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
         ]
       ],
       DataKey.dsSlope4.name: [
-        if (partId == '5' || partId == '6') ...[
+        if (partId == '5' ||
+            partId == '15' ||
+            partId == '6' ||
+            partId == '16') ...[
           _ForwardOutputEqualizer5And6(
             partId: partId,
             agcMode: agcMode,
@@ -176,7 +188,7 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
     };
 
     Map<String, List<Widget>> reverseSettingWidgetsMap = {
-      DataKey.usVCA1.name: partId == '5'
+      DataKey.usVCA1.name: partId == '5' || partId == '15'
           ? [
               _ReturnInputAttenuation4(partId: partId),
               _ReturnIngressSetting4(partId: partId),
@@ -186,28 +198,30 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
               const _ReturnIngressSetting2(),
             ],
       DataKey.usVCA2.name: [const _ReturnOutputAttenuation1()],
-      DataKey.usVCA3.name: partId == '5' || partId == '6'
-          ? [
-              const _ReturnInputAttenuation2And3(),
-              const _ReturnIngressSetting2And3(),
-            ]
-          : [
-              const _ReturnInputAttenuation3(),
-              const _ReturnIngressSetting3(),
-            ],
-      DataKey.usVCA4.name: partId == '5' || partId == '6'
-          ? [
-              const _ReturnInputAttenuation5And6(),
-              const _ReturnIngressSetting5And6(),
-            ]
-          : [
-              _ReturnInputAttenuation4(
-                partId: partId,
-              ),
-              _ReturnIngressSetting4(
-                partId: partId,
-              ),
-            ],
+      DataKey.usVCA3.name:
+          partId == '5' || partId == '15' || partId == '6' || partId == '16'
+              ? [
+                  const _ReturnInputAttenuation2And3(),
+                  const _ReturnIngressSetting2And3(),
+                ]
+              : [
+                  const _ReturnInputAttenuation3(),
+                  const _ReturnIngressSetting3(),
+                ],
+      DataKey.usVCA4.name:
+          partId == '5' || partId == '15' || partId == '6' || partId == '16'
+              ? [
+                  const _ReturnInputAttenuation5And6(),
+                  const _ReturnIngressSetting5And6(),
+                ]
+              : [
+                  _ReturnInputAttenuation4(
+                    partId: partId,
+                  ),
+                  _ReturnIngressSetting4(
+                    partId: partId,
+                  ),
+                ],
       DataKey.eREQ.name: [const _ReturnOutputEqualizer1()],
     };
 
@@ -1094,7 +1108,7 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (partId == '5') {
+    if (partId == '5' || partId == '15') {
       return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
         builder: (context, state) {
           double minValue = state.targetValues[DataKey.usVCA1]?.minValue ?? 0.0;
@@ -1926,7 +1940,7 @@ class _ReturnIngressSetting4 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (partId == '5') {
+    if (partId == '5' || partId == '15') {
       return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
         buildWhen: (previous, current) =>
             previous.targetIngressValues[DataKey.ingressSetting2] !=

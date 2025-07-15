@@ -62,15 +62,13 @@ class Setting18ReverseControlBloc
           SettingItemTable.controlItemDataMapCollection[partId]![1];
 
       reverseControlMap.forEach((name, dataKey) {
-        initialValues[dataKey] = characteristicDataCache[dataKey]!;
-
         MinMax minMax = values[dataKey]!;
         RangeFloatPointInput rangeFloatPointInput = RangeFloatPointInput.dirty(
-          characteristicDataCache[dataKey]!,
+          characteristicDataCache[dataKey] ?? '',
           minValue: minMax.min,
           maxValue: minMax.max,
         );
-
+        initialValues[dataKey] = characteristicDataCache[dataKey] ?? '';
         targetValues[dataKey] = rangeFloatPointInput;
       });
     }

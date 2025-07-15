@@ -504,7 +504,7 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (partId == '5') {
+    if (partId == '5' || partId == '15') {
       return BlocBuilder<Setting18ReverseControlBloc,
           Setting18ReverseControlState>(
         buildWhen: (previous, current) =>

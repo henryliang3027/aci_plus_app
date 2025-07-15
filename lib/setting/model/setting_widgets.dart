@@ -107,7 +107,10 @@ String getInputEqualizer({
   required String inputEqualizer,
   required String currentInputEqualizer,
 }) {
-  return pilotFrequencyMode == '3'
+  // pilotFrequencyMode 是 '3' 時, 在 on board 機種會轉換成 BenchMode.frequency1p2G 或 BenchMode.frequency1p8G
+  return pilotFrequencyMode == '3' ||
+          pilotFrequencyMode == BenchMode.frequency1p2G.name ||
+          pilotFrequencyMode == BenchMode.frequency1p8G.name
       ? inputEqualizer
       : agcMode == '0'
           ? inputEqualizer

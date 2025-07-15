@@ -87,13 +87,12 @@ class Setting18ForwardControlBloc
       forwardControlMap.forEach((name, dataKey) {
         MinMax minMax = values[dataKey]!;
         RangeFloatPointInput rangeFloatPointInput = RangeFloatPointInput.dirty(
-          characteristicDataCache[dataKey]!,
+          characteristicDataCache[dataKey] ?? '',
           minValue: minMax.min,
           maxValue: minMax.max,
         );
-
+        initialValues[dataKey] = characteristicDataCache[dataKey] ?? '';
         targetValues[dataKey] = rangeFloatPointInput;
-        initialValues[dataKey] = characteristicDataCache[dataKey]!;
       });
     }
 

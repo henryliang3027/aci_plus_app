@@ -197,18 +197,22 @@ class Setting18GraphViewBloc
         color: valueText.color,
       ));
 
-      SVGImage svgImage = SVGImage(
-        width: state.svgImage.width,
-        height: state.svgImage.height,
-        components: state.svgImage.components,
-        boxes: state.svgImage.boxes,
-        valueTexts: newValueTexts,
-        editable: _editable,
-      );
-
-      emit(state.copyWith(
-        svgImage: svgImage,
-      ));
+      for (ValueText vt in newValueTexts) {
+        print('ValueText: ${vt.moduleName}, ${vt.text}');
+      }
     }
+
+    SVGImage svgImage = SVGImage(
+      width: state.svgImage.width,
+      height: state.svgImage.height,
+      components: state.svgImage.components,
+      boxes: state.svgImage.boxes,
+      valueTexts: newValueTexts,
+      editable: _editable,
+    );
+
+    emit(state.copyWith(
+      svgImage: svgImage,
+    ));
   }
 }

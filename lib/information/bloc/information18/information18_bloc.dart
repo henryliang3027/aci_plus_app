@@ -35,7 +35,7 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
 
   String getGroupIdByPartId(String partId) {
     // TR 或 SDAT 為 trunk
-    if (partId == '5' || partId == '8') {
+    if (partId == '5' || partId == '15' || partId == '8' || partId == '18') {
       return '0'; // trunk
     } else {
       return '1'; // distribution

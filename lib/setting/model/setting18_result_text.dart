@@ -43,11 +43,11 @@ String format1P8GSettingResultItem({
     return AppLocalizations.of(context)!
         .dialogMessageForwardInputAttenuation1Setting;
   } else if (item == DataKey.dsVVA4.name) {
-    if (partId == '5' || partId == '6') {
+    if (partId == '5' || partId == '15' || partId == '6' || partId == '16') {
       // TR, BR
       return AppLocalizations.of(context)!
           .dialogMessageForwardOutputAttenuation2And3Setting;
-    } else if (partId == '8') {
+    } else if (partId == '8' || partId == '18') {
       // SDAT
       return AppLocalizations.of(context)!
           .dialogMessageForwardOutputAttenuation3Setting;
@@ -57,7 +57,7 @@ String format1P8GSettingResultItem({
           .dialogMessageForwardOutputAttenuation3And4Setting;
     }
   } else if (item == DataKey.dsVVA5.name) {
-    if (partId == '5' || partId == '6') {
+    if (partId == '5' || partId == '15' || partId == '6' || partId == '16') {
       return AppLocalizations.of(context)!
           .dialogMessageForwardOutputAttenuation5And6Setting;
     } else {
@@ -69,7 +69,7 @@ String format1P8GSettingResultItem({
     return AppLocalizations.of(context)!
         .dialogMessageForwardInputEqualizer1Setting;
   } else if (item == DataKey.dsSlope3.name) {
-    if (partId == '8') {
+    if (partId == '8' || partId == '18') {
       return AppLocalizations.of(context)!
           .dialogMessageForwardOutputEqualizer3Setting;
     } else {
@@ -78,7 +78,7 @@ String format1P8GSettingResultItem({
           .dialogMessageForwardOutputEqualizer2And3Setting;
     }
   } else if (item == DataKey.dsSlope4.name) {
-    if (partId == '8') {
+    if (partId == '8' || partId == '18') {
       return AppLocalizations.of(context)!
           .dialogMessageForwardOutputEqualizer4Setting;
     } else {
@@ -89,7 +89,7 @@ String format1P8GSettingResultItem({
   } else if (item == DataKey.tgcCableLength.name) {
     return AppLocalizations.of(context)!.dialogMessageTGCCableLengthSetting;
   } else if (item == DataKey.usVCA1.name) {
-    if (partId == '5') {
+    if (partId == '5' || partId == '15') {
       // C-Cor TR
       return AppLocalizations.of(context)!
           .dialogMessageReturnInputAttenuation4Setting;
@@ -101,7 +101,7 @@ String format1P8GSettingResultItem({
     return AppLocalizations.of(context)!
         .dialogMessageReturnOutputAttenuation1Setting;
   } else if (item == DataKey.usVCA3.name) {
-    if (partId == '5' || partId == '6') {
+    if (partId == '5' || partId == '15' || partId == '6' || partId == '16') {
       return AppLocalizations.of(context)!
           .dialogMessageReturnInputAttenuation2And3Setting;
     } else {
@@ -109,7 +109,7 @@ String format1P8GSettingResultItem({
           .dialogMessageReturnInputAttenuation3Setting;
     }
   } else if (item == DataKey.usVCA4.name) {
-    if (partId == '5' || partId == '6') {
+    if (partId == '5' || partId == '15' || partId == '6' || partId == '16') {
       return AppLocalizations.of(context)!
           .dialogMessageReturnInputAttenuation5And6Setting;
     } else {
@@ -120,20 +120,20 @@ String format1P8GSettingResultItem({
     return AppLocalizations.of(context)!
         .dialogMessageReturnOutputEqualizer1Setting;
   } else if (item == DataKey.ingressSetting2.name) {
-    if (partId == '5' || partId == '6') {
+    if (partId == '5' || partId == '15' || partId == '6' || partId == '16') {
       return AppLocalizations.of(context)!.dialogMessageReturnIngress4Setting;
     } else {
       return AppLocalizations.of(context)!.dialogMessageReturnIngress2Setting;
     }
   } else if (item == DataKey.ingressSetting3.name) {
-    if (partId == '5' || partId == '6') {
+    if (partId == '5' || partId == '15' || partId == '6' || partId == '16') {
       return AppLocalizations.of(context)!
           .dialogMessageReturnIngress2And3Setting;
     } else {
       return AppLocalizations.of(context)!.dialogMessageReturnIngress3Setting;
     }
   } else if (item == DataKey.ingressSetting4.name) {
-    if (partId == '5' || partId == '6') {
+    if (partId == '5' || partId == '15' || partId == '6' || partId == '16') {
       return AppLocalizations.of(context)!
           .dialogMessageReturnIngress5And6Setting;
     } else {

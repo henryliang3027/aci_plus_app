@@ -240,7 +240,7 @@ class _ReturnIngressSetting4 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (partId == '5') {
+    if (partId == '5' || partId == '15') {
       return BlocBuilder<Setting18IngressControlBloc,
           Setting18IngressControlState>(
         buildWhen: (previous, current) =>
