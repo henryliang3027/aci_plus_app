@@ -20,8 +20,6 @@ class ConnectionClientFactory {
 
   static StreamSubscription? _usbStatusSubscription;
   static Stream<bool>? _usbStatusDataStream;
-  static StreamSubscription? _usbPermissionSubscription;
-  static Stream<bool>? _usbPermissionStream;
 
   static final StreamController<ConnectionType> _connectionTypeController =
       StreamController<ConnectionType>.broadcast();

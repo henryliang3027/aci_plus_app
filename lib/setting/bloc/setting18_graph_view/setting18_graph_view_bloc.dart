@@ -196,10 +196,6 @@ class Setting18GraphViewBloc
         text: text,
         color: valueText.color,
       ));
-
-      for (ValueText vt in newValueTexts) {
-        print('ValueText: ${vt.moduleName}, ${vt.text}');
-      }
     }
 
     SVGImage svgImage = SVGImage(
