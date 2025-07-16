@@ -120,7 +120,7 @@ String format1P8GSettingResultItem({
     return AppLocalizations.of(context)!
         .dialogMessageReturnOutputEqualizer1Setting;
   } else if (item == DataKey.ingressSetting2.name) {
-    if (partId == '5' || partId == '15' || partId == '6' || partId == '16') {
+    if (partId == '5' || partId == '15') {
       return AppLocalizations.of(context)!.dialogMessageReturnIngress4Setting;
     } else {
       return AppLocalizations.of(context)!.dialogMessageReturnIngress2Setting;

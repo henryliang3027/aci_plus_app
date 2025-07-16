@@ -54,16 +54,6 @@ String getForwardCEQText(String index) {
   }
 }
 
-double getVVA1MaxValue(String partId) {
-  if (partId == '1' || partId == '8' || partId == '9') {
-    // SDLE, SDAT, SDAM
-
-    return 20.0;
-  } else {
-    return 30.0;
-  }
-}
-
 double getSlope1MaxValue(String index) {
   if (index.isNotEmpty) {
     int intIndex = int.parse(index);
