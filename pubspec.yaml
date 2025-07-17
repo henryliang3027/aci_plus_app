@@ -122,6 +122,8 @@ dev_dependencies:
   integration_test:
     sdk: flutter
 
+  mocktail: ^1.0.4
+  bloc_test: ^10.0.0
   hive_generator: ^2.0.1
   build_runner: ^2.4.8
 

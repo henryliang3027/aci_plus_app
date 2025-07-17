@@ -225,7 +225,8 @@ class Setting18RegulationBloc
     RangeIntegerInput firstChannelLoadingFrequency = RangeIntegerInput.dirty(
       firstChannelLoadingFrequencyValue,
       minValue: state.minFirstChannelLoadingFrequency,
-      maxValue: state.maxLastChannelLoadingFrequency,
+      maxValue: int.tryParse(lastChannelLoadingFrequencyValue) ??
+          state.maxLastChannelLoadingFrequency,
     );
 
     RangeFloatPointInput firstChannelLoadingLevel = RangeFloatPointInput.dirty(
@@ -236,7 +237,8 @@ class Setting18RegulationBloc
 
     RangeIntegerInput lastChannelLoadingFrequency = RangeIntegerInput.dirty(
       lastChannelLoadingFrequencyValue,
-      minValue: state.minFirstChannelLoadingFrequency,
+      minValue: int.tryParse(firstChannelLoadingFrequencyValue) ??
+          state.minFirstChannelLoadingFrequency,
       maxValue: state.maxLastChannelLoadingFrequency,
     );
 
@@ -248,14 +250,18 @@ class Setting18RegulationBloc
 
     RangeIntegerInput pilotFrequency1 = RangeIntegerInput.dirty(
       pilotFrequency1Value,
-      minValue: state.minFirstChannelLoadingFrequency,
-      maxValue: state.maxLastChannelLoadingFrequency,
+      minValue: int.tryParse(firstChannelLoadingFrequencyValue) ??
+          state.minFirstChannelLoadingFrequency,
+      maxValue: int.tryParse(pilotFrequency2Value) ??
+          state.maxLastChannelLoadingFrequency,
     );
 
     RangeIntegerInput pilotFrequency2 = RangeIntegerInput.dirty(
       pilotFrequency2Value,
-      minValue: state.minFirstChannelLoadingFrequency,
-      maxValue: state.maxLastChannelLoadingFrequency,
+      minValue: int.tryParse(pilotFrequency1Value) ??
+          state.minFirstChannelLoadingFrequency,
+      maxValue: int.tryParse(lastChannelLoadingFrequencyValue) ??
+          state.maxLastChannelLoadingFrequency,
     );
 
     emit(state.copyWith(
