@@ -443,6 +443,17 @@ Future<void> handleUpdateAction({
   }
 }
 
+// 檢查 StartFrequency, StopFrequency, RFLevelFineTuner, PilotFrequency1, _PilotFrequency2 是否可編輯
+bool getFrequencyAndLevelSettingEditable({
+  required String pilotFrequencyMode,
+}) {
+  if (pilotFrequencyMode == '0' || pilotFrequencyMode == '1') {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 // 檢查 forward setting 是否可以編輯
 // pilotFrequencyMode == '3' 時, forward setting 可以編輯, 不論 agcMode 有沒有開啟
 // pilotFrequencyMode != '3' 時

@@ -410,8 +410,14 @@ class _FirstChannelLoading extends StatelessWidget {
 
         return TwoInputs(
           title: '${AppLocalizations.of(context)!.startFrequency}:',
-          editMode1: state.editMode && state.pilotFrequencyMode != '2',
-          editMode2: state.editMode && state.pilotFrequencyMode != '2',
+          editMode1: state.editMode &&
+              getFrequencyAndLevelSettingEditable(
+                pilotFrequencyMode: state.pilotFrequencyMode,
+              ),
+          editMode2: state.editMode &&
+              getFrequencyAndLevelSettingEditable(
+                pilotFrequencyMode: state.pilotFrequencyMode,
+              ),
           initialValue1: state.firstChannelLoadingFrequency.value,
           initialValue2: state.firstChannelLoadingLevel.value,
           onChanged1: (firstChannelLoadingFrequency) {
@@ -462,8 +468,14 @@ class _LastChannelLoading extends StatelessWidget {
         // double step2 = 0.5;
         return TwoInputs(
           title: '${AppLocalizations.of(context)!.stopFrequency}:',
-          editMode1: state.editMode && state.pilotFrequencyMode != '2',
-          editMode2: state.editMode && state.pilotFrequencyMode != '2',
+          editMode1: state.editMode &&
+              getFrequencyAndLevelSettingEditable(
+                pilotFrequencyMode: state.pilotFrequencyMode,
+              ),
+          editMode2: state.editMode &&
+              getFrequencyAndLevelSettingEditable(
+                pilotFrequencyMode: state.pilotFrequencyMode,
+              ),
           initialValue1: state.lastChannelLoadingFrequency.value,
           initialValue2: state.lastChannelLoadingLevel.value,
           onChanged1: (lastChannelLoadingFrequency) {
@@ -512,8 +524,14 @@ class _RFLevelFineTuner extends StatelessWidget {
         context: context,
         title1: AppLocalizations.of(context)!.startFrequencyRFLevel,
         title2: AppLocalizations.of(context)!.slope,
-        editMode1: state.editMode && state.pilotFrequencyMode != '2',
-        editMode2: state.editMode && state.pilotFrequencyMode != '2',
+        editMode1: state.editMode &&
+            getFrequencyAndLevelSettingEditable(
+              pilotFrequencyMode: state.pilotFrequencyMode,
+            ),
+        editMode2: state.editMode &&
+            getFrequencyAndLevelSettingEditable(
+              pilotFrequencyMode: state.pilotFrequencyMode,
+            ),
         step1: step,
         step2: step,
         onIncreased1: () {

@@ -1293,10 +1293,16 @@ class _FirstChannelLoading extends StatelessWidget {
         return TwoInputs(
           title: '${AppLocalizations.of(context)!.startFrequency}:',
           editMode1: ModeProperty.isExpertMode
-              ? state.editMode && state.pilotFrequencyMode != '2'
+              ? state.editMode &&
+                  getFrequencyAndLevelSettingEditable(
+                    pilotFrequencyMode: state.pilotFrequencyMode,
+                  )
               : false,
           editMode2: ModeProperty.isExpertMode
-              ? state.editMode && state.pilotFrequencyMode != '2'
+              ? state.editMode &&
+                  getFrequencyAndLevelSettingEditable(
+                    pilotFrequencyMode: state.pilotFrequencyMode,
+                  )
               : false,
           readOnly1: true,
           readOnly2: true,
@@ -1432,10 +1438,16 @@ class _LastChannelLoading extends StatelessWidget {
         return TwoInputs(
           title: '${AppLocalizations.of(context)!.stopFrequency}:',
           editMode1: ModeProperty.isExpertMode
-              ? state.editMode && state.pilotFrequencyMode != '2'
+              ? state.editMode &&
+                  getFrequencyAndLevelSettingEditable(
+                    pilotFrequencyMode: state.pilotFrequencyMode,
+                  )
               : false,
           editMode2: ModeProperty.isExpertMode
-              ? state.editMode && state.pilotFrequencyMode != '2'
+              ? state.editMode &&
+                  getFrequencyAndLevelSettingEditable(
+                    pilotFrequencyMode: state.pilotFrequencyMode,
+                  )
               : false,
           initialValue1: state.lastChannelLoadingFrequency.value,
           initialValue2: state.lastChannelLoadingLevel.value,
@@ -1542,10 +1554,16 @@ class _RFLevelFineTuner extends StatelessWidget {
         title1: AppLocalizations.of(context)!.startFrequencyRFLevel,
         title2: AppLocalizations.of(context)!.slope,
         editMode1: ModeProperty.isExpertMode
-            ? state.editMode && state.pilotFrequencyMode != '2'
+            ? state.editMode &&
+                getFrequencyAndLevelSettingEditable(
+                  pilotFrequencyMode: state.pilotFrequencyMode,
+                )
             : false,
         editMode2: ModeProperty.isExpertMode
-            ? state.editMode && state.pilotFrequencyMode != '2'
+            ? state.editMode &&
+                getFrequencyAndLevelSettingEditable(
+                  pilotFrequencyMode: state.pilotFrequencyMode,
+                )
             : false,
         step1: step,
         step2: step,
