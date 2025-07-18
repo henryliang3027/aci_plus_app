@@ -2,8 +2,10 @@ import 'package:aci_plus_app/repositories/distribution_config.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class DistributionConfigApi {
-  DistributionConfigApi()
-      : _distributionConfigBox = Hive.box('DistributionConfigData');
+  DistributionConfigApi({
+    Box<DistributionConfig>? distributionConfigBox,
+  }) : _distributionConfigBox =
+            distributionConfigBox ?? Hive.box('DistributionConfigData');
   final Box<DistributionConfig> _distributionConfigBox;
 
   List<DistributionConfig> getAllConfigs() {

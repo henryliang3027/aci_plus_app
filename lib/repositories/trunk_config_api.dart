@@ -2,7 +2,9 @@ import 'package:aci_plus_app/repositories/trunk_config.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class TrunkConfigApi {
-  TrunkConfigApi() : _trunkConfigBox = Hive.box('TrunkConfigData');
+  TrunkConfigApi({
+    Box<TrunkConfig>? trunkConfigBox,
+  }) : _trunkConfigBox = trunkConfigBox ?? Hive.box('TrunkConfigData');
   final Box<TrunkConfig> _trunkConfigBox;
 
   List<TrunkConfig> getAllConfigs() {

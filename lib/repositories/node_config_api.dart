@@ -2,7 +2,9 @@ import 'package:aci_plus_app/repositories/node_config.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class NodeConfigApi {
-  NodeConfigApi() : _nodeConfigBox = Hive.box('NodeConfigData');
+  NodeConfigApi({
+    Box<NodeConfig>? nodeConfigBox,
+  }) : _nodeConfigBox = nodeConfigBox ?? Hive.box('NodeConfigData');
   final Box<NodeConfig> _nodeConfigBox;
 
   List<NodeConfig> getAllConfigs() {

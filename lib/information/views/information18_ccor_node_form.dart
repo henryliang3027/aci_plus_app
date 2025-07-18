@@ -113,6 +113,7 @@ class __PopupMenuState extends State<_PopupMenu> {
                     context.read<HomeBloc>().add(const DeviceRefreshed());
                   },
                 ),
+                // 20250529 取消 mode 功能
                 // menuItem(
                 //   value: HomeMenu.mode,
                 //   iconData: Icons.safety_divider,

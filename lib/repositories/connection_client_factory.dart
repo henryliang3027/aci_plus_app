@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:aci_plus_app/repositories/ble_client.dart';
 import 'package:aci_plus_app/repositories/connection_client.dart';
 import 'package:aci_plus_app/repositories/ble_windows_client.dart';
+import 'package:aci_plus_app/repositories/platform_streategy_factory.dart';
 import 'package:aci_plus_app/repositories/usb_client.dart';
 import 'package:ftdi_serial/ftdi_serial.dart';
 import 'package:ftdi_serial/serial_device.dart';
@@ -15,11 +16,9 @@ enum ConnectionType {
 }
 
 class ConnectionClientFactory {
-  static late ConnectionClient _instance;
+  static ConnectionClient? _instance;
   static bool _initialized = false;
-
-  static StreamSubscription? _usbStatusSubscription;
-  static Stream<bool>? _usbStatusDataStream;
+  static PlatformStrategy? _currentStrategy;
 
   static final StreamController<ConnectionType> _connectionTypeController =
       StreamController<ConnectionType>.broadcast();
@@ -28,67 +27,100 @@ class ConnectionClientFactory {
     yield* _connectionTypeController.stream;
   }
 
-  // private constructor to prevent direct instantiation
-  ConnectionClientFactory._();
+  /// 獲取當前策略（用於測試或調試）
+  static PlatformStrategy? get currentStrategy => _currentStrategy;
 
+  /// 檢查是否已初始化
+  static bool get isInitialized => _initialized;
+
+  /// 獲取連接客戶端實例
   static ConnectionClient get instance {
-    if (!_initialized) {
+    if (!_initialized || _instance == null) {
       throw StateError(
           'ConnectionClientFactory not initialized. Call initialize() first.');
     }
-    return _instance; // 始終返回同一個實例
+    return _instance!;
   }
 
+  /// 初始化工廠
   static Future<void> initialize() async {
-    if (!_initialized) {
-      // Only start USB monitoring on Android platform
-      if (Platform.isAndroid) {
-        await _startUsbMonitoring();
+    if (_initialized) return;
+
+    try {
+      _currentStrategy = PlatformStrategyFactory.getCurrentStrategy();
+
+      // 如果需要監控 USB，開始監控
+      if (_currentStrategy!.shouldMonitorUsb) {
+        await _currentStrategy!.startUsbMonitoring(_onUsbStatusChanged);
       }
+
+      // 創建連接客戶端
+      _instance = await _currentStrategy!.createClient();
+      _initialized = true;
+
+      print(
+          'ConnectionClientFactory initialized with ${_currentStrategy.runtimeType}');
+    } catch (e) {
+      print('Failed to initialize ConnectionClientFactory: $e');
+      rethrow;
     }
-
-    _instance = await create();
-    _initialized = true;
-  }
-
-  /// 開始監控 USB 設備狀態
-  static Future<void> _startUsbMonitoring() async {
-    _usbStatusDataStream = FtdiSerial.usbStatusStream;
-
-    _usbStatusSubscription = _usbStatusDataStream?.listen(
-      (isUsbConnected) {
-        print('USB status changed: $isUsbConnected');
-        _onUsbStatusChanged(isUsbConnected);
-      },
-      onError: (error) {
-        print('USB monitoring error: $error');
-      },
-    );
   }
 
   /// 處理 USB 狀態變化
-  static Future<void> _onUsbStatusChanged(bool isUsbConnected) async {
-    if (isUsbConnected) {
-      // USB 連接時，切換到 USB 客戶端
-      _connectionTypeController.add(ConnectionType.usb);
-    } else {
-      // USB 斷開時，切換到 BLE 客戶端
-      _connectionTypeController.add(ConnectionType.ble);
+  static void _onUsbStatusChanged(bool isUsbConnected) {
+    print('USB status changed: $isUsbConnected');
+
+    _currentStrategy?.handleUsbStatusChange(
+      isUsbConnected,
+      _connectionTypeController.add,
+    );
+  }
+
+  /// 手動切換連接類型（用於測試或特殊情況）
+  static Future<void> switchConnectionType(ConnectionType type) async {
+    try {
+      // 停止當前的 USB 監控
+      await _currentStrategy?.stopUsbMonitoring();
+
+      // 創建新的客戶端
+      if (type == ConnectionType.usb) {
+        _instance = USBClient();
+      } else if (type == ConnectionType.ble) {
+        _instance = BLEClient();
+      }
+
+      // 發送連接類型變化事件
+      _connectionTypeController.add(type);
+
+      print('Switched to connection type: $type');
+    } catch (e) {
+      print('Failed to switch connection type: $e');
+      rethrow;
     }
   }
 
-  static Future<ConnectionClient> create() async {
-    if (Platform.isWindows) {
-      return BLEWindowsClient();
-    } else if (Platform.isIOS) {
-      return BLEClient();
-    } else if (Platform.isAndroid) {
-      BLEClient bleClient = BLEClient();
-      USBClient usbClient = USBClient();
-      SerialDevice serialDevice = await USBClient.getAttachedDevice();
-      return serialDevice.vendorId != -1 ? usbClient : bleClient;
-    } else {
-      throw UnsupportedError('Platform not supported');
+  /// 重置工廠（主要用於測試）
+  static Future<void> reset() async {
+    await dispose();
+    PlatformStrategyFactory.clearTestStrategy();
+  }
+
+  /// 釋放資源
+  static Future<void> dispose() async {
+    try {
+      await _currentStrategy?.stopUsbMonitoring();
+
+      if (!_connectionTypeController.isClosed) {
+        await _connectionTypeController.close();
+      }
+
+      _instance = null;
+      _currentStrategy = null;
+      _initialized = false;
+
+      print('ConnectionClientFactory disposed');
+    } catch (e) {
+      print('Error disposing ConnectionClientFactory: $e');
     }
   }
 }

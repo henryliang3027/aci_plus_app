@@ -11,10 +11,14 @@ import 'package:aci_plus_app/repositories/trunk_config_api.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ConfigRepository {
-  ConfigRepository()
-      : _trunkConfigApi = TrunkConfigApi(),
-        _distributionConfigApi = DistributionConfigApi(),
-        _nodeConfigApi = NodeConfigApi();
+  ConfigRepository({
+    TrunkConfigApi? trunkConfigApi,
+    DistributionConfigApi? distributionConfigApi,
+    NodeConfigApi? nodeConfigApi,
+  })  : _trunkConfigApi = trunkConfigApi ?? TrunkConfigApi(),
+        _distributionConfigApi =
+            distributionConfigApi ?? DistributionConfigApi(),
+        _nodeConfigApi = nodeConfigApi ?? NodeConfigApi();
 
   final TrunkConfigApi _trunkConfigApi;
   final DistributionConfigApi _distributionConfigApi;
