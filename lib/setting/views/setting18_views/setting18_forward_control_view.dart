@@ -164,9 +164,9 @@ class Setting18ForwardControlView extends StatelessWidget {
           getForwardControlParameterWidgetsByPartId(partId);
 
       return Column(children: [
-        const _FirstChannelLoading(),
-        const _LastChannelLoading(),
-        const _RFLevelFineTuner(),
+        // const _FirstChannelLoading(),
+        // const _LastChannelLoading(),
+        // const _RFLevelFineTuner(),
         ...forwardControlParameters,
         const SizedBox(
           height: CustomStyle.formBottomSpacingL,

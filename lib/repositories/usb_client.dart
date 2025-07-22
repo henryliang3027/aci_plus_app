@@ -56,8 +56,8 @@ class USBClient extends ConnectionClient {
     return serialDevice;
   }
 
-  Future<bool> hasUsbPermission() async {
-    bool hasPermission = await _ftdiSerial.hasUsbPermission();
+  static Future<bool> hasUsbPermission() async {
+    bool hasPermission = await FtdiSerial.hasUsbPermission();
     return hasPermission;
   }
 
