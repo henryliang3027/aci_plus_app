@@ -51,6 +51,11 @@ class ConnectionClientFactory {
     _initialized = true;
   }
 
+  static Future<bool> hasUSBPermission() async {
+    bool hasPermission = await USBClient.hasUsbPermission();
+    return hasPermission;
+  }
+
   /// 開始監控 USB 設備狀態
   static Future<void> _startUsbMonitoring() async {
     _usbStatusDataStream = FtdiSerial.usbStatusStream;
