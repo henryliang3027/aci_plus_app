@@ -47,6 +47,8 @@ class ValueText {
     required this.moduleName,
     required this.x,
     required this.y,
+    required this.width,
+    required this.height,
     required this.text,
     required this.color,
   });
@@ -54,6 +56,8 @@ class ValueText {
   final String moduleName;
   final double x;
   final double y;
+  final double width;
+  final double height;
   final String text;
   final String color;
 }

@@ -143,6 +143,7 @@ enum DataKey {
   usVCA4,
   usVCA6,
   eREQ,
+  dsCEQ1,
   dsVVA1,
   dsVVA2,
   dsVVA3,

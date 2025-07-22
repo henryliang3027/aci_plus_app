@@ -86,7 +86,7 @@ class CircuitPainter extends CustomPainter {
           box.height * scaleFactor);
 
       Paint paint = Paint()
-        ..color = const Color.fromARGB(0, 43, 255, 0)
+        ..color = const Color.fromARGB(100, 43, 255, 0)
         ..style = PaintingStyle.fill
         ..strokeWidth = 1.0;
 
@@ -127,16 +127,22 @@ class CircuitPainter extends CustomPainter {
         minWidth: 0,
         maxWidth: size.width,
       );
+      // textPainter.paint(
+      //     canvas,
+      //     Offset(
+      //         (valueText.x + (238.365 / 2)) * scaleFactor +
+      //             offsetX -
+      //             (textPainter.width / 2),
+      //         (valueText.y - 20) * scaleFactor +
+      //             offsetY -
+      //             (textPainter.height / 2)));
+      double textCX = valueText.x + valueText.width / 2;
+      double textCY = valueText.y + valueText.height / 2;
 
       textPainter.paint(
           canvas,
-          Offset(
-              (valueText.x + (238.365 / 2)) * scaleFactor +
-                  offsetX -
-                  (textPainter.width / 2),
-              (valueText.y - 20) * scaleFactor +
-                  offsetY -
-                  (textPainter.height / 2)));
+          Offset((textCX) * scaleFactor + offsetX - textPainter.width / 2,
+              (textCY) * scaleFactor + offsetY - (textPainter.height / 2)));
     }
   }
 

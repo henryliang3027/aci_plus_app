@@ -107,49 +107,80 @@ class Setting18GraphViewBloc
 
     for (var element in rects) {
       String? moduleName = element.getAttribute('module');
+      String? type = element.getAttribute('type');
 
       if (moduleName != null) {
-        double x = double.parse(element.getAttribute('x').toString());
-        double y = double.parse(element.getAttribute('y').toString());
-        double width = double.parse(element.getAttribute('width').toString());
-        double height = double.parse(element.getAttribute('height').toString());
+        if (type == 'textBox') {
+          double x = double.parse(element.getAttribute('x').toString());
+          double y = double.parse(element.getAttribute('y').toString());
+          double width = double.parse(element.getAttribute('width').toString());
+          double height =
+              double.parse(element.getAttribute('height').toString());
+          DataKey dataKey =
+              dataKeys.firstWhere((dataKey) => dataKey.name == moduleName);
 
-        boxes.add(Box(
-          moduleName: moduleName,
-          x: x,
-          y: y,
-          width: width,
-          height: height,
-        ));
+          String text = getValueText(
+            characteristicDataCache: characteristicDataCache,
+            dataKey: dataKey,
+            moduleName: moduleName,
+          );
+
+          String color = element.getAttribute('color').toString();
+
+          valueTexts.add(ValueText(
+            moduleName: moduleName,
+            x: x,
+            y: y,
+            width: width,
+            height: height,
+            text: text,
+            color: color,
+          ));
+        } else {
+          print('moduleName: $moduleName');
+          double x = double.parse(element.getAttribute('x').toString());
+          double y = double.parse(element.getAttribute('y').toString());
+          double width = double.parse(element.getAttribute('width').toString());
+          double height =
+              double.parse(element.getAttribute('height').toString());
+
+          boxes.add(Box(
+            moduleName: moduleName,
+            x: x,
+            y: y,
+            width: width,
+            height: height,
+          ));
+        }
       }
     }
 
-    for (var textPlaceholder in textPlaceholders) {
-      String? moduleName = textPlaceholder.getAttribute('module');
+    // for (var textPlaceholder in textPlaceholders) {
+    //   String? moduleName = textPlaceholder.getAttribute('module');
 
-      if (moduleName != null) {
-        double x = double.parse(textPlaceholder.getAttribute('x').toString());
-        double y = double.parse(textPlaceholder.getAttribute('y').toString());
-        DataKey dataKey =
-            dataKeys.firstWhere((dataKey) => dataKey.name == moduleName);
+    //   if (moduleName != null) {
+    //     double x = double.parse(textPlaceholder.getAttribute('x').toString());
+    //     double y = double.parse(textPlaceholder.getAttribute('y').toString());
+    //     DataKey dataKey =
+    //         dataKeys.firstWhere((dataKey) => dataKey.name == moduleName);
 
-        String text = getValueText(
-          characteristicDataCache: characteristicDataCache,
-          dataKey: dataKey,
-          moduleName: moduleName,
-        );
+    //     String text = getValueText(
+    //       characteristicDataCache: characteristicDataCache,
+    //       dataKey: dataKey,
+    //       moduleName: moduleName,
+    //     );
 
-        String color = textPlaceholder.getAttribute('color').toString();
+    //     String color = textPlaceholder.getAttribute('color').toString();
 
-        valueTexts.add(ValueText(
-          moduleName: moduleName,
-          x: x,
-          y: y,
-          text: text,
-          color: color,
-        ));
-      }
-    }
+    //     valueTexts.add(ValueText(
+    //       moduleName: moduleName,
+    //       x: x,
+    //       y: y,
+    //       text: text,
+    //       color: color,
+    //     ));
+    //   }
+    // }
 
     SVGImage svgImage = SVGImage(
       width: width,
@@ -193,6 +224,8 @@ class Setting18GraphViewBloc
         moduleName: valueText.moduleName,
         x: valueText.x,
         y: valueText.y,
+        width: valueText.width,
+        height: valueText.height,
         text: text,
         color: valueText.color,
       ));
