@@ -61,11 +61,27 @@ class _CardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget getWidgetsByPartId(String partId) {
+    Widget getWidgetsByPartId(
+        {required String partId, required String pilotFrequencyMode}) {
       List<StatusItem> items = StatusItemTable.itemsMap[partId] ?? [];
       List<Widget> widgets = [];
 
+      // 定義需要在 Bench mode (pilotFrequencyMode == '3') 時隱藏的 Card
+      final Set<StatusItem> hiddenItemsWhenInBenchMode = {
+        StatusItem.outputPower,
+        StatusItem.pilot1Status,
+        StatusItem.pilot2Status,
+        StatusItem.startFrequencyOutputLevel,
+        StatusItem.stopFrequencyOutputLevel,
+      };
+
       for (StatusItem name in items) {
+        // 如果 pilotFrequencyMode == '3' 且當前項目 name 有出現在隱藏列表中，則跳過
+        if (pilotFrequencyMode == '3' &&
+            hiddenItemsWhenInBenchMode.contains(name)) {
+          continue;
+        }
+
         switch (name) {
           case StatusItem.operatingMode:
             widgets.add(const _OperatingModeCard());
@@ -156,20 +172,19 @@ class _CardView extends StatelessWidget {
           previous.loadingStatus != current.loadingStatus,
       builder: (context, state) {
         String partId = state.characteristicData[DataKey.partId] ?? '';
+        String pilotFrequencyMode =
+            state.characteristicData[DataKey.pilotFrequencyMode] ?? '';
+
         if (state.loadingStatus.isRequestSuccess) {
           checkUnfilledItem(
             context: context,
             characteristicData: state.characteristicData,
           );
-
-          return getWidgetsByPartId(partId);
-        } else {
-          // context
-          //     .read<Status18Bloc>()
-          //     .add(const StatusPeriodicUpdateCanceled());
-
-          return getWidgetsByPartId(partId);
         }
+        return getWidgetsByPartId(
+          partId: partId,
+          pilotFrequencyMode: pilotFrequencyMode,
+        );
       },
     );
   }

@@ -128,6 +128,7 @@ class Indicator extends StatelessWidget {
     // alarmState (alarm mask) == '0' 代表 enable
     // alarmState (alarm mask) == '1' 代表 disable
     List<int> getAmpUnitStatusAlarmSeverityIndexList({
+      required String pilotFrequencyMode,
       required String temperatureAlarmState,
       required String voltageAlarmState,
       required String voltageRippleAlarmState,
@@ -145,12 +146,18 @@ class Indicator extends StatelessWidget {
         getSeverity(temperatureAlarmState, temperatureAlarmSeverity),
         getSeverity(voltageAlarmState, voltageAlarmSeverity),
         getSeverity(voltageRippleAlarmState, voltageRippleAlarmSeverity),
-        getSeverity(rfOutputPowerAlarmState, rfOutputPowerAlarmSeverity),
-        getSeverity(rfOutputPilotLowFrequencyAlarmState,
-            rfOutputPilotLowFrequencyAlarmSeverity),
-        getSeverity(rfOutputPilotHighFrequencyAlarmState,
-            rfOutputPilotHighFrequencyAlarmSeverity),
       ];
+
+      // 只有不是 Bench mode (pilotFrequencyMode != '3') 時才添加這些項目
+      if (pilotFrequencyMode != '3') {
+        severityList.addAll([
+          getSeverity(rfOutputPowerAlarmState, rfOutputPowerAlarmSeverity),
+          getSeverity(rfOutputPilotLowFrequencyAlarmState,
+              rfOutputPilotLowFrequencyAlarmSeverity),
+          getSeverity(rfOutputPilotHighFrequencyAlarmState,
+              rfOutputPilotHighFrequencyAlarmSeverity),
+        ]);
+      }
 
       // create a list contain index in severityList which is Alarm.danger
       List<int> severityIndexList = [];
@@ -406,6 +413,9 @@ class Indicator extends StatelessWidget {
           // String splitOptionAlarmSeverity =
           //     state.characteristicData[DataKey.splitOptionAlarmSeverity] ?? '';
 
+          String pilotFrequencyMode =
+              state.characteristicData[DataKey.pilotFrequencyMode] ?? '';
+
           String temperatureAlarmSeverity =
               state.characteristicData[DataKey.temperatureAlarmSeverity] ?? '';
 
@@ -429,7 +439,7 @@ class Indicator extends StatelessWidget {
                       DataKey.rfOutputPilotHighFrequencyAlarmSeverity] ??
                   '';
 
-          // Node
+          // Node start
           String rfOutputPower1AlarmSeverity =
               state.characteristicData[DataKey.rfOutputPower1AlarmSeverity] ??
                   '';
@@ -444,6 +454,7 @@ class Indicator extends StatelessWidget {
           String rfOutputPower6AlarmSeverity =
               state.characteristicData[DataKey.rfOutputPower6AlarmSeverity] ??
                   '';
+          // Node end
 
           String temperatureAlarmState =
               state.characteristicData[DataKey.temperatureAlarmState] ?? '1';
@@ -466,7 +477,7 @@ class Indicator extends StatelessWidget {
                       DataKey.rfOutputPilotHighFrequencyAlarmState] ??
                   '1';
 
-          // Node
+          // Node start
           String rfOutputPower1AlarmState =
               state.characteristicData[DataKey.rfOutputPower1AlarmState] ?? '1';
           String rfOutputPower3AlarmState =
@@ -475,9 +486,11 @@ class Indicator extends StatelessWidget {
               state.characteristicData[DataKey.rfOutputPower4AlarmState] ?? '1';
           String rfOutputPower6AlarmState =
               state.characteristicData[DataKey.rfOutputPower6AlarmState] ?? '1';
+          // Node end
 
           List<int> ampUnitStatusAlarmSeverityIndexList =
               getAmpUnitStatusAlarmSeverityIndexList(
+            pilotFrequencyMode: pilotFrequencyMode,
             temperatureAlarmState: temperatureAlarmState,
             voltageAlarmState: voltageAlarmState,
             voltageRippleAlarmState: voltageRippleAlarmState,
