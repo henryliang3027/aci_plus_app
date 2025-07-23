@@ -9,7 +9,7 @@ class WorkingModeTable {
     '71': 'TGC + Log Input PAD',
     '72': 'TGC + Manual Input PAD',
     '81': 'Bench Test for Network Analyzer',
-    '82': 'TGC + VVA1 and Slope1 in LOG',
-    '83': 'TGC + Manual VVA1 and Slope1',
+    '82': 'Bench Test for Network Analyzer',
+    '83': 'Bench Test for Network Analyzer',
   };
 }
