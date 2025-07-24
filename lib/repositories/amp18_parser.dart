@@ -1170,7 +1170,7 @@ class Amp18Parser {
 
       // print('timeStamp: $timeStamp ');
 
-      for (int j = 0; j < 256; j++) {
+      for (int j = 0; j < 282; j++) {
         int frequency = 105 + 6 * j;
         // 解析 rfOuts
         int rfIndex = (i * step + 6) + j * 2;
