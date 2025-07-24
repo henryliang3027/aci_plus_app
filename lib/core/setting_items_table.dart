@@ -164,7 +164,7 @@ const Map<String, String> settingGraphFilePath = {
   '2': 'assets/circuits/BLE_1.8G_20250717.svg', // BLE
   '3': 'assets/circuits/MB_1.8G_20250721_Henry.svg', // MB
   '4': 'assets/circuits/Total 20250721_final.svg', // C-Cor Node
-  '5': 'assets/circuits/TR_1.8G_20250717_David.svg', // C-Cor TR
+  '5': 'assets/circuits/TR_1.8G_20250721.svg', // C-Cor TR
   '6': 'assets/circuits/BR_1.8G_20250717_David.svg', // C-Cor BR
   '7': 'assets/circuits/LE_1.8G_20250717_David.svg', // C-Cor LE
   '8': 'assets/circuits/SDAT_1.8G_20250717_David.svg', // SDAT
@@ -173,7 +173,7 @@ const Map<String, String> settingGraphFilePath = {
   '11': 'assets/circuits/SDLE_1.8G_20250717_David.svg', // SDLE (EQ on board)
   '12': 'assets/circuits/BLE_1.8G_20250717.svg', // BLE (EQ on board)
   '13': 'assets/circuits/Total 20250721_final.svg', // MB (EQ on board)
-  '15': 'assets/circuits/TR_1.8G_20250717_David.svg', // C-Cor TR (EQ on board)
+  '15': 'assets/circuits/TR_1.8G_20250721.svg', // C-Cor TR (EQ on board)
   '16': 'assets/circuits/BR_1.8G_20250717_David.svg', // C-Cor BR (EQ on board)
   '17': 'assets/circuits/LE_1.8G_20250717_David.svg', // C-Cor LE (EQ on board)
   '18': 'assets/circuits/SDAT_1.8G_20250717_David.svg', // SDAT (EQ on board)
