@@ -566,6 +566,20 @@ class Command18 {
     0x00,
   ];
 
+  static List<int> setDSCEQ1Cmd = [
+    0xB0,
+    0x10,
+    0x00,
+    0x90,
+    0x00,
+    0x13,
+    0x01,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+  ];
+
   static List<int> setUSVCA1Cmd = [
     0xB0,
     0x10,

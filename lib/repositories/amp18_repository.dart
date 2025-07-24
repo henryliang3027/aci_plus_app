@@ -1047,6 +1047,13 @@ class Amp18Repository with BLECommandsMixin {
     );
   }
 
+  Future<dynamic> set1p8GDSCEQ1(String strValue) async {
+    return set1p8GOneByteParameter(
+      value: strValue,
+      command: Command18.setDSCEQ1Cmd,
+    );
+  }
+
   Future<dynamic> set1p8GDSVVA2(String strValue) async {
     return set1p8GTwoBytesParameter(
       value: strValue,
