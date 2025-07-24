@@ -86,7 +86,7 @@ class CircuitPainter extends CustomPainter {
           box.height * scaleFactor);
 
       Paint paint = Paint()
-        ..color = const Color.fromARGB(0, 43, 255, 0)
+        ..color = const Color.fromARGB(100, 43, 255, 0)
         ..style = PaintingStyle.fill
         ..strokeWidth = 1.0;
 

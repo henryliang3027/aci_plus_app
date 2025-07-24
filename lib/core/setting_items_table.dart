@@ -160,15 +160,15 @@ const Map<String, EQType> eqTypeMap = {
 };
 
 const Map<String, String> settingGraphFilePath = {
-  '1': 'assets/circuits/SDLE_1.8G_20240822.svg', // SDLE
-  '2': 'assets/circuits/BLE_1.8G_20240822.svg', // BLE
-  '3': 'assets/circuits/MB_1.8G_20240822.svg', // MB
+  '1': 'assets/circuits/SDLE_1.8G_20240822o.svg', // SDLE
+  '2': 'assets/circuits/BLE_1.8G_20240822o.svg', // BLE
+  '3': 'assets/circuits/MB_1.8G_20240822o.svg', // MB
   '4': 'assets/circuits/NODE_1.8G_20250721.svg', // C-Cor Node
-  '5': 'assets/circuits/TR_1.8G_20240822.svg', // C-Cor TR
-  '6': 'assets/circuits/BR_1.8G_20250411.svg', // C-Cor BR
-  '7': 'assets/circuits/LE_1.8G_20240822.svg', // C-Cor LE
-  '8': 'assets/circuits/SDAT_1.8G_20240822.svg', // SDAT
-  '9': 'assets/circuits/SDAM_1.8G_20240822.svg', // SDAM
+  '5': 'assets/circuits/TR_1.8G_20240822o.svg', // C-Cor TR
+  '6': 'assets/circuits/BR_1.8G_20250411o.svg', // C-Cor BR
+  '7': 'assets/circuits/LE_1.8G_20240822o.svg', // C-Cor LE
+  '8': 'assets/circuits/SDAT_1.8G_20240822o.svg', // SDAT
+  '9': 'assets/circuits/SDAM_1.8G_20240822o.svg', // SDAM
   '10': 'assets/circuits/MFT8_1.8G_20250721.svg', // MFT8
   '11': 'assets/circuits/SDLE_1.8G_20250721.svg', // SDLE (EQ on board)
   '12': 'assets/circuits/BLE_1.8G_20250721.svg', // BLE (EQ on board)
@@ -179,6 +179,28 @@ const Map<String, String> settingGraphFilePath = {
   '18': 'assets/circuits/SDAT_1.8G_20250721.svg', // SDAT (EQ on board)
   '19': 'assets/circuits/SDAM_1.8G_20250721.svg', // SDAM (EQ on board)
 };
+
+// 用於測試舊的圖形化介面 舊的 id 幾種 1,2,3,5,6,7,8,9
+// const Map<String, String> settingGraphFilePath = {
+//   // '1': 'assets/circuits/SDLE_1.8G_20240822.svg', // SDLE
+//   // '2': 'assets/circuits/BLE_1.8G_20240822.svg', // BLE
+//   // '3': 'assets/circuits/MB_1.8G_20240822.svg', // MB
+//   '4': 'assets/circuits/NODE_1.8G_20250721.svg', // C-Cor Node
+//   // '5': 'assets/circuits/TR_1.8G_20240822.svg', // C-Cor TR
+//   // '6': 'assets/circuits/BR_1.8G_20250411.svg', // C-Cor BR
+//   // '7': 'assets/circuits/LE_1.8G_20240822.svg', // C-Cor LE
+//   // '8': 'assets/circuits/SDAT_1.8G_20240822.svg', // SDAT
+//   // '9': 'assets/circuits/SDAM_1.8G_20240822.svg', // SDAM
+//   '10': 'assets/circuits/MFT8_1.8G_20250721.svg', // MFT8
+//   '11': 'assets/circuits/SDLE_1.8G_20240822o.svg', // SDLE (EQ on board)
+//   '12': 'assets/circuits/BLE_1.8G_20240822o.svg', // BLE (EQ on board)
+//   '13': 'assets/circuits/MB_1.8G_20240822o.svg', // MB (EQ on board)
+//   '15': 'assets/circuits/TR_1.8G_20240822o.svg', // C-Cor TR (EQ on board)
+//   '16': 'assets/circuits/BR_1.8G_20250411o.svg', // C-Cor BR (EQ on board)
+//   '17': 'assets/circuits/LE_1.8G_20240822o.svg', // C-Cor LE (EQ on board)
+//   '18': 'assets/circuits/SDAT_1.8G_20240822o.svg', // SDAT (EQ on board)
+//   '19': 'assets/circuits/SDAM_1.8G_20240822o.svg', // SDAM (EQ on board)
+// };
 
 const Map<String, String> namePlateFilePath = {
   '1': '',
