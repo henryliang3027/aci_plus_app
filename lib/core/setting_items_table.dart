@@ -64,6 +64,7 @@ enum SettingControl {
   forwardInputAttenuation4,
   forwardInputAttenuation5,
   forwardInputAttenuation6,
+  forwardInputCableEqualizer1,
   forwardInputEqualizer1,
   forwardInputEqualizer2,
   forwardInputEqualizer3,
@@ -227,14 +228,14 @@ class SettingItemTable {
     '8': sdatItem,
     '9': sdamItem,
     '10': mft8,
-    '11': sdleItem,
-    '12': bleItem,
-    '13': mbItem,
-    '15': trItem,
-    '16': brItem,
-    '17': leItem,
-    '18': sdatItem,
-    '19': sdamItem,
+    '11': sdleEQOnBoardItem,
+    '12': bleEQOnBoardItem,
+    '13': mbEQOnBoardItem,
+    '15': trEQOnBoardItem,
+    '16': brEQOnBoardItem,
+    '17': leEQOnBoardItem,
+    '18': sdatEQOnBoardItem,
+    '19': sdamEQOnBoardItem,
   };
 
   // partId 與 balance 控制項目對應 map
@@ -249,14 +250,14 @@ class SettingItemTable {
     '8': sdatControlItem,
     '9': sdamControlItem,
     '10': mft8ControlItem,
-    '11': sdleControlItem,
-    '12': bleControlItem,
-    '13': mbControlItem,
-    '15': trControlItem,
-    '16': brControlItem,
-    '17': leControlItem,
-    '18': sdatControlItem,
-    '19': sdamControlItem,
+    '11': sdleEQOnBoardControlItem,
+    '12': bleEQOnBoardControlItem,
+    '13': mbEQOnBoardControlItem,
+    '15': trEQOnBoardControlItem,
+    '16': brEQOnBoardControlItem,
+    '17': leEQOnBoardControlItem,
+    '18': sdatEQOnBoardControlItem,
+    '19': sdamEQOnBoardControlItem,
   };
 
   static List<Enum> sdleItem = [
@@ -285,6 +286,39 @@ class SettingItemTable {
     SettingThreshold.pilot2Status,
     SettingThreshold.startFrequencyOutputLevel,
     SettingThreshold.stopFrequencyOutputLevel,
+    SettingControl.forwardInputAttenuation1,
+    SettingControl.forwardInputEqualizer1,
+    SettingControl.returnOutputAttenuation1,
+    SettingControl.returnOutputEqualizer1,
+    SettingControl.returnInputAttenuation2,
+    SettingControl.returnIngressSetting2,
+  ];
+
+  static List<Enum> sdleEQOnBoardItem = [
+    // SDLE (EQ on board)
+    SettingConfiruration.location,
+    SettingConfiruration.coordinates,
+    SettingConfiruration.pilotFrequencySelect,
+    SettingConfiruration.startFrequency,
+    SettingConfiruration.stopFrequency,
+    SettingConfiruration.rfLevelFineTuner,
+    SettingConfiruration.pilot1,
+    SettingConfiruration.pilot2,
+    SettingConfiruration.agcMode,
+    SettingConfiruration.alcMode,
+    SettingConfiruration.logInterval,
+    SettingConfiruration.rfOutputLogInterval,
+    SettingConfiruration.cableLength,
+    SettingThreshold.workingMode,
+    SettingThreshold.temperature,
+    SettingThreshold.inputVoltage24V,
+    SettingThreshold.inputVoltageRipple24V,
+    SettingThreshold.outputPower,
+    SettingThreshold.pilot1Status,
+    SettingThreshold.pilot2Status,
+    SettingThreshold.startFrequencyOutputLevel,
+    SettingThreshold.stopFrequencyOutputLevel,
+    SettingControl.forwardInputCableEqualizer1,
     SettingControl.forwardInputAttenuation1,
     SettingControl.forwardInputEqualizer1,
     SettingControl.returnOutputAttenuation1,
@@ -327,6 +361,39 @@ class SettingItemTable {
     SettingControl.returnIngressSetting2,
   ];
 
+  static List<Enum> bleEQOnBoardItem = [
+    // Moto BLE (EQ on board)
+    SettingConfiruration.location,
+    SettingConfiruration.coordinates,
+    SettingConfiruration.pilotFrequencySelect,
+    SettingConfiruration.startFrequency,
+    SettingConfiruration.stopFrequency,
+    SettingConfiruration.rfLevelFineTuner,
+    SettingConfiruration.pilot1,
+    SettingConfiruration.pilot2,
+    SettingConfiruration.agcMode,
+    SettingConfiruration.alcMode,
+    SettingConfiruration.logInterval,
+    SettingConfiruration.rfOutputLogInterval,
+    SettingConfiruration.cableLength,
+    SettingThreshold.workingMode,
+    SettingThreshold.temperature,
+    SettingThreshold.inputVoltage24V,
+    SettingThreshold.inputVoltageRipple24V,
+    SettingThreshold.outputPower,
+    SettingThreshold.pilot1Status,
+    SettingThreshold.pilot2Status,
+    SettingThreshold.startFrequencyOutputLevel,
+    SettingThreshold.stopFrequencyOutputLevel,
+    SettingControl.forwardInputCableEqualizer1,
+    SettingControl.forwardInputAttenuation1,
+    SettingControl.forwardInputEqualizer1,
+    SettingControl.returnOutputAttenuation1,
+    SettingControl.returnOutputEqualizer1,
+    SettingControl.returnInputAttenuation2,
+    SettingControl.returnIngressSetting2,
+  ];
+
   static List<Enum> mbItem = [
     // Moto MB
     SettingConfiruration.location,
@@ -353,6 +420,44 @@ class SettingItemTable {
     SettingThreshold.pilot2Status,
     SettingThreshold.startFrequencyOutputLevel,
     SettingThreshold.stopFrequencyOutputLevel,
+    SettingControl.forwardInputAttenuation1,
+    SettingControl.forwardInputEqualizer1,
+    SettingControl.forwardOutputAttenuation3And4,
+    SettingControl.returnOutputAttenuation1,
+    SettingControl.returnOutputEqualizer1,
+    SettingControl.returnInputAttenuation2,
+    SettingControl.returnInputAttenuation3,
+    SettingControl.returnInputAttenuation4,
+    SettingControl.returnIngressSetting2,
+    SettingControl.returnIngressSetting3,
+    SettingControl.returnIngressSetting4,
+  ];
+
+  static List<Enum> mbEQOnBoardItem = [
+    // Moto MB (EQ on board)
+    SettingConfiruration.location,
+    SettingConfiruration.coordinates,
+    SettingConfiruration.pilotFrequencySelect,
+    SettingConfiruration.startFrequency,
+    SettingConfiruration.stopFrequency,
+    SettingConfiruration.rfLevelFineTuner,
+    SettingConfiruration.pilot1,
+    SettingConfiruration.pilot2,
+    SettingConfiruration.agcMode,
+    SettingConfiruration.alcMode,
+    SettingConfiruration.logInterval,
+    SettingConfiruration.rfOutputLogInterval,
+    SettingConfiruration.cableLength,
+    SettingThreshold.workingMode,
+    SettingThreshold.temperature,
+    SettingThreshold.inputVoltage24V,
+    SettingThreshold.inputVoltageRipple24V,
+    SettingThreshold.outputPower,
+    SettingThreshold.pilot1Status,
+    SettingThreshold.pilot2Status,
+    SettingThreshold.startFrequencyOutputLevel,
+    SettingThreshold.stopFrequencyOutputLevel,
+    SettingControl.forwardInputCableEqualizer1,
     SettingControl.forwardInputAttenuation1,
     SettingControl.forwardInputEqualizer1,
     SettingControl.forwardOutputAttenuation3And4,
@@ -454,6 +559,47 @@ class SettingItemTable {
     SettingControl.returnIngressSetting5And6,
   ];
 
+  static List<Enum> trEQOnBoardItem = [
+    // C-Cor TR (EQ on board)
+    SettingConfiruration.location,
+    SettingConfiruration.coordinates,
+    SettingConfiruration.pilotFrequencySelect,
+    SettingConfiruration.startFrequency,
+    SettingConfiruration.stopFrequency,
+    SettingConfiruration.rfLevelFineTuner,
+    SettingConfiruration.pilot1,
+    SettingConfiruration.pilot2,
+    SettingConfiruration.agcMode,
+    SettingConfiruration.alcMode,
+    SettingConfiruration.logInterval,
+    SettingConfiruration.rfOutputLogInterval,
+    SettingConfiruration.cableLength,
+    SettingThreshold.workingMode,
+    SettingThreshold.temperature,
+    SettingThreshold.inputVoltage24V,
+    SettingThreshold.inputVoltageRipple24V,
+    SettingThreshold.outputPower,
+    SettingThreshold.pilot1Status,
+    SettingThreshold.pilot2Status,
+    SettingThreshold.startFrequencyOutputLevel,
+    SettingThreshold.stopFrequencyOutputLevel,
+    SettingControl.forwardInputCableEqualizer1,
+    SettingControl.forwardInputAttenuation1,
+    SettingControl.forwardInputEqualizer1,
+    SettingControl.forwardOutputAttenuation2And3,
+    SettingControl.forwardOutputAttenuation5And6,
+    SettingControl.forwardOutputEqualizer2And3,
+    SettingControl.forwardOutputEqualizer5And6,
+    SettingControl.returnOutputAttenuation1,
+    SettingControl.returnOutputEqualizer1,
+    SettingControl.returnInputAttenuation4,
+    SettingControl.returnInputAttenuation2And3,
+    SettingControl.returnInputAttenuation5And6,
+    SettingControl.returnIngressSetting4,
+    SettingControl.returnIngressSetting2And3,
+    SettingControl.returnIngressSetting5And6,
+  ];
+
   static List<Enum> brItem = [
     // C-Cor BR
     SettingConfiruration.location,
@@ -494,6 +640,45 @@ class SettingItemTable {
     SettingControl.returnIngressSetting5And6,
   ];
 
+  static List<Enum> brEQOnBoardItem = [
+    // C-Cor BR (EQ on board)
+    SettingConfiruration.location,
+    SettingConfiruration.coordinates,
+    SettingConfiruration.pilotFrequencySelect,
+    SettingConfiruration.startFrequency,
+    SettingConfiruration.stopFrequency,
+    SettingConfiruration.rfLevelFineTuner,
+    SettingConfiruration.pilot1,
+    SettingConfiruration.pilot2,
+    SettingConfiruration.agcMode,
+    SettingConfiruration.alcMode,
+    SettingConfiruration.logInterval,
+    SettingConfiruration.rfOutputLogInterval,
+    SettingConfiruration.cableLength,
+    SettingThreshold.workingMode,
+    SettingThreshold.temperature,
+    SettingThreshold.inputVoltage24V,
+    SettingThreshold.inputVoltageRipple24V,
+    SettingThreshold.outputPower,
+    SettingThreshold.pilot1Status,
+    SettingThreshold.pilot2Status,
+    SettingThreshold.startFrequencyOutputLevel,
+    SettingThreshold.stopFrequencyOutputLevel,
+    SettingControl.forwardInputCableEqualizer1,
+    SettingControl.forwardInputAttenuation1,
+    SettingControl.forwardInputEqualizer1,
+    SettingControl.forwardOutputAttenuation2And3,
+    SettingControl.forwardOutputEqualizer2And3,
+    SettingControl.forwardOutputAttenuation5And6,
+    SettingControl.forwardOutputEqualizer5And6,
+    SettingControl.returnOutputAttenuation1,
+    SettingControl.returnOutputEqualizer1,
+    SettingControl.returnInputAttenuation2And3,
+    SettingControl.returnInputAttenuation5And6,
+    SettingControl.returnIngressSetting2And3,
+    SettingControl.returnIngressSetting5And6,
+  ];
+
   static List<Enum> leItem = [
     // C-Cor LE
     SettingConfiruration.location,
@@ -520,6 +705,39 @@ class SettingItemTable {
     SettingThreshold.pilot2Status,
     SettingThreshold.startFrequencyOutputLevel,
     SettingThreshold.stopFrequencyOutputLevel,
+    SettingControl.forwardInputAttenuation1,
+    SettingControl.forwardInputEqualizer1,
+    SettingControl.returnOutputAttenuation1,
+    SettingControl.returnOutputEqualizer1,
+    SettingControl.returnInputAttenuation2,
+    SettingControl.returnIngressSetting2,
+  ];
+
+  static List<Enum> leEQOnBoardItem = [
+    // C-Cor LE (EQ on board)
+    SettingConfiruration.location,
+    SettingConfiruration.coordinates,
+    SettingConfiruration.pilotFrequencySelect,
+    SettingConfiruration.startFrequency,
+    SettingConfiruration.stopFrequency,
+    SettingConfiruration.rfLevelFineTuner,
+    SettingConfiruration.pilot1,
+    SettingConfiruration.pilot2,
+    SettingConfiruration.agcMode,
+    SettingConfiruration.alcMode,
+    SettingConfiruration.logInterval,
+    SettingConfiruration.rfOutputLogInterval,
+    SettingConfiruration.cableLength,
+    SettingThreshold.workingMode,
+    SettingThreshold.temperature,
+    SettingThreshold.inputVoltage24V,
+    SettingThreshold.inputVoltageRipple24V,
+    SettingThreshold.outputPower,
+    SettingThreshold.pilot1Status,
+    SettingThreshold.pilot2Status,
+    SettingThreshold.startFrequencyOutputLevel,
+    SettingThreshold.stopFrequencyOutputLevel,
+    SettingControl.forwardInputCableEqualizer1,
     SettingControl.forwardInputAttenuation1,
     SettingControl.forwardInputEqualizer1,
     SettingControl.returnOutputAttenuation1,
@@ -570,6 +788,47 @@ class SettingItemTable {
     SettingControl.returnIngressSetting4,
   ];
 
+  static List<Enum> sdatEQOnBoardItem = [
+    // SDAT (EQ on board)
+    SettingConfiruration.location,
+    SettingConfiruration.coordinates,
+    SettingConfiruration.pilotFrequencySelect,
+    SettingConfiruration.startFrequency,
+    SettingConfiruration.stopFrequency,
+    SettingConfiruration.rfLevelFineTuner,
+    SettingConfiruration.pilot1,
+    SettingConfiruration.pilot2,
+    SettingConfiruration.agcMode,
+    SettingConfiruration.alcMode,
+    SettingConfiruration.logInterval,
+    SettingConfiruration.rfOutputLogInterval,
+    SettingConfiruration.cableLength,
+    SettingThreshold.workingMode,
+    SettingThreshold.temperature,
+    SettingThreshold.inputVoltage24V,
+    SettingThreshold.inputVoltageRipple24V,
+    SettingThreshold.outputPower,
+    SettingThreshold.pilot1Status,
+    SettingThreshold.pilot2Status,
+    SettingThreshold.startFrequencyOutputLevel,
+    SettingThreshold.stopFrequencyOutputLevel,
+    SettingControl.forwardInputCableEqualizer1,
+    SettingControl.forwardInputAttenuation1,
+    SettingControl.forwardInputEqualizer1,
+    SettingControl.forwardOutputAttenuation3,
+    SettingControl.forwardOutputEqualizer3,
+    SettingControl.forwardOutputAttenuation4,
+    SettingControl.forwardOutputEqualizer4,
+    SettingControl.returnOutputAttenuation1,
+    SettingControl.returnOutputEqualizer1,
+    SettingControl.returnInputAttenuation2,
+    SettingControl.returnInputAttenuation3,
+    SettingControl.returnInputAttenuation4,
+    SettingControl.returnIngressSetting2,
+    SettingControl.returnIngressSetting3,
+    SettingControl.returnIngressSetting4,
+  ];
+
   static List<Enum> sdamItem = [
     // SDAM
     SettingConfiruration.location,
@@ -596,6 +855,44 @@ class SettingItemTable {
     SettingThreshold.pilot2Status,
     SettingThreshold.startFrequencyOutputLevel,
     SettingThreshold.stopFrequencyOutputLevel,
+    SettingControl.forwardInputAttenuation1,
+    SettingControl.forwardInputEqualizer1,
+    SettingControl.forwardOutputAttenuation3And4,
+    SettingControl.returnOutputAttenuation1,
+    SettingControl.returnOutputEqualizer1,
+    SettingControl.returnInputAttenuation2,
+    SettingControl.returnInputAttenuation3,
+    SettingControl.returnInputAttenuation4,
+    SettingControl.returnIngressSetting2,
+    SettingControl.returnIngressSetting3,
+    SettingControl.returnIngressSetting4,
+  ];
+
+  static List<Enum> sdamEQOnBoardItem = [
+    // SDAM (EQ on board)
+    SettingConfiruration.location,
+    SettingConfiruration.coordinates,
+    SettingConfiruration.pilotFrequencySelect,
+    SettingConfiruration.startFrequency,
+    SettingConfiruration.stopFrequency,
+    SettingConfiruration.rfLevelFineTuner,
+    SettingConfiruration.pilot1,
+    SettingConfiruration.pilot2,
+    SettingConfiruration.agcMode,
+    SettingConfiruration.alcMode,
+    SettingConfiruration.logInterval,
+    SettingConfiruration.rfOutputLogInterval,
+    SettingConfiruration.cableLength,
+    SettingThreshold.workingMode,
+    SettingThreshold.temperature,
+    SettingThreshold.inputVoltage24V,
+    SettingThreshold.inputVoltageRipple24V,
+    SettingThreshold.outputPower,
+    SettingThreshold.pilot1Status,
+    SettingThreshold.pilot2Status,
+    SettingThreshold.startFrequencyOutputLevel,
+    SettingThreshold.stopFrequencyOutputLevel,
+    SettingControl.forwardInputCableEqualizer1,
     SettingControl.forwardInputAttenuation1,
     SettingControl.forwardInputEqualizer1,
     SettingControl.forwardOutputAttenuation3And4,
@@ -659,6 +956,23 @@ class SettingItemTable {
     },
   ];
 
+  static List<Map<Enum, DataKey>> sdleEQOnBoardControlItem = [
+    // SDLE (EQ on board)
+    {
+      SettingControl.forwardInputCableEqualizer1: DataKey.dsCEQ1,
+      SettingControl.forwardInputAttenuation1: DataKey.dsVVA1,
+      SettingControl.forwardInputEqualizer1: DataKey.dsSlope1,
+    },
+    {
+      SettingControl.returnOutputAttenuation1: DataKey.usVCA2,
+      SettingControl.returnOutputEqualizer1: DataKey.eREQ,
+      SettingControl.returnInputAttenuation2: DataKey.usVCA1,
+    },
+    {
+      SettingControl.returnIngressSetting2: DataKey.ingressSetting2,
+    },
+  ];
+
   static List<Map<Enum, DataKey>> bleControlItem = [
     // Moto BLE
     {
@@ -675,9 +989,48 @@ class SettingItemTable {
     },
   ];
 
+  static List<Map<Enum, DataKey>> bleEQOnBoardControlItem = [
+    // Moto BLE (EQ on board)
+    {
+      SettingControl.forwardInputCableEqualizer1: DataKey.dsCEQ1,
+      SettingControl.forwardInputAttenuation1: DataKey.dsVVA1,
+      SettingControl.forwardInputEqualizer1: DataKey.dsSlope1,
+    },
+    {
+      SettingControl.returnOutputAttenuation1: DataKey.usVCA2,
+      SettingControl.returnOutputEqualizer1: DataKey.eREQ,
+      SettingControl.returnInputAttenuation2: DataKey.usVCA1,
+    },
+    {
+      SettingControl.returnIngressSetting2: DataKey.ingressSetting2,
+    },
+  ];
+
   static List<Map<Enum, DataKey>> mbControlItem = [
     // Moto MB
     {
+      SettingControl.forwardInputAttenuation1: DataKey.dsVVA1,
+      SettingControl.forwardInputEqualizer1: DataKey.dsSlope1,
+      SettingControl.forwardOutputAttenuation3And4: DataKey.dsVVA4,
+    },
+    {
+      SettingControl.returnOutputAttenuation1: DataKey.usVCA2,
+      SettingControl.returnOutputEqualizer1: DataKey.eREQ,
+      SettingControl.returnInputAttenuation2: DataKey.usVCA1,
+      SettingControl.returnInputAttenuation3: DataKey.usVCA3,
+      SettingControl.returnInputAttenuation4: DataKey.usVCA4,
+    },
+    {
+      SettingControl.returnIngressSetting2: DataKey.ingressSetting2,
+      SettingControl.returnIngressSetting3: DataKey.ingressSetting3,
+      SettingControl.returnIngressSetting4: DataKey.ingressSetting4,
+    },
+  ];
+
+  static List<Map<Enum, DataKey>> mbEQOnBoardControlItem = [
+    // Moto MB (EQ on board)
+    {
+      SettingControl.forwardInputCableEqualizer1: DataKey.dsCEQ1,
       SettingControl.forwardInputAttenuation1: DataKey.dsVVA1,
       SettingControl.forwardInputEqualizer1: DataKey.dsSlope1,
       SettingControl.forwardOutputAttenuation3And4: DataKey.dsVVA4,
@@ -750,6 +1103,31 @@ class SettingItemTable {
     },
   ];
 
+  static List<Map<Enum, DataKey>> trEQOnBoardControlItem = [
+    {
+      // C-Cor TR (EQ on board)
+      SettingControl.forwardInputCableEqualizer1: DataKey.dsCEQ1,
+      SettingControl.forwardInputAttenuation1: DataKey.dsVVA1,
+      SettingControl.forwardInputEqualizer1: DataKey.dsSlope1,
+      SettingControl.forwardOutputAttenuation2And3: DataKey.dsVVA4,
+      SettingControl.forwardOutputAttenuation5And6: DataKey.dsVVA5,
+      SettingControl.forwardOutputEqualizer2And3: DataKey.dsSlope3,
+      SettingControl.forwardOutputEqualizer5And6: DataKey.dsSlope4,
+    },
+    {
+      SettingControl.returnOutputAttenuation1: DataKey.usVCA2,
+      SettingControl.returnOutputEqualizer1: DataKey.eREQ,
+      SettingControl.returnInputAttenuation4: DataKey.usVCA1,
+      SettingControl.returnInputAttenuation2And3: DataKey.usVCA3,
+      SettingControl.returnInputAttenuation5And6: DataKey.usVCA4,
+    },
+    {
+      SettingControl.returnIngressSetting4: DataKey.ingressSetting2,
+      SettingControl.returnIngressSetting2And3: DataKey.ingressSetting3,
+      SettingControl.returnIngressSetting5And6: DataKey.ingressSetting4,
+    },
+  ];
+
   static List<Map<Enum, DataKey>> brControlItem = [
     {
       // C-Cor BR
@@ -772,9 +1150,49 @@ class SettingItemTable {
     },
   ];
 
+  static List<Map<Enum, DataKey>> brEQOnBoardControlItem = [
+    {
+      // C-Cor BR (EQ on board)
+      SettingControl.forwardInputCableEqualizer1: DataKey.dsCEQ1,
+      SettingControl.forwardInputAttenuation1: DataKey.dsVVA1,
+      SettingControl.forwardInputEqualizer1: DataKey.dsSlope1,
+      SettingControl.forwardOutputAttenuation2And3: DataKey.dsVVA4,
+      SettingControl.forwardOutputAttenuation5And6: DataKey.dsVVA5,
+      SettingControl.forwardOutputEqualizer2And3: DataKey.dsSlope3,
+      SettingControl.forwardOutputEqualizer5And6: DataKey.dsSlope4,
+    },
+    {
+      SettingControl.returnOutputAttenuation1: DataKey.usVCA2,
+      SettingControl.returnOutputEqualizer1: DataKey.eREQ,
+      SettingControl.returnInputAttenuation2And3: DataKey.usVCA3,
+      SettingControl.returnInputAttenuation5And6: DataKey.usVCA4,
+    },
+    {
+      SettingControl.returnIngressSetting2And3: DataKey.ingressSetting3,
+      SettingControl.returnIngressSetting5And6: DataKey.ingressSetting4,
+    },
+  ];
+
   static List<Map<Enum, DataKey>> leControlItem = [
     {
       // C-Cor LE
+      SettingControl.forwardInputAttenuation1: DataKey.dsVVA1,
+      SettingControl.forwardInputEqualizer1: DataKey.dsSlope1,
+    },
+    {
+      SettingControl.returnOutputAttenuation1: DataKey.usVCA2,
+      SettingControl.returnOutputEqualizer1: DataKey.eREQ,
+      SettingControl.returnInputAttenuation2: DataKey.usVCA1,
+    },
+    {
+      SettingControl.returnIngressSetting2: DataKey.ingressSetting2,
+    },
+  ];
+
+  static List<Map<Enum, DataKey>> leEQOnBoardControlItem = [
+    {
+      // C-Cor LE (EQ on board)
+      SettingControl.forwardInputCableEqualizer1: DataKey.dsCEQ1,
       SettingControl.forwardInputAttenuation1: DataKey.dsVVA1,
       SettingControl.forwardInputEqualizer1: DataKey.dsSlope1,
     },
@@ -812,9 +1230,56 @@ class SettingItemTable {
     },
   ];
 
+  static List<Map<Enum, DataKey>> sdatEQOnBoardControlItem = [
+    {
+      // SDAT (EQ on board)
+      SettingControl.forwardInputCableEqualizer1: DataKey.dsCEQ1,
+      SettingControl.forwardInputAttenuation1: DataKey.dsVVA1,
+      SettingControl.forwardInputEqualizer1: DataKey.dsSlope1,
+      SettingControl.forwardOutputAttenuation3: DataKey.dsVVA4,
+      SettingControl.forwardOutputEqualizer3: DataKey.dsSlope3,
+      SettingControl.forwardOutputAttenuation4: DataKey.dsVVA5,
+      SettingControl.forwardOutputEqualizer4: DataKey.dsSlope4,
+    },
+    {
+      SettingControl.returnOutputAttenuation1: DataKey.usVCA2,
+      SettingControl.returnOutputEqualizer1: DataKey.eREQ,
+      SettingControl.returnInputAttenuation2: DataKey.usVCA1,
+      SettingControl.returnInputAttenuation3: DataKey.usVCA3,
+      SettingControl.returnInputAttenuation4: DataKey.usVCA4,
+    },
+    {
+      SettingControl.returnIngressSetting2: DataKey.ingressSetting2,
+      SettingControl.returnIngressSetting3: DataKey.ingressSetting3,
+      SettingControl.returnIngressSetting4: DataKey.ingressSetting4,
+    },
+  ];
+
   static List<Map<Enum, DataKey>> sdamControlItem = [
     {
       // SDAM
+      SettingControl.forwardInputAttenuation1: DataKey.dsVVA1,
+      SettingControl.forwardInputEqualizer1: DataKey.dsSlope1,
+      SettingControl.forwardOutputAttenuation3And4: DataKey.dsVVA4,
+    },
+    {
+      SettingControl.returnOutputAttenuation1: DataKey.usVCA2,
+      SettingControl.returnOutputEqualizer1: DataKey.eREQ,
+      SettingControl.returnInputAttenuation2: DataKey.usVCA1,
+      SettingControl.returnInputAttenuation3: DataKey.usVCA3,
+      SettingControl.returnInputAttenuation4: DataKey.usVCA4,
+    },
+    {
+      SettingControl.returnIngressSetting2: DataKey.ingressSetting2,
+      SettingControl.returnIngressSetting3: DataKey.ingressSetting3,
+      SettingControl.returnIngressSetting4: DataKey.ingressSetting4,
+    }
+  ];
+
+  static List<Map<Enum, DataKey>> sdamEQOnBoardControlItem = [
+    {
+      // SDAM (EQ on board)
+      SettingControl.forwardInputCableEqualizer1: DataKey.dsCEQ1,
       SettingControl.forwardInputAttenuation1: DataKey.dsVVA1,
       SettingControl.forwardInputEqualizer1: DataKey.dsSlope1,
       SettingControl.forwardOutputAttenuation3And4: DataKey.dsVVA4,

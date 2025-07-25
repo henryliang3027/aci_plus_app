@@ -132,6 +132,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> sdleOnBoard1_11 = {
     // SDLE
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -141,6 +142,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> bleOnBoard1_12 = {
     // Moto BLE
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -150,6 +152,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> mbOnBoard1_13 = {
     // Moto MB
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -165,6 +168,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> trOnBoard1_15 = {
     // C-Cor TR
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -180,6 +184,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> brOnBoard1_16 = {
     // C-Cor BR
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -194,6 +199,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> leOnBoard1_17 = {
     // C-Cor LE
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -203,6 +209,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> sdatOnBoard1_18 = {
     // SDAT
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -218,6 +225,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> sdamOnBoard1_19 = {
     // SDAM
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -363,6 +371,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> sdleOnBoard2_11 = {
     // SDLE
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -372,6 +381,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> bleOnBoard2_12 = {
     // Moto BLE
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -381,6 +391,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> mbOnBoard2_13 = {
     // Moto MB
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -396,6 +407,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> trOnBoard2_15 = {
     // C-Cor TR
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -411,6 +423,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> brOnBoard2_16 = {
     // C-Cor BR
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -425,6 +438,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> leOnBoard2_17 = {
     // C-Cor LE
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -434,6 +448,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> sdatOnBoard2_18 = {
     // SDAT
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -449,6 +464,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> sdamOnBoard2_19 = {
     // SDAM
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -594,6 +610,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> sdleOnBoard3_11 = {
     // SDLE
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -603,6 +620,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> bleOnBoard3_12 = {
     // Moto BLE
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -612,6 +630,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> mbOnBoard3_13 = {
     // Moto MB
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -627,6 +646,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> trOnBoard3_15 = {
     // C-Cor TR
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -642,6 +662,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> brOnBoard3_16 = {
     // C-Cor BR
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -656,6 +677,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> leOnBoard3_17 = {
     // C-Cor LE
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -665,6 +687,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> sdatOnBoard3_18 = {
     // SDAT
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -680,6 +703,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> sdamOnBoard3_19 = {
     // SDAM
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -825,6 +849,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> sdleOnBoard4_11 = {
     // SDLE
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -834,6 +859,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> bleOnBoard4_12 = {
     // Moto BLE
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -843,6 +869,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> mbOnBoard4_13 = {
     // Moto MB
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -858,6 +885,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> trOnBoard4_15 = {
     // C-Cor TR
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -873,6 +901,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> brOnBoard4_16 = {
     // C-Cor BR
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -887,6 +916,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> leOnBoard4_17 = {
     // C-Cor LE
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -896,6 +926,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> sdatOnBoard4_18 = {
     // SDAT
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -911,6 +942,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> sdamOnBoard4_19 = {
     // SDAM
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -1056,6 +1088,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> sdleOnBoard5_11 = {
     // SDLE
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -1065,6 +1098,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> bleOnBoard5_12 = {
     // Moto BLE
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -1074,6 +1108,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> mbOnBoard5_13 = {
     // Moto MB
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -1089,6 +1124,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> trOnBoard5_15 = {
     // C-Cor TR
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -1104,6 +1140,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> brOnBoard5_16 = {
     // C-Cor BR
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -1118,6 +1155,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> leOnBoard5_17 = {
     // C-Cor LE
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -1127,6 +1165,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> sdatOnBoard5_18 = {
     // SDAT
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -1142,6 +1181,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> sdamOnBoard5_19 = {
     // SDAM
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -1287,6 +1327,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> sdleOnBoard6_11 = {
     // SDLE
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -1296,6 +1337,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> bleOnBoard6_12 = {
     // Moto BLE
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -1305,6 +1347,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> mbOnBoard6_13 = {
     // Moto MB
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -1320,6 +1363,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> trOnBoard6_15 = {
     // C-Cor TR
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -1335,6 +1379,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> brOnBoard6_16 = {
     // C-Cor BR
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -1349,6 +1394,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> leOnBoard6_17 = {
     // C-Cor LE
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -1358,6 +1404,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> sdatOnBoard6_18 = {
     // SDAT
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -1373,6 +1420,7 @@ class Item1P8G {
 
   static Map<DataKey, MinMax> sdamOnBoard6_19 = {
     // SDAM
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -1515,6 +1563,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> sdleOnBoard1_11 = {
     // SDLE
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -1524,6 +1573,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> bleOnBoard1_12 = {
     // Moto BLE
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -1533,6 +1583,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> mbOnBoard1_13 = {
     // Moto MB
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -1548,6 +1599,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> trOnBoard1_15 = {
     // C-Cor TR
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -1563,6 +1615,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> brOnBoard1_16 = {
     // C-Cor BR
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -1577,6 +1630,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> leOnBoard1_17 = {
     // C-Cor LE
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -1586,6 +1640,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> sdatOnBoard1_18 = {
     // SDAT
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -1601,6 +1656,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> sdamOnBoard1_19 = {
     // SDAM
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -1746,6 +1802,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> sdleOnBoard2_11 = {
     // SDLE
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -1755,6 +1812,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> bleOnBoard2_12 = {
     // Moto BLE
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -1764,6 +1822,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> mbOnBoard2_13 = {
     // Moto MB
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -1779,6 +1838,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> trOnBoard2_15 = {
     // C-Cor TR
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -1794,6 +1854,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> brOnBoard2_16 = {
     // C-Cor BR
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -1808,6 +1869,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> leOnBoard2_17 = {
     // C-Cor LE
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -1817,6 +1879,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> sdatOnBoard2_18 = {
     // SDAT
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -1832,6 +1895,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> sdamOnBoard2_19 = {
     // SDAM
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -1977,6 +2041,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> sdleOnBoard3_11 = {
     // SDLE
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -1986,6 +2051,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> bleOnBoard3_12 = {
     // Moto BLE
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -1995,6 +2061,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> mbOnBoard3_13 = {
     // Moto MB
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -2010,6 +2077,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> trOnBoard3_15 = {
     // C-Cor TR
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -2025,6 +2093,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> brOnBoard3_16 = {
     // C-Cor BR
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -2039,6 +2108,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> leOnBoard3_17 = {
     // C-Cor LE
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -2048,6 +2118,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> sdatOnBoard3_18 = {
     // SDAT
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -2063,6 +2134,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> sdamOnBoard3_19 = {
     // SDAM
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -2208,6 +2280,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> sdleOnBoard4_11 = {
     // SDLE
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -2217,6 +2290,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> bleOnBoard4_12 = {
     // Moto BLE
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -2226,6 +2300,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> mbOnBoard4_13 = {
     // Moto MB
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -2241,6 +2316,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> trOnBoard4_15 = {
     // C-Cor TR
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -2256,6 +2332,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> brOnBoard4_16 = {
     // C-Cor BR
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -2270,6 +2347,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> leOnBoard4_17 = {
     // C-Cor LE
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -2279,6 +2357,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> sdatOnBoard4_18 = {
     // SDAT
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -2294,6 +2373,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> sdamOnBoard4_19 = {
     // SDAM
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -2439,6 +2519,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> sdleOnBoard5_11 = {
     // SDLE
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -2448,6 +2529,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> bleOnBoard5_12 = {
     // Moto BLE
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -2457,6 +2539,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> mbOnBoard5_13 = {
     // Moto MB
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -2472,6 +2555,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> trOnBoard5_15 = {
     // C-Cor TR
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -2487,6 +2571,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> brOnBoard5_16 = {
     // C-Cor BR
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -2501,6 +2586,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> leOnBoard5_17 = {
     // C-Cor LE
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -2510,6 +2596,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> sdatOnBoard5_18 = {
     // SDAT
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -2525,6 +2612,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> sdamOnBoard5_19 = {
     // SDAM
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -2670,6 +2758,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> sdleOnBoard6_11 = {
     // SDLE
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -2679,6 +2768,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> bleOnBoard6_12 = {
     // Moto BLE
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -2688,6 +2778,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> mbOnBoard6_13 = {
     // Moto MB
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -2703,6 +2794,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> trOnBoard6_15 = {
     // C-Cor TR
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -2718,6 +2810,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> brOnBoard6_16 = {
     // C-Cor BR
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -2732,6 +2825,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> leOnBoard6_17 = {
     // C-Cor LE
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -2741,6 +2835,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> sdatOnBoard6_18 = {
     // SDAT
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -2756,6 +2851,7 @@ class Item1P2G {
 
   static Map<DataKey, MinMax> sdamOnBoard6_19 = {
     // SDAM
+    DataKey.dsCEQ1: const MinMax(min: 0, max: 24),
     DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
     DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
     DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),

@@ -65,6 +65,10 @@ class Setting18ForwardControlView extends StatelessWidget {
 
       for (Enum name in items) {
         switch (name) {
+          case SettingControl.forwardInputCableEqualizer1:
+            widgets.add(
+              const _ForwardCableInputEqualizer1(),
+            );
           case SettingControl.forwardInputAttenuation1:
             widgets.add(
               _ForwardInputAttenuation1(
@@ -666,6 +670,49 @@ class _ForwardInputEqualizer1 extends StatelessWidget {
           color: getSettingListCardColor(
             context: context,
             isTap: state.tappedSet.contains(DataKey.dsSlope1),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _ForwardCableInputEqualizer1 extends StatelessWidget {
+  const _ForwardCableInputEqualizer1();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ForwardControlBloc,
+        Setting18ForwardControlState>(
+      buildWhen: (previous, current) =>
+          previous.targetValues[DataKey.dsCEQ1] !=
+              current.targetValues[DataKey.dsCEQ1] ||
+          previous.editMode != current.editMode,
+      builder: (context, state) {
+        double minValue = state.targetValues[DataKey.dsCEQ1]?.minValue ?? 0;
+        double maxValue = state.targetValues[DataKey.dsCEQ1]?.maxValue ?? 24;
+        return controlTextSlider(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.forwardInputCableEqualizer1} (${CustomStyle.dB}):',
+          textPrecision: 0,
+          step: 1,
+          minValue: minValue,
+          maxValue: maxValue,
+          currentValue: state.targetValues[DataKey.dsCEQ1]?.value ?? '0',
+          onChanged: (dsCEQ1) {
+            context.read<Setting18ForwardControlBloc>().add(ControlItemChanged(
+                  dataKey: DataKey.dsCEQ1,
+                  value: dsCEQ1,
+                ));
+          },
+          errorText: state.targetValues[DataKey.dsCEQ1]?.isNotValid ?? false
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.dsCEQ1),
           ),
         );
       },
