@@ -59,7 +59,7 @@ class Setting18ForwardControlBloc
         characteristicDataCache[DataKey.currentDetectedSplitOption] ?? '0';
     String partId = characteristicDataCache[DataKey.partId] ?? '';
     String operatingMode = getOperatingModeFromForwardCEQIndex(
-        characteristicDataCache[DataKey.forwardCEQIndex] ?? '');
+        characteristicDataCache[DataKey.currentForwardCEQIndex] ?? '');
 
     String firstChannelLoadingFrequency =
         characteristicDataCache[DataKey.firstChannelLoadingFrequency] ?? '';
@@ -442,6 +442,13 @@ class Setting18ForwardControlBloc
     });
 
     for (DataKey dataKey in changedSettingItem) {
+      if (dataKey == DataKey.dsCEQ1) {
+        bool resultOfSetDSCEQ1 = await _amp18Repository
+            .set1p8GDSCEQ1(state.targetValues[dataKey]!.value);
+
+        settingResult.add('${DataKey.dsCEQ1.name},$resultOfSetDSCEQ1');
+      }
+
       if (dataKey == DataKey.dsVVA1) {
         bool resultOfSetDSVVA1 = await _amp18Repository
             .set1p8GDSVVA1(state.targetValues[dataKey]!.value);

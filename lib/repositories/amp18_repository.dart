@@ -138,7 +138,7 @@ class Amp18Repository with BLECommandsMixin {
         DataKey.ingressSetting2: a1p8g1.ingressSetting2,
         DataKey.ingressSetting3: a1p8g1.ingressSetting3,
         DataKey.ingressSetting4: a1p8g1.ingressSetting4,
-        DataKey.forwardCEQIndex: a1p8g1.forwardCEQIndex,
+        DataKey.dsCEQ1: a1p8g1.dsCEQ1,
         DataKey.rfOutputLogInterval: a1p8g1.rfOutputLogInterval,
         DataKey.tgcCableLength: a1p8g1.tgcCableLength,
         DataKey.splitOption: a1p8g1.splitOption,
@@ -482,7 +482,10 @@ class Amp18Repository with BLECommandsMixin {
   }
 
   // commandIndex range from 195 to 204;
-  Future<dynamic> requestCommand1p8GRFOutputLogChunk(int chunkIndex) async {
+  Future<dynamic> requestCommand1p8GRFOutputLogChunk({
+    required int chunkIndex,
+    required bool useDFU6Parser,
+  }) async {
     int commandIndex = chunkIndex + 195;
 
     print('get data from request command 1p8G_RFOuts');
@@ -494,8 +497,14 @@ class Amp18Repository with BLECommandsMixin {
         value: _amp18Parser.command18Collection[commandIndex - 180],
       );
 
-      List<RFOutputLog> rfOutputLogs =
-          _amp18Parser.parse1P8GRFOutputLogs(rawData);
+      List<RFOutputLog> rfOutputLogs = [];
+
+      if (useDFU6Parser) {
+        rfOutputLogs = _amp18Parser.parse1P8GRFOutputLogsForDFU6(rawData);
+      } else {
+        rfOutputLogs = _amp18Parser.parse1P8GRFOutputLogs(rawData);
+      }
+
       bool hasNextChunk =
           rfOutputLogs.isNotEmpty && commandIndex != 204 ? true : false;
 

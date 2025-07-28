@@ -338,7 +338,10 @@ class SampleAmp18Repository extends Amp18Repository {
   }
 
   @override
-  Future<dynamic> requestCommand1p8GRFOutputLogChunk(int chunkIndex) async {
+  Future<dynamic> requestCommand1p8GRFOutputLogChunk({
+    required int chunkIndex,
+    required bool useDFU6Parser,
+  }) async {
     int commandIndex = chunkIndex + 195;
 
     print('get data from request command 1p8G_RFOuts');

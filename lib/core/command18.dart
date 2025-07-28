@@ -577,7 +577,6 @@ class Command18 {
     0x00,
     0x00,
     0x00,
-    0x00,
   ];
 
   static List<int> setUSVCA1Cmd = [

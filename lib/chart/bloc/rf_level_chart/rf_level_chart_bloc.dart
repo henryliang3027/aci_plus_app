@@ -1,3 +1,4 @@
+import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/amp18_parser.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
@@ -7,6 +8,8 @@ import 'package:flutter_speed_chart/speed_chart.dart';
 
 part 'rf_level_chart_event.dart';
 part 'rf_level_chart_state.dart';
+
+typedef RequestCommand1p8G3Function = Future<dynamic> Function();
 
 class RFLevelChartBloc extends Bloc<RFLevelChartEvent, RFLevelChartState> {
   RFLevelChartBloc({
@@ -26,11 +29,22 @@ class RFLevelChartBloc extends Bloc<RFLevelChartEvent, RFLevelChartState> {
       rfInOutRequestStatus: FormStatus.requestInProgress,
     ));
 
+    String currentDetectedSplitOption = _amp18Repository
+            .characteristicDataCache[DataKey.currentDetectedSplitOption] ??
+        '0';
+
+    // 提前判斷一次，選擇對應的方法
+    final RequestCommand1p8G3Function requestCommand1p8G3Method =
+        currentDetectedSplitOption == '6'
+            ? _amp18Repository.requestCommand1p8G3ForDFU6
+            : _amp18Repository.requestCommand1p8G3;
+
+    List<dynamic> resultOf1p8G3 = [];
+
     List<RFInOut> rfInOuts = [];
     // 最多 retry 3 次, 連續失敗3次就視為失敗
     for (int i = 0; i < 3; i++) {
-      List<dynamic> resultOf1p8G3 =
-          await _amp18Repository.requestCommand1p8G3();
+      resultOf1p8G3 = await requestCommand1p8G3Method();
 
       if (resultOf1p8G3[0]) {
         rfInOuts.addAll(resultOf1p8G3[1]);

@@ -144,7 +144,7 @@ class Amp18Parser {
     String ingressSetting2 = '';
     String ingressSetting3 = '';
     String ingressSetting4 = '';
-    String forwardCEQIndex = '';
+    String dsCEQ1 = '';
     String rfOutputLogInterval = '';
     String tgcCableLength = '';
     String splitOption = '';
@@ -259,8 +259,8 @@ class Amp18Parser {
     // 解析 ingress setting 4
     ingressSetting4 = rawData[21].toString();
 
-    // 解析 forwardCEQIndex
-    forwardCEQIndex = rawData[22].toString();
+    // 解析 dsCEQ1
+    dsCEQ1 = rawData[22].toString();
 
     // 解析 RF Output log interval
     rfOutputLogInterval = rawData[23].toString();
@@ -491,7 +491,7 @@ class Amp18Parser {
       ingressSetting2: ingressSetting2,
       ingressSetting3: ingressSetting3,
       ingressSetting4: ingressSetting4,
-      forwardCEQIndex: forwardCEQIndex,
+      dsCEQ1: dsCEQ1,
       rfOutputLogInterval: rfOutputLogInterval,
       tgcCableLength: tgcCableLength,
       splitOption: splitOption,
@@ -1142,6 +1142,7 @@ class Amp18Parser {
     rawData.removeRange(0, 3);
 
     for (int i = 0; i < 27; i++) {
+      print('i: $i');
       List<RFOut> rfOuts = [];
 
       // 如果檢查到有一筆log 的內容全部是 255, 則視為沒有更多log資料了
@@ -2352,7 +2353,7 @@ class A1P8G1 {
     required this.ingressSetting2,
     required this.ingressSetting3,
     required this.ingressSetting4,
-    required this.forwardCEQIndex,
+    required this.dsCEQ1,
     required this.rfOutputLogInterval,
     required this.tgcCableLength,
     required this.splitOption,
@@ -2407,7 +2408,7 @@ class A1P8G1 {
   final String ingressSetting2;
   final String ingressSetting3;
   final String ingressSetting4;
-  final String forwardCEQIndex;
+  final String dsCEQ1;
   final String rfOutputLogInterval;
   final String tgcCableLength;
   final String splitOption;

@@ -103,6 +103,9 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
         const _AGCMode(),
         // const _ALCMode(),
       ],
+      DataKey.dsCEQ1.name: [
+        const _ForwardCableInputEqualizer1(),
+      ],
       DataKey.dsVVA1.name: [
         _ForwardInputAttenuation1(
           pilotFrequencyMode: pilotFrequencyMode,
@@ -1621,6 +1624,46 @@ class _RFLevelFineTuner extends StatelessWidget {
         color: CustomStyle.graphSettingCardColor,
       );
     });
+  }
+}
+
+class _ForwardCableInputEqualizer1 extends StatelessWidget {
+  const _ForwardCableInputEqualizer1();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
+      buildWhen: (previous, current) =>
+          previous.targetValues[DataKey.dsCEQ1] !=
+              current.targetValues[DataKey.dsCEQ1] ||
+          previous.editMode != current.editMode,
+      builder: (context, state) {
+        double minValue = state.targetValues[DataKey.dsCEQ1]?.minValue ?? 0;
+        double maxValue = state.targetValues[DataKey.dsCEQ1]?.maxValue ?? 24;
+        return controlTextSlider(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.forwardInputCableEqualizer1} (${CustomStyle.dB}):',
+          textPrecision: 0,
+          step: 1,
+          minValue: minValue,
+          maxValue: maxValue,
+          currentValue: state.targetValues[DataKey.dsCEQ1]?.value ?? '0',
+          onChanged: (dsCEQ1) {
+            context.read<Setting18GraphModuleBloc>().add(ControlItemChanged(
+                  dataKey: DataKey.dsCEQ1,
+                  value: dsCEQ1,
+                ));
+          },
+          errorText: state.targetValues[DataKey.dsCEQ1]?.isNotValid ?? false
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
+          elevation: CustomStyle.graphSettingCardElevation,
+          color: CustomStyle.graphSettingCardColor,
+        );
+      },
+    );
   }
 }
 

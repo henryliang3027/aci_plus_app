@@ -42,6 +42,9 @@ String format1P8GSettingResultItem({
   } else if (item == DataKey.dsVVA1.name) {
     return AppLocalizations.of(context)!
         .dialogMessageForwardInputAttenuation1Setting;
+  } else if (item == DataKey.dsCEQ1.name) {
+    return AppLocalizations.of(context)!
+        .dialogMessageForwardInputCableEqualizer1Setting;
   } else if (item == DataKey.dsVVA4.name) {
     if (partId == '5' || partId == '15' || partId == '6' || partId == '16') {
       // TR, BR

@@ -1,4 +1,5 @@
 import 'package:aci_plus_app/core/common_enum.dart';
+import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/amp18_parser.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
@@ -21,11 +22,17 @@ class Downloader18RFOutBloc
 
   final Amp18Repository _amp18Repository;
 
-  Future<List> getRFOutChunkWithRetry(int chunkIndex) async {
+  Future<List> getRFOutChunkWithRetry({
+    required int chunkIndex,
+    required bool useDFU6Parser,
+  }) async {
     // 最多 retry 3 次, 連續失敗3次就視為失敗
     for (int j = 0; j < 3; j++) {
       List<dynamic> resultOfRFOut =
-          await _amp18Repository.requestCommand1p8GRFOutputLogChunk(chunkIndex);
+          await _amp18Repository.requestCommand1p8GRFOutputLogChunk(
+        chunkIndex: chunkIndex,
+        useDFU6Parser: useDFU6Parser,
+      );
 
       if (resultOfRFOut[0]) {
         return resultOfRFOut;
@@ -50,12 +57,21 @@ class Downloader18RFOutBloc
   ) async {
     List<RFOutputLog> rfOutputLog1p8Gs = [];
 
+    String currentDetectedSplitOption = _amp18Repository
+            .characteristicDataCache[DataKey.currentDetectedSplitOption] ??
+        '0';
+
+    bool useDFU6Parser = currentDetectedSplitOption == '6' ? true : false;
+
     for (int i = 0; i < 10; i++) {
       if (i > 0) {
         // 每個 command 之間 等待 100 ms
         await Future.delayed(const Duration(milliseconds: 30));
       }
-      List<dynamic> resultOfRFOutputLog = await getRFOutChunkWithRetry(i);
+      List<dynamic> resultOfRFOutputLog = await getRFOutChunkWithRetry(
+        chunkIndex: i,
+        useDFU6Parser: useDFU6Parser,
+      );
       print('resultOfRFOutputLog $i: ${resultOfRFOutputLog[0]}');
 
       if (resultOfRFOutputLog[0]) {
