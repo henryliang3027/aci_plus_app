@@ -1,4 +1,3 @@
-import 'package:aci_plus_app/about/about18_page.dart';
 import 'package:aci_plus_app/about/about_page.dart';
 import 'package:aci_plus_app/advanced/view/setting18_advanced_page.dart';
 import 'package:aci_plus_app/chart/view/chart18_ccor_node_page.dart';
@@ -9,6 +8,7 @@ import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/message_localization.dart';
+import 'package:aci_plus_app/core/notice_dialog.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/home/views/peripheral_selector_page.dart';
@@ -16,7 +16,6 @@ import 'package:aci_plus_app/information/views/information18_ccor_node_page.dart
 import 'package:aci_plus_app/information/views/information18_page.dart';
 import 'package:aci_plus_app/information/views/information_page.dart';
 import 'package:aci_plus_app/repositories/ble_peripheral.dart';
-import 'package:aci_plus_app/setting/views/custom_setting_dialog.dart';
 import 'package:aci_plus_app/setting/views/setting18_ccor_node_views/setting18_ccor_node_page.dart';
 import 'package:aci_plus_app/setting/views/setting18_views/setting18_page.dart';
 import 'package:aci_plus_app/setting/views/setting_views/setting_page.dart';
@@ -271,6 +270,14 @@ class _HomeFormState extends State<HomeForm> {
                   context
                       .read<HomeBloc>()
                       .add(const DevicePeriodicUpdateRequested());
+                }
+              }
+
+              if (partId != '4' && partId != '') {
+                if (ModeProperty.isBenchMode) {
+                  showBenchModeDialog(
+                    context: context,
+                  );
                 }
               }
             }

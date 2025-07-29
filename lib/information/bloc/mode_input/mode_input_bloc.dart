@@ -1,17 +1,18 @@
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/env_config.dart';
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'mode_input_event.dart';
 part 'mode_input_state.dart';
 
 class ModeInputBloc extends Bloc<ModeInputEvent, ModeInputState> {
-  ModeInputBloc() : super(const ModeInputState()) {
+  ModeInputBloc({
+    required Mode targetMode,
+  }) : super(ModeInputState(targetMode: targetMode)) {
     on<CodeRequested>(_onCodeRequested);
     on<CodeChanged>(_onCodeChanged);
     on<CodeConfirmed>(_onCodeConfirmed);
-
-    // add(const CodeRequested());
   }
 
   Future<void> _onCodeRequested(
@@ -30,10 +31,14 @@ class ModeInputBloc extends Bloc<ModeInputEvent, ModeInputState> {
     Emitter<ModeInputState> emit,
   ) {
     bool isMatched = false;
-    if (event.code == EnvConfig.expertModePassword ||
-        event.code == EnvConfig.expertModeDeveloperPassword) {
-      isMatched = true;
+    if (state.targetMode == Mode.expert) {
+    } else if (state.targetMode == Mode.bench) {
+      isMatched = event.code == EnvConfig.benchModePassword;
+    } else if (state.targetMode == Mode.expert) {
+      isMatched = event.code == EnvConfig.expertModePassword ||
+          event.code == EnvConfig.expertModeDeveloperPassword;
     } else {
+      // Basic mode 不使用密碼
       isMatched = false;
     }
 

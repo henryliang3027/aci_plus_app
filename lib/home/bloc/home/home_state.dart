@@ -13,7 +13,7 @@ class HomeState extends Equatable {
     this.periodicUpdateEnabled = false,
     // this.ceqStatus = CEQStatus.none,
     this.aciDeviceType = ACIDeviceType.undefined,
-    this.mode = Mode.expert,
+    this.mode = Mode.basic,
     this.peripherals = const [],
     this.device = const Peripheral.empty(),
     this.characteristicData = const {},

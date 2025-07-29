@@ -1268,7 +1268,6 @@ class _SettingFloatingActionButton extends StatelessWidget {
     Widget getDisabledEditModeTools({
       required String pilotFrequencyMode,
       required String agcMode,
-      bool isExpertMode = false,
     }) {
       String graphFilePath = settingGraphFilePath[partId] ?? '';
 
@@ -1326,19 +1325,15 @@ class _SettingFloatingActionButton extends StatelessWidget {
               shape: const CircleBorder(
                 side: BorderSide.none,
               ),
-              backgroundColor: isExpertMode
-                  ? isEnableEdit
-                      ? Theme.of(context).colorScheme.primary.withAlpha(200)
-                      : Colors.grey.withAlpha(200)
+              backgroundColor: isEnableEdit
+                  ? Theme.of(context).colorScheme.primary.withAlpha(200)
                   : Colors.grey.withAlpha(200),
-              onPressed: isExpertMode
-                  ? isEnableEdit
-                      ? () {
-                          context
-                              .read<Setting18ForwardControlBloc>()
-                              .add(const EditModeEnabled());
-                        }
-                      : null
+              onPressed: isEnableEdit
+                  ? () {
+                      context
+                          .read<Setting18ForwardControlBloc>()
+                          .add(const EditModeEnabled());
+                    }
                   : null,
               child: Icon(
                 Icons.edit,
@@ -1397,22 +1392,14 @@ class _SettingFloatingActionButton extends StatelessWidget {
       required String pilotFrequencyMode,
       required String agcMode,
     }) {
-      if (ModeProperty.isExpertMode) {
-        return editMode
-            ? getEnabledEditModeTools(
-                enableSubmission: enableSubmission,
-              )
-            : getDisabledEditModeTools(
-                pilotFrequencyMode: pilotFrequencyMode,
-                agcMode: agcMode,
-                isExpertMode: true,
-              );
-      } else {
-        return getDisabledEditModeTools(
-          pilotFrequencyMode: pilotFrequencyMode,
-          agcMode: agcMode,
-        );
-      }
+      return editMode
+          ? getEnabledEditModeTools(
+              enableSubmission: enableSubmission,
+            )
+          : getDisabledEditModeTools(
+              pilotFrequencyMode: pilotFrequencyMode,
+              agcMode: agcMode,
+            );
     }
 
     bool getEditable({

@@ -22,3 +22,10 @@ class ConfigLoaded extends Information18Event {
   @override
   List<Object> get props => [partId];
 }
+
+class ALSCModeRequested extends Information18Event {
+  const ALSCModeRequested();
+
+  @override
+  List<Object> get props => [];
+}

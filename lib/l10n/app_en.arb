@@ -218,6 +218,7 @@
     "warmReset": "Warm Reset",
     "basicMode": "Basic Mode",
     "expertMode": "Expert Mode",
+    "enableBenchMode": "Enable Bench Mode",
     "reset": "Reset",
     "share": "Share",
     "export": "Export",
@@ -537,6 +538,8 @@
     "dialogMessageForwardCEQChanged": "The equalizer module has been detected as changed.",
     "dialogMessageSelectedFirmwareInvalid": "The file you selected is invalid.",
     "dialogMessageEnterExpertModePassword": "Please enter the expert mode password.",
+    "dialogMessageEnterEnableBenchModePassword": "Please enter the password to enable bench mode.",
     "dialogMessagePasswordHint": "Please enter the password",
+    "dialogMessageBenchMode": "The device is currently in Bench Mode.",
     "dialogMessageToggleBasicMode": "Do you want to switch to basic mode ?"
 }

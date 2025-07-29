@@ -105,9 +105,8 @@ Future<void> main() async {
 
   await initBox();
 
-  // 20250529 取消 mode 功能
   // Initialize env config
-  // await EnvConfig.initialize();
+  await EnvConfig.initialize();
 
   // initialize client to determine if it is a USB or BLE connection
   await ConnectionClientFactory.initialize();

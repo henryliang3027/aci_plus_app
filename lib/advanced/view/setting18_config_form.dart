@@ -284,30 +284,26 @@ class _QRToolbar extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   IconButton(
-                    onPressed: ModeProperty.isExpertMode
-                        ? [
-                            ...state.trunkConfigs,
-                            ...state.distributionConfigs,
-                            ...state.nodeConfigs
-                          ].isNotEmpty
-                            ? () {
-                                context
-                                    .read<Setting18ConfigBloc>()
-                                    .add(const QRDataGenerated());
-                              }
-                            : null
+                    onPressed: [
+                      ...state.trunkConfigs,
+                      ...state.distributionConfigs,
+                      ...state.nodeConfigs
+                    ].isNotEmpty
+                        ? () {
+                            context
+                                .read<Setting18ConfigBloc>()
+                                .add(const QRDataGenerated());
+                          }
                         : null,
                     icon: Icon(
                       Icons.qr_code_2,
                       size: 26,
-                      color: ModeProperty.isExpertMode
-                          ? [
-                              ...state.trunkConfigs,
-                              ...state.distributionConfigs,
-                              ...state.nodeConfigs
-                            ].isNotEmpty
-                              ? Theme.of(context).iconTheme.color
-                              : Colors.grey
+                      color: [
+                        ...state.trunkConfigs,
+                        ...state.distributionConfigs,
+                        ...state.nodeConfigs
+                      ].isNotEmpty
+                          ? Theme.of(context).iconTheme.color
                           : Colors.grey,
                     ),
                   ),
@@ -345,26 +341,22 @@ class _QRToolbar extends StatelessWidget {
                         size: 26, color: Theme.of(context).iconTheme.color),
                   ),
                   Platform.isWindows
-                      ? ModeProperty.isExpertMode
-                          ? winBeta >= 6
-                              ? Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    IconButton(
-                                      onPressed: () async {
-                                        context
-                                            .read<Setting18ConfigBloc>()
-                                            .add(const QRImagePicked());
-                                      },
-                                      icon: Icon(CustomIcons.picture,
-                                          size: 26,
-                                          color: Theme.of(context)
-                                              .iconTheme
-                                              .color),
-                                    ),
-                                  ],
-                                )
-                              : Container()
+                      ? winBeta >= 6
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                IconButton(
+                                  onPressed: () async {
+                                    context
+                                        .read<Setting18ConfigBloc>()
+                                        .add(const QRImagePicked());
+                                  },
+                                  icon: Icon(CustomIcons.picture,
+                                      size: 26,
+                                      color: Theme.of(context).iconTheme.color),
+                                ),
+                              ],
+                            )
                           : Container()
                       : Container(),
                   const SizedBox(

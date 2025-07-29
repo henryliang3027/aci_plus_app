@@ -1022,20 +1022,15 @@ class _SettingFloatingActionButton extends StatelessWidget {
       );
     }
 
-    // 依照 ModeProperty 的狀態來決定是否顯示編輯模式的按鈕
     Widget getFloatingActionButtons({
       required bool editMode,
       required bool enableSubmission,
     }) {
-      if (ModeProperty.isExpertMode) {
-        return editMode
-            ? getEnabledEditModeTools(
-                enableSubmission: enableSubmission,
-              )
-            : getDisabledEditModeTools(isExpertMode: true);
-      } else {
-        return getDisabledEditModeTools();
-      }
+      return editMode
+          ? getEnabledEditModeTools(
+              enableSubmission: enableSubmission,
+            )
+          : getDisabledEditModeTools();
     }
 
     Widget getDisabledFloatingActionButtons() {

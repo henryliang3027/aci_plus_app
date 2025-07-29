@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/notice_dialog.dart';
+import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/setting/model/custom_input.dart';
 import 'package:aci_plus_app/setting/model/setting_widgets.dart';
@@ -18,6 +19,7 @@ const int winBeta = int.fromEnvironment('WIN_BETA', defaultValue: 7);
 
 // define a enum contain expert mode and basic mode
 enum Mode {
+  bench,
   expert,
   basic,
 }
@@ -41,8 +43,10 @@ enum FunctionDescriptionType {
 }
 
 class ModeProperty {
-  static Mode mode = Mode.expert;
+  static Mode mode = Mode.basic;
+  static bool get isBasicMode => ModeProperty.mode == Mode.basic;
   static bool get isExpertMode => ModeProperty.mode == Mode.expert;
+  static bool get isBenchMode => ModeProperty.mode == Mode.bench;
 }
 
 class SetupWizardProperty {
@@ -558,6 +562,50 @@ String getRFLevelString({
     rfLevelString = rfLevel;
   }
   return rfLevelString;
+}
+
+List<String> getPilotFrequencyModeValues({
+  required BuildContext context,
+  required EQType eqType,
+}) {
+  if (eqType == EQType.board) {
+    return [
+      '0',
+      '1',
+      if (ModeProperty.isBenchMode) ...[
+        BenchMode.frequency1p2G.name,
+        BenchMode.frequency1p8G.name,
+      ]
+    ];
+  } else {
+    return [
+      '0',
+      '1',
+      '3',
+    ];
+  }
+}
+
+List<String> getPilotFrequencyModeTexts({
+  required BuildContext context,
+  required EQType eqType,
+}) {
+  if (eqType == EQType.board) {
+    return [
+      AppLocalizations.of(context)!.pilotFrequencyBandwidthSettings,
+      AppLocalizations.of(context)!.pilotFrequencyUserSettings,
+      if (ModeProperty.isBenchMode) ...[
+        AppLocalizations.of(context)!.pilotFrequencyBenchMode1p2G,
+        AppLocalizations.of(context)!.pilotFrequencyBenchMode1p8G,
+      ]
+    ];
+  } else {
+    return [
+      AppLocalizations.of(context)!.pilotFrequencyBandwidthSettings,
+      AppLocalizations.of(context)!.pilotFrequencyUserSettings,
+      AppLocalizations.of(context)!.pilotFrequencyBenchMode,
+    ];
+  }
 }
 
 A1P8GAlarm decodeAlarmSeverity(List<int> rawData) {

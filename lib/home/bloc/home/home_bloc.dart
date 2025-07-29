@@ -766,6 +766,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     // 處理 resultOf1p8G1 讀取
     resultOf1p8G1 = await _amp18Repository.requestCommand1p8G1();
     if (resultOf1p8G1[0]) {
+      String pilotFrequencyMode = resultOf1p8G1[1][DataKey.pilotFrequencyMode];
+      ModeProperty.mode = pilotFrequencyMode == '3' ? Mode.bench : Mode.basic;
+
       int logInterval = int.parse(resultOf1p8G1[1][DataKey.logInterval]);
       int rfOutputLogInterval =
           int.parse(resultOf1p8G1[1][DataKey.rfOutputLogInterval]);
@@ -975,8 +978,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     await Future.delayed(const Duration(milliseconds: 1000));
 
     emit(state.copyWith(
-      loadingStatus: FormStatus.requestSuccess,
-    ));
+        loadingStatus: FormStatus.requestSuccess, mode: ModeProperty.mode));
   }
 
   Future<void> _onData18CCorNodeRequested(
@@ -1440,6 +1442,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     ModeChanged event,
     Emitter<HomeState> emit,
   ) {
+    // 更新 ModeProperty 的 mode
+    // 這樣可以在其他地方使用 ModeProperty.mode 獲取目前的 mode
     ModeProperty.mode = event.mode;
 
     // 這邊是為了讓 UI 可以即時更新 mode

@@ -1,12 +1,15 @@
 import 'package:aci_plus_app/core/custom_dialog.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/information/bloc/mode_input/mode_input_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ModeInputForm extends StatelessWidget {
-  ModeInputForm({super.key});
+  ModeInputForm({
+    super.key,
+  });
 
   final TextEditingController _codeTextEditingController =
       TextEditingController();
@@ -35,6 +38,19 @@ class _CodeInputDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String getHelperTextByMode(Mode targetMode) {
+      switch (targetMode) {
+        case Mode.expert:
+          return AppLocalizations.of(context)!
+              .dialogMessageEnterExpertModePassword;
+        case Mode.bench:
+          return AppLocalizations.of(context)!
+              .dialogMessageEnterEnableBenchModePassword;
+        default:
+          return '';
+      }
+    }
+
     return BlocBuilder<ModeInputBloc, ModeInputState>(
       builder: (context, state) {
         return CustomDialog(
@@ -44,8 +60,7 @@ class _CodeInputDialog extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    AppLocalizations.of(context)!
-                        .dialogMessageEnterExpertModePassword,
+                    getHelperTextByMode(state.targetMode),
                     style: const TextStyle(
                       fontSize: CustomStyle.sizeL,
                     ),

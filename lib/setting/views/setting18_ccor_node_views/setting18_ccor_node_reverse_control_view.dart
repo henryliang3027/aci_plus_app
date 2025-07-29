@@ -551,15 +551,11 @@ class _SettingFloatingActionButton extends StatelessWidget {
       required bool editMode,
       required bool enableSubmission,
     }) {
-      if (ModeProperty.isExpertMode) {
-        return editMode
-            ? getEnabledEditModeTools(
-                enableSubmission: enableSubmission,
-              )
-            : getDisabledEditModeTools(isExpertMode: true);
-      } else {
-        return getDisabledEditModeTools();
-      }
+      return editMode
+          ? getEnabledEditModeTools(
+              enableSubmission: enableSubmission,
+            )
+          : getDisabledEditModeTools();
     }
 
     bool getEditable({

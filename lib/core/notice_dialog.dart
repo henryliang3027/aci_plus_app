@@ -3,6 +3,102 @@ import 'package:aci_plus_app/core/data_key.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+// 可重用的通用對話框組件
+class ReusableNoticeDialog extends StatelessWidget {
+  const ReusableNoticeDialog({
+    Key? key,
+    required this.title,
+    required this.children,
+    this.okButtonText,
+    this.onOkPressed,
+    this.showCancelButton = false,
+    this.cancelButtonText,
+    this.onCancelPressed,
+    this.barrierDismissible = false,
+  }) : super(key: key);
+
+  final String title;
+  final List<Widget> children;
+  final String? okButtonText;
+  final VoidCallback? onOkPressed;
+  final bool showCancelButton;
+  final String? cancelButtonText;
+  final VoidCallback? onCancelPressed;
+  final bool barrierDismissible;
+
+  @override
+  Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
+    return AlertDialog(
+      insetPadding: EdgeInsets.symmetric(
+        horizontal: width * 0.08,
+      ),
+      title: Text(title),
+      content: SizedBox(
+        width: width,
+        child: SingleChildScrollView(
+          child: ListBody(
+            children: children,
+          ),
+        ),
+      ),
+      actions: <Widget>[
+        if (showCancelButton)
+          ElevatedButton(
+            onPressed: onCancelPressed ??
+                () {
+                  Navigator.of(context).pop(false);
+                },
+            child: Text(
+              cancelButtonText ??
+                  AppLocalizations.of(context)!.dialogMessageCancel,
+            ),
+          ),
+        ElevatedButton(
+          onPressed: onOkPressed ??
+              () {
+                Navigator.of(context).pop(true);
+              },
+          child: Text(
+            okButtonText ?? AppLocalizations.of(context)!.dialogMessageOk,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// 便利函數：顯示通用對話框
+Future<bool?> showReusableNoticeDialog({
+  required BuildContext context,
+  required String title,
+  required List<Widget> children,
+  String? okButtonText,
+  VoidCallback? onOkPressed,
+  bool showCancelButton = false,
+  String? cancelButtonText,
+  VoidCallback? onCancelPressed,
+  bool barrierDismissible = false,
+}) async {
+  return showDialog<bool>(
+    context: context,
+    barrierDismissible: barrierDismissible,
+    builder: (BuildContext context) {
+      return ReusableNoticeDialog(
+        title: title,
+        okButtonText: okButtonText,
+        onOkPressed: onOkPressed,
+        showCancelButton: showCancelButton,
+        cancelButtonText: cancelButtonText,
+        onCancelPressed: onCancelPressed,
+        barrierDismissible: barrierDismissible,
+        children: children,
+      );
+    },
+  );
+}
+
 List<String> getUnFilledItemNameAndDescriptions({
   required BuildContext context,
   required List<DataKey> unFilledItems,
@@ -113,7 +209,9 @@ List<Widget> getMessageRows({
           Expanded(
             child: Text(
               itemName,
-              style: const TextStyle(fontSize: 16),
+              style: const TextStyle(
+                fontSize: CustomStyle.sizeL,
+              ),
             ),
           ),
           Text(
@@ -135,44 +233,39 @@ Future<void> showUnfilledItemDialog({
   required BuildContext context,
   required List<DataKey> unFilledItems,
 }) async {
-  return showDialog<void>(
+  List<Widget> messageRows = getMessageRows(
     context: context,
-    barrierDismissible: false, // user must tap button!
-    builder: (BuildContext context) {
-      var width = MediaQuery.of(context).size.width;
-      // var height = MediaQuery.of(context).size.height;
+    unFilledItems: unFilledItems,
+  );
 
-      List<Widget> messageRows = getMessageRows(
-        context: context,
-        unFilledItems: unFilledItems,
-      );
+  await showReusableNoticeDialog(
+    context: context,
+    title: AppLocalizations.of(context)!.dialogTitleNotice,
+    children: messageRows,
+    barrierDismissible: false,
+  );
+}
 
-      return AlertDialog(
-        insetPadding: EdgeInsets.symmetric(
-          horizontal: width * 0.08,
-        ),
-        title: Text(
-          AppLocalizations.of(context)!.dialogTitleNotice,
-        ),
-        content: SizedBox(
-          width: width,
-          child: SingleChildScrollView(
-            child: ListBody(
-              children: messageRows,
-            ),
-          ),
-        ),
-        actions: <Widget>[
-          ElevatedButton(
+Future<void> showBenchModeDialog({
+  required BuildContext context,
+}) async {
+  await showReusableNoticeDialog(
+    context: context,
+    title: AppLocalizations.of(context)!.dialogTitleNotice,
+    children: [
+      Row(
+        children: [
+          Flexible(
             child: Text(
-              AppLocalizations.of(context)!.dialogMessageOk,
+              AppLocalizations.of(context)!.dialogMessageBenchMode,
+              style: const TextStyle(
+                fontSize: CustomStyle.sizeL,
+              ),
             ),
-            onPressed: () {
-              Navigator.of(context).pop(true); // pop dialog
-            },
-          ),
+          )
         ],
-      );
-    },
+      ),
+    ],
+    barrierDismissible: false,
   );
 }

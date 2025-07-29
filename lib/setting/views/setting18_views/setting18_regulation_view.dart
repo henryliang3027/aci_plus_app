@@ -2,7 +2,6 @@ import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
-import 'package:aci_plus_app/core/message_localization.dart';
 import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
@@ -353,26 +352,14 @@ class _PilotFrequencyMode extends StatelessWidget {
           previous.pilotFrequencyMode != current.pilotFrequencyMode ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        List<String> texts = [];
-        List<String> values = [];
-
-        if (state.eqType == EQType.board) {
-          texts = [
-            AppLocalizations.of(context)!.pilotFrequencyBandwidthSettings,
-            AppLocalizations.of(context)!.pilotFrequencyUserSettings,
-            AppLocalizations.of(context)!.pilotFrequencyBenchMode1p2G,
-            AppLocalizations.of(context)!.pilotFrequencyBenchMode1p8G,
-          ];
-
-          values = onBoardPilotFrequencyModeValues;
-        } else {
-          texts = [
-            AppLocalizations.of(context)!.pilotFrequencyBandwidthSettings,
-            AppLocalizations.of(context)!.pilotFrequencyUserSettings,
-            AppLocalizations.of(context)!.pilotFrequencyBenchMode,
-          ];
-          values = pilotFrequencyModeValues;
-        }
+        List<String> texts = getPilotFrequencyModeTexts(
+          context: context,
+          eqType: state.eqType,
+        );
+        List<String> values = getPilotFrequencyModeValues(
+          context: context,
+          eqType: state.eqType,
+        );
 
         return pilotFrequencyModeGridViewButton(
           context: context,
@@ -1098,9 +1085,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
       );
     }
 
-    Widget getDisabledEditModeTools({
-      bool isExpertMode = false,
-    }) {
+    Widget getDisabledEditModeTools() {
       String graphFilePath = settingGraphFilePath[partId] ?? '';
       return SingleChildScrollView(
         clipBehavior: Clip.none,
@@ -1152,16 +1137,13 @@ class _SettingFloatingActionButton extends StatelessWidget {
               shape: const CircleBorder(
                 side: BorderSide.none,
               ),
-              backgroundColor: isExpertMode
-                  ? Theme.of(context).colorScheme.primary.withAlpha(200)
-                  : Colors.grey.withAlpha(200),
-              onPressed: isExpertMode
-                  ? () {
-                      context
-                          .read<Setting18RegulationBloc>()
-                          .add(const EditModeEnabled());
-                    }
-                  : null,
+              backgroundColor:
+                  Theme.of(context).colorScheme.primary.withAlpha(200),
+              onPressed: () {
+                context
+                    .read<Setting18RegulationBloc>()
+                    .add(const EditModeEnabled());
+              },
               child: Icon(
                 Icons.edit,
                 color: Theme.of(context).colorScheme.onPrimary,
@@ -1217,15 +1199,11 @@ class _SettingFloatingActionButton extends StatelessWidget {
       required bool editMode,
       required bool enableSubmission,
     }) {
-      if (ModeProperty.isExpertMode) {
-        return editMode
-            ? getEnabledEditModeTools(
-                enableSubmission: enableSubmission,
-              )
-            : getDisabledEditModeTools(isExpertMode: true);
-      } else {
-        return getDisabledEditModeTools();
-      }
+      return editMode
+          ? getEnabledEditModeTools(
+              enableSubmission: enableSubmission,
+            )
+          : getDisabledEditModeTools();
     }
 
     bool getEditable({

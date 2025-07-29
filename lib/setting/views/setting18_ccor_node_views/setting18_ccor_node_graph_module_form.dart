@@ -230,7 +230,7 @@ class _Setting18CCorNodeGraphModuleFormState
 //         Setting18CCorNodeGraphModuleState>(builder: (context, state) {
 //       return splitOptionGridViewButton(
 //         context: context,
-//         editMode: ModeProperty.isExpertMode ? state.editMode : false,
+//         editMode:  state.editMode ,
 //         splitOption: state.splitOption,
 //         onGridPressed: (index) => context
 //             .read<Setting18CCorNodeGraphModuleBloc>()
@@ -255,7 +255,7 @@ class _ForwardConfig extends StatelessWidget {
       builder: (context, state) {
         return configureGridViewButton(
           context: context,
-          editMode: ModeProperty.isExpertMode ? state.editMode : false,
+          editMode: state.editMode,
           title: '${AppLocalizations.of(context)!.forwardConfigMode}:',
           targetValue: state.forwardConfig,
           texts: forwardConfigTexts,
@@ -284,7 +284,7 @@ class _ForwardOutputAttenuation1 extends StatelessWidget {
         double maxValue = state.dsVVA1.maxValue;
         return controlTextSlider(
           context: context,
-          editMode: ModeProperty.isExpertMode ? state.editMode : false,
+          editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardOutputAttenuation1} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -318,7 +318,7 @@ class _ForwardOutputAttenuation3 extends StatelessWidget {
         double maxValue = state.dsVVA3.maxValue;
         return controlTextSlider(
           context: context,
-          editMode: ModeProperty.isExpertMode ? state.editMode : false,
+          editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardOutputAttenuation3} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -352,7 +352,7 @@ class _ForwardOutputAttenuation4 extends StatelessWidget {
         double maxValue = state.dsVVA4.maxValue;
         return controlTextSlider(
           context: context,
-          editMode: ModeProperty.isExpertMode ? state.editMode : false,
+          editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardOutputAttenuation4} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -386,7 +386,7 @@ class _ForwardOutputAttenuation6 extends StatelessWidget {
         double maxValue = state.dsVVA6.maxValue;
         return controlTextSlider(
           context: context,
-          editMode: ModeProperty.isExpertMode ? state.editMode : false,
+          editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardOutputAttenuation6} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -422,7 +422,7 @@ class _ForwardOutputAttenuation6 extends StatelessWidget {
 //         double maxValue = 15.0;
 //         return controlTextSlider(
 //           context: context,
-//           editMode: ModeProperty.isExpertMode ? state.editMode : false,
+//           editMode:  state.editMode ,
 //           title:
 //               '${AppLocalizations.of(context)!.forwardInputEqualizer1} (${CustomStyle.dB}):',
 //           minValue: minValue,
@@ -455,7 +455,7 @@ class _ForwardOutputAttenuation6 extends StatelessWidget {
 //         double maxValue = 15.0;
 //         return controlTextSlider(
 //           context: context,
-//           editMode: ModeProperty.isExpertMode ? state.editMode : false,
+//           editMode:  state.editMode ,
 //           title:
 //               '${AppLocalizations.of(context)!.forwardInputEqualizer3} (${CustomStyle.dB}):',
 //           minValue: minValue,
@@ -488,7 +488,7 @@ class _ForwardOutputAttenuation6 extends StatelessWidget {
 //         double maxValue = 15.0;
 //         return controlTextSlider(
 //           context: context,
-//           editMode: ModeProperty.isExpertMode ? state.editMode : false,
+//           editMode:  state.editMode ,
 //           title:
 //               '${AppLocalizations.of(context)!.forwardInputEqualizer4} (${CustomStyle.dB}):',
 //           minValue: minValue,
@@ -521,7 +521,7 @@ class _ForwardOutputAttenuation6 extends StatelessWidget {
 //         double maxValue = 15.0;
 //         return controlTextSlider(
 //           context: context,
-//           editMode: ModeProperty.isExpertMode ? state.editMode : false,
+//           editMode:  state.editMode ,
 //           title:
 //               '${AppLocalizations.of(context)!.forwardInputEqualizer6} (${CustomStyle.dB}):',
 //           minValue: minValue,
@@ -552,7 +552,7 @@ class _ForwardOutputEqualizer1 extends StatelessWidget {
         double maxValue = state.dsOutSlope1.maxValue;
         return controlTextSlider(
           context: context,
-          editMode: ModeProperty.isExpertMode ? state.editMode : false,
+          editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardOutputEqualizer1} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -588,7 +588,7 @@ class _ForwardOutputEqualizer3 extends StatelessWidget {
         double maxValue = state.dsOutSlope3.maxValue;
         return controlTextSlider(
           context: context,
-          editMode: ModeProperty.isExpertMode ? state.editMode : false,
+          editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardOutputEqualizer3} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -624,7 +624,7 @@ class _ForwardOutputEqualizer4 extends StatelessWidget {
         double maxValue = state.dsOutSlope4.maxValue;
         return controlTextSlider(
           context: context,
-          editMode: ModeProperty.isExpertMode ? state.editMode : false,
+          editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardOutputEqualizer4} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -660,7 +660,7 @@ class _ForwardOutputEqualizer6 extends StatelessWidget {
         double maxValue = state.dsOutSlope6.maxValue;
         return controlTextSlider(
           context: context,
-          editMode: ModeProperty.isExpertMode ? state.editMode : false,
+          editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardOutputEqualizer6} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -696,7 +696,7 @@ class _ForwardBiasCurrent1 extends StatelessWidget {
         double maxValue = state.biasCurrent1.maxValue.toDouble();
         return controlTextSlider(
           context: context,
-          editMode: ModeProperty.isExpertMode ? state.editMode : false,
+          editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardBiasCurrent1} (${CustomStyle.milliAmps}):',
           minValue: minValue,
@@ -734,7 +734,7 @@ class _ForwardBiasCurrent3 extends StatelessWidget {
         double maxValue = state.biasCurrent3.maxValue.toDouble();
         return controlTextSlider(
           context: context,
-          editMode: ModeProperty.isExpertMode ? state.editMode : false,
+          editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardBiasCurrent3} (${CustomStyle.milliAmps}):',
           minValue: minValue,
@@ -772,7 +772,7 @@ class _ForwardBiasCurrent4 extends StatelessWidget {
         double maxValue = state.biasCurrent4.maxValue.toDouble();
         return controlTextSlider(
           context: context,
-          editMode: ModeProperty.isExpertMode ? state.editMode : false,
+          editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardBiasCurrent4} (${CustomStyle.milliAmps}):',
           minValue: minValue,
@@ -810,7 +810,7 @@ class _ForwardBiasCurrent6 extends StatelessWidget {
         double maxValue = state.biasCurrent6.maxValue.toDouble();
         return controlTextSlider(
           context: context,
-          editMode: ModeProperty.isExpertMode ? state.editMode : false,
+          editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardBiasCurrent6} (${CustomStyle.milliAmps}):',
           minValue: minValue,
@@ -848,7 +848,7 @@ class _ReturnInputAttenuation1 extends StatelessWidget {
         double maxValue = state.usVCA1.maxValue;
         return controlTextSlider(
           context: context,
-          editMode: ModeProperty.isExpertMode ? state.editMode : false,
+          editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.returnInputAttenuation1} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -882,7 +882,7 @@ class _ReturnInputAttenuation3 extends StatelessWidget {
         double maxValue = state.usVCA3.maxValue;
         return controlTextSlider(
           context: context,
-          editMode: ModeProperty.isExpertMode ? state.editMode : false,
+          editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.returnInputAttenuation3} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -916,7 +916,7 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
         double maxValue = state.usVCA4.maxValue;
         return controlTextSlider(
           context: context,
-          editMode: ModeProperty.isExpertMode ? state.editMode : false,
+          editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.returnInputAttenuation4} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -950,7 +950,7 @@ class _ReturnInputAttenuation6 extends StatelessWidget {
         double maxValue = state.usVCA6.maxValue;
         return controlTextSlider(
           context: context,
-          editMode: ModeProperty.isExpertMode ? state.editMode : false,
+          editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.returnInputAttenuation6} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -992,7 +992,7 @@ class _ReturnIngressSetting1 extends StatelessWidget {
       builder: (context, state) {
         return controlToggleButton(
           context: context,
-          editMode: ModeProperty.isExpertMode ? state.editMode : false,
+          editMode: state.editMode,
           title: '${AppLocalizations.of(context)!.returnIngressSetting1}:',
           currentValue: state.returnIngressSetting1,
           onChanged: (int index) {
@@ -1028,7 +1028,7 @@ class _ReturnIngressSetting3 extends StatelessWidget {
       builder: (context, state) {
         return controlToggleButton(
           context: context,
-          editMode: ModeProperty.isExpertMode ? state.editMode : false,
+          editMode: state.editMode,
           title: '${AppLocalizations.of(context)!.returnIngressSetting3}:',
           currentValue: state.returnIngressSetting3,
           onChanged: (int index) {
@@ -1064,7 +1064,7 @@ class _ReturnIngressSetting4 extends StatelessWidget {
       builder: (context, state) {
         return controlToggleButton(
           context: context,
-          editMode: ModeProperty.isExpertMode ? state.editMode : false,
+          editMode: state.editMode,
           title: '${AppLocalizations.of(context)!.returnIngressSetting4}:',
           currentValue: state.returnIngressSetting4,
           onChanged: (int index) {
@@ -1100,7 +1100,7 @@ class _ReturnIngressSetting6 extends StatelessWidget {
       builder: (context, state) {
         return controlToggleButton(
           context: context,
-          editMode: ModeProperty.isExpertMode ? state.editMode : false,
+          editMode: state.editMode,
           title: '${AppLocalizations.of(context)!.returnIngressSetting6}:',
           currentValue: state.returnIngressSetting6,
           onChanged: (int index) {

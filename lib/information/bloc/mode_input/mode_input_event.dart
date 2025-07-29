@@ -7,6 +7,13 @@ abstract class ModeInputEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+class ModeRequested extends ModeInputEvent {
+  const ModeRequested();
+
+  @override
+  List<Object?> get props => [];
+}
+
 class CodeRequested extends ModeInputEvent {
   const CodeRequested();
 

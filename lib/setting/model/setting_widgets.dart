@@ -1,5 +1,6 @@
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/setting_items_table.dart';
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/setting/model/custom_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -2398,20 +2399,20 @@ const List<String> splitOptionValues = [
   // '5',
 ];
 
-List<String> pilotFrequencyModeValues = const [
-  '0',
-  '1',
-  // '2',
-  '3',
-];
+// List<String> pilotFrequencyModeValues = const [
+//   '0',
+//   '1',
+//   // '2',
+//   '3',
+// ];
 
-List<String> onBoardPilotFrequencyModeValues = [
-  '0',
-  '1',
-  // '2',
-  BenchMode.frequency1p2G.name,
-  BenchMode.frequency1p8G.name,
-];
+// List<String> onBoardPilotFrequencyModeValues = [
+//   '0',
+//   '1',
+//   // '2',
+//   BenchMode.frequency1p2G.name,
+//   BenchMode.frequency1p8G.name,
+// ];
 
 // MFT8 機種 DFU=85/105 時適用的 PilotFrequencyMode
 List<String> onBoard1P2GPilotFrequencyModeValues = [

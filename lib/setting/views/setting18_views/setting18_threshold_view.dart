@@ -933,9 +933,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
       );
     }
 
-    Widget getDisabledEditModeTools({
-      bool isExpertMode = false,
-    }) {
+    Widget getDisabledEditModeTools() {
       String graphFilePath = settingGraphFilePath[partId] ?? '';
       return SingleChildScrollView(
         clipBehavior: Clip.none,
@@ -988,16 +986,13 @@ class _SettingFloatingActionButton extends StatelessWidget {
               shape: const CircleBorder(
                 side: BorderSide.none,
               ),
-              backgroundColor: isExpertMode
-                  ? Theme.of(context).colorScheme.primary.withAlpha(200)
-                  : Colors.grey.withAlpha(200),
-              onPressed: isExpertMode
-                  ? () {
-                      context
-                          .read<Setting18ThresholdBloc>()
-                          .add(const EditModeEnabled());
-                    }
-                  : null,
+              backgroundColor:
+                  Theme.of(context).colorScheme.primary.withAlpha(200),
+              onPressed: () {
+                context
+                    .read<Setting18ThresholdBloc>()
+                    .add(const EditModeEnabled());
+              },
               child: Icon(
                 Icons.edit,
                 color: Theme.of(context).colorScheme.onPrimary,
@@ -1053,15 +1048,11 @@ class _SettingFloatingActionButton extends StatelessWidget {
       required bool editMode,
       required bool enableSubmission,
     }) {
-      if (ModeProperty.isExpertMode) {
-        return editMode
-            ? getEnabledEditModeTools(
-                enableSubmission: enableSubmission,
-              )
-            : getDisabledEditModeTools(isExpertMode: true);
-      } else {
-        return getDisabledEditModeTools();
-      }
+      return editMode
+          ? getEnabledEditModeTools(
+              enableSubmission: enableSubmission,
+            )
+          : getDisabledEditModeTools();
     }
 
     bool getEditable({

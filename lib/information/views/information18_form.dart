@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:aci_plus_app/about/about18_page.dart';
 import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
@@ -14,6 +16,7 @@ import 'package:aci_plus_app/information/shared/warm_reset_widget.dart';
 import 'package:aci_plus_app/information/views/information18_config_list_view.dart';
 import 'package:aci_plus_app/repositories/config.dart';
 import 'package:aci_plus_app/repositories/connection_client_factory.dart';
+import 'package:aci_plus_app/setting/views/custom_setting_dialog.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,52 +44,123 @@ class Information18Form extends StatelessWidget {
       );
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.home),
-        centerTitle: true,
-        leading: const _DeviceStatus(),
-        actions: const [_PopupMenu()],
-      ),
-      body: const SingleChildScrollView(
-        child: Column(
-          children: [
-            // _VersionCard(),
-            _ConnectionCard(),
-            _ShortcutCard(),
-            // _BlockDiagramCard(),
-            _BasicCard(),
-            // _AlarmCard(),
-            // _DataReloader(),
-            SizedBox(
-              height: CustomStyle.formBottomSpacingS,
-            ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: HomeBottomNavigationBar18(
-        pageController: pageController,
-        selectedIndex: 2,
-        onTap: (int index) {
-          // if (index != 2) {
-          //   context
-          //       .read<Information18Bloc>()
-          //       .add(const AlarmPeriodicUpdateCanceled());
-          // }
+    String formatResultValue(String boolValue) {
+      return boolValue == 'true'
+          ? AppLocalizations.of(context)!.dialogMessageSuccessful
+          : AppLocalizations.of(context)!.dialogMessageFailed;
+    }
 
-          pageController.jumpToPage(
-            index,
+    String formatResultItem(String item) {
+      if (item == DataKey.pilotFrequencyMode.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageFirstChannelLoadingFrequencySetting;
+      } else if (item == DataKey.agcMode.name) {
+        return AppLocalizations.of(context)!.dialogMessageAGCModeSetting;
+      } else {
+        return '';
+      }
+    }
+
+    Color getResultValueColor(String resultValue) {
+      return resultValue == 'true' ? Colors.green : Colors.red;
+    }
+
+    List<Widget> getMessageRows(List<String> settingResultList) {
+      List<Widget> rows = [];
+      for (String settingResult in settingResultList) {
+        String item = settingResult.split(',')[0];
+        String value = settingResult.split(',')[1];
+        Color valueColor = getResultValueColor(value);
+
+        rows.add(Padding(
+          padding: const EdgeInsets.only(
+            bottom: 14.0,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Text(
+                  formatResultItem(item),
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ),
+              Text(
+                formatResultValue(value),
+                style: TextStyle(
+                  fontSize: CustomStyle.sizeL,
+                  color: valueColor,
+                ),
+                textAlign: TextAlign.end,
+              ),
+            ],
+          ),
+        ));
+      }
+      return rows;
+    }
+
+    return BlocListener<Information18Bloc, Information18State>(
+      listener: (context, state) async {
+        if (state.submissionStatus.isSubmissionInProgress) {
+          await showInProgressDialog(context);
+        } else if (state.submissionStatus.isSubmissionSuccess) {
+          Navigator.of(context).pop();
+          List<Widget> rows = getMessageRows(state.settingResult);
+          showResultDialog(
+            context: context,
+            messageRows: rows,
           );
-        },
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(AppLocalizations.of(context)!.home),
+          centerTitle: true,
+          leading: const _DeviceStatus(),
+          actions: const [_PopupMenu()],
+        ),
+        body: const SingleChildScrollView(
+          child: Column(
+            children: [
+              // _VersionCard(),
+
+              _ConnectionCard(),
+              _ShortcutCard(),
+              // _BlockDiagramCard(),
+              _BasicCard(),
+              // _AlarmCard(),
+              // _DataReloader(),
+              SizedBox(
+                height: CustomStyle.formBottomSpacingS,
+              ),
+            ],
+          ),
+        ),
+        bottomNavigationBar: HomeBottomNavigationBar18(
+          pageController: pageController,
+          selectedIndex: 2,
+          onTap: (int index) {
+            // if (index != 2) {
+            //   context
+            //       .read<Information18Bloc>()
+            //       .add(const AlarmPeriodicUpdateCanceled());
+            // }
+
+            pageController.jumpToPage(
+              index,
+            );
+          },
+        ),
+        // floatingActionButton: const Information18SetupWizard(),
       ),
-      // floatingActionButton: const Information18SetupWizard(),
     );
   }
 }
 
 enum HomeMenu {
   refresh,
-  // mode,
+  mode,
   theme,
   warmReset,
   about,
@@ -102,11 +176,46 @@ class _PopupMenu extends StatefulWidget {
 class __PopupMenuState extends State<_PopupMenu> {
   @override
   Widget build(BuildContext context) {
+    double getMenuWidth({
+      required Mode mode,
+    }) {
+      final texts = [
+        AppLocalizations.of(context)!.reconnect,
+        AppLocalizations.of(context)!.enableBenchMode,
+        mode == Mode.basic
+            ? AppLocalizations.of(context)!.enableBenchMode
+            : AppLocalizations.of(context)!.basicMode,
+        AppLocalizations.of(context)!.theme,
+        AppLocalizations.of(context)!.warmReset,
+        AppLocalizations.of(context)!.aboutUs,
+      ];
+
+      double maxWidth = 0;
+      final textStyle = Theme.of(context).textTheme.bodyMedium;
+
+      for (String text in texts) {
+        final textPainter = TextPainter(
+          text: TextSpan(text: text, style: textStyle),
+          textDirection: TextDirection.ltr,
+        );
+        textPainter.layout();
+        maxWidth = math.max(maxWidth, textPainter.width);
+      }
+
+      // 加上 padding 和 icon 的寬度
+      return maxWidth + 55; // 60 是大概的 padding + icon 寬度
+    }
+
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         if (!state.loadingStatus.isRequestInProgress &&
             !state.connectionStatus.isRequestInProgress) {
           return PopupMenuButton<HomeMenu>(
+            constraints: BoxConstraints.tightFor(
+              width: getMenuWidth(
+                mode: state.mode,
+              ),
+            ),
             icon: const Icon(
               Icons.more_vert_outlined,
               color: Colors.white,
@@ -126,39 +235,55 @@ class __PopupMenuState extends State<_PopupMenu> {
                     context.read<HomeBloc>().add(const DeviceRefreshed());
                   },
                 ),
-                // 20250529 取消 mode 功能
-                // menuItem(
-                //   value: HomeMenu.mode,
-                //   iconData: Icons.safety_divider,
-                //   title: state.mode == Mode.basic
-                //       ? AppLocalizations.of(context)!.expertMode
-                //       : AppLocalizations.of(context)!.basicMode,
-                //   onTap: () {
-                //     if (state.mode == Mode.basic) {
-                //       showEnterExpertModeDialog(context: context)
-                //           .then((bool? isMatch) {
-                //         if (isMatch != null) {
-                //           if (isMatch) {
-                //             context
-                //                 .read<HomeBloc>()
-                //                 .add(const ModeChanged(Mode.expert));
-                //           }
-                //         }
-                //       });
-                //     } else {
-                //       showToggleBasicModeDialog(context: context)
-                //           .then((bool? isConfirm) {
-                //         if (isConfirm != null) {
-                //           if (isConfirm) {
-                //             context
-                //                 .read<HomeBloc>()
-                //                 .add(const ModeChanged(Mode.basic));
-                //           }
-                //         }
-                //       });
-                //     }
-                //   },
-                // ),
+                menuItem(
+                  value: HomeMenu.mode,
+                  iconData: Icons.safety_divider,
+                  title: state.mode == Mode.basic
+                      ? AppLocalizations.of(context)!.enableBenchMode
+                      : AppLocalizations.of(context)!.basicMode,
+                  onTap: () {
+                    if (state.mode == Mode.basic) {
+                      showEnableBenchModeDialog(context: context)
+                          .then((bool? isMatch) {
+                        if (isMatch != null) {
+                          if (isMatch) {
+                            context
+                                .read<HomeBloc>()
+                                .add(const ModeChanged(Mode.bench));
+                          }
+                        }
+                      });
+                    } else {
+                      showToggleBasicModeDialog(context: context)
+                          .then((bool? isConfirm) {
+                        if (isConfirm != null) {
+                          if (isConfirm) {
+                            context
+                                .read<HomeBloc>()
+                                .add(const ModeChanged(Mode.basic));
+
+                            handleUpdateAction(
+                              context: context,
+                              targetBloc: context.read<Information18Bloc>(),
+                              action: () {
+                                context
+                                    .read<Information18Bloc>()
+                                    .add(const ALSCModeRequested());
+                              },
+                              waitForState: (state) {
+                                Information18State information18State =
+                                    state as Information18State;
+
+                                return information18State
+                                    .submissionStatus.isSubmissionSuccess;
+                              },
+                            );
+                          }
+                        }
+                      });
+                    }
+                  },
+                ),
                 menuItem(
                   value: HomeMenu.theme,
                   iconData: Icons.colorize_rounded,
