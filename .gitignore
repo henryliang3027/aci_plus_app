@@ -60,3 +60,4 @@ android/app/.cxx/
 ios/build/*
 ios/Podfile.lock
 pubspec.lock
+.claude/settings.local.json
