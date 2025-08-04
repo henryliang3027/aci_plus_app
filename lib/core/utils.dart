@@ -581,7 +581,7 @@ List<String> getPilotFrequencyModeValues({
     return [
       '0',
       '1',
-      '3',
+      if (ModeProperty.isBenchMode) ...['3'],
     ];
   }
 }
@@ -603,7 +603,9 @@ List<String> getPilotFrequencyModeTexts({
     return [
       AppLocalizations.of(context)!.pilotFrequencyBandwidthSettings,
       AppLocalizations.of(context)!.pilotFrequencyUserSettings,
-      AppLocalizations.of(context)!.pilotFrequencyBenchMode,
+      if (ModeProperty.isBenchMode) ...[
+        AppLocalizations.of(context)!.pilotFrequencyBenchMode
+      ],
     ];
   }
 }

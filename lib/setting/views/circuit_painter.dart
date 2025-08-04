@@ -1,10 +1,13 @@
 import 'dart:math';
 
+import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/utils.dart';
+import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/setting/model/svg_image.dart';
 import 'package:aci_plus_app/setting/views/setting18_ccor_node_views/setting18_ccor_node_graph_module_page.dart';
 import 'package:aci_plus_app/setting/views/setting18_views/setting18_graph_module_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:touchable/touchable.dart';
 
 class CircuitPainter extends CustomPainter {
@@ -32,6 +35,8 @@ class CircuitPainter extends CustomPainter {
       builder: (BuildContext context) {
         var width = MediaQuery.of(context).size.width;
         var height = MediaQuery.of(context).size.height;
+        editable =
+            context.read<HomeBloc>().state.loadingStatus.isRequestSuccess;
 
         return Dialog(
           clipBehavior: Clip.antiAlias,

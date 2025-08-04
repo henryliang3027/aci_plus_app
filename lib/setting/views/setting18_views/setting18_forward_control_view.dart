@@ -1345,7 +1345,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
       );
     }
 
-    Widget getDisabledFloatingActionButtons() {
+    Widget getDisconnectedFloatingActionButtons() {
       return Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -1362,8 +1362,16 @@ class _SettingFloatingActionButton extends StatelessWidget {
             shape: const CircleBorder(
               side: BorderSide.none,
             ),
-            backgroundColor: Colors.grey.withAlpha(200),
-            onPressed: null,
+            backgroundColor:
+                Theme.of(context).colorScheme.primary.withAlpha(200),
+            onPressed: () {
+              // 預設使用 MB 的機種
+              Navigator.push(
+                  context,
+                  Setting18GraphPage.route(
+                    graphFilePath: settingGraphFilePath['13']!,
+                  ));
+            },
             child: Icon(
               Icons.settings_input_composite,
               color: Theme.of(context).colorScheme.onPrimary,
@@ -1442,7 +1450,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
               pilotFrequencyMode: pilotFrequencyMode,
               agcMode: agc,
             )
-          : getDisabledFloatingActionButtons();
+          : getDisconnectedFloatingActionButtons();
     });
   }
 }

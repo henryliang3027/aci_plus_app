@@ -2,10 +2,8 @@ import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
-import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
-import 'package:aci_plus_app/information/shared/utils.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_graph_module/setting18_graph_module_bloc.dart';
 import 'package:aci_plus_app/setting/model/graph_module_form_color.dart';
 import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
@@ -574,7 +572,7 @@ class _ForwardOutputEqualizer3 extends StatelessWidget {
             state.targetValues[DataKey.dsSlope3]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
-          editMode: isEnableForwardSetting,
+          editMode: state.editMode && isEnableForwardSetting,
           title:
               '${AppLocalizations.of(context)!.forwardOutputEqualizer3} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -613,7 +611,7 @@ class _ForwardOutputEqualizer4 extends StatelessWidget {
             state.targetValues[DataKey.dsSlope4]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
-          editMode: isEnableForwardSetting,
+          editMode: state.editMode && isEnableForwardSetting,
           title:
               '${AppLocalizations.of(context)!.forwardOutputEqualizer4} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -651,7 +649,7 @@ class _ForwardOutputAttenuation3 extends StatelessWidget {
         double maxValue = state.targetValues[DataKey.dsVVA4]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
-          editMode: isEnableForwardSetting,
+          editMode: state.editMode && isEnableForwardSetting,
           title:
               '${AppLocalizations.of(context)!.forwardOutputAttenuation3} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -689,7 +687,7 @@ class _ForwardOutputAttenuation4 extends StatelessWidget {
         double maxValue = state.targetValues[DataKey.dsVVA5]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
-          editMode: isEnableForwardSetting,
+          editMode: state.editMode && isEnableForwardSetting,
           title:
               '${AppLocalizations.of(context)!.forwardOutputAttenuation4} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -726,7 +724,7 @@ class _ForwardOutputAttenuation2And3 extends StatelessWidget {
         double maxValue = state.targetValues[DataKey.dsVVA4]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
-          editMode: isEnableForwardSetting,
+          editMode: state.editMode && isEnableForwardSetting,
           title:
               '${AppLocalizations.of(context)!.forwardOutputAttenuation2And3} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -763,7 +761,7 @@ class _ForwardOutputAttenuation3And4 extends StatelessWidget {
         double maxValue = state.targetValues[DataKey.dsVVA4]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
-          editMode: isEnableForwardSetting,
+          editMode: state.editMode && isEnableForwardSetting,
           title:
               '${AppLocalizations.of(context)!.forwardOutputAttenuation3And4} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -812,7 +810,7 @@ class _ForwardOutputAttenuation5And6 extends StatelessWidget {
 
         return controlTextSlider(
           context: context,
-          editMode: brFlag ? false : true,
+          editMode: state.editMode && isEnableForwardSetting && !brFlag,
           title:
               '${AppLocalizations.of(context)!.forwardOutputAttenuation5And6} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -848,7 +846,7 @@ class _ForwardOutputEqualizer2And3 extends StatelessWidget {
             state.targetValues[DataKey.dsSlope3]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
-          editMode: isEnableForwardSetting,
+          editMode: state.editMode && isEnableForwardSetting,
           title:
               '${AppLocalizations.of(context)!.forwardOutputEqualizer2And3} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -898,7 +896,7 @@ class _ForwardOutputEqualizer5And6 extends StatelessWidget {
 
         return controlTextSlider(
           context: context,
-          editMode: brFlag ? false : true,
+          editMode: state.editMode && isEnableForwardSetting && !brFlag,
           title:
               '${AppLocalizations.of(context)!.forwardOutputEqualizer5And6} (${CustomStyle.dB}):',
           minValue: minValue,

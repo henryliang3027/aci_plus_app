@@ -57,26 +57,24 @@ class Setting18GraphModuleBloc
     String splitOption =
         characteristicDataCache[DataKey.currentDetectedSplitOption] ?? '0';
 
-    String partId = characteristicDataCache[DataKey.partId]!;
+    String partId = characteristicDataCache[DataKey.partId] ?? '';
     String forwardCEQIndex =
         characteristicDataCache[DataKey.forwardCEQIndex] ?? '';
     String operatingMode = getOperatingModeFromForwardCEQIndex(forwardCEQIndex);
 
     Map<DataKey, MinMax> values = {};
+    Map<Enum, DataKey> combinedMap = {};
+    Map<DataKey, RangeFloatPointInput> targetValues = {};
+    Map<DataKey, String> targetIngressValues = {};
 
     if (partId.isNotEmpty) {
       values = ControlItemValue
           .allValueCollections[operatingMode]![splitOption]![partId]!;
-    }
 
-    // Combine them into one map:
-    Map<Enum, DataKey> combinedMap = {};
-    for (var map in SettingItemTable.controlItemDataMapCollection[partId]!) {
-      combinedMap.addAll(map);
+      for (var map in SettingItemTable.controlItemDataMapCollection[partId]!) {
+        combinedMap.addAll(map);
+      }
     }
-
-    Map<DataKey, RangeFloatPointInput> targetValues = {};
-    Map<DataKey, String> targetIngressValues = {};
 
     combinedMap.forEach((name, dataKey) {
       if (dataKey.name.startsWith('ingress')) {

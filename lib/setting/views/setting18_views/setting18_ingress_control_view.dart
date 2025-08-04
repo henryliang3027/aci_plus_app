@@ -177,7 +177,7 @@ class _ReturnIngressSetting2 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title: '${AppLocalizations.of(context)!.returnIngressSetting2}:',
-          currentValue: state.targetValues[DataKey.ingressSetting2] ?? '0',
+          currentValue: state.targetValues[DataKey.ingressSetting2] ?? '',
           onChanged: (index) {
             context.read<Setting18IngressControlBloc>().add(ControlItemChanged(
                   dataKey: DataKey.ingressSetting2,
@@ -212,7 +212,7 @@ class _ReturnIngressSetting3 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title: '${AppLocalizations.of(context)!.returnIngressSetting3}:',
-          currentValue: state.targetValues[DataKey.ingressSetting3] ?? '0',
+          currentValue: state.targetValues[DataKey.ingressSetting3] ?? '',
           onChanged: (index) {
             context.read<Setting18IngressControlBloc>().add(ControlItemChanged(
                   dataKey: DataKey.ingressSetting3,
@@ -252,7 +252,7 @@ class _ReturnIngressSetting4 extends StatelessWidget {
             context: context,
             editMode: state.editMode,
             title: '${AppLocalizations.of(context)!.returnIngressSetting4}:',
-            currentValue: state.targetValues[DataKey.ingressSetting2] ?? '0',
+            currentValue: state.targetValues[DataKey.ingressSetting2] ?? '',
             onChanged: (index) {
               context
                   .read<Setting18IngressControlBloc>()
@@ -282,7 +282,7 @@ class _ReturnIngressSetting4 extends StatelessWidget {
             context: context,
             editMode: state.editMode,
             title: '${AppLocalizations.of(context)!.returnIngressSetting4}:',
-            currentValue: state.targetValues[DataKey.ingressSetting4] ?? '0',
+            currentValue: state.targetValues[DataKey.ingressSetting4] ?? '',
             onChanged: (index) {
               context
                   .read<Setting18IngressControlBloc>()
@@ -320,7 +320,7 @@ class _ReturnIngressSetting2And3 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title: '${AppLocalizations.of(context)!.returnIngressSetting2And3}:',
-          currentValue: state.targetValues[DataKey.ingressSetting3] ?? '0',
+          currentValue: state.targetValues[DataKey.ingressSetting3] ?? '',
           onChanged: (index) {
             context.read<Setting18IngressControlBloc>().add(ControlItemChanged(
                   dataKey: DataKey.ingressSetting3,
@@ -355,7 +355,7 @@ class _ReturnIngressSetting5And6 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title: '${AppLocalizations.of(context)!.returnIngressSetting5And6}:',
-          currentValue: state.targetValues[DataKey.ingressSetting4] ?? '0',
+          currentValue: state.targetValues[DataKey.ingressSetting4] ?? '',
           onChanged: (index) {
             context.read<Setting18IngressControlBloc>().add(ControlItemChanged(
                   dataKey: DataKey.ingressSetting4,
@@ -545,7 +545,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
       );
     }
 
-    Widget getDisabledFloatingActionButtons() {
+    Widget getDisconnectedFloatingActionButtons() {
       return Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -562,8 +562,16 @@ class _SettingFloatingActionButton extends StatelessWidget {
             shape: const CircleBorder(
               side: BorderSide.none,
             ),
-            backgroundColor: Colors.grey.withAlpha(200),
-            onPressed: null,
+            backgroundColor:
+                Theme.of(context).colorScheme.primary.withAlpha(200),
+            onPressed: () {
+              // 預設使用 MB 的機種
+              Navigator.push(
+                  context,
+                  Setting18GraphPage.route(
+                    graphFilePath: settingGraphFilePath['13']!,
+                  ));
+            },
             child: Icon(
               Icons.settings_input_composite,
               color: Theme.of(context).colorScheme.onPrimary,
@@ -630,7 +638,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
               editMode: setting18IngressControlState.editMode,
               enableSubmission: setting18IngressControlState.enableSubmission,
             )
-          : getDisabledFloatingActionButtons();
+          : getDisconnectedFloatingActionButtons();
     });
   }
 }

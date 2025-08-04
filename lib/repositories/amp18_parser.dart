@@ -1136,14 +1136,16 @@ class Amp18Parser {
   // RF Log 最多有 27 筆, 每筆 log 有 606 bytes
   List<RFOutputLog> parse1P8GRFOutputLogsForDFU6(List<int> rawData) {
     List<RFOutputLog> rfOutputLogs = [];
-    int step = 606; // 每筆 log 的長度
+    int step = 630; // 每筆 log 的長度
 
     rawData.removeRange(rawData.length - 2, rawData.length);
     rawData.removeRange(0, 3);
 
-    for (int i = 0; i < 27; i++) {
-      print('i: $i');
+    for (int i = 0; i < 26; i++) {
       List<RFOut> rfOuts = [];
+
+      // 630 * 13 = 8190, 8190 和 8191 留空, 共 2 bytes
+      int oi = i >= 13 ? 2 : 0;
 
       // 如果檢查到有一筆log 的內容全部是 255, 則視為沒有更多log資料了
       bool isEmptyLog = rawData
@@ -1153,15 +1155,15 @@ class Amp18Parser {
         break;
       }
 
-      List<int> rawYear = rawData.sublist(i * step, i * step + 2);
+      List<int> rawYear = rawData.sublist(i * step + oi, i * step + 2 + oi);
       ByteData rawYearByteData =
           ByteData.sublistView(Uint8List.fromList(rawYear));
       String strYear = rawYearByteData.getInt16(0, Endian.little).toString();
 
-      String strMonth = rawData[i * step + 2].toString().padLeft(2, '0');
-      String strDay = rawData[i * step + 3].toString().padLeft(2, '0');
-      String strHour = rawData[i * step + 4].toString().padLeft(2, '0');
-      String strMinute = rawData[i * step + 5].toString().padLeft(2, '0');
+      String strMonth = rawData[i * step + 2 + oi].toString().padLeft(2, '0');
+      String strDay = rawData[i * step + 3 + oi].toString().padLeft(2, '0');
+      String strHour = rawData[i * step + 4 + oi].toString().padLeft(2, '0');
+      String strMinute = rawData[i * step + 5 + oi].toString().padLeft(2, '0');
 
       final DateTime dateTime =
           DateTime.parse('$strYear-$strMonth-$strDay $strHour:$strMinute:00');
@@ -1174,7 +1176,7 @@ class Amp18Parser {
       for (int j = 0; j < 282; j++) {
         int frequency = 105 + 6 * j;
         // 解析 rfOuts
-        int rfIndex = (i * step + 6) + j * 2;
+        int rfIndex = (i * step + 6 + oi) + j * 2;
         // print('$rfIndex, ${rawData[rfIndex]}, ${rawData[rfIndex + 1]}');
         List<int> rawOutput = rawData.sublist(rfIndex, rfIndex + 2);
         ByteData rawOutputByteData =

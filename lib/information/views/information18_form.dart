@@ -262,22 +262,26 @@ class __PopupMenuState extends State<_PopupMenu> {
                                 .read<HomeBloc>()
                                 .add(const ModeChanged(Mode.basic));
 
-                            handleUpdateAction(
-                              context: context,
-                              targetBloc: context.read<Information18Bloc>(),
-                              action: () {
-                                context
-                                    .read<Information18Bloc>()
-                                    .add(const ALSCModeRequested());
-                              },
-                              waitForState: (state) {
-                                Information18State information18State =
-                                    state as Information18State;
+                            // 有連線到任何裝置時，才會開啟 ALSCMode
+                            // 沒有連線情況下只會回到 basic mode 而不進行設定
+                            if (state.connectionStatus.isRequestSuccess) {
+                              handleUpdateAction(
+                                context: context,
+                                targetBloc: context.read<Information18Bloc>(),
+                                action: () {
+                                  context
+                                      .read<Information18Bloc>()
+                                      .add(const ALSCModeRequested());
+                                },
+                                waitForState: (state) {
+                                  Information18State information18State =
+                                      state as Information18State;
 
-                                return information18State
-                                    .submissionStatus.isSubmissionSuccess;
-                              },
-                            );
+                                  return information18State
+                                      .submissionStatus.isSubmissionSuccess;
+                                },
+                              );
+                            }
                           }
                         }
                       });

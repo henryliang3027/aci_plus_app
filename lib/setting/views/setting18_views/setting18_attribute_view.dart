@@ -212,56 +212,40 @@ class Setting18AttributeView extends StatelessWidget {
     }
 
     Widget buildConfigurationWidget() {
-      if (firmwareVersion >= 148) {
-        return Column(
-          children: [
-            _Location(
-              textEditingController: locationTextEditingController,
-            ),
-            _Coordinates(
-              textEditingController: coordinateTextEditingController,
-            ),
-            _TechnicianID(
-              textEditingController: technicianIDTextEditingController,
-            ),
-            _InputSignalLevel(
-              textEditingController: inputSignalLevelTextEditingController,
-            ),
-            _InputAttenuation(
-              textEditingController: inputAttenuationTextEditingController,
-            ),
-            _InputEqualizer(
-              textEditingController: inputEqualizerTextEditingController,
-            ),
-            _CascadePosition(
-              textEditingController: cascadePositionTextEditingController,
-            ),
-            _DeviceName(
-              textEditingController: deviceNameTextEditingController,
-            ),
-            _DeviceNote(
-              textEditingController: deviceNoteTextEditingController,
-            ),
-            const SizedBox(
-              height: CustomStyle.formBottomSpacingL,
-            ),
-          ],
-        );
-      } else {
-        return Column(
-          children: [
-            _Location(
-              textEditingController: locationTextEditingController,
-            ),
-            _Coordinates(
-              textEditingController: coordinateTextEditingController,
-            ),
-            const SizedBox(
-              height: CustomStyle.formBottomSpacingL,
-            ),
-          ],
-        );
-      }
+      return Column(
+        children: [
+          _Location(
+            textEditingController: locationTextEditingController,
+          ),
+          _Coordinates(
+            textEditingController: coordinateTextEditingController,
+          ),
+          _TechnicianID(
+            textEditingController: technicianIDTextEditingController,
+          ),
+          _InputSignalLevel(
+            textEditingController: inputSignalLevelTextEditingController,
+          ),
+          _InputAttenuation(
+            textEditingController: inputAttenuationTextEditingController,
+          ),
+          _InputEqualizer(
+            textEditingController: inputEqualizerTextEditingController,
+          ),
+          _CascadePosition(
+            textEditingController: cascadePositionTextEditingController,
+          ),
+          _DeviceName(
+            textEditingController: deviceNameTextEditingController,
+          ),
+          _DeviceNote(
+            textEditingController: deviceNoteTextEditingController,
+          ),
+          const SizedBox(
+            height: CustomStyle.formBottomSpacingL,
+          ),
+        ],
+      );
     }
 
     return BlocListener<Setting18AttributeBloc, Setting18AttributeState>(
@@ -1292,7 +1276,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
       );
     }
 
-    Widget getDisabledFloatingActionButtons() {
+    Widget getDisconnectedFloatingActionButtons() {
       return Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -1309,8 +1293,16 @@ class _SettingFloatingActionButton extends StatelessWidget {
             shape: const CircleBorder(
               side: BorderSide.none,
             ),
-            backgroundColor: Colors.grey.withAlpha(200),
-            onPressed: null,
+            backgroundColor:
+                Theme.of(context).colorScheme.primary.withAlpha(200),
+            onPressed: () {
+              // 預設使用 MB 的機種
+              Navigator.push(
+                  context,
+                  Setting18GraphPage.route(
+                    graphFilePath: settingGraphFilePath['13']!,
+                  ));
+            },
             child: Icon(
               Icons.settings_input_composite,
               color: Theme.of(context).colorScheme.onPrimary,
@@ -1377,7 +1369,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
               editMode: setting18AttributeState.editMode,
               enableSubmission: setting18AttributeState.enableSubmission,
             )
-          : getDisabledFloatingActionButtons();
+          : getDisconnectedFloatingActionButtons();
     });
   }
 }
