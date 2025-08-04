@@ -1901,7 +1901,7 @@ class _ReturnIngressSetting2 extends StatelessWidget {
           editMode: state.editMode,
           title: '${AppLocalizations.of(context)!.returnIngressSetting2}:',
           currentValue:
-              state.targetIngressValues[DataKey.ingressSetting2] ?? '0',
+              state.targetIngressValues[DataKey.ingressSetting2] ?? '',
           onChanged: (index) {
             context.read<Setting18GraphModuleBloc>().add(ControlItemChanged(
                   dataKey: DataKey.ingressSetting2,
@@ -1934,7 +1934,7 @@ class _ReturnIngressSetting3 extends StatelessWidget {
           editMode: state.editMode,
           title: '${AppLocalizations.of(context)!.returnIngressSetting3}:',
           currentValue:
-              state.targetIngressValues[DataKey.ingressSetting3] ?? '0',
+              state.targetIngressValues[DataKey.ingressSetting3] ?? '',
           onChanged: (index) {
             context.read<Setting18GraphModuleBloc>().add(ControlItemChanged(
                   dataKey: DataKey.ingressSetting3,
@@ -1972,7 +1972,7 @@ class _ReturnIngressSetting4 extends StatelessWidget {
             editMode: state.editMode,
             title: '${AppLocalizations.of(context)!.returnIngressSetting4}:',
             currentValue:
-                state.targetIngressValues[DataKey.ingressSetting2] ?? '0',
+                state.targetIngressValues[DataKey.ingressSetting2] ?? '',
             onChanged: (index) {
               context.read<Setting18GraphModuleBloc>().add(ControlItemChanged(
                     dataKey: DataKey.ingressSetting2,
@@ -1998,7 +1998,7 @@ class _ReturnIngressSetting4 extends StatelessWidget {
             editMode: state.editMode,
             title: '${AppLocalizations.of(context)!.returnIngressSetting4}:',
             currentValue:
-                state.targetIngressValues[DataKey.ingressSetting4] ?? '0',
+                state.targetIngressValues[DataKey.ingressSetting4] ?? '',
             onChanged: (index) {
               context.read<Setting18GraphModuleBloc>().add(ControlItemChanged(
                     dataKey: DataKey.ingressSetting4,
@@ -2032,7 +2032,7 @@ class _ReturnIngressSetting2And3 extends StatelessWidget {
           editMode: state.editMode,
           title: '${AppLocalizations.of(context)!.returnIngressSetting2And3}:',
           currentValue:
-              state.targetIngressValues[DataKey.ingressSetting3] ?? '0',
+              state.targetIngressValues[DataKey.ingressSetting3] ?? '',
           onChanged: (index) {
             context.read<Setting18GraphModuleBloc>().add(ControlItemChanged(
                   dataKey: DataKey.ingressSetting3,
@@ -2065,7 +2065,7 @@ class _ReturnIngressSetting5And6 extends StatelessWidget {
           editMode: state.editMode,
           title: '${AppLocalizations.of(context)!.returnIngressSetting5And6}:',
           currentValue:
-              state.targetIngressValues[DataKey.ingressSetting4] ?? '0',
+              state.targetIngressValues[DataKey.ingressSetting4] ?? '',
           onChanged: (index) {
             context.read<Setting18GraphModuleBloc>().add(ControlItemChanged(
                   dataKey: DataKey.ingressSetting4,
