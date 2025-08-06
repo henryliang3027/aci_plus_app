@@ -231,6 +231,7 @@
     "trunkAmplifier": "Trunk Amplifier",
     "distributionAmplifier": "Distribution Amplifier",
     "opticalNode": "Optical Node",
+    "mduAmplifier": "MDU Amplifier",
     "name": "Name",
 
     "scanQRCode": "Scan QR Code",

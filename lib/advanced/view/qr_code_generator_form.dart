@@ -32,12 +32,16 @@ class QRCodeGeneratorForm extends StatelessWidget {
       },
       child: SizedBox(
         width: 370,
-        height: 450,
+        height: 500,
         child: Padding(
-          padding: const EdgeInsets.all(30.0),
+          padding: const EdgeInsets.all(0.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              Flexible(
+                fit: FlexFit.tight,
+                child: Container(),
+              ),
               _QRCodeViewer(
                 globalKey: globalKey,
               ),

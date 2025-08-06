@@ -54,7 +54,7 @@ class NodeConfigAdapter extends TypeAdapter<NodeConfig> {
 // **************************************************************************
 
 NodeConfig _$NodeConfigFromJson(Map<String, dynamic> json) => NodeConfig(
-      id: json['0'] as int,
+      id: (json['0'] as num).toInt(),
       name: json['1'] as String,
       forwardMode: json['2'] as String,
       forwardConfig: json['3'] as String,

@@ -259,7 +259,8 @@ class _QRToolbar extends StatelessWidget {
       buildWhen: (previous, current) =>
           previous.trunkConfigs != current.trunkConfigs ||
           previous.distributionConfigs != current.distributionConfigs ||
-          previous.nodeConfigs != current.nodeConfigs,
+          previous.nodeConfigs != current.nodeConfigs ||
+          previous.mduConfigs != current.mduConfigs,
       builder: (context, state) {
         return Container(
           decoration: BoxDecoration(
@@ -287,7 +288,8 @@ class _QRToolbar extends StatelessWidget {
                     onPressed: [
                       ...state.trunkConfigs,
                       ...state.distributionConfigs,
-                      ...state.nodeConfigs
+                      ...state.nodeConfigs,
+                      ...state.mduConfigs
                     ].isNotEmpty
                         ? () {
                             context
@@ -301,7 +303,8 @@ class _QRToolbar extends StatelessWidget {
                       color: [
                         ...state.trunkConfigs,
                         ...state.distributionConfigs,
-                        ...state.nodeConfigs
+                        ...state.nodeConfigs,
+                        ...state.mduConfigs
                       ].isNotEmpty
                           ? Theme.of(context).iconTheme.color
                           : Colors.grey,

@@ -5,6 +5,7 @@ import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/config_repository.dart';
 import 'package:aci_plus_app/repositories/distribution_config.dart';
 import 'package:aci_plus_app/core/form_status.dart';
+import 'package:aci_plus_app/repositories/mdu_config.dart';
 import 'package:aci_plus_app/repositories/node_config.dart';
 import 'package:aci_plus_app/repositories/trunk_config.dart';
 import 'package:camera_checker/camera_checker.dart';
@@ -57,12 +58,14 @@ class Setting18ConfigBloc
     List<DistributionConfig> distributionConfigs =
         _configRepository.getAllDistributionConfigs();
     List<NodeConfig> nodeConfigs = _configRepository.getAllNodeConfigs();
+    List<MDUConfig> mduConfigs = _configRepository.getAllMDUConfigs();
 
     emit(state.copyWith(
       formStatus: FormStatus.requestSuccess,
       trunkConfigs: trunkConfigs,
       distributionConfigs: distributionConfigs,
       nodeConfigs: nodeConfigs,
+      mduConfigs: mduConfigs,
     ));
   }
 
@@ -79,6 +82,7 @@ class Setting18ConfigBloc
     List<DistributionConfig> distributionConfigs =
         _configRepository.getAllDistributionConfigs();
     List<NodeConfig> nodeConfigs = _configRepository.getAllNodeConfigs();
+    List<MDUConfig> mduConfigs = _configRepository.getAllMDUConfigs();
 
     emit(state.copyWith(
       encodeStaus: FormStatus.none,
@@ -88,6 +92,7 @@ class Setting18ConfigBloc
       trunkConfigs: trunkConfigs,
       distributionConfigs: distributionConfigs,
       nodeConfigs: nodeConfigs,
+      mduConfigs: mduConfigs,
     ));
   }
 
@@ -121,17 +126,25 @@ class Setting18ConfigBloc
       ]
     ];
 
+    List<String> mduConfigJsons = [
+      for (MDUConfig mduConfig in state.mduConfigs) ...[
+        jsonEncode(mduConfig.toJson())
+      ]
+    ];
+
     String strTrunkConfigJsons =
         trunkConfigJsons.join(',').isNotEmpty ? trunkConfigJsons.join(',') : '';
     String strDistributionConfigJsons = distributionConfigJsons.join(',');
     String strNodeConfigJsons = nodeConfigJsons.join(',');
+    String strMDUConfigJsons = mduConfigJsons.join(',');
 
     String encodedData =
-        '$strTrunkConfigJsons $strDistributionConfigJsons $strNodeConfigJsons';
+        '$strTrunkConfigJsons $strDistributionConfigJsons $strNodeConfigJsons $strMDUConfigJsons';
 
     print(trunkConfigJsons.join(','));
     print(distributionConfigJsons.join(','));
     print(nodeConfigJsons.join(','));
+    print(mduConfigJsons.join(','));
     print('data:$encodedData');
 
     emit(state.copyWith(
@@ -155,6 +168,7 @@ class Setting18ConfigBloc
     List<TrunkConfig> trunkConfigs = [];
     List<DistributionConfig> distributionConfigs = [];
     List<NodeConfig> nodeConfigs = [];
+    List<MDUConfig> mduConfigs = [];
 
     RegExp mapRegex = RegExp(r'(\{[^{}]*\})');
 
@@ -163,6 +177,7 @@ class Setting18ConfigBloc
     String trunkRawData = splitRawData[0];
     String distributionRawData = splitRawData[1];
     String nodeRawData = splitRawData[2];
+    String mduRawData = splitRawData[3];
     // print('-----trunk------');
     // print(trunkRawData);
     // print('-----distribution------');
@@ -172,6 +187,7 @@ class Setting18ConfigBloc
     Iterable<Match> distributionConfigMatches =
         mapRegex.allMatches(distributionRawData);
     Iterable<Match> nodeConfigMatches = mapRegex.allMatches(nodeRawData);
+    Iterable<Match> mduConfigMatches = mapRegex.allMatches(mduRawData);
 
     print('-----trunk------');
 
@@ -213,13 +229,32 @@ class Setting18ConfigBloc
       nodeConfigs.add(nodeConfig);
     }
 
+    print('-----mdu------');
+
+    for (int i = 0; i < mduConfigMatches.length; i++) {
+      if (i == 3) {
+        break;
+      }
+      Match match = mduConfigMatches.elementAt(i);
+      String json = match[0]!;
+      print(json);
+      MDUConfig mduConfig = MDUConfig.fromJson(jsonDecode(json));
+      mduConfigs.add(mduConfig);
+    }
+
     await _configRepository.updateConfigsByQRCode(
       trunkConfigs: trunkConfigs,
       distributionConfigs: distributionConfigs,
       nodeConfigs: nodeConfigs,
+      mduConfigs: mduConfigs,
     );
 
-    return [trunkConfigs, distributionConfigs, nodeConfigs];
+    return [
+      trunkConfigs,
+      distributionConfigs,
+      nodeConfigs,
+      mduConfigs,
+    ];
   }
 
   Future<void> _onQRDataScanned(
@@ -239,12 +274,14 @@ class Setting18ConfigBloc
     List<DistributionConfig> distributionConfigs =
         configs[1] as List<DistributionConfig>;
     List<NodeConfig> nodeConfigs = configs[2] as List<NodeConfig>;
+    List<MDUConfig> mduConfigs = configs[3] as List<MDUConfig>;
 
     emit(state.copyWith(
       decodeStatus: FormStatus.requestSuccess,
       trunkConfigs: trunkConfigs,
       distributionConfigs: distributionConfigs,
       nodeConfigs: nodeConfigs,
+      mduConfigs: mduConfigs,
     ));
   }
 

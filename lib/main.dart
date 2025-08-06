@@ -7,6 +7,7 @@ import 'package:aci_plus_app/repositories/aci_device_repository.dart';
 import 'package:aci_plus_app/repositories/connection_client_factory.dart';
 import 'package:aci_plus_app/repositories/code_repository.dart';
 import 'package:aci_plus_app/repositories/distribution_config.dart';
+import 'package:aci_plus_app/repositories/mdu_config.dart';
 import 'package:aci_plus_app/repositories/mock/sample_aci_device_repository.dart';
 import 'package:aci_plus_app/repositories/mock/sample_amp18_repository.dart';
 import 'package:aci_plus_app/repositories/node_config.dart';
@@ -40,6 +41,7 @@ Future<void> deleteAllBox() async {
   await Hive.deleteBoxFromDisk('TrunkConfigData');
   await Hive.deleteBoxFromDisk('DistributionConfigData');
   await Hive.deleteBoxFromDisk('NodeConfigData');
+  await Hive.deleteBoxFromDisk('MDUConfigData');
 }
 
 Future<void> initBox() async {
@@ -47,43 +49,25 @@ Future<void> initBox() async {
   Hive.registerAdapter<TrunkConfig>(TrunkConfigAdapter());
   Hive.registerAdapter<DistributionConfig>(DistributionConfigAdapter());
   Hive.registerAdapter<NodeConfig>(NodeConfigAdapter());
+  Hive.registerAdapter<MDUConfig>(MDUConfigAdapter());
 
-  bool trunkConfigBoxExists = await Hive.boxExists('TrunkConfigData');
-  bool distributionConfigBoxExists =
-      await Hive.boxExists('DistributionConfigData');
-  bool nodeConfigBoxExists = await Hive.boxExists('NodeConfigData');
+  // bool trunkConfigBoxExists = await Hive.boxExists('TrunkConfigData');
+  // bool distributionConfigBoxExists =
+  //     await Hive.boxExists('DistributionConfigData');
+  // bool nodeConfigBoxExists = await Hive.boxExists('NodeConfigData');
+  // bool mduConfigBoxExists = await Hive.boxExists('MDUConfigData');
 
-  // print(
-  //     '$trunkConfigBoxExists, $distributionConfigBoxExists, $nodeConfigBoxExists');
+  String? boxVersion = await readBoxVersion();
 
-  // 如果是第一次建立 hive db 則在 SharedPreferences 內寫入 db 支援的最低 app 版本
-  if (!trunkConfigBoxExists &&
-      !distributionConfigBoxExists &&
-      !nodeConfigBoxExists) {
-    print('writeboxVersion1');
+  if (boxVersion != '2.2.6') {
+    await deleteAllBox();
     await writeBoxVersion();
-  } else {
-    // 如果已經存在, 則檢查 db 支援的最低 app 版本, 如果版本不符則清除 db, 再建立一個新的
-    String? boxVersion = await readBoxVersion();
-
-    print('boxVersion: $boxVersion');
-
-    if (boxVersion == null) {
-      print('writeboxVersion2');
-      await deleteAllBox();
-      await writeBoxVersion();
-    } else {
-      if (boxVersion.isEmpty) {
-        print('writeboxVersion3');
-        await deleteAllBox();
-        await writeBoxVersion();
-      }
-    }
   }
 
   await Hive.openBox<TrunkConfig>('TrunkConfigData');
   await Hive.openBox<DistributionConfig>('DistributionConfigData');
   await Hive.openBox<NodeConfig>('NodeConfigData');
+  await Hive.openBox<MDUConfig>('MDUConfigData');
 }
 
 Future<void> main() async {

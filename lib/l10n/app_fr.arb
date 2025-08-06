@@ -229,6 +229,7 @@
     "trunkAmplifier": "Amplificateur de coffre",
     "distributionAmplifier": "Amplificateur de distribution",
     "opticalNode": "Nœud Optique",
+    "mduAmplifier": "Amplificador de maletero",
     "name": "Nom",
 
     "scanQRCode": "Scanner code QR",

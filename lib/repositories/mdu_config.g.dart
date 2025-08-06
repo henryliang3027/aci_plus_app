@@ -1,22 +1,22 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'distribution_config.dart';
+part of 'mdu_config.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class DistributionConfigAdapter extends TypeAdapter<DistributionConfig> {
+class MDUConfigAdapter extends TypeAdapter<MDUConfig> {
   @override
-  final int typeId = 2;
+  final int typeId = 4;
 
   @override
-  DistributionConfig read(BinaryReader reader) {
+  MDUConfig read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return DistributionConfig(
+    return MDUConfig(
       id: fields[0] == null ? -1 : fields[0] as int,
       name: fields[1] == null ? '' : fields[1] as String,
       firstChannelLoadingFrequency:
@@ -30,7 +30,7 @@ class DistributionConfigAdapter extends TypeAdapter<DistributionConfig> {
   }
 
   @override
-  void write(BinaryWriter writer, DistributionConfig obj) {
+  void write(BinaryWriter writer, MDUConfig obj) {
     writer
       ..writeByte(6)
       ..writeByte(0)
@@ -53,7 +53,7 @@ class DistributionConfigAdapter extends TypeAdapter<DistributionConfig> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is DistributionConfigAdapter &&
+      other is MDUConfigAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
@@ -62,8 +62,7 @@ class DistributionConfigAdapter extends TypeAdapter<DistributionConfig> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-DistributionConfig _$DistributionConfigFromJson(Map<String, dynamic> json) =>
-    DistributionConfig(
+MDUConfig _$MDUConfigFromJson(Map<String, dynamic> json) => MDUConfig(
       id: (json['0'] as num).toInt(),
       name: json['1'] as String,
       firstChannelLoadingFrequency: json['2'] as String,
@@ -72,8 +71,7 @@ DistributionConfig _$DistributionConfigFromJson(Map<String, dynamic> json) =>
       lastChannelLoadingLevel: json['5'] as String,
     );
 
-Map<String, dynamic> _$DistributionConfigToJson(DistributionConfig instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$MDUConfigToJson(MDUConfig instance) => <String, dynamic>{
       '0': instance.id,
       '1': instance.name,
       '2': instance.firstChannelLoadingFrequency,

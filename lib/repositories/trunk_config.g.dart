@@ -63,7 +63,7 @@ class TrunkConfigAdapter extends TypeAdapter<TrunkConfig> {
 // **************************************************************************
 
 TrunkConfig _$TrunkConfigFromJson(Map<String, dynamic> json) => TrunkConfig(
-      id: json['0'] as int,
+      id: (json['0'] as num).toInt(),
       name: json['1'] as String,
       firstChannelLoadingFrequency: json['2'] as String,
       firstChannelLoadingLevel: json['3'] as String,

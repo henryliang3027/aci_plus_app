@@ -229,6 +229,7 @@
     "trunkAmplifier": "Amplificador de maletero",
     "distributionAmplifier": "Amplificador de distribución",
     "opticalNode": "Nodo Óptico",
+    "mduAmplifier": "Amplificador de MDU",
     "name": "Nombre",
 
     "scanQRCode": "Escanear código QR",

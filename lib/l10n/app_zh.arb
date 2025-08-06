@@ -231,6 +231,7 @@
     "trunkAmplifier": "幹線放大器",
     "distributionAmplifier": "支線放大器",
     "opticalNode": "光節點",
+    "mduAmplifier": "MDU 放大器",
     "name": "名稱",
 
     "scanQRCode": "掃描二維碼",

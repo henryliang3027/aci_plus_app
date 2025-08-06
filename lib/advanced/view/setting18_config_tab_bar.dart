@@ -1,4 +1,5 @@
 import 'package:aci_plus_app/advanced/view/setting18_distribution_config_form.dart';
+import 'package:aci_plus_app/advanced/view/setting18_mdu_config_form.dart';
 import 'package:aci_plus_app/advanced/view/setting18_node_config_form.dart';
 import 'package:aci_plus_app/advanced/view/setting18_trunk_config_form.dart';
 import 'package:aci_plus_app/core/secondary_tab_bar_theme.dart';
@@ -11,7 +12,7 @@ class Setting18ConfigTabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 4,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -50,6 +51,16 @@ class Setting18ConfigTabBar extends StatelessWidget {
                       // width: 110,
                       child: Center(
                         child: Text(
+                          AppLocalizations.of(context)!.mduAmplifier,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Tab(
+                    child: SizedBox(
+                      // width: 110,
+                      child: Center(
+                        child: Text(
                           AppLocalizations.of(context)!.opticalNode,
                         ),
                       ),
@@ -66,6 +77,7 @@ class Setting18ConfigTabBar extends StatelessWidget {
               children: [
                 Setting18TrunkConfigForm(),
                 Setting18DistributionConfigForm(),
+                Setting18MDUConfigForm(),
                 Setting18NodeConfigForm(),
               ],
             ),

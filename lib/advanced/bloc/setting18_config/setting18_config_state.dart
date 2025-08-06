@@ -11,6 +11,7 @@ class Setting18ConfigState extends Equatable {
     this.trunkConfigs = const [],
     this.distributionConfigs = const [],
     this.nodeConfigs = const [],
+    this.mduConfigs = const [],
     this.encodedData = '',
   });
 
@@ -23,6 +24,7 @@ class Setting18ConfigState extends Equatable {
   final List<TrunkConfig> trunkConfigs;
   final List<DistributionConfig> distributionConfigs;
   final List<NodeConfig> nodeConfigs;
+  final List<MDUConfig> mduConfigs;
   final String encodedData;
 
   Setting18ConfigState copyWith({
@@ -35,6 +37,7 @@ class Setting18ConfigState extends Equatable {
     List<TrunkConfig>? trunkConfigs,
     List<DistributionConfig>? distributionConfigs,
     List<NodeConfig>? nodeConfigs,
+    List<MDUConfig>? mduConfigs,
     String? encodedData,
   }) {
     return Setting18ConfigState(
@@ -47,6 +50,7 @@ class Setting18ConfigState extends Equatable {
       trunkConfigs: trunkConfigs ?? this.trunkConfigs,
       distributionConfigs: distributionConfigs ?? this.distributionConfigs,
       nodeConfigs: nodeConfigs ?? this.nodeConfigs,
+      mduConfigs: mduConfigs ?? this.mduConfigs,
       encodedData: encodedData ?? this.encodedData,
     );
   }
@@ -62,6 +66,7 @@ class Setting18ConfigState extends Equatable {
         trunkConfigs,
         distributionConfigs,
         nodeConfigs,
+        mduConfigs,
         encodedData,
       ];
 }

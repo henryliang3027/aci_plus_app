@@ -43,6 +43,8 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
     // TR 或 SDAT 為 trunk
     if (partId == '5' || partId == '15' || partId == '8' || partId == '18') {
       return '0'; // trunk
+    } else if (partId == '10') {
+      return '3'; // mdu
     } else {
       return '1'; // distribution
     }
