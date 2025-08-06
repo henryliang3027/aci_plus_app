@@ -437,6 +437,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           scanStatus: FormStatus.requestFailure,
           connectionStatus: FormStatus.requestFailure,
           loadingStatus: FormStatus.requestFailure,
+          aciDeviceType: ACIDeviceType.amp1P8G,
           errorMassage: event.connectionReport.errorMessage,
           peripherals: [],
           device: const Peripheral.empty(),
