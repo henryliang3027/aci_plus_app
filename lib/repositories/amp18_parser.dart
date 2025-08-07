@@ -1133,7 +1133,7 @@ class Amp18Parser {
   }
 
   // DFU = 6 (85/105) 時使用
-  // RF Log 最多有 27 筆, 每筆 log 有 606 bytes
+  // RF Log 最多有 26 筆, 每筆 log 有 606 bytes
   List<RFOutputLog> parse1P8GRFOutputLogsForDFU6(List<int> rawData) {
     List<RFOutputLog> rfOutputLogs = [];
     int step = 630; // 每筆 log 的長度

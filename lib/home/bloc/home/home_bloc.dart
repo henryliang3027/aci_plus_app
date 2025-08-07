@@ -768,7 +768,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     resultOf1p8G1 = await _amp18Repository.requestCommand1p8G1();
     if (resultOf1p8G1[0]) {
       String pilotFrequencyMode = resultOf1p8G1[1][DataKey.pilotFrequencyMode];
-      ModeProperty.mode = pilotFrequencyMode == '3' ? Mode.bench : Mode.basic;
+      ModeProperty.mode = pilotFrequencyMode == '3' ? Mode.expert : Mode.basic;
 
       int logInterval = int.parse(resultOf1p8G1[1][DataKey.logInterval]);
       int rfOutputLogInterval =

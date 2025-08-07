@@ -44,8 +44,8 @@ class _CodeInputDialog extends StatelessWidget {
           return AppLocalizations.of(context)!
               .dialogMessageEnterExpertModePassword;
         case Mode.bench:
-          return AppLocalizations.of(context)!
-              .dialogMessageEnterEnableBenchModePassword;
+          // 預留的 case
+          return '';
         default:
           return '';
       }

@@ -53,7 +53,7 @@ class Information18Form extends StatelessWidget {
     String formatResultItem(String item) {
       if (item == DataKey.pilotFrequencyMode.name) {
         return AppLocalizations.of(context)!
-            .dialogMessageFirstChannelLoadingFrequencySetting;
+            .dialogMessagePilotFrequencyModeSetting;
       } else if (item == DataKey.agcMode.name) {
         return AppLocalizations.of(context)!.dialogMessageAGCModeSetting;
       } else {
@@ -181,9 +181,8 @@ class __PopupMenuState extends State<_PopupMenu> {
     }) {
       final texts = [
         AppLocalizations.of(context)!.reconnect,
-        AppLocalizations.of(context)!.enableBenchMode,
         mode == Mode.basic
-            ? AppLocalizations.of(context)!.enableBenchMode
+            ? AppLocalizations.of(context)!.expertMode
             : AppLocalizations.of(context)!.basicMode,
         AppLocalizations.of(context)!.theme,
         AppLocalizations.of(context)!.warmReset,
@@ -239,17 +238,17 @@ class __PopupMenuState extends State<_PopupMenu> {
                   value: HomeMenu.mode,
                   iconData: Icons.safety_divider,
                   title: state.mode == Mode.basic
-                      ? AppLocalizations.of(context)!.enableBenchMode
+                      ? AppLocalizations.of(context)!.expertMode
                       : AppLocalizations.of(context)!.basicMode,
                   onTap: () {
                     if (state.mode == Mode.basic) {
-                      showEnableBenchModeDialog(context: context)
+                      showEnterExpertModeDialog(context: context)
                           .then((bool? isMatch) {
                         if (isMatch != null) {
                           if (isMatch) {
                             context
                                 .read<HomeBloc>()
-                                .add(const ModeChanged(Mode.bench));
+                                .add(const ModeChanged(Mode.expert));
                           }
                         }
                       });

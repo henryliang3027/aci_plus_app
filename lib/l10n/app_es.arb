@@ -216,7 +216,6 @@
     "warmReset": "Reinicio Caliente",
     "basicMode": "Modo Básico",
     "expertMode": "Modo Experto",
-    "enableBenchMode": "Activar Modo Prueba",
     "reset": "Restablecer",
     "share": "Compartir",
     "export": "Exportar",
@@ -533,8 +532,7 @@
     "dialogMessageForwardCEQChanged": "Se ha detectado un cambio en el módulo ecualizador.",
     "dialogMessageSelectedFirmwareInvalid": "El archivo que seleccionaste no es válido.",
     "dialogMessageEnterExpertModePassword": "Por favor, introduzca la contraseña del modo experto.",
-    "dialogMessageEnterEnableBenchModePassword": "Introduce la contraseña para activar el modo de prueba.",
     "dialogMessagePasswordHint": "Por favor introduzca la contraseña",
-    "dialogMessageBenchMode": "El dispositivo está actualmente en modo de prueba.",
+    "dialogMessageExperthModeReminderMessage": "El dispositivo está actualmente en modo de experto.",
     "dialogMessageToggleBasicMode": "¿Está seguro de que desea cambiar al modo básico?"
 }

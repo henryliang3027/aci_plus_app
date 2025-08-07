@@ -1,6 +1,7 @@
 import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/amp18_parser.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:equatable/equatable.dart';
@@ -57,11 +58,11 @@ class Downloader18RFOutBloc
   ) async {
     List<RFOutputLog> rfOutputLog1p8Gs = [];
 
-    String currentDetectedSplitOption = _amp18Repository
-            .characteristicDataCache[DataKey.currentDetectedSplitOption] ??
-        '0';
+    int firmwareVersion = convertFirmwareVersionStringToInt(
+        _amp18Repository.characteristicDataCache[DataKey.firmwareVersion] ??
+            '0');
 
-    bool useDFU6Parser = currentDetectedSplitOption == '6' ? true : false;
+    bool useDFU6Parser = firmwareVersion >= 160 ? true : false;
 
     for (int i = 0; i < 10; i++) {
       if (i > 0) {

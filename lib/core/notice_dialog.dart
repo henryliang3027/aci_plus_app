@@ -34,7 +34,10 @@ class ReusableNoticeDialog extends StatelessWidget {
       insetPadding: EdgeInsets.symmetric(
         horizontal: width * 0.08,
       ),
-      title: Text(title),
+      title: Text(
+        title,
+        style: const TextStyle(color: CustomStyle.customYellow),
+      ),
       content: SizedBox(
         width: width,
         child: SingleChildScrollView(
@@ -246,7 +249,7 @@ Future<void> showUnfilledItemDialog({
   );
 }
 
-Future<void> showBenchModeDialog({
+Future<void> showExpertModeReminderDialogDialog({
   required BuildContext context,
 }) async {
   await showReusableNoticeDialog(
@@ -257,7 +260,8 @@ Future<void> showBenchModeDialog({
         children: [
           Flexible(
             child: Text(
-              AppLocalizations.of(context)!.dialogMessageBenchMode,
+              AppLocalizations.of(context)!
+                  .dialogMessageExperthModeReminderMessage,
               style: const TextStyle(
                 fontSize: CustomStyle.sizeL,
               ),

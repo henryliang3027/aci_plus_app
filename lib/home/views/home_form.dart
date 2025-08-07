@@ -274,8 +274,8 @@ class _HomeFormState extends State<HomeForm> {
               }
 
               if (partId != '4' && partId != '') {
-                if (ModeProperty.isBenchMode) {
-                  showBenchModeDialog(
+                if (ModeProperty.isExpertMode) {
+                  showExpertModeReminderDialogDialog(
                     context: context,
                   );
                 }

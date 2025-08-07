@@ -32,11 +32,8 @@ class ModeInputBloc extends Bloc<ModeInputEvent, ModeInputState> {
   ) {
     bool isMatched = false;
     if (state.targetMode == Mode.expert) {
-    } else if (state.targetMode == Mode.bench) {
-      isMatched = event.code == EnvConfig.benchModePassword;
-    } else if (state.targetMode == Mode.expert) {
-      isMatched = event.code == EnvConfig.expertModePassword ||
-          event.code == EnvConfig.expertModeDeveloperPassword;
+      isMatched = event.code == EnvConfig.expertModePassword;
+      print('Expert mode password: $isMatched');
     } else {
       // Basic mode 不使用密碼
       isMatched = false;
@@ -53,6 +50,7 @@ class ModeInputBloc extends Bloc<ModeInputEvent, ModeInputState> {
     CodeConfirmed event,
     Emitter<ModeInputState> emit,
   ) async {
+    // 不記憶輸入的員工號碼到手機資料庫
     // emit(state.copyWith(
     // ));
     // await _codeRepository.writeUserCode(state.code);

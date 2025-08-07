@@ -30,30 +30,24 @@ class QRCodeGeneratorForm extends StatelessWidget {
           );
         }
       },
-      child: SizedBox(
-        width: 370,
-        height: 500,
-        child: Padding(
-          padding: const EdgeInsets.all(0.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Flexible(
-                fit: FlexFit.tight,
-                child: Container(),
-              ),
-              _QRCodeViewer(
-                globalKey: globalKey,
-              ),
-              Flexible(
-                fit: FlexFit.tight,
-                child: Container(),
-              ),
-              _QrCodeTool(
-                globalKey: globalKey,
-              ),
-            ],
-          ),
+      child: Padding(
+        padding: const EdgeInsets.all(0.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(
+              height: 30.0,
+            ),
+            _QRCodeViewer(
+              globalKey: globalKey,
+            ),
+            const SizedBox(
+              height: 30.0,
+            ),
+            _QrCodeTool(
+              globalKey: globalKey,
+            ),
+          ],
         ),
       ),
     );
@@ -81,6 +75,7 @@ class _QRCodeViewer extends StatelessWidget {
             child: Column(
               children: [
                 QrImageView(
+                  padding: const EdgeInsets.all(20.0),
                   data: state.encodedData,
                   version: QrVersions.auto,
                   errorCorrectionLevel: QrErrorCorrectLevel.L,
@@ -122,7 +117,7 @@ class _QrCodeTool extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 0.0),
+      padding: const EdgeInsets.only(bottom: 10.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

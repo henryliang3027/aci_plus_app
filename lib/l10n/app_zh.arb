@@ -216,9 +216,8 @@
     "monitoringChart": "監控圖表",
     "reconnect": "重新連線",
     "warmReset": "熱重啟",
-    "basicMode": "基礎模式",
+    "basicMode": "一般模式",
     "expertMode": "專家模式",
-    "enableBenchMode": "啟用調測模式",
     "reset": "重置",
     "share": "分享",
     "export": "匯出",
@@ -540,8 +539,7 @@
     "dialogMessageForwardCEQChanged": "偵測到等化器模組已被更換",
     "dialogMessageSelectedFirmwareInvalid": "您選擇的檔案無效",
     "dialogMessageEnterExpertModePassword": "請輸入專家模式密碼",
-    "dialogMessageEnterEnableBenchModePassword": "請輸入啟用調測模式的密碼",
     "dialogMessagePasswordHint": "請輸入密碼",
-    "dialogMessageBenchMode": "目前裝置處於調測模式",
-    "dialogMessageToggleBasicMode": "您確定要切換到基本模式嗎 ?"
+    "dialogMessageExperthModeReminderMessage": "目前裝置處於專家模式",
+    "dialogMessageToggleBasicMode": "您確定要切換到一般模式嗎 ?"
 }

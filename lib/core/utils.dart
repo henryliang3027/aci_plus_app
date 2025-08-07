@@ -46,7 +46,6 @@ class ModeProperty {
   static Mode mode = Mode.basic;
   static bool get isBasicMode => ModeProperty.mode == Mode.basic;
   static bool get isExpertMode => ModeProperty.mode == Mode.expert;
-  static bool get isBenchMode => ModeProperty.mode == Mode.bench;
 }
 
 class SetupWizardProperty {
@@ -572,7 +571,7 @@ List<String> getPilotFrequencyModeValues({
     return [
       '0',
       '1',
-      if (ModeProperty.isBenchMode) ...[
+      if (ModeProperty.isExpertMode) ...[
         BenchMode.frequency1p2G.name,
         BenchMode.frequency1p8G.name,
       ]
@@ -581,7 +580,7 @@ List<String> getPilotFrequencyModeValues({
     return [
       '0',
       '1',
-      if (ModeProperty.isBenchMode) ...['3'],
+      if (ModeProperty.isExpertMode) ...['3'],
     ];
   }
 }
@@ -594,7 +593,7 @@ List<String> getPilotFrequencyModeTexts({
     return [
       AppLocalizations.of(context)!.pilotFrequencyBandwidthSettings,
       AppLocalizations.of(context)!.pilotFrequencyUserSettings,
-      if (ModeProperty.isBenchMode) ...[
+      if (ModeProperty.isExpertMode) ...[
         AppLocalizations.of(context)!.pilotFrequencyBenchMode1p2G,
         AppLocalizations.of(context)!.pilotFrequencyBenchMode1p8G,
       ]
@@ -603,7 +602,7 @@ List<String> getPilotFrequencyModeTexts({
     return [
       AppLocalizations.of(context)!.pilotFrequencyBandwidthSettings,
       AppLocalizations.of(context)!.pilotFrequencyUserSettings,
-      if (ModeProperty.isBenchMode) ...[
+      if (ModeProperty.isExpertMode) ...[
         AppLocalizations.of(context)!.pilotFrequencyBenchMode
       ],
     ];

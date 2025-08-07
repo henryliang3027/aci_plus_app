@@ -216,7 +216,6 @@
     "warmReset": "Réinitialisation chaude",
     "basicMode": "Mode Basique",
     "expertMode": "Mode Expert",
-    "enableBenchMode": "Activer Mode Test",
     "reset": "Réinitialiser",
     "share": "Partager",
     "export": "Exportation",
@@ -537,8 +536,7 @@
     "dialogMessageForwardCEQChanged": "Le module d'égaliseur a été détecté comme modifié.",
     "dialogMessageSelectedFirmwareInvalid": "Le fichier que vous avez sélectionné est invalide.",
     "dialogMessageEnterExpertModePassword": "Veuillez entrer le mot de passe du mode expert.",
-    "dialogMessageEnterEnableBenchModePassword": "Entrez le mot de passe pour activer le mode test.",
     "dialogMessagePasswordHint": "Veuillez entrer le mot de passe",
-    "dialogMessageBenchMode": "L’appareil est actuellement en mode test.",
+    "dialogMessageExperthModeReminderMessage": "L’appareil est actuellement en mode expert.",
     "dialogMessageToggleBasicMode": "Êtes-vous sûr de vouloir passer en mode basique ?"
 }
