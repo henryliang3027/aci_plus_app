@@ -303,7 +303,7 @@
     "dataLogPageSetupWizard2": "Puedes acercar / alejar y hacer clic en el gráfico para mostrar información detallada",
     "dataLogPageSetupWizard3": "Descargar y compartir datos (formato Excel)",
 
-    "rfLevelPageSetupWizard1": "Mostrar el valor actual de la intensidad de banda RF (entrada / salida en 256 bandas de frecuencia cada una). Se pueden almacenar hasta 400 registros. Por ejemplo: los datos se registran cada 60 minutos y se pueden mostrar hasta 16 días de datos",
+    "rfLevelPageSetupWizard1": "Mostrar el valor actual de la intensidad de banda RF (entrada / salida en 282 bandas de frecuencia cada una). Se pueden almacenar hasta 260 registros. Por ejemplo: los datos se registran cada 60 minutos y se pueden mostrar hasta 10 días de datos",
     "rfLevelPageSetupWizard2": "Puedes acercar / alejar y hacer clic en el gráfico para mostrar información detallada",
     "rfLevelPageSetupWizard3": "Descargar y compartir datos (formato Excel)",
 

@@ -296,7 +296,6 @@ class Setting18ConfigBloc
     ));
 
     FilePickerResult? fileResult = await FilePicker.platform.pickFiles(
-      allowMultiple: true,
       type: FileType.custom,
       allowedExtensions: ['jpg', 'png'],
     );
@@ -321,8 +320,14 @@ class Setting18ConfigBloc
       decodeStatus: FormStatus.requestInProgress,
       pickImageStatus: FormStatus.none,
     ));
+    String extension = state.imageFilePath.split('.').last.toLowerCase();
 
-    Image? qrImage = decodePng(File(state.imageFilePath).readAsBytesSync());
+    Image? qrImage;
+    if (extension == 'png') {
+      qrImage = decodePng(File(state.imageFilePath).readAsBytesSync());
+    } else {
+      qrImage = decodeJpg(File(state.imageFilePath).readAsBytesSync());
+    }
 
     if (qrImage != null) {
       LuminanceSource source = RGBLuminanceSource(
@@ -348,12 +353,14 @@ class Setting18ConfigBloc
           List<DistributionConfig> distributionConfigs =
               configs[1] as List<DistributionConfig>;
           List<NodeConfig> nodeConfigs = configs[2] as List<NodeConfig>;
+          List<MDUConfig> mduConfigs = configs[3] as List<MDUConfig>;
 
           emit(state.copyWith(
             decodeStatus: FormStatus.requestSuccess,
             trunkConfigs: trunkConfigs,
             distributionConfigs: distributionConfigs,
             nodeConfigs: nodeConfigs,
+            mduConfigs: mduConfigs,
           ));
         } else {
           emit(state.copyWith(
@@ -362,6 +369,7 @@ class Setting18ConfigBloc
             trunkConfigs: state.trunkConfigs,
             distributionConfigs: state.distributionConfigs,
             nodeConfigs: state.nodeConfigs,
+            mduConfigs: state.mduConfigs,
           ));
         }
       } catch (e) {

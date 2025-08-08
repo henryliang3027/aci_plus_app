@@ -181,9 +181,9 @@ class __PopupMenuState extends State<_PopupMenu> {
     }) {
       final texts = [
         AppLocalizations.of(context)!.reconnect,
-        mode == Mode.basic
-            ? AppLocalizations.of(context)!.expertMode
-            : AppLocalizations.of(context)!.basicMode,
+        // mode == Mode.basic
+        //     ? AppLocalizations.of(context)!.expertMode
+        //     : AppLocalizations.of(context)!.basicMode,
         AppLocalizations.of(context)!.theme,
         AppLocalizations.of(context)!.warmReset,
         AppLocalizations.of(context)!.aboutUs,
@@ -234,59 +234,59 @@ class __PopupMenuState extends State<_PopupMenu> {
                     context.read<HomeBloc>().add(const DeviceRefreshed());
                   },
                 ),
-                menuItem(
-                  value: HomeMenu.mode,
-                  iconData: Icons.safety_divider,
-                  title: state.mode == Mode.basic
-                      ? AppLocalizations.of(context)!.expertMode
-                      : AppLocalizations.of(context)!.basicMode,
-                  onTap: () {
-                    if (state.mode == Mode.basic) {
-                      showEnterExpertModeDialog(context: context)
-                          .then((bool? isMatch) {
-                        if (isMatch != null) {
-                          if (isMatch) {
-                            context
-                                .read<HomeBloc>()
-                                .add(const ModeChanged(Mode.expert));
-                          }
-                        }
-                      });
-                    } else {
-                      showToggleBasicModeDialog(context: context)
-                          .then((bool? isConfirm) {
-                        if (isConfirm != null) {
-                          if (isConfirm) {
-                            context
-                                .read<HomeBloc>()
-                                .add(const ModeChanged(Mode.basic));
+                // menuItem(
+                //   value: HomeMenu.mode,
+                //   iconData: Icons.safety_divider,
+                //   title: state.mode == Mode.basic
+                //       ? AppLocalizations.of(context)!.expertMode
+                //       : AppLocalizations.of(context)!.basicMode,
+                //   onTap: () {
+                //     if (state.mode == Mode.basic) {
+                //       showEnterExpertModeDialog(context: context)
+                //           .then((bool? isMatch) {
+                //         if (isMatch != null) {
+                //           if (isMatch) {
+                //             context
+                //                 .read<HomeBloc>()
+                //                 .add(const ModeChanged(Mode.expert));
+                //           }
+                //         }
+                //       });
+                //     } else {
+                //       showToggleBasicModeDialog(context: context)
+                //           .then((bool? isConfirm) {
+                //         if (isConfirm != null) {
+                //           if (isConfirm) {
+                //             context
+                //                 .read<HomeBloc>()
+                //                 .add(const ModeChanged(Mode.basic));
 
-                            // 有連線到任何裝置時，才會開啟 ALSCMode
-                            // 沒有連線情況下只會回到 basic mode 而不進行設定
-                            if (state.connectionStatus.isRequestSuccess) {
-                              handleUpdateAction(
-                                context: context,
-                                targetBloc: context.read<Information18Bloc>(),
-                                action: () {
-                                  context
-                                      .read<Information18Bloc>()
-                                      .add(const ALSCModeRequested());
-                                },
-                                waitForState: (state) {
-                                  Information18State information18State =
-                                      state as Information18State;
+                //             // 有連線到任何裝置時，才會開啟 ALSCMode
+                //             // 沒有連線情況下只會回到 basic mode 而不進行設定
+                //             if (state.connectionStatus.isRequestSuccess) {
+                //               handleUpdateAction(
+                //                 context: context,
+                //                 targetBloc: context.read<Information18Bloc>(),
+                //                 action: () {
+                //                   context
+                //                       .read<Information18Bloc>()
+                //                       .add(const ALSCModeRequested());
+                //                 },
+                //                 waitForState: (state) {
+                //                   Information18State information18State =
+                //                       state as Information18State;
 
-                                  return information18State
-                                      .submissionStatus.isSubmissionSuccess;
-                                },
-                              );
-                            }
-                          }
-                        }
-                      });
-                    }
-                  },
-                ),
+                //                   return information18State
+                //                       .submissionStatus.isSubmissionSuccess;
+                //                 },
+                //               );
+                //             }
+                //           }
+                //         }
+                //       });
+                //     }
+                //   },
+                // ),
                 menuItem(
                   value: HomeMenu.theme,
                   iconData: Icons.colorize_rounded,

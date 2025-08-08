@@ -51,7 +51,7 @@ class Downloader18Bloc extends Bloc<Downloader18Event, Downloader18State> {
 
     for (int i = 0; i < 10; i++) {
       if (i > 0) {
-        // 每個 command 之間 等待 100 ms
+        // 每個 command 之間等待一段時間 ms 避免過快導致讀取遺漏
         await Future.delayed(const Duration(milliseconds: 30));
       }
       List<dynamic> resultOfLog = await getLogChunkWithRetry(i);

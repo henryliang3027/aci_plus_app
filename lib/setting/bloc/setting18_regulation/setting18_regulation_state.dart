@@ -11,7 +11,7 @@ class Setting18RegulationState extends Equatable {
     this.minFirstChannelLoadingFrequency = 0,
     this.maxLastChannelLoadingFrequency = 0,
     this.pilotFrequencyMode = '',
-    this.eqType = EQType.none,
+    this.eqType = EQType.board,
     this.pilotFrequency1 = const RangeIntegerInput.pure(),
     this.pilotFrequency2 = const RangeIntegerInput.pure(),
     this.manualModePilot1RFOutputPower = '',

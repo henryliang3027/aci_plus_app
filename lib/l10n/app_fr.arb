@@ -306,7 +306,7 @@
     "dataLogPageSetupWizard2": "Vous pouvez zoomer et cliquer sur le graphique pour afficher des informations détaillées",
     "dataLogPageSetupWizard3": "Télécharger et partager des données (format Excel)",
 
-    "rfLevelPageSetupWizard1": "Afficher la valeur actuelle de la force de bande RF (entrée / sortie de 256 bandes de fréquence chacune). Jusqu'à 400 enregistrements peuvent être stockés. Par exemple : les données sont enregistrées toutes les 60 minutes, et jusqu'à 16 jours de données peuvent être affichés.",
+    "rfLevelPageSetupWizard1": "Afficher la valeur actuelle de la force de bande RF (entrée / sortie de 282 bandes de fréquence chacune). Jusqu'à 260 enregistrements peuvent être stockés. Par exemple : les données sont enregistrées toutes les 60 minutes, et jusqu'à 10 jours de données peuvent être affichés.",
     "rfLevelPageSetupWizard2": "Vous pouvez zoomer et cliquer sur le graphique pour afficher des informations détaillées",
     "rfLevelPageSetupWizard3": "Télécharger et partager des données (format Excel)",
 

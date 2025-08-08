@@ -309,7 +309,7 @@
     "dataLogPageSetupWizard2": "You can zoom in / out and click on the chart to display detailed information",
     "dataLogPageSetupWizard3": "Download and share data ( Excel format )",
 
-    "rfLevelPageSetupWizard1": "Display the current RF band strength value ( Forward input / output 256 frequency bands each ). Up to 400 records can be stored. For example : data is recorded every 60 minutes, and up to 16 days of data can be displayed.",
+    "rfLevelPageSetupWizard1": "Display the current RF band strength value ( Forward input / output 282 frequency bands each ). Up to 260 records can be stored. For example : data is recorded every 60 minutes, and up to 10 days of data can be displayed.",
     "rfLevelPageSetupWizard2": "You can zoom in / out and click on the chart to display detailed information",
     "rfLevelPageSetupWizard3": "Download and share data ( Excel format )",
 

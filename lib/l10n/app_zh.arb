@@ -308,7 +308,7 @@
     "dataLogPageSetupWizard2": "可放大 / 縮小與點選圖表顯示詳細資訊",
     "dataLogPageSetupWizard3": "可下載 與 分享資料 ( Excel 格式 )",
 
-    "rfLevelPageSetupWizard1": "顯示目前 RF 頻段強度值 (下行輸入 / 輸出 各 256 頻段 ). 最多儲存 400 筆紀錄. 舉例 : 每 60 分鐘記錄一筆資料, 最多可顯示 16天 內資料",
+    "rfLevelPageSetupWizard1": "顯示目前 RF 頻段強度值 (下行輸入 / 輸出 各 282 頻段 ). 最多儲存 260 筆紀錄. 舉例 : 每 60 分鐘記錄一筆資料, 最多可顯示 10天 內資料",
     "rfLevelPageSetupWizard2": "可放大 / 縮小與點選圖表顯示詳細資訊",
     "rfLevelPageSetupWizard3": "可下載 與 分享資料 ( Excel 格式 )",
 

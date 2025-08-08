@@ -337,6 +337,9 @@ class Amp18Repository with BLECommandsMixin {
         value: _amp18Parser.command18Collection[183 - 180],
       );
 
+      // 每個 command 之間等待一段時間 ms 避免過快導致讀取遺漏
+      await Future.delayed(const Duration(milliseconds: 30));
+
       List<int> rawData2 =
           await _connectionClient.writeSetCommandToCharacteristic(
         commandIndex: 206,
