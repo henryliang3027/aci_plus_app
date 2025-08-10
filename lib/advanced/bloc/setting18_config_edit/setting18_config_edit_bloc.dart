@@ -58,8 +58,6 @@ class Setting18ConfigEditBloc
       settingStatus: SubmissionStatus.none,
     ));
 
-    // int id = await _configRepository.getConfigAutoIncrementId();
-
     String groupId = _groupId;
     String rawName = '';
     // String splitOption = '1';

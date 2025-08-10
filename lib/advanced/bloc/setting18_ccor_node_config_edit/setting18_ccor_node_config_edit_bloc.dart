@@ -47,8 +47,6 @@ class Setting18CCorNodeConfigEditBloc extends Bloc<
       settingStatus: SubmissionStatus.none,
     ));
 
-    // int id = await _configRepository.getConfigAutoIncrementId();
-
     String groupId = '2';
     String rawName = '';
     String forwardMode = '120';

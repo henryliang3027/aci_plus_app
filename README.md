@@ -13,6 +13,53 @@ ACI Plus App 是一個基於 Flutter 開發的 ACI 設備管理應用程式，�
 - **多國語言**: flutter_localizations
 - **主題**: adaptive_theme (支援深色/淺色模式)
 
+## 開發規範
+
+### 命名規範
+
+- **BLoC**: `功能名稱_bloc.dart`、`功能名稱_event.dart`、`功能名稱_state.dart`
+- **視圖**: `功能名稱_page.dart`（頁面）、`功能名稱_form.dart`（表單）
+- **倉庫**: `功能名稱_repository.dart`
+
+### 架構模式
+
+- 採用 BLoC 模式進行狀態管理
+- 使用 Repository 模式處理數據邏輯
+- 視圖與邏輯分離，確保代碼可維護性
+
+## 主要技術特性
+
+### 連接方式
+
+- **藍牙連接**: 支援 Android/iOS/Windows 平台藍牙通訊
+- **USB 連接**: 支援 Android 通過 FTDI 晶片進行 USB 串行通訊
+
+### 設備支援
+
+- **AMP 設備**: 1.8G/1.2G 放大器
+- **Node**: C-Cor Node 設備
+
+### 功能特性
+
+- **設備配置**: 完整的設備參數設定功能
+- **狀態監控**: 即時設備狀態顯示，每 5 秒更新一次
+- **數據圖表**: RF 輸出強度、數據日誌等圖表顯示
+- **韌體更新**: 支援設備韌體升級
+- **QR 碼**: QR 碼生成和掃描功能
+- **多國語言**: 支援英文、西班牙文、法文、繁體中文
+
+### 測試支援 (專案自動生成的目錄，無實作)
+
+- 單元測試: `mocktail`、`bloc_test`
+- 集成測試: `integration_test`
+- 驅動測試: `flutter_driver`
+
+## 版本資訊
+
+- **當前版本**: 2.5.0+2
+- **Flutter SDK**: >=3.4.0 <4.0.0
+- **開發狀態**: 測試版本 (v2.5.0-beta9)
+
 ## 目錄結構
 
 ### `/lib/` - 根目錄
@@ -143,7 +190,7 @@ core/
 ├── secondary_tab_bar_theme.dart  # 次標籤欄主題
 ├── setting_items_table.dart      # AMP / Node 設定項目表格
 ├── setup_wizard_dialog.dart      # 設置嚮導對話框
-├── shared_preference_key.dart    # 共享偏好鍵
+├── shared_preference_key.dart    # 本地端資料儲存 share preference 方式儲存 DSIM 資料, Hive 版本
 ├── status_items_table.dart       # 狀態項目表格
 ├── utils.dart                    # 通用工具函數
 └── working_mode_table.dart       # AMP 工作模式表格
@@ -154,13 +201,18 @@ core/
 ```
 home/
 ├── bloc/                 # 主頁面狀態管理
-│   ├── alarm_description/        # 警報描述功能
+│   ├── alarm_description/        # Alarm 描述功能
 │   ├── home/                     # 主頁面邏輯
 │   └── peripheral_selector/      # 外圍設備選擇器
 └── views/                # 主頁面視圖
-    ├── alarm_description_*.dart  # 警報描述視圖
-    ├── home_*.dart              # 主頁面視圖
-    └── peripheral_selector_*.dart # 設備選擇器視圖
+    ├── alarm_description_form.dart  # Alarm 描述表單，顯示設備 Alarm 詳細資訊
+    ├── alarm_description_page.dart  # Alarm 描述頁面
+    ├── home_bottom_navigation_bar.dart # DSIM 底部導航列
+    ├── home_buttom_navigation_bar18.dart # AMP / Node 底部導航列 (包含 Alarm 脈衝功能)
+    ├── home_form.dart               # 主頁面表單，整合所有設備功能頁面
+    ├── home_page.dart               # 主頁面入口
+    ├── peripheral_selector_form.dart # 藍牙設備選擇器表單
+    └── peripheral_selector_page.dart # 藍牙設備選擇器頁面
 ```
 
 ### `/information/` - 資訊顯示模組
@@ -168,25 +220,42 @@ home/
 ```
 information/
 ├── bloc/                 # 資訊頁面狀態管理
-│   ├── information/              # 基礎資訊功能
-│   ├── information18/            # AMP18 資訊
-│   ├── information18_ccor_node/  # C-Cor 節點資訊
-│   ├── information18_*_preset/   # 預設配置功能
-│   ├── mode_input/               # 模式輸入
-│   ├── theme/                    # 主題管理
-│   └── warm_reset/               # 暖重置功能
+│   ├── information/              # DSIM 資訊功能
+│   ├── information18/            # AMP 資訊功能
+│   ├── information18_ccor_node/  # Node 資訊功能
+│   ├── information18_ccor_node_preset/ # Node preset 功能
+│   ├── information18_preset/     # AMP 預設配置功能
+│   ├── mode_input/               # 模式輸入功能
+│   ├── theme/                    # 主題管理功能
+│   └── warm_reset/               # 熱重啟功能
 ├── shared/               # 共用組件
-│   ├── mode_*.dart              # 模式相關組件
-│   ├── theme_*.dart             # 主題相關組件
-│   ├── utils.dart               # 工具函數
-│   └── warm_reset_widget.dart   # 暖重置組件
+│   ├── mode_Input_form.dart     # 模式輸入表單
+│   ├── mode_Input_page.dart     # 模式輸入頁面
+│   ├── mode_widget.dart         # 模式選擇組件
+│   ├── theme_option_form.dart   # 主題選項表單 (淺色/深色/系統)
+│   ├── theme_option_page.dart   # 主題選項頁面
+│   ├── theme_option_widget.dart # 主題選項組件
+│   ├── utils.dart               # 資訊頁面共用函數
+│   └── warm_reset_widget.dart   # 熱重啟對話框組件
 └── views/                # 資訊視圖
-    ├── information*.dart        # 資訊頁面視圖
-    ├── name_plate_view.dart     # 銘牌視圖
-    └── warm_reset_*.dart        # 暖重置視圖
+    ├── information18_ccor_node_config_list_view.dart # Node preset 清單視圖
+    ├── information18_ccor_node_form.dart # Node 資訊表單
+    ├── information18_ccor_node_page.dart # Node 資訊頁面
+    ├── information18_ccor_node_preset_form.dart # Node preset 表單
+    ├── information18_ccor_node_preset_page.dart # Node preset 頁面
+    ├── information18_config_list_view.dart # AMP preset 清單視圖
+    ├── information18_form.dart          # AMP 資訊表單
+    ├── information18_page.dart          # AMP 資訊頁面
+    ├── information18_preset_form.dart   # AMP preset 表單
+    ├── information18_preset_page.dart   # AMP preset 頁面
+    ├── information_form.dart            # DSIM 資訊表單
+    ├── information_page.dart            # DSIM 資訊頁面
+    ├── name_plate_view.dart             # 銘版圖視圖
+    ├── warm_reset_form.dart             # 熱重啟表單
+    └── warm_reset_page.dart             # 熱重啟頁面
 ```
 
-### `/l10n/` - 國際化模組
+### `/l10n/` - 多國語言模組
 
 ```
 l10n/
@@ -200,28 +269,48 @@ l10n/
 
 ```
 repositories/
-├── aci_device_repository.dart    # ACI 設備數據倉庫
-├── amp18_*.dart                  # AMP18 相關倉庫
+├── aci_device_repository.dart    # 處理USB/BLE連接，處理 ACI 設備類型 AMP / Node
+├── amp18_ccor_node_chart_cache.dart # Node 圖表數據快取
+├── amp18_ccor_node_parser.dart   # Node 數據解析器
+├── amp18_ccor_node_repository.dart # Node 設備倉庫
+├── amp18_chart_cache.dart        # AMP 圖表數據快取
+├── amp18_parser.dart             # AMP 數據解析器
+├── amp18_repository.dart         # AMP 設備數據倉庫
 ├── ble_client.dart               # BLE 客戶端 (Android/iOS)
-├── ble_client_base.dart          # BLE 客戶端基礎類別 (空檔案)
 ├── ble_command_mixin.dart        # BLE 命令混入類，提供設備參數設定功能
-├── ble_peripheral.dart           # BLE 外圍設備模型和狀態定義
+├── ble_peripheral.dart           # BLE dongle 狀態定義
 ├── ble_windows_client.dart       # Windows 平台 BLE 客戶端
-├── code_repository.dart          # 代碼倉庫
-├── config*.dart                  # 配置相關倉庫
-├── connection_*.dart             # 連接管理
-├── distribution_config.*         # 分配器配置
-├── dongle.*                      # Dongle 設備
-├── dsim_*.dart                   # DSIM 相關
-├── firmware_repository.dart      # 韌體倉庫
-├── gps_repository.dart           # GPS 倉庫
-├── mdu_config.*                  # MDU 配置
-├── mock/                         # 模擬數據
-├── node_config.*                 # 節點配置
-├── sample_data.dart              # 樣本數據
-├── trunk_config.*                # 主幹配置
-├── unit_*.dart                   # 單位相關
-└── usb_client.dart               # USB 客戶端
+├── code_repository.dart          # 人員代碼驗證倉庫
+├── config.dart                   # 設備配置數據模型類別
+├── config_repository.dart        # 配置檔案管理倉庫 (匯入/匯出)
+├── connection_client.dart        # 連接客戶端抽象類別
+├── connection_client_factory.dart # 連接客戶端工廠，自動選擇 USB 或 BLE
+├── distribution_config.dart      # 支線放大器配置模型
+├── distribution_config.g.dart    # 支線放大器配置序列化文件 (自動生成)
+├── distribution_config_api.dart  # 支線放大器配置API
+├── dongle.dart                   # Dongle 設備配置模型 (沒有用到了)
+├── dongle.g.dart                 # Dongle 配置序列化文件 (自動生成) (沒有用到了)
+├── dsim_parser.dart              # DSIM 數據解析器
+├── dsim_repository.dart          # DSIM 設備數據倉庫
+├── firmware_repository.dart      # 韌體更新管理倉庫
+├── gps_repository.dart           # GPS 定位服務倉庫
+├── mdu_config.dart               # MDU (多住戶單元) 配置模型
+├── mdu_config.g.dart             # MDU 配置序列化文件 (自動生成)
+├── mdu_config_api.dart           # MDU 配置API
+├── mock/                         # 模擬數據目錄
+│   ├── amp18_repository_data.dart    # AMP 模擬測試數據
+│   ├── sample_aci_device_repository.dart # DSIM 模擬設備倉庫
+│   └── sample_amp18_repository.dart  # AMP 模擬設備倉庫
+├── node_config.dart              # Node 配置模型
+├── node_config.g.dart            # Node 配置序列化文件 (自動生成)
+├── node_config_api.dart          # Node 配置API
+├── sample_data.dart              # 模擬測試數據
+├── trunk_config.dart             # 幹線放大器配置模型
+├── trunk_config.g.dart           # 幹線放大器配置序列化文件 (自動生成)
+├── trunk_config_api.dart         # 幹線放大器配置API
+├── unit_converter.dart           # 溫度單位轉換工具
+├── unit_repository.dart          # 單位管理倉庫 (華氏/攝氏溫度)
+└── usb_client.dart               # USB 客戶端 (FTDI串口通訊，僅限 Android)
 ```
 
 ### `/setting/` - 設定頁面模組
@@ -265,57 +354,12 @@ status/
 │   ├── status18/                 # AMP18 狀態
 │   └── status18_ccor_node/       # C-Cor 節點狀態
 ├── shared/               # 狀態頁面共用組件
-│   └── utils.dart               # 工具函數
+│   └── utils.dart               # 狀態頁面共用函數
 └── views/                # 狀態視圖
-    ├── status18_*.dart          # AMP18 狀態視圖
-    └── status*.dart             # 基礎狀態視圖
+    ├── status18_ccor_node_form.dart # Node 狀態表單，顯示 Node 設備的各種狀態卡片
+    ├── status18_ccor_node_page.dart # Node 狀態頁面
+    ├── status18_form.dart           # AMP 狀態表單，顯示運行模式、工作模式、溫度、電壓等各種狀態卡片
+    ├── status18_page.dart           # AMP 狀態頁面
+    ├── status_form.dart             # DSIM 狀態表單，顯示溫度、衰減、電源供應等狀態卡片
+    └── status_page.dart             # DSIM 狀態頁面
 ```
-
-## 主要技術特性
-
-### 連接方式
-
-- **藍牙連接**: 支援 Android/iOS 平台藍牙通訊
-- **USB 連接**: 支援通過 FTDI 晶片進行 USB 串行通訊
-- **跨平台**: 支援 Android、iOS、Windows 平台
-
-### 設備支援
-
-- **ACI 設備**: 基礎 CATV 放大器
-- **AMP18 設備**: 18 通道 CATV 放大器
-- **C-Cor 節點**: C-Cor 廠商的節點設備
-
-### 功能特性
-
-- **設備配置**: 完整的設備參數設定功能
-- **狀態監控**: 即時設備狀態顯示
-- **數據圖表**: RF 電平、數據日誌等圖表顯示
-- **韌體更新**: 支援設備韌體升級
-- **QR 碼**: QR 碼生成和掃描功能
-- **多語言**: 支援英文、西班牙文、法文、繁體中文
-
-## 開發規範
-
-### 命名規範
-
-- **BLoC**: `功能名稱_bloc.dart`、`功能名稱_event.dart`、`功能名稱_state.dart`
-- **視圖**: `功能名稱_page.dart`（頁面）、`功能名稱_form.dart`（表單）
-- **倉庫**: `功能名稱_repository.dart`
-
-### 架構模式
-
-- 採用 BLoC 模式進行狀態管理
-- 使用 Repository 模式處理數據邏輯
-- 視圖與邏輯分離，確保代碼可維護性
-
-### 測試支援
-
-- 單元測試: `mocktail`、`bloc_test`
-- 集成測試: `integration_test`
-- 驅動測試: `flutter_driver`
-
-## 版本資訊
-
-- **當前版本**: 2.5.0+2
-- **Flutter SDK**: >=3.4.0 <4.0.0
-- **開發狀態**: 測試版本 (v2.5.0-beta9)
