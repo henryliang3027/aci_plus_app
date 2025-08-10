@@ -125,29 +125,28 @@ chart/
 ```
 core/
 ├── command.dart                  # DSIM command 定義
-├── command18.dart                # AMP18 command 定義
-├── command18_c_core_node.dart    # Node 命令
-├── common_enum.dart              # 通用枚舉定義
+├── command18.dart                # AMP command 定義
+├── command18_c_core_node.dart    # Node 定義
+├── common_enum.dart              # 通用 Enum 定義
 ├── control_item_*.dart           # 控制項目相關
 ├── crc16_calculate.dart          # CRC16 校驗計算
 ├── custom_dialog.dart            # 自定義對話框
 ├── custom_icons/                 # 自定義 Icon
 ├── custom_style.dart             # 自定義樣式，顏色，字體等等常數
-├── data_key.dart                 # 數據鍵定義
-├── delay_input/                  # 延遲輸入功能
-├── firmware_file_id.dart         # 韌體檔案 ID
+├── data_key.dart                 # AMP / Node 鍵值定義
+├── firmware_file_id.dart         # 韌體檔案驗證碼檢查表
 ├── form_status.dart              # 表單狀態管理
-├── message_localization.dart     # 訊息本地化
+├── message_localization.dart     # 多國語言訊息轉換
 ├── notice_dialog.dart            # 通知對話框
-├── pilot_channel.dart            # 導頻頻道
-├── pulsator.dart                 # 脈衝器組件
-├── secondary_tab_bar_theme.dart  # 次級標籤欄主題
-├── setting_items_table.dart      # 設定項目表格
+├── pilot_channel.dart            # DSIM 導頻頻道
+├── pulsator.dart                 # AMP / Node 的 Alarm 脈衝特效組件
+├── secondary_tab_bar_theme.dart  # 次標籤欄主題
+├── setting_items_table.dart      # AMP / Node 設定項目表格
 ├── setup_wizard_dialog.dart      # 設置嚮導對話框
 ├── shared_preference_key.dart    # 共享偏好鍵
 ├── status_items_table.dart       # 狀態項目表格
 ├── utils.dart                    # 通用工具函數
-└── working_mode_table.dart       # 工作模式表格
+└── working_mode_table.dart       # AMP 工作模式表格
 ```
 
 ### `/home/` - 主頁面模組
