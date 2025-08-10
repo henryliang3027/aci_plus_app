@@ -60,6 +60,206 @@ ACI Plus App 是一個基於 Flutter 開發的 ACI 設備管理應用程式，�
 - **Flutter SDK**: >=3.4.0 <4.0.0
 - **開發狀態**: 測試版本 (v2.5.0-beta9)
 
+## 應用程式架構圖
+
+### 整體架構層次
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                          ACI Plus App                           │
+├─────────────────────────────────────────────────────────────────┤
+│  Main App (main.dart + app.dart)                                │
+│  ├── MultiRepositoryProvider (全域 Repository 注入)              │
+│  └── HomeBloc (全域狀態管理)                                      │
+└─────────────────────────────────────────────────────────────────┘
+                                │
+                                ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                        HomePage (主頁面)                         │
+│                         HomeForm                                │
+│  ├── PageController (頁面控制器)                                  │
+│  └── 根據設備類型動態加載不同頁面                                    │
+└─────────────────────────────────────────────────────────────────┘
+                                │
+        ┌───────────────────────┼───────────────────────┐
+        ▼                       ▼                       ▼
+┌─────────────┐       ┌──────────────────┐       ┌─────────────┐
+│    DSIM     │       │      AMP         │       │    Node     │
+│             │       │ (1.8G/1.2G放大器) │       │ (C-Cor Node)│
+└─────────────┘       └──────────────────┘       └─────────────┘
+```
+
+### 設備類型與頁面對應關係
+
+#### DSIM 設備頁面架構
+
+```
+DSIM 設備頁面
+├── Setting (設定)
+│   ├── Page: SettingPage
+│   ├── Form: SettingForm
+│   ├── BLoC: 無專用 BLoC (使用 HomeBloc)
+│   └── Repository: DsimRepository
+├── Status (狀態)
+│   ├── Page: StatusPage
+│   ├── Form: StatusForm
+│   ├── BLoC: StatusBloc
+│   └── Repository: DsimRepository (透過 HomeBloc)
+├── Chart (圖表)
+│   ├── Page: ChartPage
+│   ├── Form: ChartForm
+│   ├── BLoC: ChartBloc
+│   └── Repository: DsimRepository
+├── Information (資訊)
+│   ├── Page: InformationPage
+│   ├── Form: InformationForm
+│   ├── BLoC: InformationBloc, ModeInputBloc, ThemeBloc, WarmResetBloc
+│   └── Repository: DsimRepository
+└── About (關於)
+    ├── Page: AboutPage
+    ├── BLoC: 無專用 BLoC
+    └── Repository: 無
+```
+
+#### AMP 設備 (1.8G 放大器) 頁面架構
+
+```
+AMP 設備頁面
+├── Setting (設定)
+│   ├── Page: Setting18Page
+│   ├── Form: Setting18Form (已註解，未使用)
+│   ├── TabBar: Setting18TabBar
+│   ├── BLoC: Setting18AttributeBloc, Setting18ForwardControlBloc,
+│   │        Setting18GraphModuleBloc, Setting18GraphViewBloc,
+│   │        Setting18IngressControlBloc, Setting18RegulationBloc,
+│   │        Setting18ReverseControlBloc, Setting18ThresholdBloc
+│   └── Repository: Amp18Repository
+├── Status (狀態)
+│   ├── Page: Status18Page
+│   ├── Form: Status18Form
+│   ├── BLoC: Status18Bloc
+│   └── Repository: Amp18Repository, UnitRepository
+├── Chart (圖表)
+│   ├── Page: Chart18Page
+│   ├── Form: Chart18Form
+│   ├── BLoC: Chart18Bloc, CodeInputBloc, DataLogChartBloc,
+│   │        Downloader18Bloc, Downloader18RfOutBloc, RfLevelChartBloc
+│   └── Repository: Amp18Repository
+├── Information (資訊)
+│   ├── Page: Information18Page
+│   ├── Form: Information18Form
+│   ├── BLoC: Information18Bloc, Information18PresetBloc,
+│   │        ModeInputBloc, ThemeBloc, WarmResetBloc
+│   └── Repository: Amp18Repository
+├── About (關於)
+│   ├── Page: About18Page
+│   ├── Form: About18Form
+│   ├── BLoC: 無專用 BLoC
+│   └── Repository: 無
+└── Advanced (進階)
+    ├── Page: Setting18AdvancedPage
+    ├── Form: Setting18AdvancedForm
+    ├── TabBar: Setting18AdvancedTabBar
+    ├── BLoC: Setting18AdvancedBloc, Setting18ConfigBloc,
+    │        Setting18ConfigEditBloc, Setting18FirmwareLogBloc,
+    │        Setting18FirmwareUpdateBloc, DescriptionInputBloc,
+    │        QrCodeGeneratorBloc
+    └── Repository: Amp18Repository, ConfigRepository, FirmwareRepository
+```
+
+#### Node 設備 (C-Cor 節點) 頁面架構
+
+```
+Node 設備頁面
+├── Setting (設定)
+│   ├── Page: Setting18CCorNodePage
+│   ├── Form: Setting18CCorNodeForm
+│   ├── TabBar: Setting18CCorNodeTabBar
+│   ├── BLoC: Setting18CCorNodeAttributeBloc, Setting18CCorNodeForwardControlBloc,
+│   │        Setting18CCorNodeGraphModuleBloc, Setting18CCorNodeGraphViewBloc,
+│   │        Setting18CCorNodeIngressControlBloc, Setting18CCorNodeRegulationBloc,
+│   │        Setting18CCorNodeReverseControlBloc, Setting18CCorNodeThresholdBloc
+│   └── Repository: Amp18CCorNodeRepository
+├── Status (狀態)
+│   ├── Page: Status18CCorNodePage
+│   ├── Form: Status18CCorNodeForm
+│   ├── BLoC: Status18CCorNodeBloc
+│   └── Repository: Amp18CCorNodeRepository, UnitRepository
+├── Chart (圖表)
+│   ├── Page: Chart18CCorNodePage
+│   ├── Form: Chart18CCorNodeForm
+│   ├── BLoC: Chart18CCorNodeBloc, CodeInputBloc, Downloader18CCorNodeBloc
+│   └── Repository: Amp18CCorNodeRepository
+├── Information (資訊)
+│   ├── Page: Information18CCorNodePage
+│   ├── Form: Information18CCorNodeForm
+│   ├── BLoC: Information18CCorNodeBloc, Information18CCorNodePresetBloc,
+│   │        ModeInputBloc, ThemeBloc, WarmResetBloc
+│   └── Repository: Amp18CCorNodeRepository
+├── About (關於)
+│   ├── Page: About18Page
+│   ├── Form: About18Form
+│   ├── BLoC: 無專用 BLoC
+│   └── Repository: 無
+└── Advanced (進階)
+    ├── Page: Setting18AdvancedPage
+    ├── Form: Setting18AdvancedForm
+    ├── TabBar: Setting18AdvancedTabBar
+    ├── BLoC: Setting18AdvancedBloc, Setting18CCorNodeConfigEditBloc,
+    │        Setting18ConfigBloc, Setting18FirmwareLogBloc,
+    │        Setting18FirmwareUpdateBloc, DescriptionInputBloc,
+    │        QrCodeGeneratorBloc
+    └── Repository: Amp18CCorNodeRepository, ConfigRepository, FirmwareRepository
+```
+
+### Repository 層次架構
+
+```
+Repository 層
+├── 核心連接 Repository
+│   ├── ACIDeviceRepository (設備連接總管理)
+│   ├── ConnectionClientFactory (連接工廠)
+│   ├── BLEClient / BLEWindowsClient / USBClient (連接客戶端)
+│   └── BLECommandsMixin (BLE 命令混入)
+├── 設備專用 Repository
+│   ├── DsimRepository (DSIM 設備)
+│   ├── Amp18Repository (AMP 設備)
+│   └── Amp18CCorNodeRepository (Node 設備)
+├── 功能專用 Repository
+│   ├── ConfigRepository (配置管理)
+│   ├── FirmwareRepository (韌體管理)
+│   ├── GPSRepository (GPS 定位)
+│   ├── UnitRepository (單位轉換)
+│   └── CodeRepository (人員代碼驗證)
+└── 圖表快取 Repository
+    ├── Amp18ChartCache (AMP 圖表快取)
+    └── Amp18CCorNodeChartCache (Node 圖表快取)
+```
+
+### BLoC 狀態管理層次
+
+```
+BLoC 架構
+├── 全域 BLoC
+│   └── HomeBloc (應用程式主要狀態，設備連接、掃描等)
+├── 頁面層級 BLoC
+│   ├── 設定相關: Setting18*Bloc, ConfirmInputBloc
+│   ├── 狀態相關: Status*Bloc
+│   ├── 圖表相關: Chart*Bloc, DataLogChartBloc, RfLevelChartBloc
+│   ├── 資訊相關: Information*Bloc, Information*PresetBloc
+│   └── 進階相關: Setting18AdvancedBloc, Setting18*ConfigBloc
+├── 共用功能 BLoC
+│   ├── ModeInputBloc (模式輸入)
+│   ├── ThemeBloc (主題管理)
+│   ├── WarmResetBloc (熱重啟)
+│   ├── CodeInputBloc (代碼輸入)
+│   └── QrCodeGeneratorBloc (QR code 生成)
+└── 工具類 BLoC
+    ├── Downloader*Bloc (下載器)
+    ├── DescriptionInputBloc (描述輸入)
+    └── Setting18FirmwareLogBloc (韌體日誌)
+```
+
 ## 目錄結構
 
 ### `/lib/` - 根目錄
@@ -97,13 +297,13 @@ advanced/
 │   ├── setting18_firmware_log/   # 韌體日誌管理
 │   └── setting18_firmware_update/ # 韌體更新功能
 └── view/                 # UI 視圖組件
-    ├── description_input_form.dart    # QR碼描述輸入表單
-    ├── description_input_page.dart    # QR碼描述輸入頁面
-    ├── qr_code_generator_form.dart    # QR碼生成表單
-    ├── qr_code_generator_page.dart    # QR碼生成頁面
-    ├── qr_code_image_viewer.dart      # QR碼圖片查看器
-    ├── qr_code_scanner.dart           # QR碼掃描器 (Android/iOS)
-    ├── qr_code_scanner_win.dart       # QR碼掃描器 (Windows)
+    ├── description_input_form.dart    # QR code 描述輸入表單
+    ├── description_input_page.dart    # QR code 描述輸入頁面
+    ├── qr_code_generator_form.dart    # QR code 生成表單
+    ├── qr_code_generator_page.dart    # QR code 生成頁面
+    ├── qr_code_image_viewer.dart      # QR code 圖片查看器
+    ├── qr_code_scanner.dart           # QR code 掃描器 (Android/iOS)
+    ├── qr_code_scanner_win.dart       # QR code 掃描器 (Windows)
     ├── setting18_advanced_form.dart   # AMP進階設定表單
     ├── setting18_advanced_page.dart   # AMP進階設定頁面
     ├── setting18_advanced_tab_bar.dart # AMP進階設定標籤頁
@@ -175,7 +375,7 @@ core/
 ├── command18.dart                # AMP command 定義
 ├── command18_c_core_node.dart    # Node 定義
 ├── common_enum.dart              # 通用 Enum 定義
-├── control_item_*.dart           # 控制項目相關
+├── control_item_vlaue.dart       # 定義控制項目的最大最小值
 ├── crc16_calculate.dart          # CRC16 校驗計算
 ├── custom_dialog.dart            # 自定義對話框
 ├── custom_icons/                 # 自定義 Icon
@@ -269,7 +469,7 @@ l10n/
 
 ```
 repositories/
-├── aci_device_repository.dart    # 處理USB/BLE連接，處理 ACI 設備類型 AMP / Node
+├── aci_device_repository.dart    # 處理 USB / BLE 連接，處理 ACI 設備類型 AMP / Node
 ├── amp18_ccor_node_chart_cache.dart # Node 圖表數據快取
 ├── amp18_ccor_node_parser.dart   # Node 數據解析器
 ├── amp18_ccor_node_repository.dart # Node 設備倉庫
@@ -318,31 +518,95 @@ repositories/
 ```
 setting/
 ├── bloc/                 # 設定頁面狀態管理
-│   ├── confirm_input/            # 確認輸入功能
-│   ├── setting18/                # AMP18 基礎設定
-│   ├── setting18_*_attribute/    # 屬性設定
-│   ├── setting18_*_control/      # 控制設定
-│   ├── setting18_*_graph_*/      # 圖形相關設定
-│   ├── setting18_*_regulation/   # 調節設定
-│   ├── setting18_*_threshold/    # 閾值設定
-│   └── setting_list_view/        # 設定列表視圖
-├── model/                # 設定頁面數據模型
+│   ├── confirm_input/                          # 確認輸入功能
+│   ├── setting18/                              # AMP 主頁面 (沒有使用到)
+│   ├── setting18_attribute/                    # AMP 屬性設定
+│   ├── setting18_ccor_node/                    # Node 基礎設定 (沒有使用到)
+│   ├── setting18_ccor_node_attribute/          # Node 屬性設定
+│   ├── setting18_ccor_node_configure/          # Node 配置設定 (沒有使用到)
+│   ├── setting18_ccor_node_forward_control/    # Node 下行控制設定
+│   ├── setting18_ccor_node_graph_module/       # Node 圖形模組設定
+│   ├── setting18_ccor_node_graph_view/         # Node 圖形視圖設定
+│   ├── setting18_ccor_node_ingress_control/    # Node Ingress 控制設定
+│   ├── setting18_ccor_node_regulation/         # Node 常規設定
+│   ├── setting18_ccor_node_reverse_control_dart/ # Node 上行控制設定
+│   ├── setting18_ccor_node_threshold/          # Node 閾值設定
+│   ├── setting18_forward_control/              # AMP 下行控制設定
+│   ├── setting18_graph_module/                 # AMP 圖形模組設定
+│   ├── setting18_graph_view/                   # AMP 圖形視圖設定
+│   ├── setting18_ingress_control/              # AMP Ingress 控制設定
+│   ├── setting18_regulation/                   # AMP 常規設定
+│   ├── setting18_reverse_control/              # AMP 上行控制設定
+│   ├── setting18_threshold/                    # AMP Alarm 門檻值設定
+│   └── setting_list_view/                      # DSIM 設定列表視圖
+├── model/                # 設定頁面共用模組
 │   ├── card_color.dart           # 卡片顏色
 │   ├── confirm_input_dialog.dart # 確認輸入對話框
-│   ├── custom_input.dart         # 自定義輸入
+│   ├── custom_input.dart         # 自定義輸入表單類別，包含驗證邏輯
 │   ├── formz_input_initializer.dart # 表單初始化器
 │   ├── graph_module_form_color.dart # 圖形模組表單顏色
-│   ├── pilot_code.dart           # 導頻代碼
-│   ├── setting18_result_text.dart # AMP18 結果文本
+│   ├── pilot_code.dart           # DSIM 導航頻道代碼驗證表單類別，包含驗證邏輯
+│   ├── setting18_result_text.dart # AMP / Node 設定結果文字處理
 │   ├── setting_widgets.dart      # 設定組件
-│   └── svg_image.dart           # SVG 圖像
+│   └── svg_image.dart           # SVG 圖像類別
 └── views/                # 設定視圖
-    ├── circuit_painter.dart      # 電路繪製器
-    ├── confirm_input_*.dart      # 確認輸入視圖
-    ├── custom_setting_dialog.dart # 自定義設定對話框
-    ├── setting18_ccor_node_views/ # C-Cor 節點設定視圖
-    ├── setting18_views/          # AMP18 設定視圖
-    └── setting_views/            # 基礎設定視圖
+    ├── circuit_painter.dart           # SVG 電路圖繪製器，支援點擊互動顯示模組設定對話框
+    ├── confirm_input_form.dart        # 確認輸入表單，用於設定的二次確認
+    ├── confirm_input_page.dart        # 確認輸入頁面
+    ├── custom_setting_dialog.dart     # 自定義設定對話框，包含進度指示器和各種提示對話框
+    ├── setting18_ccor_node_views/     # Node 設定視圖目錄
+    │   ├── setting18_ccor_node_attribute_page.dart     # Node 屬性設定頁面
+    │   ├── setting18_ccor_node_attribute_view.dart     # Node 屬性設定視圖
+    │   ├── setting18_ccor_node_configure_page.dart     # Node 配置設定頁面
+    │   ├── setting18_ccor_node_configure_tab_bar.dart  # Node 配置標籤欄
+    │   ├── setting18_ccor_node_configure_view.dart     # Node 配置設定視圖
+    │   ├── setting18_ccor_node_control_page.dart       # Node 控制設定頁面
+    │   ├── setting18_ccor_node_control_tab_bar.dart    # Node 控制標籤欄
+    │   ├── setting18_ccor_node_form.dart               # Node 設定主表單，包含標籤頁控制器
+    │   ├── setting18_ccor_node_forward_control_page.dart # Node 下行控制設定頁面
+    │   ├── setting18_ccor_node_forward_control_view.dart # Node 下行控制設定視圖
+    │   ├── setting18_ccor_node_graph_module_form.dart  # Node 圖形模組設定表單
+    │   ├── setting18_ccor_node_graph_module_page.dart  # Node 圖形模組設定頁面
+    │   ├── setting18_ccor_node_graph_page.dart         # Node 圖形設定頁面
+    │   ├── setting18_ccor_node_graph_view.dart         # Node 圖形設定視圖
+    │   ├── setting18_ccor_node_ingress_control_page.dart # Node Ingress 控制設定頁面
+    │   ├── setting18_ccor_node_ingress_control_view.dart # Node Ingress 控制設定視圖
+    │   ├── setting18_ccor_node_page.dart               # Node 設定主頁面
+    │   ├── setting18_ccor_node_regulation_page.dart    # Node 常規設定頁面
+    │   ├── setting18_ccor_node_regulation_view.dart    # Node 常規設定視圖
+    │   ├── setting18_ccor_node_reverse_control_page.dart # Node 上行控制設定頁面
+    │   ├── setting18_ccor_node_reverse_control_view.dart # Node 上行控制設定視圖
+    │   ├── setting18_ccor_node_tab_bar.dart            # Node 主標籤欄
+    │   ├── setting18_ccor_node_threshold_page.dart     # Node 閾值設定頁面
+    │   └── setting18_ccor_node_threshold_view.dart     # Node 閾值設定視圖
+    ├── setting18_views/               # AMP 設定視圖目錄
+    │   ├── setting18_attribute_page.dart       # AMP 屬性設定頁面
+    │   ├── setting18_attribute_view.dart       # AMP 屬性設定視圖
+    │   ├── setting18_configure_page.dart       # AMP 配置設定頁面
+    │   ├── setting18_configure_tab_bar.dart    # AMP 配置標籤欄
+    │   ├── setting18_control_page.dart         # AMP 控制設定頁面
+    │   ├── setting18_control_tab_bar.dart      # AMP 控制標籤欄
+    │   ├── setting18_form.dart                 # AMP 設定主表單 (已註解，未使用)
+    │   ├── setting18_forward_control_page.dart # AMP 下行控制設定頁面
+    │   ├── setting18_forward_control_view.dart # AMP 下行控制設定視圖
+    │   ├── setting18_graph_module_form.dart    # AMP 圖形模組設定表單
+    │   ├── setting18_graph_module_page.dart    # AMP 圖形模組設定頁面
+    │   ├── setting18_graph_page.dart           # AMP 圖形設定頁面
+    │   ├── setting18_graph_view.dart           # AMP 圖形設定視圖
+    │   ├── setting18_ingress_control_page.dart # AMP Ingress 控制設定頁面
+    │   ├── setting18_ingress_control_view.dart # AMP Ingress 控制設定視圖
+    │   ├── setting18_page.dart                 # AMP 設定主頁面
+    │   ├── setting18_regulation_page.dart      # AMP 常規設定頁面
+    │   ├── setting18_regulation_view.dart      # AMP 常規設定視圖
+    │   ├── setting18_reverse_control_page.dart # AMP 上行控制設定頁面
+    │   ├── setting18_reverse_control_view.dart # AMP 上行控制設定視圖
+    │   ├── setting18_tabbar.dart               # AMP 主標籤欄
+    │   ├── setting18_threshold_page.dart       # AMP 閾值設定頁面
+    │   └── setting18_threshold_view.dart       # AMP 閾值設定視圖
+    └── setting_views/                 # DSIM 設定視圖目錄
+        ├── setting_form.dart          # DSIM 設定主表單，包含設備狀態與設定列表
+        ├── setting_list_view.dart     # DSIM 設定項目列表視圖
+        └── setting_page.dart          # DSIM 設定主頁面
 ```
 
 ### `/status/` - 狀態監控模組
