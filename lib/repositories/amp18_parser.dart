@@ -1603,14 +1603,21 @@ class Amp18Parser {
           DateFormat('yyyy_MM_dd_HH_mm_ss').format(dateTime).toString();
 
       List<TextCellValue> timeRow = [TextCellValue(timeStamp)];
+      List<TextCellValue> countRow = [TextCellValue((i + 1).toString())];
+      rfOutputLogSheet.insertRowIterables(
+        countRow,
+        0,
+        startingColumn: i * 3,
+      );
+
       rfOutputLogSheet.insertRowIterables(
         timeRow,
-        0,
+        1,
         startingColumn: i * 3,
       );
       rfOutputLogSheet.insertRowIterables(
         rfHeader,
-        1,
+        2,
         startingColumn: i * 3,
       );
 
@@ -1628,7 +1635,7 @@ class Amp18Parser {
 
         rfOutputLogSheet.insertRowIterables(
           outputRow,
-          j + 2,
+          j + 3,
           startingColumn: i * 3,
         );
       }

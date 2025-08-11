@@ -297,7 +297,7 @@ class Setting18ConfigBloc
 
     FilePickerResult? fileResult = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: ['jpg', 'png'],
+      allowedExtensions: ['jpg', 'jpeg', 'png'],
     );
 
     String imageFilePath =

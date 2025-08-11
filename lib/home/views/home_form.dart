@@ -273,13 +273,13 @@ class _HomeFormState extends State<HomeForm> {
                 }
               }
 
-              // if (partId != '4' && partId != '') {
-              //   if (ModeProperty.isExpertMode) {
-              //     showExpertModeReminderDialogDialog(
-              //       context: context,
-              //     );
-              //   }
-              // }
+              if (partId != '4' && partId != '') {
+                if (ModeProperty.isExpertMode) {
+                  showExpertModeReminderDialogDialog(
+                    context: context,
+                  );
+                }
+              }
             }
           },
         ),

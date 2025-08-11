@@ -19,7 +19,7 @@ ACI Plus App 是一個基於 Flutter 開發的 ACI 設備管理應用程式，�
 
 - **BLoC**: `功能名稱_bloc.dart`、`功能名稱_event.dart`、`功能名稱_state.dart`
 - **視圖**: `功能名稱_page.dart`（頁面）、`功能名稱_form.dart`（表單）
-- **倉庫**: `功能名稱_repository.dart`
+- **Repository**: `功能名稱_repository.dart`
 
 ### 架構模式
 
@@ -465,24 +465,24 @@ l10n/
 └── app_zh.arb           # 繁體中文語言資源
 ```
 
-### `/repositories/` - 數據倉庫模組
+### `/repositories/` - 數據 Repository模組
 
 ```
 repositories/
 ├── aci_device_repository.dart    # 處理 USB / BLE 連接，處理 ACI 設備類型 AMP / Node
 ├── amp18_ccor_node_chart_cache.dart # Node 圖表數據快取
 ├── amp18_ccor_node_parser.dart   # Node 數據解析器
-├── amp18_ccor_node_repository.dart # Node 設備倉庫
+├── amp18_ccor_node_repository.dart # Node 設備 Repository
 ├── amp18_chart_cache.dart        # AMP 圖表數據快取
 ├── amp18_parser.dart             # AMP 數據解析器
-├── amp18_repository.dart         # AMP 設備數據倉庫
+├── amp18_repository.dart         # AMP 設備數據 Repository
 ├── ble_client.dart               # BLE 客戶端 (Android/iOS)
 ├── ble_command_mixin.dart        # BLE 命令混入類，提供設備參數設定功能
 ├── ble_peripheral.dart           # BLE dongle 狀態定義
 ├── ble_windows_client.dart       # Windows 平台 BLE 客戶端
-├── code_repository.dart          # 人員代碼驗證倉庫
+├── code_repository.dart          # 人員代碼驗證 Repository
 ├── config.dart                   # 設備配置數據模型類別
-├── config_repository.dart        # 配置檔案管理倉庫 (匯入/匯出)
+├── config_repository.dart        # 配置檔案管理 Repository (匯入/匯出)
 ├── connection_client.dart        # 連接客戶端抽象類別
 ├── connection_client_factory.dart # 連接客戶端工廠，自動選擇 USB 或 BLE
 ├── distribution_config.dart      # 支線放大器配置模型
@@ -491,16 +491,16 @@ repositories/
 ├── dongle.dart                   # Dongle 設備配置模型 (沒有用到了)
 ├── dongle.g.dart                 # Dongle 配置序列化文件 (自動生成) (沒有用到了)
 ├── dsim_parser.dart              # DSIM 數據解析器
-├── dsim_repository.dart          # DSIM 設備數據倉庫
-├── firmware_repository.dart      # 韌體更新管理倉庫
-├── gps_repository.dart           # GPS 定位服務倉庫
+├── dsim_repository.dart          # DSIM 設備數據 Repository
+├── firmware_repository.dart      # 韌體更新管理 Repository
+├── gps_repository.dart           # GPS 定位服務 Repository
 ├── mdu_config.dart               # MDU (多住戶單元) 配置模型
 ├── mdu_config.g.dart             # MDU 配置序列化文件 (自動生成)
 ├── mdu_config_api.dart           # MDU 配置API
 ├── mock/                         # 模擬數據目錄
 │   ├── amp18_repository_data.dart    # AMP 模擬測試數據
-│   ├── sample_aci_device_repository.dart # DSIM 模擬設備倉庫
-│   └── sample_amp18_repository.dart  # AMP 模擬設備倉庫
+│   ├── sample_aci_device_repository.dart # DSIM 模擬設備 Repository
+│   └── sample_amp18_repository.dart  # AMP 模擬設備 Repository
 ├── node_config.dart              # Node 配置模型
 ├── node_config.g.dart            # Node 配置序列化文件 (自動生成)
 ├── node_config_api.dart          # Node 配置API
@@ -509,7 +509,7 @@ repositories/
 ├── trunk_config.g.dart           # 幹線放大器配置序列化文件 (自動生成)
 ├── trunk_config_api.dart         # 幹線放大器配置API
 ├── unit_converter.dart           # 溫度單位轉換工具
-├── unit_repository.dart          # 單位管理倉庫 (華氏/攝氏溫度)
+├── unit_repository.dart          # 單位管理 Repository (華氏/攝氏溫度)
 └── usb_client.dart               # USB 客戶端 (FTDI串口通訊，僅限 Android)
 ```
 

@@ -343,23 +343,23 @@ class _QRToolbar extends StatelessWidget {
                     icon: Icon(Icons.qr_code_scanner_sharp,
                         size: 26, color: Theme.of(context).iconTheme.color),
                   ),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.end,
-                  //   children: [
-                  //     IconButton(
-                  //       onPressed: () async {
-                  //         context
-                  //             .read<Setting18ConfigBloc>()
-                  //             .add(const QRImagePicked());
-                  //       },
-                  //       icon: Icon(CustomIcons.picture,
-                  //           size: 26, color: Theme.of(context).iconTheme.color),
-                  //     ),
-                  //   ],
-                  // ),
-                  // const SizedBox(
-                  //   width: 6.0,
-                  // ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      IconButton(
+                        onPressed: () async {
+                          context
+                              .read<Setting18ConfigBloc>()
+                              .add(const QRImagePicked());
+                        },
+                        icon: Icon(CustomIcons.picture,
+                            size: 26, color: Theme.of(context).iconTheme.color),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    width: 6.0,
+                  ),
                 ],
               ),
             ],
