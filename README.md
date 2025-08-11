@@ -519,11 +519,10 @@ repositories/
 setting/
 ├── bloc/                 # 設定頁面狀態管理
 │   ├── confirm_input/                          # 確認輸入功能
-│   ├── setting18/                              # AMP 主頁面 (沒有使用到)
+│   ├── setting18/                              # AMP 主頁面 (預留用於處理主頁面的邏輯)
 │   ├── setting18_attribute/                    # AMP 屬性設定
-│   ├── setting18_ccor_node/                    # Node 基礎設定 (沒有使用到)
+│   ├── setting18_ccor_node/                    # Node 主頁面 (預留用於處理主頁面的邏輯)
 │   ├── setting18_ccor_node_attribute/          # Node 屬性設定
-│   ├── setting18_ccor_node_configure/          # Node 配置設定 (沒有使用到)
 │   ├── setting18_ccor_node_forward_control/    # Node 下行控制設定
 │   ├── setting18_ccor_node_graph_module/       # Node 圖形模組設定
 │   ├── setting18_ccor_node_graph_view/         # Node 圖形視圖設定
@@ -627,3 +626,57 @@ status/
     ├── status_form.dart             # DSIM 狀態表單，顯示溫度、衰減、電源供應等狀態卡片
     └── status_page.dart             # DSIM 狀態頁面
 ```
+
+
+graph TD
+    A[DSIM 設備頁面] --> B[Setting 設定]
+    A --> C[Status 狀態]
+    A --> D[Chart 圖表]
+    A --> E[Information 資訊]
+    A --> F[About 關於]
+    
+    %% Setting 模組
+    B --> B1[Page: SettingPage]
+    B --> B2[Form: SettingForm]
+    B --> B3[BLoC: 無專用 BLoC<br/>使用 HomeBloc]
+    B --> B4[Repository: DsimRepository]
+    
+    %% Status 模組
+    C --> C1[Page: StatusPage]
+    C --> C2[Form: StatusForm]
+    C --> C3[BLoC: StatusBloc]
+    C --> C4[Repository: DsimRepository<br/>透過 HomeBloc]
+    
+    %% Chart 模組
+    D --> D1[Page: ChartPage]
+    D --> D2[Form: ChartForm]
+    D --> D3[BLoC: ChartBloc]
+    D --> D4[Repository: DsimRepository]
+    
+    %% Information 模組
+    E --> E1[Page: InformationPage]
+    E --> E2[Form: InformationForm]
+    E --> E3[BLoC: InformationBloc<br/>ModeInputBloc<br/>ThemeBloc<br/>WarmResetBloc]
+    E --> E4[Repository: DsimRepository]
+    
+    %% About 模組
+    F --> F1[Page: AboutPage]
+    F --> F2[BLoC: 無專用 BLoC]
+    F --> F3[Repository: 無]
+    
+    %% 樣式定義
+    classDef rootNode fill:#3498db,stroke:#2980b9,stroke-width:3px,color:#fff
+    classDef moduleNode fill:#e74c3c,stroke:#c0392b,stroke-width:2px,color:#fff
+    classDef pageNode fill:#e3f2fd,stroke:#2196f3,stroke-width:2px
+    classDef formNode fill:#f3e5f5,stroke:#9c27b0,stroke-width:2px
+    classDef blocNode fill:#e8f5e8,stroke:#4caf50,stroke-width:2px
+    classDef repoNode fill:#fff3e0,stroke:#ff9800,stroke-width:2px
+    classDef noneNode fill:#fafafa,stroke:#9e9e9e,stroke-width:2px
+    
+    %% 應用樣式
+    class A rootNode
+    class B,C,D,E,F moduleNode
+    class B1,C1,D1,E1,F1 pageNode
+    class B2,C2,D2,E2 formNode
+    class B3,C3,D3,E3,F2 blocNode
+    class B4,C4,D4,E4,F3 repoNode
