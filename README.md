@@ -93,33 +93,8 @@ ACI Plus App 是一個基於 Flutter 開發的 ACI 設備管理應用程式，�
 
 #### DSIM 設備頁面架構
 
-```
-DSIM 設備頁面
-├── Setting (設定)
-│   ├── Page: SettingPage
-│   ├── Form: SettingForm
-│   ├── BLoC: 無專用 BLoC (使用 HomeBloc)
-│   └── Repository: DsimRepository
-├── Status (狀態)
-│   ├── Page: StatusPage
-│   ├── Form: StatusForm
-│   ├── BLoC: StatusBloc
-│   └── Repository: DsimRepository (透過 HomeBloc)
-├── Chart (圖表)
-│   ├── Page: ChartPage
-│   ├── Form: ChartForm
-│   ├── BLoC: ChartBloc
-│   └── Repository: DsimRepository
-├── Information (資訊)
-│   ├── Page: InformationPage
-│   ├── Form: InformationForm
-│   ├── BLoC: InformationBloc, ModeInputBloc, ThemeBloc, WarmResetBloc
-│   └── Repository: DsimRepository
-└── About (關於)
-    ├── Page: AboutPage
-    ├── BLoC: 無專用 BLoC
-    └── Repository: 無
-```
+![DSIM 架構圖](diagrams/DSIM_architecture.png)
+
 
 #### AMP 設備 (1.8G 放大器) 頁面架構
 
@@ -628,55 +603,3 @@ status/
 ```
 
 
-graph TD
-    A[DSIM 設備頁面] --> B[Setting 設定]
-    A --> C[Status 狀態]
-    A --> D[Chart 圖表]
-    A --> E[Information 資訊]
-    A --> F[About 關於]
-    
-    %% Setting 模組
-    B --> B1[Page: SettingPage]
-    B --> B2[Form: SettingForm]
-    B --> B3[BLoC: 無專用 BLoC<br/>使用 HomeBloc]
-    B --> B4[Repository: DsimRepository]
-    
-    %% Status 模組
-    C --> C1[Page: StatusPage]
-    C --> C2[Form: StatusForm]
-    C --> C3[BLoC: StatusBloc]
-    C --> C4[Repository: DsimRepository<br/>透過 HomeBloc]
-    
-    %% Chart 模組
-    D --> D1[Page: ChartPage]
-    D --> D2[Form: ChartForm]
-    D --> D3[BLoC: ChartBloc]
-    D --> D4[Repository: DsimRepository]
-    
-    %% Information 模組
-    E --> E1[Page: InformationPage]
-    E --> E2[Form: InformationForm]
-    E --> E3[BLoC: InformationBloc<br/>ModeInputBloc<br/>ThemeBloc<br/>WarmResetBloc]
-    E --> E4[Repository: DsimRepository]
-    
-    %% About 模組
-    F --> F1[Page: AboutPage]
-    F --> F2[BLoC: 無專用 BLoC]
-    F --> F3[Repository: 無]
-    
-    %% 樣式定義
-    classDef rootNode fill:#3498db,stroke:#2980b9,stroke-width:3px,color:#fff
-    classDef moduleNode fill:#e74c3c,stroke:#c0392b,stroke-width:2px,color:#fff
-    classDef pageNode fill:#e3f2fd,stroke:#2196f3,stroke-width:2px
-    classDef formNode fill:#f3e5f5,stroke:#9c27b0,stroke-width:2px
-    classDef blocNode fill:#e8f5e8,stroke:#4caf50,stroke-width:2px
-    classDef repoNode fill:#fff3e0,stroke:#ff9800,stroke-width:2px
-    classDef noneNode fill:#fafafa,stroke:#9e9e9e,stroke-width:2px
-    
-    %% 應用樣式
-    class A rootNode
-    class B,C,D,E,F moduleNode
-    class B1,C1,D1,E1,F1 pageNode
-    class B2,C2,D2,E2 formNode
-    class B3,C3,D3,E3,F2 blocNode
-    class B4,C4,D4,E4,F3 repoNode
