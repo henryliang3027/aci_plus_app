@@ -96,96 +96,13 @@ ACI Plus App 是一個基於 Flutter 開發的 ACI 設備管理應用程式，�
 ![DSIM 架構圖](diagrams/DSIM_architecture.png)
 
 
-#### AMP 設備 (1.8G 放大器) 頁面架構
+#### AMP 設備 (1.8G /1 .2G 放大器) 頁面架構
 
-```
-AMP 設備頁面
-├── Setting (設定)
-│   ├── Page: Setting18Page
-│   ├── Form: Setting18Form (已註解，未使用)
-│   ├── TabBar: Setting18TabBar
-│   ├── BLoC: Setting18AttributeBloc, Setting18ForwardControlBloc,
-│   │        Setting18GraphModuleBloc, Setting18GraphViewBloc,
-│   │        Setting18IngressControlBloc, Setting18RegulationBloc,
-│   │        Setting18ReverseControlBloc, Setting18ThresholdBloc
-│   └── Repository: Amp18Repository
-├── Status (狀態)
-│   ├── Page: Status18Page
-│   ├── Form: Status18Form
-│   ├── BLoC: Status18Bloc
-│   └── Repository: Amp18Repository, UnitRepository
-├── Chart (圖表)
-│   ├── Page: Chart18Page
-│   ├── Form: Chart18Form
-│   ├── BLoC: Chart18Bloc, CodeInputBloc, DataLogChartBloc,
-│   │        Downloader18Bloc, Downloader18RfOutBloc, RfLevelChartBloc
-│   └── Repository: Amp18Repository
-├── Information (資訊)
-│   ├── Page: Information18Page
-│   ├── Form: Information18Form
-│   ├── BLoC: Information18Bloc, Information18PresetBloc,
-│   │        ModeInputBloc, ThemeBloc, WarmResetBloc
-│   └── Repository: Amp18Repository
-├── About (關於)
-│   ├── Page: About18Page
-│   ├── Form: About18Form
-│   ├── BLoC: 無專用 BLoC
-│   └── Repository: 無
-└── Advanced (進階)
-    ├── Page: Setting18AdvancedPage
-    ├── Form: Setting18AdvancedForm
-    ├── TabBar: Setting18AdvancedTabBar
-    ├── BLoC: Setting18AdvancedBloc, Setting18ConfigBloc,
-    │        Setting18ConfigEditBloc, Setting18FirmwareLogBloc,
-    │        Setting18FirmwareUpdateBloc, DescriptionInputBloc,
-    │        QrCodeGeneratorBloc
-    └── Repository: Amp18Repository, ConfigRepository, FirmwareRepository
-```
+![AMP 架構圖](diagrams/AMP_architecture.png)
 
-#### Node 設備 (C-Cor 節點) 頁面架構
+#### Node 設備頁面架構
 
-```
-Node 設備頁面
-├── Setting (設定)
-│   ├── Page: Setting18CCorNodePage
-│   ├── Form: Setting18CCorNodeForm
-│   ├── TabBar: Setting18CCorNodeTabBar
-│   ├── BLoC: Setting18CCorNodeAttributeBloc, Setting18CCorNodeForwardControlBloc,
-│   │        Setting18CCorNodeGraphModuleBloc, Setting18CCorNodeGraphViewBloc,
-│   │        Setting18CCorNodeIngressControlBloc, Setting18CCorNodeRegulationBloc,
-│   │        Setting18CCorNodeReverseControlBloc, Setting18CCorNodeThresholdBloc
-│   └── Repository: Amp18CCorNodeRepository
-├── Status (狀態)
-│   ├── Page: Status18CCorNodePage
-│   ├── Form: Status18CCorNodeForm
-│   ├── BLoC: Status18CCorNodeBloc
-│   └── Repository: Amp18CCorNodeRepository, UnitRepository
-├── Chart (圖表)
-│   ├── Page: Chart18CCorNodePage
-│   ├── Form: Chart18CCorNodeForm
-│   ├── BLoC: Chart18CCorNodeBloc, CodeInputBloc, Downloader18CCorNodeBloc
-│   └── Repository: Amp18CCorNodeRepository
-├── Information (資訊)
-│   ├── Page: Information18CCorNodePage
-│   ├── Form: Information18CCorNodeForm
-│   ├── BLoC: Information18CCorNodeBloc, Information18CCorNodePresetBloc,
-│   │        ModeInputBloc, ThemeBloc, WarmResetBloc
-│   └── Repository: Amp18CCorNodeRepository
-├── About (關於)
-│   ├── Page: About18Page
-│   ├── Form: About18Form
-│   ├── BLoC: 無專用 BLoC
-│   └── Repository: 無
-└── Advanced (進階)
-    ├── Page: Setting18AdvancedPage
-    ├── Form: Setting18AdvancedForm
-    ├── TabBar: Setting18AdvancedTabBar
-    ├── BLoC: Setting18AdvancedBloc, Setting18CCorNodeConfigEditBloc,
-    │        Setting18ConfigBloc, Setting18FirmwareLogBloc,
-    │        Setting18FirmwareUpdateBloc, DescriptionInputBloc,
-    │        QrCodeGeneratorBloc
-    └── Repository: Amp18CCorNodeRepository, ConfigRepository, FirmwareRepository
-```
+![Node 架構圖](diagrams/Node_architecture.png)
 
 ### Repository 層次架構
 
