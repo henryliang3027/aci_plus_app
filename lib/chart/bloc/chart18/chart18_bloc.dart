@@ -334,12 +334,23 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
     Map<DataKey, String> characteristicData =
         _amp18Repository.characteristicDataCache;
 
-    Map<String, String> pilotFrequencyModeTexts = {
-      '0': appLocalizations.pilotFrequencyBandwidthSettings,
-      '1': appLocalizations.pilotFrequencyUserSettings,
-      '3': appLocalizations.pilotFrequencyBenchMode,
-      //  appLocalizations.pilotFrequencySmartSettings,
-    };
+    String partId = characteristicData[DataKey.partId] ?? '';
+
+    EQType eqType = eqTypeMap[partId] ?? EQType.none;
+
+    Map<String, String> pilotFrequencyModeTexts = eqType == EQType.board
+        ? {
+            '0': appLocalizations.pilotFrequencyBandwidthSettings,
+            '1': appLocalizations.pilotFrequencyUserSettings,
+            BenchMode.frequency1p2G.name:
+                appLocalizations.pilotFrequencyBenchMode1p2G,
+            BenchMode.frequency1p8G.name:
+                appLocalizations.pilotFrequencyBenchMode1p8G,
+          }
+        : {
+            '0': appLocalizations.pilotFrequencyBandwidthSettings,
+            '1': appLocalizations.pilotFrequencyUserSettings,
+          };
 
     Map<String, String> onOffTexts = {
       '0': appLocalizations.off,
@@ -349,14 +360,27 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
     String pilotFrequencyMode =
         characteristicData[DataKey.pilotFrequencyMode] ?? '';
 
+    String firstChannelLoadingFrequency =
+        characteristicData[DataKey.firstChannelLoadingFrequency] ?? '';
+
+    String lastChannelLoadingFrequency =
+        characteristicData[DataKey.lastChannelLoadingFrequency] ?? '';
+
+    if (eqType == EQType.board) {
+      // 如果是 onboard 放大器，則 pilotFrequencyMode 根據
+      // lastChannelLoadingFrequency 來決定是 frequency1p2G 或 frequency1p8G
+      if (pilotFrequencyMode == '3') {
+        int frequency = int.tryParse(lastChannelLoadingFrequency) ?? 0;
+        pilotFrequencyMode =
+            getBoardBenchModeNameByFrequency(frequency: frequency);
+        characteristicData[DataKey.pilotFrequencyMode] = pilotFrequencyMode;
+      }
+    }
+
     String pilotFrequencyModeText = pilotFrequencyMode != ''
         ? pilotFrequencyModeTexts[pilotFrequencyMode] ?? 'N/A'
         : '';
 
-    String firstChannelLoadingFrequency =
-        characteristicData[DataKey.firstChannelLoadingFrequency] ?? '';
-    String lastChannelLoadingFrequency =
-        characteristicData[DataKey.lastChannelLoadingFrequency] ?? '';
     String firstChannelLoadingLevel =
         characteristicData[DataKey.firstChannelLoadingLevel] ?? '';
     String lastChannelLoadingLevel =
@@ -419,6 +443,8 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
     };
 
     Map<Enum, String> controlItemTexts = {
+      SettingControl.forwardInputCableEqualizer1:
+          appLocalizations.forwardInputCableEqualizer1,
       SettingControl.forwardInputAttenuation1:
           appLocalizations.forwardInputAttenuation1,
       SettingControl.forwardInputEqualizer1:

@@ -325,11 +325,19 @@ String getCEQTypeFromForwardCEQIndex(String index) {
   }
 }
 
+String getBoardBenchModeNameByFrequency({required int frequency}) {
+  if (frequency <= 1218) {
+    return BenchMode.frequency1p2G.name;
+  } else {
+    return BenchMode.frequency1p8G.name;
+  }
+}
+
 Future<String> getAppVersion() async {
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
   // 給部門內測試的版本會加 -beta版本文字, 例如V 2.1.2-beta2
-  String appVersion = 'V ${packageInfo.version}-beta9';
+  String appVersion = 'V ${packageInfo.version}';
   return appVersion;
 }
 

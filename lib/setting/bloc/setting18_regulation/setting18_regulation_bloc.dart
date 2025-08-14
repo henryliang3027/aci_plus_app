@@ -76,7 +76,7 @@ class Setting18RegulationBloc
       if (pilotFrequencyMode == '3') {
         int frequency = int.tryParse(lastChannelLoadingFrequency) ?? 0;
         pilotFrequencyMode =
-            _getBoardBenchModeNameByFrequency(frequency: frequency);
+            getBoardBenchModeNameByFrequency(frequency: frequency);
         characteristicDataCache[DataKey.pilotFrequencyMode] =
             pilotFrequencyMode;
       }
@@ -804,14 +804,6 @@ class Setting18RegulationBloc
       }
     } else {
       return false;
-    }
-  }
-
-  String _getBoardBenchModeNameByFrequency({required int frequency}) {
-    if (frequency <= 1218) {
-      return BenchMode.frequency1p2G.name;
-    } else {
-      return BenchMode.frequency1p8G.name;
     }
   }
 
