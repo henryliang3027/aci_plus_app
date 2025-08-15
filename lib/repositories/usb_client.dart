@@ -61,8 +61,8 @@ class USBClient extends ConnectionClient {
     return hasPermission;
   }
 
-  Future<bool> requestUsbPermission() async {
-    bool isPermissionGranted = await _ftdiSerial.requestUsbPermission();
+  static Future<bool> requestUsbPermission() async {
+    bool isPermissionGranted = await FtdiSerial.requestUsbPermission();
     return isPermissionGranted;
   }
 
@@ -85,7 +85,7 @@ class USBClient extends ConnectionClient {
     // 必須要在一開始就 initialize stream controller 才能夠正常使用
     _connectionReportStreamController = StreamController<ConnectionReport>();
 
-    bool isPermissionGranted = await _ftdiSerial.requestUsbPermission();
+    bool isPermissionGranted = await requestUsbPermission();
 
     if (isPermissionGranted) {
       await _ftdiSerial.createDeviceList();

@@ -22,13 +22,13 @@ class ACIDeviceRepository {
     return client is USBClient ? ConnectionType.usb : ConnectionType.ble;
   }
 
-  Future<bool> requestUSBPermission() async {
-    if (checkConnectionType() == ConnectionType.usb) {
-      return await (_connectionClient as USBClient).requestUsbPermission();
-    } else {
-      return false;
-    }
-  }
+  // Future<bool> requestUSBPermission() async {
+  //   if (checkConnectionType() == ConnectionType.usb) {
+  //     return await (_connectionClient as USBClient).requestUsbPermission();
+  //   } else {
+  //     return false;
+  //   }
+  // }
 
   // 取得 usb device
   Future<SerialDevice> getUsbDevice() async {
