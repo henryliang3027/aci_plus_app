@@ -472,7 +472,34 @@ class _ConnectionCard extends StatelessWidget {
     );
   }
 
+  Widget getUSBStatus({
+    required FormStatus connectionStatus,
+  }) {
+    if (connectionStatus == FormStatus.requestInProgress) {
+      return const SizedBox(
+        width: CustomStyle.diameter,
+        height: CustomStyle.diameter,
+        child: CircularProgressIndicator(),
+      );
+    } else if (connectionStatus == FormStatus.requestSuccess) {
+      return const Text(
+        '',
+        style: TextStyle(
+          fontSize: CustomStyle.sizeL,
+        ),
+      );
+    } else {
+      return const Text(
+        'N/A',
+        style: TextStyle(
+          fontSize: CustomStyle.sizeL,
+        ),
+      );
+    }
+  }
+
   Widget usbText({
+    required FormStatus connectionStatus,
     required String title,
   }) {
     return Padding(
@@ -486,6 +513,7 @@ class _ConnectionCard extends StatelessWidget {
               fontSize: CustomStyle.sizeL,
             ),
           ),
+          getUSBStatus(connectionStatus: connectionStatus),
         ],
       ),
     );
@@ -513,6 +541,7 @@ class _ConnectionCard extends StatelessWidget {
               // ),
               state.connectionType == ConnectionType.usb
                   ? usbText(
+                      connectionStatus: state.connectionStatus,
                       title: AppLocalizations.of(context)!.usbToUartAdapter)
                   : bluetoothText(
                       scanStatus: state.scanStatus,

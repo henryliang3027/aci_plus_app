@@ -133,6 +133,17 @@ enum BenchMode {
 // 8: SDAT
 // 9: SDAM
 // 10: MFT8
+// 11: SDLE EQ on board
+// 12: MOTO BLE EQ on board
+// 13: MOTO MB EQ on board
+// 15: C-Cor TR EQ on board
+// 16: C-Cor BR EQ on board
+// 17: C-Cor LE EQ on board
+// 18: SDAT EQ on board
+// 19: SDAM EQ on board
+// 21: SA BT EQ on board
+// 22: SA HD EQ on board
+// 23: SA LE EQ on board
 
 const Map<String, EQType> eqTypeMap = {
   'd': EQType.none, // DSIM
