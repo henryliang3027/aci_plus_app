@@ -8,12 +8,12 @@ import 'package:aci_plus_app/repositories/amp18_chart_cache.dart';
 import 'package:aci_plus_app/repositories/amp18_parser.dart';
 import 'package:aci_plus_app/repositories/ble_client.dart';
 import 'package:aci_plus_app/repositories/connection_client.dart';
-import 'package:aci_plus_app/repositories/ble_command_mixin.dart';
+import 'package:aci_plus_app/repositories/command_mixin.dart';
 import 'package:aci_plus_app/repositories/connection_client_factory.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_speed_chart/speed_chart.dart';
 
-class Amp18Repository with BLECommandsMixin {
+class Amp18Repository with CommandsMixin {
   Amp18Repository()
       : _connectionClient = ConnectionClientFactory.instance,
         _amp18Parser = Amp18Parser(),
@@ -25,7 +25,7 @@ class Amp18Repository with BLECommandsMixin {
 
   // Implement the abstract getter required by the mixin.
   @override
-  ConnectionClient get bleClient => _connectionClient;
+  ConnectionClient get connectionClient => _connectionClient;
 
   // 給設定頁面用來初始化預設值用
   final Map<DataKey, String> _characteristicDataCache = {};
@@ -487,7 +487,7 @@ class Amp18Repository with BLECommandsMixin {
   // commandIndex range from 195 to 204;
   Future<dynamic> requestCommand1p8GRFOutputLogChunk({
     required int chunkIndex,
-    required bool useDFU6Parser,
+    required bool useParser2,
   }) async {
     int commandIndex = chunkIndex + 195;
 
@@ -502,10 +502,10 @@ class Amp18Repository with BLECommandsMixin {
 
       List<RFOutputLog> rfOutputLogs = [];
 
-      if (useDFU6Parser) {
-        rfOutputLogs = _amp18Parser.parse1P8GRFOutputLogsForDFU6(rawData);
+      if (useParser2) {
+        rfOutputLogs = _amp18Parser.parse1P8GRFOutputLogs2(rawData);
       } else {
-        rfOutputLogs = _amp18Parser.parse1P8GRFOutputLogs(rawData);
+        rfOutputLogs = _amp18Parser.parse1P8GRFOutputLogs1(rawData);
       }
 
       bool hasNextChunk =

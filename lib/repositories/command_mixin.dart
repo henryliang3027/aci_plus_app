@@ -2,9 +2,9 @@ import 'dart:typed_data';
 import 'package:aci_plus_app/core/crc16_calculate.dart';
 import 'package:aci_plus_app/repositories/connection_client.dart';
 
-mixin BLECommandsMixin {
-  // Define an abstract getter for the BLE client.
-  ConnectionClient get bleClient;
+mixin CommandsMixin {
+  // Define an abstract getter for the connection client.
+  ConnectionClient get connectionClient;
 
   // [factor]: 如果是浮點數則 factor = 10, 乘以十倍再帶入 command, 如果是整數則 factor = 1
   Future<dynamic> set1p8GTwoBytesParameter({
@@ -32,7 +32,7 @@ mixin BLECommandsMixin {
     );
 
     try {
-      await bleClient.writeSetCommandToCharacteristic(
+      await connectionClient.writeSetCommandToCharacteristic(
         commandIndex: 300,
         value: command,
       );
@@ -63,7 +63,7 @@ mixin BLECommandsMixin {
     );
 
     try {
-      await bleClient.writeSetCommandToCharacteristic(
+      await connectionClient.writeSetCommandToCharacteristic(
         commandIndex: 300,
         value: command,
       );
@@ -113,7 +113,7 @@ mixin BLECommandsMixin {
     );
 
     try {
-      await bleClient.writeSetCommandToCharacteristic(
+      await connectionClient.writeSetCommandToCharacteristic(
         commandIndex: 300,
         value: command,
       );
@@ -147,7 +147,7 @@ mixin BLECommandsMixin {
     );
 
     try {
-      await bleClient.writeSetCommandToCharacteristic(
+      await connectionClient.writeSetCommandToCharacteristic(
         commandIndex: 300,
         value: command,
       );
@@ -190,7 +190,7 @@ mixin BLECommandsMixin {
     );
 
     try {
-      await bleClient.writeSetCommandToCharacteristic(
+      await connectionClient.writeSetCommandToCharacteristic(
         commandIndex: 300,
         value: command,
       );

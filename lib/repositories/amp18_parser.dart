@@ -1066,9 +1066,9 @@ class Amp18Parser {
     return rfInOuts;
   }
 
-  // DFU != 6 (85/105) 時使用
-  // RF Log 最多有 30 筆, 每筆 log 有 546 bytes
-  List<RFOutputLog> parse1P8GRFOutputLogs(List<int> rawData) {
+  // firmware < 160 版本專用
+  // 一個 command 的 RF Log 最多有 30 筆, 每筆 log 有 546 bytes
+  List<RFOutputLog> parse1P8GRFOutputLogs1(List<int> rawData) {
     List<RFOutputLog> rfOutputLogs = [];
     int step = 546; // 每筆 log 的長度
 
@@ -1132,9 +1132,9 @@ class Amp18Parser {
     return rfOutputLogs;
   }
 
-  // DFU = 6 (85/105) 時使用
-  // RF Log 最多有 26 筆, 每筆 log 有 606 bytes
-  List<RFOutputLog> parse1P8GRFOutputLogsForDFU6(List<int> rawData) {
+  // firmware >= 160 版本專用
+  // 一個 command 的 RF Log 最多有 26 筆, 每筆 log 有 630 bytes
+  List<RFOutputLog> parse1P8GRFOutputLogs2(List<int> rawData) {
     List<RFOutputLog> rfOutputLogs = [];
     int step = 630; // 每筆 log 的長度
 

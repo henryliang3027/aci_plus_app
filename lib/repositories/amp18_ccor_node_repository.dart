@@ -9,12 +9,12 @@ import 'package:aci_plus_app/repositories/amp18_ccor_node_chart_cache.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_parser.dart';
 import 'package:aci_plus_app/repositories/ble_client.dart';
 import 'package:aci_plus_app/repositories/connection_client.dart';
-import 'package:aci_plus_app/repositories/ble_command_mixin.dart';
+import 'package:aci_plus_app/repositories/command_mixin.dart';
 import 'package:aci_plus_app/repositories/connection_client_factory.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_speed_chart/speed_chart.dart';
 
-class Amp18CCorNodeRepository with BLECommandsMixin {
+class Amp18CCorNodeRepository with CommandsMixin {
   Amp18CCorNodeRepository()
       : _connectionClient = ConnectionClientFactory.instance,
         _amp18CCorNodeParser = Amp18CCorNodeParser(),
@@ -26,7 +26,7 @@ class Amp18CCorNodeRepository with BLECommandsMixin {
 
   // Implement the abstract getter required by the mixin.
   @override
-  ConnectionClient get bleClient => _connectionClient;
+  ConnectionClient get connectionClient => _connectionClient;
 
   // 給設定頁面用來初始化預設值用
   final Map<DataKey, String> _characteristicDataCache = {};

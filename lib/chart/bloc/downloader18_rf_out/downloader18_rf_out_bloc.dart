@@ -25,14 +25,14 @@ class Downloader18RFOutBloc
 
   Future<List> getRFOutChunkWithRetry({
     required int chunkIndex,
-    required bool useDFU6Parser,
+    required bool useParser2,
   }) async {
     // 最多 retry 3 次, 連續失敗3次就視為失敗
     for (int j = 0; j < 3; j++) {
       List<dynamic> resultOfRFOut =
           await _amp18Repository.requestCommand1p8GRFOutputLogChunk(
         chunkIndex: chunkIndex,
-        useDFU6Parser: useDFU6Parser,
+        useParser2: useParser2,
       );
 
       if (resultOfRFOut[0]) {
@@ -62,7 +62,7 @@ class Downloader18RFOutBloc
         _amp18Repository.characteristicDataCache[DataKey.firmwareVersion] ??
             '0');
 
-    bool useDFU6Parser = firmwareVersion >= 160 ? true : false;
+    bool useParser2 = firmwareVersion >= 160 ? true : false;
 
     for (int i = 0; i < 10; i++) {
       if (i > 0) {
@@ -71,7 +71,7 @@ class Downloader18RFOutBloc
       }
       List<dynamic> resultOfRFOutputLog = await getRFOutChunkWithRetry(
         chunkIndex: i,
-        useDFU6Parser: useDFU6Parser,
+        useParser2: useParser2,
       );
       print('resultOfRFOutputLog $i: ${resultOfRFOutputLog[0]}');
 

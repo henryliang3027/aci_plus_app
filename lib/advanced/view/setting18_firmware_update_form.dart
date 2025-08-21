@@ -342,10 +342,6 @@ class _UserCaution extends StatelessWidget {
           number: '3. ',
           description: AppLocalizations.of(context)!.firmwareUpdateCaution3,
         ),
-        getInstructionRow(
-          number: '4. ',
-          description: AppLocalizations.of(context)!.firmwareUpdateCaution4,
-        ),
       ],
     );
   }

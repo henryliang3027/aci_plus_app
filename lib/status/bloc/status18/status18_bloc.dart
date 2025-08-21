@@ -19,9 +19,6 @@ class Status18Bloc extends Bloc<Status18Event, Status18State> {
           temperatureUnit: unitRepository.temperatureUnit,
         )) {
     on<TemperatureUnitChanged>(_onTemperatureUnitChanged);
-    // on<StatusUpdated>(_onStatusUpdated);
-    // on<StatusPeriodicUpdateRequested>(_onStatusPeriodicUpdateRequested);
-    // on<StatusPeriodicUpdateCanceled>(_onStatusPeriodicUpdateCanceled);
   }
 
   // Timer? _timer;

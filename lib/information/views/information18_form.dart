@@ -176,45 +176,11 @@ class _PopupMenu extends StatefulWidget {
 class __PopupMenuState extends State<_PopupMenu> {
   @override
   Widget build(BuildContext context) {
-    double getMenuWidth({
-      required Mode mode,
-    }) {
-      final texts = [
-        AppLocalizations.of(context)!.reconnect,
-        mode == Mode.basic
-            ? AppLocalizations.of(context)!.expertMode
-            : AppLocalizations.of(context)!.basicMode,
-        AppLocalizations.of(context)!.theme,
-        AppLocalizations.of(context)!.warmReset,
-        AppLocalizations.of(context)!.aboutUs,
-      ];
-
-      double maxWidth = 0;
-      final textStyle = Theme.of(context).textTheme.bodyMedium;
-
-      for (String text in texts) {
-        final textPainter = TextPainter(
-          text: TextSpan(text: text, style: textStyle),
-          textDirection: TextDirection.ltr,
-        );
-        textPainter.layout();
-        maxWidth = math.max(maxWidth, textPainter.width);
-      }
-
-      // 加上 padding 和 icon 的寬度
-      return maxWidth + 55; // 60 是大概的 padding + icon 寬度
-    }
-
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         if (!state.loadingStatus.isRequestInProgress &&
             !state.connectionStatus.isRequestInProgress) {
           return PopupMenuButton<HomeMenu>(
-            constraints: BoxConstraints.tightFor(
-              width: getMenuWidth(
-                mode: state.mode,
-              ),
-            ),
             icon: const Icon(
               Icons.more_vert_outlined,
               color: Colors.white,
