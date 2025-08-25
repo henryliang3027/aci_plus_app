@@ -233,7 +233,7 @@ class _WindowsQRCodeScannerState extends State<WindowsQRCodeScanner> {
     try {
       await controller.initialize();
       await controller.loadUrl(getAssetFileUrl(
-          asset: "packages/simple_barcode_scanner/assets/barcode.html"));
+          asset: "assets/windows_barcode_scanner/barcode.html"));
 
       /// Listen to web to receive barcode
       controller.webMessage.listen((event) {

@@ -42,54 +42,24 @@ dependencies:
   formz: ^0.6.1
   permission_handler: ^12.0.0+1
   flutter_reactive_ble: ^5.4.0
-  bluetooth_enable:
-    git:
-      url: https://github.com/henryliang3027/bluetooth_enable_kt.git
-      ref: main
-
   location: ^5.0.3
   equatable: ^2.0.5
   dropdown_button2: ^2.3.9 # custom dropdownButton and dropdownMenuItems
   url_launcher: ^6.3.0 # for launch website
-  # excel:
-  #   git:
-  #     url: https://github.com/henryliang3027/excel.git
-  #     ref: master
   excel: ^4.0.6
   csv: ^6.0.0
   path_provider: ^2.1.4
-  open_filex:
-    git:
-      url: https://github.com/henryliang3027/open_filex.git
-      ref: master
+  open_filex: ^4.7.0
   share_plus: ^10.0.0
-  shared_preferences: ^2.2.0 # for persist two pilotCodes
+  shared_preferences: ^2.2.0 # local storage for user preference and simple key-value data
   package_info_plus: ^8.0.0
   device_info_plus: ^9.0.3
   geolocator: ^10.1.0
   touchable: ^1.0.2
   xml: ^6.3.0
-
-  
-  camera_checker:
-    git:
-      url: https://github.com/henryliang3027/camera_checker.git
-      ref: main
-  qr_code_scanner:
-    git:
-      url: https://github.com/henryliang3027/qr_code_scanner
-      ref: master
   qr_flutter: ^4.1.0
   json_annotation: ^4.8.1
-
   flutter_svg: 2.0.10+1
-  flutter_speed_chart:
-    git:
-      url: https://github.com/henryliang3027/flutter_speed_chart.git
-      ref: master
-
-  # flutter_speed_chart:
-  #   path: /Users/henry.liang/projects_git/20241223/flutter_speed_chart
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -100,19 +70,26 @@ dependencies:
   firebase_core: ^2.24.0
   adaptive_theme: ^3.6.0
   file_picker: ^8.1.2
-  ftdi_serial:
-    git:
-      url: https://github.com/henryliang3027/ftdi_serial.git
-      ref: master
-  # ftdi_serial:
-  #   path: /Users/henry.liang/projects_git/20250519/new/ftdi_serial
   universal_ble: ^0.12.0 # for windows
   webview_windows: ^0.4.0 # for windows
   zxing2: ^0.2.3 # for windows qr code image
+  bluetooth_enable:
+    path: ../bluetooth_enable_kt
+
+  camera_checker:
+    path: ../camera_checker
+
+  qr_code_scanner:
+    path: ../qr_code_scanner
+
+  flutter_speed_chart:
+    path: ../flutter_speed_chart
+
+  ftdi_serial:
+    path: ../ftdi_serial
+
   win_outlook: # for windows share file by email
-    git:
-      url: https://github.com/henryliang3027/win_outlook.git
-      ref: main
+    path: ../win_outlook
 
 dev_dependencies:
   flutter_test:
@@ -151,6 +128,7 @@ flutter:
     - assets/
     - assets/circuits/
     - assets/firmwares/
+    - assets/windows_barcode_scanner/
 
   fonts:
     - family: CustomIcons

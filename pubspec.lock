@@ -92,11 +92,9 @@ packages:
   bluetooth_enable:
     dependency: "direct main"
     description:
-      path: "."
-      ref: main
-      resolved-ref: "1685675dd08e38677f15e6b76be565eaa1df1e62"
-      url: "https://github.com/henryliang3027/bluetooth_enable_kt.git"
-    source: git
+      path: "../bluetooth_enable_kt"
+      relative: true
+    source: path
     version: "0.0.1"
   bluez:
     dependency: transitive
@@ -181,11 +179,9 @@ packages:
   camera_checker:
     dependency: "direct main"
     description:
-      path: "."
-      ref: main
-      resolved-ref: "9a9b5aa33889297f01315a921b4f28b06e841112"
-      url: "https://github.com/henryliang3027/camera_checker.git"
-    source: git
+      path: "../camera_checker"
+      relative: true
+    source: path
     version: "0.0.1"
   characters:
     dependency: transitive
@@ -509,11 +505,9 @@ packages:
   flutter_speed_chart:
     dependency: "direct main"
     description:
-      path: "."
-      ref: master
-      resolved-ref: eeab9f4eb4be2ab3b8190fb43fdd8afb71df6de2
-      url: "https://github.com/henryliang3027/flutter_speed_chart.git"
-    source: git
+      path: "../flutter_speed_chart"
+      relative: true
+    source: path
     version: "0.0.1"
   flutter_svg:
     dependency: "direct main"
@@ -560,11 +554,9 @@ packages:
   ftdi_serial:
     dependency: "direct main"
     description:
-      path: "."
-      ref: master
-      resolved-ref: "5b9f077340f1ce56ead7f9148e8d3274d5acaf42"
-      url: "https://github.com/henryliang3027/ftdi_serial.git"
-    source: git
+      path: "../ftdi_serial"
+      relative: true
+    source: path
     version: "0.0.1"
   fuchsia_remote_debug_protocol:
     dependency: transitive
@@ -875,12 +867,11 @@ packages:
   open_filex:
     dependency: "direct main"
     description:
-      path: "."
-      ref: master
-      resolved-ref: "7ec56421afc37bb2cc3cb751b9775999cd2d9a61"
-      url: "https://github.com/henryliang3027/open_filex.git"
-    source: git
-    version: "4.6.0"
+      name: open_filex
+      sha256: "9976da61b6a72302cf3b1efbce259200cd40232643a467aac7370addf94d6900"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.7.0"
   package_config:
     dependency: transitive
     description:
@@ -1100,11 +1091,9 @@ packages:
   qr_code_scanner:
     dependency: "direct main"
     description:
-      path: "."
-      ref: master
-      resolved-ref: "8e9d77ac2bd98516c7dca8b12349ff3d44b83bd6"
-      url: "https://github.com/henryliang3027/qr_code_scanner"
-    source: git
+      path: "../qr_code_scanner"
+      relative: true
+    source: path
     version: "1.0.0"
   qr_flutter:
     dependency: "direct main"
@@ -1586,11 +1575,9 @@ packages:
   win_outlook:
     dependency: "direct main"
     description:
-      path: "."
-      ref: main
-      resolved-ref: "6676a47efa371647a1349609fb3f42f07e3fd9ed"
-      url: "https://github.com/henryliang3027/win_outlook.git"
-    source: git
+      path: "../win_outlook"
+      relative: true
+    source: path
     version: "0.0.1"
   xdg_directories:
     dependency: transitive

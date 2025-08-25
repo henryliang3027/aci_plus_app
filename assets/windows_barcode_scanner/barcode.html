@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      #reader {
+        width: 640px;
+      }
+
+      html,
+      body {
+        margin: 0;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+    </style>
+    <script src="html5-qrcode.min.js"></script>
+  </head>
+  <body>
+    <!-- Div to show the scanner -->
+    <div class="container">
+      <div class="row">
+        <div
+          class="col-md-12"
+          style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+          "
+        >
+          <div id="reader" style="display: inline-block"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div id="reader"></div> -->
+    <script>
+      //refer doc here https://github.com/mebjas/html5-qrcode
+      const html5QrCode = new Html5Qrcode("reader");
+      console.log("Starting SCANNING CODE");
+      const qrCodeSuccessCallback = (decodedText, decodedResult) => {
+        // html5QrCode.stop();
+        /* handle success for web */
+        console.log(decodedText);
+        window.parent.postMessage(decodedText, "*");
+
+        /* handle success for window */
+        if (window.chrome.webview != "undefined") {
+          var param = {
+            methodName: "successCallback",
+            data: decodedText,
+          };
+          window.chrome.webview.postMessage(param);
+        }
+      };
+      const config = {
+        fps: 10,
+        qrbox: {
+          width: 400,
+          height: 400,
+          aspectRatio: 1,
+        },
+      };
+
+      // If you want to prefer back camera
+      html5QrCode.start(
+        {
+          facingMode: "environment",
+        },
+        config,
+        qrCodeSuccessCallback
+      );
+      // html5QrCode.start({ facingMode: "user" }, config, qrCodeSuccessCallback);
+
+      //Window event listener
+      if (window.chrome.webview != undefined) {
+        window.chrome.webview.addEventListener("message", function (e) {
+          let data = JSON.parse(JSON.stringify(e.data));
+          if (data.event === "close") {
+            html5QrCode.stop();
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
