@@ -92,7 +92,7 @@ packages:
   bluetooth_enable:
     dependency: "direct main"
     description:
-      path: "../bluetooth_enable_kt"
+      path: "../bluetooth_enable"
       relative: true
     source: path
     version: "0.0.1"

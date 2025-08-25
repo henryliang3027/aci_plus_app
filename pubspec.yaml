@@ -74,12 +74,12 @@ dependencies:
   webview_windows: ^0.4.0 # for windows
   zxing2: ^0.2.3 # for windows qr code image
   bluetooth_enable:
-    path: ../bluetooth_enable_kt
+    path: ../bluetooth_enable
 
   camera_checker:
     path: ../camera_checker
 
-  qr_code_scanner:
+  qr_code_scanner: 
     path: ../qr_code_scanner
 
   flutter_speed_chart:
