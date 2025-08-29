@@ -29,7 +29,7 @@ class Setting18ConfigForm extends StatelessWidget {
     }) async {
       return showDialog<void>(
         context: context,
-        barrierDismissible: false, // user must tap button!
+        barrierDismissible: true, // user must tap button!
 
         builder: (BuildContext context) {
           var width = MediaQuery.of(context).size.width;
@@ -40,6 +40,7 @@ class Setting18ConfigForm extends StatelessWidget {
               horizontal: width * 0.01,
             ),
             child: SizedBox(
+              width: Platform.isWindows ? 470 : null,
               child: QRCodeGeneratorPage(
                 encodedData: encodedData,
                 description: description,
@@ -312,19 +313,17 @@ class _QRToolbar extends StatelessWidget {
                   ),
                   IconButton(
                     onPressed: Platform.isWindows
-                        ? winBeta >= 5
-                            ? state.isCameraAvailable
-                                ? () {
-                                    showWindowsQRCodeScannerDialog()
-                                        .then((rawData) {
-                                      if (rawData != null) {
-                                        context
-                                            .read<Setting18ConfigBloc>()
-                                            .add(QRDataScanned(rawData));
-                                      }
-                                    });
+                        ? state.isCameraAvailable
+                            ? () {
+                                showWindowsQRCodeScannerDialog()
+                                    .then((rawData) {
+                                  if (rawData != null) {
+                                    context
+                                        .read<Setting18ConfigBloc>()
+                                        .add(QRDataScanned(rawData));
                                   }
-                                : null
+                                });
+                              }
                             : null
                         : () {
                             Navigator.push(
@@ -340,8 +339,13 @@ class _QRToolbar extends StatelessWidget {
                               }
                             });
                           },
-                    icon: Icon(Icons.qr_code_scanner_sharp,
-                        size: 26, color: Theme.of(context).iconTheme.color),
+                    icon: Icon(
+                      Icons.qr_code_scanner_sharp,
+                      size: 26,
+                      color: state.isCameraAvailable
+                          ? Theme.of(context).iconTheme.color
+                          : Colors.grey,
+                    ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,

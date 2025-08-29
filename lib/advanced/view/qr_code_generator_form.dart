@@ -30,24 +30,26 @@ class QRCodeGeneratorForm extends StatelessWidget {
           );
         }
       },
-      child: Padding(
-        padding: const EdgeInsets.all(0.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const SizedBox(
-              height: 30.0,
-            ),
-            _QRCodeViewer(
-              globalKey: globalKey,
-            ),
-            const SizedBox(
-              height: 30.0,
-            ),
-            _QrCodeTool(
-              globalKey: globalKey,
-            ),
-          ],
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(0.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(
+                height: 30.0,
+              ),
+              _QRCodeViewer(
+                globalKey: globalKey,
+              ),
+              const SizedBox(
+                height: 30.0,
+              ),
+              _QrCodeTool(
+                globalKey: globalKey,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -80,7 +82,6 @@ class _QRCodeViewer extends StatelessWidget {
                   version: QrVersions.auto,
                   errorCorrectionLevel: QrErrorCorrectLevel.L,
                   backgroundColor: Theme.of(context).colorScheme.onPrimary,
-                  // size: 320,
                   gapless: true,
                   // embeddedImage: const AssetImage('assets/qr_logo.png'),
                   // embeddedImageStyle: const QrEmbeddedImageStyle(
@@ -134,24 +135,22 @@ class _QrCodeTool extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: Platform.isWindows
-                ? winBeta >= 3
-                    ? () async {
-                        final RenderRepaintBoundary boundary =
-                            globalKey.currentContext!.findRenderObject()
-                                as RenderRepaintBoundary;
-                        final ui.Image image = await boundary.toImage();
+                ? () async {
+                    final RenderRepaintBoundary boundary =
+                        globalKey.currentContext!.findRenderObject()
+                            as RenderRepaintBoundary;
+                    final ui.Image image = await boundary.toImage();
 
-                        image
-                            .toByteData(format: ui.ImageByteFormat.png)
-                            .then((byteData) {
-                          if (byteData != null) {
-                            context
-                                .read<QRCodeGeneratorBloc>()
-                                .add(QRCodeSaved(byteData));
-                          }
-                        });
+                    image
+                        .toByteData(format: ui.ImageByteFormat.png)
+                        .then((byteData) {
+                      if (byteData != null) {
+                        context
+                            .read<QRCodeGeneratorBloc>()
+                            .add(QRCodeSaved(byteData));
                       }
-                    : null
+                    });
+                  }
                 : () async {
                     final RenderRepaintBoundary boundary =
                         globalKey.currentContext!.findRenderObject()
@@ -172,49 +171,6 @@ class _QrCodeTool extends StatelessWidget {
               AppLocalizations.of(context)!.share,
             ),
           ),
-          // ElevatedButton(
-          //   style: ButtonStyle(
-          //     elevation: MaterialStateProperty.resolveWith((states) => 0.0),
-          //     shape: MaterialStateProperty.resolveWith(
-          //       (states) => const CircleBorder(),
-          //     ),
-          //     backgroundColor: MaterialStateProperty.resolveWith(
-          //       (states) => Colors.transparent,
-          //     ),
-          //   ),
-          //   child: Column(
-          //     children: [
-          //       Padding(
-          //         padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 4.0),
-          //         child: Container(
-          //           decoration: BoxDecoration(
-          //             color: Theme.of(context).colorScheme.primary,
-          //             shape: BoxShape.circle,
-          //           ),
-          //           child: Padding(
-          //             padding: const EdgeInsets.all(20.0),
-          //             child: Icon(
-          //               Icons.share,
-          //               color: Theme.of(context).colorScheme.onPrimary,
-          //             ),
-          //           ),
-          //         ),
-          //       ),
-          //       Padding(
-          //         padding: const EdgeInsets.only(
-          //           bottom: 10.0,
-          //         ),
-          //         child: Text(
-          //           AppLocalizations.of(context)!.share,
-          //           style: const TextStyle(
-          //             fontSize: CustomStyle.sizeL,
-          //           ),
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          //   onPressed: () {},
-          // ),
         ],
       ),
     );

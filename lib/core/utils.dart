@@ -15,8 +15,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-const int winBeta = int.fromEnvironment('WIN_BETA', defaultValue: 7);
-
 // define a enum contain expert mode and basic mode
 enum Mode {
   bench,

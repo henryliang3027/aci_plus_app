@@ -79,7 +79,7 @@ dependencies:
   camera_checker:
     path: ../camera_checker
 
-  qr_code_scanner: 
+  qr_code_scanner:
     path: ../qr_code_scanner
 
   flutter_speed_chart:

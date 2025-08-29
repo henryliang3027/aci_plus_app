@@ -412,14 +412,9 @@ Widget buildChart({
         ),
       ),
       SpeedLineChart(
-        lineSeriesCollection: lineSeriesCollection,
-        showLegend: true,
-        showScaleThumbs: winBeta >= 4
-            ? Platform.isWindows
-                ? true
-                : false
-            : false,
-      ),
+          lineSeriesCollection: lineSeriesCollection,
+          showLegend: true,
+          showScaleThumbs: Platform.isWindows ? true : false),
     ],
   );
 }

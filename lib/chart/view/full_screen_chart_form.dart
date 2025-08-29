@@ -55,15 +55,10 @@ class _FullScreenChartFormState extends State<FullScreenChartForm> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               SpeedLineChart(
-                lineSeriesCollection: widget.lineSeriesCollection,
-                showLegend: true,
-                showMultipleYAxises: true,
-                showScaleThumbs: winBeta >= 4
-                    ? Platform.isWindows
-                        ? true
-                        : false
-                    : false,
-              ),
+                  lineSeriesCollection: widget.lineSeriesCollection,
+                  showLegend: true,
+                  showMultipleYAxises: true,
+                  showScaleThumbs: Platform.isWindows ? true : false),
             ],
           ),
         ),

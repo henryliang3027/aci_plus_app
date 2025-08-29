@@ -262,11 +262,7 @@ Widget buildChart({
       SpeedLineChart(
         lineSeriesCollection: lineSeriesCollection,
         showLegend: true,
-        showScaleThumbs: winBeta >= 4
-            ? Platform.isWindows
-                ? true
-                : false
-            : false,
+        showScaleThumbs: Platform.isWindows ? true : false,
         xAxisUnit: CustomStyle.mHz,
       ),
     ],
