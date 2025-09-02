@@ -40,7 +40,7 @@ class Setting18ConfigForm extends StatelessWidget {
               horizontal: width * 0.01,
             ),
             child: SizedBox(
-              width: Platform.isWindows ? 470 : null,
+              width: 400,
               child: QRCodeGeneratorPage(
                 encodedData: encodedData,
                 description: description,

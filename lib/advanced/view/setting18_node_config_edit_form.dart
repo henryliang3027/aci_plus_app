@@ -130,9 +130,6 @@ class _Setting18NodeConfigEditFormState
               nameTextEditingController: nameTextEditingController,
             ),
           ),
-          // _QRCodeCard(
-          //   isShortcut: widget.isShortcut,
-          // ),
           Flexible(
             child: SingleChildScrollView(
               child: Padding(
@@ -256,85 +253,6 @@ class _PartName extends StatelessWidget {
     );
   }
 }
-
-// class _QRCodeCard extends StatelessWidget {
-//   const _QRCodeCard({
-//     super.key,
-//     required this.isShortcut,
-//   });
-
-//   final bool isShortcut;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocBuilder<Setting18ConfigEditBloc, Setting18ConfigEditState>(
-//       builder: (context, state) {
-//         return !isShortcut
-//             ? Card(
-//                 // elevation: 0.0,
-//                 child: Padding(
-//                   padding: const EdgeInsets.symmetric(
-//                       vertical: 14.0, horizontal: 20.0),
-//                   child: Row(
-//                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                       children: [
-//                         const Text(
-//                           'QR Code',
-//                           style: TextStyle(
-//                             fontSize: CustomStyle.sizeXL,
-//                           ),
-//                         ),
-//                         Row(
-//                           children: [
-//                             IconButton(
-//                               iconSize: 30.0,
-//                               visualDensity: const VisualDensity(
-//                                   horizontal: -4.0, vertical: -4.0),
-//                               onPressed: () async {
-//                                 Navigator.push(
-//                                   context,
-//                                   QRCodeScanner.route(),
-//                                 ).then((rawData) {
-//                                   if (rawData != null) {
-//                                     if (rawData.isNotEmpty) {
-//                                       context
-//                                           .read<Setting18ConfigEditBloc>()
-//                                           .add(QRCodeDataScanned(
-//                                               rawData: rawData));
-//                                     }
-//                                   }
-//                                 });
-//                               },
-//                               icon: const Icon(
-//                                 Icons.qr_code_scanner,
-//                               ),
-//                             ),
-//                             const SizedBox(
-//                               width: 10.0,
-//                             ),
-//                             IconButton(
-//                               iconSize: 30.0,
-//                               visualDensity: const VisualDensity(
-//                                   horizontal: -4.0, vertical: -4.0),
-//                               onPressed: () {
-//                                 context
-//                                     .read<Setting18ConfigEditBloc>()
-//                                     .add(const QRCodeDataGenerated());
-//                               },
-//                               icon: const Icon(
-//                                 Icons.qr_code,
-//                               ),
-//                             ),
-//                           ],
-//                         ),
-//                       ]),
-//                 ),
-//               )
-//             : Container();
-//       },
-//     );
-//   }
-// }
 
 class _ActionButton extends StatelessWidget {
   const _ActionButton({

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:aci_plus_app/app.dart';
 import 'package:aci_plus_app/core/shared_preference_key.dart';
 import 'package:aci_plus_app/env_config.dart';
@@ -18,8 +16,6 @@ import 'package:aci_plus_app/repositories/gps_repository.dart';
 import 'package:aci_plus_app/repositories/unit_repository.dart';
 import 'package:aci_plus_app/repositories/firmware_repository.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -49,12 +45,6 @@ Future<void> initBox() async {
   Hive.registerAdapter<NodeConfig>(NodeConfigAdapter());
   Hive.registerAdapter<MDUConfig>(MDUConfigAdapter());
 
-  // bool trunkConfigBoxExists = await Hive.boxExists('TrunkConfigData');
-  // bool distributionConfigBoxExists =
-  //     await Hive.boxExists('DistributionConfigData');
-  // bool nodeConfigBoxExists = await Hive.boxExists('NodeConfigData');
-  // bool mduConfigBoxExists = await Hive.boxExists('MDUConfigData');
-
   String? boxVersion = await readBoxVersion();
 
   if (boxVersion != '2.2.6') {
@@ -72,18 +62,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final AdaptiveThemeMode savedAdaptiveThemeMode =
       await AdaptiveTheme.getThemeMode() ?? AdaptiveThemeMode.light;
-
-  // if (Platform.isIOS || Platform.isAndroid) {
-  //   await Firebase.initializeApp();
-  //   FlutterError.onError = (errorDetails) {
-  //     FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
-  //   };
-  //   // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
-  //   PlatformDispatcher.instance.onError = (error, stack) {
-  //     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-  //     return true;
-  //   };
-  // }
 
   await initBox();
 

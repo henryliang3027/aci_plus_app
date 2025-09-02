@@ -189,7 +189,7 @@
     "connection": "Connection",
     "bluetooth": "Bluetooth",
     "usbToUartAdapter": "USB to UART Adapter",
-    "shortcut": "Shortcut",
+    "quickSetting": "Quick Setting",
     "loadPreset": "Load Preset",
     "align": "Align",
     "blockDiagram": "Block Diagram",

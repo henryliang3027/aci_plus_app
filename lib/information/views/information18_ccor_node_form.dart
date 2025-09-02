@@ -371,30 +371,6 @@ class _ShortcutCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Future<void> showModuleSettingDialog({
-    //   required String selectedPartId,
-    // }) async {
-    //   return showDialog<void>(
-    //     context: context,
-    //     barrierDismissible: false, // user must tap button!
-
-    //     builder: (BuildContext context) {
-    //       var width = MediaQuery.of(context).size.width;
-    //       // var height = MediaQuery.of(context).size.height;
-
-    //       return Dialog(
-    //         insetPadding: EdgeInsets.symmetric(
-    //           horizontal: width * 0.01,
-    //         ),
-    //         child:
-    //         const Setting18ConfigEditPage(
-    //           isShortcut: true,
-    //         ),
-    //       );
-    //     },
-    //   );
-    // }
-
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         if (state.loadingStatus.isRequestSuccess) {
@@ -428,20 +404,6 @@ class _ShortcutCard extends StatelessWidget {
                       _LoadPresetButton(
                         loadingStatus: state.loadingStatus,
                       ),
-                      // ElevatedButton(
-                      //   onPressed: ,
-                      //   style: ElevatedButton.styleFrom(
-                      //     backgroundColor:
-                      //         Theme.of(context).colorScheme.primary,
-                      //     foregroundColor: Colors.white,
-                      //   ),
-                      //   child: Text(
-                      //     AppLocalizations.of(context)!.load,
-                      //     style: const TextStyle(
-                      //       fontSize: CustomStyle.sizeL,
-                      //     ),
-                      //   ),
-                      // ),
                     ],
                   ),
                 ),

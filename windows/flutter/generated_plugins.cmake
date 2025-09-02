@@ -5,7 +5,6 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   bluetooth_enable
   camera_checker
-  firebase_core
   geolocator_windows
   permission_handler_windows
   share_plus

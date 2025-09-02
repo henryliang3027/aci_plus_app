@@ -189,7 +189,7 @@
     "connection": "連接裝置",
     "bluetooth": "藍牙",
     "usbToUartAdapter": "USB 轉 UART 轉接器",
-    "shortcut": "捷徑",
+    "quickSetting": "快速設定",
     "loadPreset": "載入預設值",
     "align": "同步",
     "blockDiagram": "方塊圖",
