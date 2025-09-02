@@ -103,7 +103,7 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
         // const _ALCMode(),
       ],
       DataKey.dsCEQ1.name: [
-        const _ForwardCableInputEqualizer1(),
+        const _ForwardInputCableEqualizer1(),
       ],
       DataKey.dsVVA1.name: [
         _ForwardInputAttenuation1(
@@ -1590,8 +1590,8 @@ class _RFLevelFineTuner extends StatelessWidget {
   }
 }
 
-class _ForwardCableInputEqualizer1 extends StatelessWidget {
-  const _ForwardCableInputEqualizer1();
+class _ForwardInputCableEqualizer1 extends StatelessWidget {
+  const _ForwardInputCableEqualizer1();
 
   @override
   Widget build(BuildContext context) {

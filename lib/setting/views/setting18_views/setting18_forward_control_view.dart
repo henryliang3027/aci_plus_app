@@ -67,7 +67,7 @@ class Setting18ForwardControlView extends StatelessWidget {
         switch (name) {
           case SettingControl.forwardInputCableEqualizer1:
             widgets.add(
-              const _ForwardCableInputEqualizer1(),
+              const _ForwardInputCableEqualizer1(),
             );
           case SettingControl.forwardInputAttenuation1:
             widgets.add(
@@ -677,8 +677,8 @@ class _ForwardInputEqualizer1 extends StatelessWidget {
   }
 }
 
-class _ForwardCableInputEqualizer1 extends StatelessWidget {
-  const _ForwardCableInputEqualizer1();
+class _ForwardInputCableEqualizer1 extends StatelessWidget {
+  const _ForwardInputCableEqualizer1();
 
   @override
   Widget build(BuildContext context) {
