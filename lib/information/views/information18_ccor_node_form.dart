@@ -44,7 +44,7 @@ class Information18CCorNodeForm extends StatelessWidget {
           children: [
             // _VersionCard(),
             _ConnectionCard(),
-            _ShortcutCard(),
+            _QuickSettingCard(),
             // _BlockDiagramCard(),
             _BasicCard(),
             // _AlarmCard(),
@@ -366,8 +366,8 @@ class _ConnectionCard extends StatelessWidget {
   }
 }
 
-class _ShortcutCard extends StatelessWidget {
-  const _ShortcutCard();
+class _QuickSettingCard extends StatelessWidget {
+  const _QuickSettingCard();
 
   @override
   Widget build(BuildContext context) {
@@ -384,7 +384,7 @@ class _ShortcutCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  AppLocalizations.of(context)!.shortcut,
+                  AppLocalizations.of(context)!.quickSetting,
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 const SizedBox(
