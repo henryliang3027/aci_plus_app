@@ -110,8 +110,6 @@ class CircuitPainter extends CustomPainter {
       );
     }
 
-    // print('scaleFactor: $scaleFactor');
-
     for (ValueText valueText in svgImage.valueTexts) {
       // final int colorHex = int.parse(valueText.color);
       TextStyle textStyle = TextStyle(
@@ -132,15 +130,7 @@ class CircuitPainter extends CustomPainter {
         minWidth: 0,
         maxWidth: size.width,
       );
-      // textPainter.paint(
-      //     canvas,
-      //     Offset(
-      //         (valueText.x + (238.365 / 2)) * scaleFactor +
-      //             offsetX -
-      //             (textPainter.width / 2),
-      //         (valueText.y - 20) * scaleFactor +
-      //             offsetY -
-      //             (textPainter.height / 2)));
+
       double textCX = valueText.x + valueText.width / 2;
       double textCY = valueText.y + valueText.height / 2;
 

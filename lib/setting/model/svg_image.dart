@@ -2,7 +2,6 @@ class SVGImage {
   const SVGImage({
     required this.width,
     required this.height,
-    required this.components,
     required this.boxes,
     required this.valueTexts,
     required this.editable,
@@ -10,20 +9,9 @@ class SVGImage {
 
   final double width;
   final double height;
-  final List<Component> components;
   final List<Box> boxes;
   final List<ValueText> valueTexts;
   final bool editable;
-}
-
-class Component {
-  const Component({
-    required this.color,
-    required this.path,
-  });
-
-  final String color;
-  final String path;
 }
 
 class Box {

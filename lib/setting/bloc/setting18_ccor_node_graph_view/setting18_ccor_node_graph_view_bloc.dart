@@ -64,26 +64,16 @@ class Setting18CCorNodeGraphViewBloc extends Bloc<
 
     final paths = document.findAllElements('path');
     final rects = document.findAllElements('rect');
-    final textPlaceholders = document.findAllElements('text');
     final header = document.findElements('svg').toList()[0];
     final double width = double.parse(header.getAttribute('width').toString());
     final double height =
         double.parse(header.getAttribute('height').toString());
 
-    List<Component> components = [];
     List<Box> boxes = [];
     List<ValueText> valueTexts = [];
 
     // 取得所有 DataKey 並轉為 list
     List<DataKey> dataKeys = DataKey.values;
-
-    for (var element in paths) {
-      String partColor =
-          'ff${element.getAttribute('fill').toString().substring(1)}';
-      String partPath = element.getAttribute('d').toString();
-
-      components.add(Component(color: partColor, path: partPath));
-    }
 
     for (var element in rects) {
       String? moduleName = element.getAttribute('module');
@@ -133,35 +123,9 @@ class Setting18CCorNodeGraphViewBloc extends Bloc<
       }
     }
 
-    // for (var textPlaceholder in textPlaceholders) {
-    //   String? moduleName = textPlaceholder.getAttribute('module');
-
-    //   if (moduleName != null) {
-    //     double x = double.parse(textPlaceholder.getAttribute('x').toString());
-    //     double y = double.parse(textPlaceholder.getAttribute('y').toString());
-    //     DataKey dataKey =
-    //         dataKeys.firstWhere((dataKey) => dataKey.name == moduleName);
-    //     String text = getValueText(
-    //       characteristicDataCache: characteristicDataCache,
-    //       dataKey: dataKey,
-    //     );
-
-    //     String color = textPlaceholder.getAttribute('color').toString();
-
-    //     valueTexts.add(ValueText(
-    //       moduleName: moduleName,
-    //       x: x,
-    //       y: y,
-    //       text: text,
-    //       color: color,
-    //     ));
-    //   }
-    // }
-
     SVGImage svgImage = SVGImage(
       width: width,
       height: height,
-      components: components,
       boxes: boxes,
       valueTexts: valueTexts,
       editable: _editable,
@@ -207,7 +171,6 @@ class Setting18CCorNodeGraphViewBloc extends Bloc<
       SVGImage svgImage = SVGImage(
         width: state.svgImage.width,
         height: state.svgImage.height,
-        components: state.svgImage.components,
         boxes: state.svgImage.boxes,
         valueTexts: newValueTexts,
         editable: _editable,

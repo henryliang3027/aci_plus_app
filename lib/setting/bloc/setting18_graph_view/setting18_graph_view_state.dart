@@ -7,7 +7,6 @@ class Setting18GraphViewState extends Equatable {
     this.svgImage = const SVGImage(
       width: 0.0,
       height: 0.0,
-      components: [],
       boxes: [],
       valueTexts: [],
       editable: false,
