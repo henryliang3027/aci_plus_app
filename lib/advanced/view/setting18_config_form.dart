@@ -342,9 +342,11 @@ class _QRToolbar extends StatelessWidget {
                     icon: Icon(
                       Icons.qr_code_scanner_sharp,
                       size: 26,
-                      color: state.isCameraAvailable
-                          ? Theme.of(context).iconTheme.color
-                          : Colors.grey,
+                      color: Platform.isWindows
+                          ? state.isCameraAvailable
+                              ? Theme.of(context).iconTheme.color
+                              : Colors.grey
+                          : Theme.of(context).iconTheme.color,
                     ),
                   ),
                   Row(
