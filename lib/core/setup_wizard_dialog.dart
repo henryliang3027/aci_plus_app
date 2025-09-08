@@ -161,16 +161,6 @@ List<String> getDescriptions({
         AppLocalizations.of(context)!.firmwareUpdatePageSetupWizard3,
         AppLocalizations.of(context)!.firmwareUpdatePageSetupWizard4,
       ];
-
-    // case FunctionDescriptionType.userActivityLog:
-    //   return [
-    //     AppLocalizations.of(context)!.userActivityLogPageSetupWizard1,
-    //     AppLocalizations.of(context)!.userActivityLogPageSetupWizard2,
-    //     AppLocalizations.of(context)!.userActivityLogPageSetupWizard3,
-    //   ];
-
-    default:
-      return [];
   }
 }
 
