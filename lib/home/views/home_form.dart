@@ -15,7 +15,7 @@ import 'package:aci_plus_app/home/views/peripheral_selector_page.dart';
 import 'package:aci_plus_app/information/views/information18_ccor_node_page.dart';
 import 'package:aci_plus_app/information/views/information18_page.dart';
 import 'package:aci_plus_app/information/views/information_page.dart';
-import 'package:aci_plus_app/repositories/ble_peripheral.dart';
+import 'package:aci_plus_app/repositories/peripheral.dart';
 import 'package:aci_plus_app/setting/views/setting18_ccor_node_views/setting18_ccor_node_page.dart';
 import 'package:aci_plus_app/setting/views/setting18_views/setting18_page.dart';
 import 'package:aci_plus_app/setting/views/setting_views/setting_page.dart';

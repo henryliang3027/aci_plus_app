@@ -1,5 +1,6 @@
 import 'package:aci_plus_app/app.dart';
 import 'package:aci_plus_app/core/shared_preference_key.dart';
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/env_config.dart';
 import 'package:aci_plus_app/repositories/aci_device_repository.dart';
 import 'package:aci_plus_app/repositories/connection_client_factory.dart';
@@ -22,7 +23,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> writeBoxVersion() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  await prefs.setString(SharedPreferenceKey.boxVersion.name, '2.2.6');
+  await prefs.setString(SharedPreferenceKey.boxVersion.name,
+      DatabaseProperty.minCompatibleVersion);
 }
 
 Future<String?> readBoxVersion() async {
@@ -47,7 +49,7 @@ Future<void> initBox() async {
 
   String? boxVersion = await readBoxVersion();
 
-  if (boxVersion != '2.2.6') {
+  if (boxVersion != DatabaseProperty.minCompatibleVersion) {
     await deleteAllBox();
     await writeBoxVersion();
   }

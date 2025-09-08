@@ -26,7 +26,6 @@ class Information18CCorNodePresetBloc extends Bloc<
   ) async {
     emit(state.copyWith(
       settingStatus: SubmissionStatus.submissionInProgress,
-      isInitialize: false,
     ));
 
     List<String> settingResult = [];
@@ -47,13 +46,6 @@ class Information18CCorNodePresetBloc extends Bloc<
       settingResult
           .add('${DataKey.forwardConfig.name},$resultOfSetForwardConfig');
     }
-
-    // if (nodeConfig.splitOption.isNotEmpty) {
-    //   bool resultOfSetSplitOption = await _amp18CCorNodeRepository
-    //       .set1p8GCCorNodeSplitOption(nodeConfig.splitOption);
-
-    //   settingResult.add('${DataKey.splitOption.name},$resultOfSetSplitOption');
-    // }
 
     // 等待 device 完成更新後在讀取值
     await Future.delayed(const Duration(milliseconds: 1000));

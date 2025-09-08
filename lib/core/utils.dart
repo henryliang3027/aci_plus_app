@@ -40,6 +40,10 @@ enum FunctionDescriptionType {
   firmwareUpdate,
 }
 
+class DatabaseProperty {
+  static String minCompatibleVersion = '2.2.0';
+}
+
 class ModeProperty {
   static Mode mode = Mode.basic;
   static bool get isBasicMode => ModeProperty.mode == Mode.basic;

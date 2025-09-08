@@ -1,5 +1,5 @@
 import 'package:aci_plus_app/core/crc16_calculate.dart';
-import 'package:aci_plus_app/repositories/ble_peripheral.dart';
+import 'package:aci_plus_app/repositories/peripheral.dart';
 import 'package:flutter/foundation.dart';
 
 abstract class ConnectionClient {

@@ -173,61 +173,6 @@ class __PopupMenuState extends State<_PopupMenu> {
   }
 }
 
-// class _DeviceRefresh extends StatelessWidget {
-//   const _DeviceRefresh();
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocBuilder<HomeBloc, HomeState>(
-//       builder: (context, state) {
-//         if (!state.loadingStatus.isRequestInProgress &&
-//             !state.connectionStatus.isRequestInProgress) {
-//           return IconButton(
-//               onPressed: () {
-//                 context.read<HomeBloc>().add(const DeviceRefreshed());
-//               },
-//               icon: Icon(
-//                 Icons.refresh,
-//                 color: Theme.of(context).colorScheme.onPrimary,
-//               ));
-//         } else {
-//           return Container();
-//         }
-//       },
-//     );
-//   }
-// }
-
-class _VersionCard extends StatelessWidget {
-  const _VersionCard();
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<InformationBloc, InformationState>(
-      builder: (context, state) => Card(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                AppLocalizations.of(context)!.appVersion,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              Text(
-                state.appVersion,
-                style: const TextStyle(
-                  fontSize: CustomStyle.sizeL,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 class _ConnectionCard extends StatelessWidget {
   const _ConnectionCard();
 

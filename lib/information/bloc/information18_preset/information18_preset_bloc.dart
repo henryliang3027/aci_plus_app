@@ -15,23 +15,10 @@ class Information18PresetBloc
     required Config config,
   })  : _amp18Repository = amp18Repository,
         super(Information18PresetState(config: config)) {
-    // on<DefaultConfigRequested>(_onDefaultConfigRequested);
     on<ConfigExecuted>(_onConfigExecuted);
-
-    // add(const DefaultConfigRequested());
   }
 
   final Amp18Repository _amp18Repository;
-
-  // void _onDefaultConfigRequested(
-  //   DefaultConfigRequested event,
-  //   Emitter<Information18PresetState> emit,
-  // ) {
-  //   emit(state.copyWith(
-  //     isInitialize: true,
-  //     config: _config,
-  //   ));
-  // }
 
   void _onConfigExecuted(
     ConfigExecuted event,
@@ -39,17 +26,11 @@ class Information18PresetBloc
   ) async {
     emit(state.copyWith(
       settingStatus: SubmissionStatus.submissionInProgress,
-      isInitialize: false,
     ));
 
     List<String> settingResult = [];
 
     Config config = state.config;
-
-    // bool resultOfSetSplitOption =
-    //     await _amp18Repository.set1p8GSplitOption(config.splitOption);
-
-    // settingResult.add('${DataKey.splitOption.name},$resultOfSetSplitOption');
 
     bool resultOfSetPilotFrequencyMode = await _amp18Repository
         .set1p8GPilotFrequencyMode('0'); // Full mode (auto mode)
@@ -91,13 +72,14 @@ class Information18PresetBloc
           '${DataKey.lastChannelLoadingLevel.name},$resultOfSetLastChannelLoadingLevel');
     }
 
+    // 開啟 ALSC 模式
+    // AGC ON 和 ALC ON
     bool resultOfSetForwardAGCMode =
         await _amp18Repository.set1p8GForwardAGCMode('1');
-    settingResult.add('${DataKey.agcMode.name},$resultOfSetForwardAGCMode');
+    bool resultOfSetALCMode = await _amp18Repository.set1p8GALCMode('1');
 
-    // 20240516 不顯示設定的結果, 之後不具備 ALC 功能
-    // bool resultOfSetALCMode = await _amp18Repository.set1p8GALCMode('1');
-    // settingResult.add('${DataKey.alcMode.name},$resultOfSetALCMode');
+    settingResult.add(
+        '${DataKey.agcMode.name},${resultOfSetForwardAGCMode && resultOfSetALCMode}');
 
     // 等待 device 完成更新後在讀取值
     await Future.delayed(const Duration(milliseconds: 1000));

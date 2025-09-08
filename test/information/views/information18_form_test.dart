@@ -6,7 +6,7 @@ import 'package:aci_plus_app/information/bloc/information18/information18_bloc.d
 import 'package:aci_plus_app/information/views/information18_form.dart';
 import 'package:aci_plus_app/repositories/config.dart';
 import 'package:aci_plus_app/repositories/connection_client_factory.dart';
-import 'package:aci_plus_app/repositories/ble_peripheral.dart';
+import 'package:aci_plus_app/repositories/peripheral.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,7 +18,8 @@ import 'package:mocktail/mocktail.dart';
 // Mock classes
 class MockHomeBloc extends MockBloc<HomeEvent, HomeState> implements HomeBloc {}
 
-class MockInformation18Bloc extends MockBloc<Information18Event, Information18State>
+class MockInformation18Bloc
+    extends MockBloc<Information18Event, Information18State>
     implements Information18Bloc {}
 
 class MockPageController extends Mock implements PageController {}
@@ -65,7 +66,8 @@ void main() {
     }
 
     group('Widget Rendering Tests', () {
-      testWidgets('should render scaffold with correct app bar', (tester) async {
+      testWidgets('should render scaffold with correct app bar',
+          (tester) async {
         // Arrange
         when(() => mockHomeBloc.state).thenReturn(
           const HomeState(
@@ -89,7 +91,8 @@ void main() {
         );
 
         when(() => mockHomeBloc.stream).thenAnswer((_) => const Stream.empty());
-        when(() => mockInformation18Bloc.stream).thenAnswer((_) => const Stream.empty());
+        when(() => mockInformation18Bloc.stream)
+            .thenAnswer((_) => const Stream.empty());
 
         // Act
         await tester.pumpWidget(createWidgetUnderTest());
@@ -100,7 +103,8 @@ void main() {
         expect(find.byType(AppBar), findsOneWidget);
       });
 
-      testWidgets('should render connection card with bluetooth info', (tester) async {
+      testWidgets('should render connection card with bluetooth info',
+          (tester) async {
         // Arrange
         when(() => mockHomeBloc.state).thenReturn(
           const HomeState(
@@ -124,7 +128,8 @@ void main() {
         );
 
         when(() => mockHomeBloc.stream).thenAnswer((_) => const Stream.empty());
-        when(() => mockInformation18Bloc.stream).thenAnswer((_) => const Stream.empty());
+        when(() => mockInformation18Bloc.stream)
+            .thenAnswer((_) => const Stream.empty());
 
         // Act
         await tester.pumpWidget(createWidgetUnderTest());
@@ -134,7 +139,9 @@ void main() {
         expect(find.text('Test Device'), findsOneWidget);
       });
 
-      testWidgets('should render USB connection info when connection type is USB', (tester) async {
+      testWidgets(
+          'should render USB connection info when connection type is USB',
+          (tester) async {
         // Arrange
         when(() => mockHomeBloc.state).thenReturn(
           const HomeState(
@@ -158,7 +165,8 @@ void main() {
         );
 
         when(() => mockHomeBloc.stream).thenAnswer((_) => const Stream.empty());
-        when(() => mockInformation18Bloc.stream).thenAnswer((_) => const Stream.empty());
+        when(() => mockInformation18Bloc.stream)
+            .thenAnswer((_) => const Stream.empty());
 
         // Act
         await tester.pumpWidget(createWidgetUnderTest());
@@ -168,7 +176,8 @@ void main() {
         expect(find.textContaining('USB'), findsOneWidget);
       });
 
-      testWidgets('should render basic information card with device data', (tester) async {
+      testWidgets('should render basic information card with device data',
+          (tester) async {
         // Arrange
         when(() => mockHomeBloc.state).thenReturn(
           const HomeState(
@@ -202,7 +211,8 @@ void main() {
         );
 
         when(() => mockHomeBloc.stream).thenAnswer((_) => const Stream.empty());
-        when(() => mockInformation18Bloc.stream).thenAnswer((_) => const Stream.empty());
+        when(() => mockInformation18Bloc.stream)
+            .thenAnswer((_) => const Stream.empty());
 
         // Act
         await tester.pumpWidget(createWidgetUnderTest());
@@ -216,7 +226,9 @@ void main() {
     });
 
     group('Device Status Icon Tests', () {
-      testWidgets('should show connected bluetooth icon when connection is successful', (tester) async {
+      testWidgets(
+          'should show connected bluetooth icon when connection is successful',
+          (tester) async {
         // Arrange
         when(() => mockHomeBloc.state).thenReturn(
           const HomeState(
@@ -240,7 +252,8 @@ void main() {
         );
 
         when(() => mockHomeBloc.stream).thenAnswer((_) => const Stream.empty());
-        when(() => mockInformation18Bloc.stream).thenAnswer((_) => const Stream.empty());
+        when(() => mockInformation18Bloc.stream)
+            .thenAnswer((_) => const Stream.empty());
 
         // Act
         await tester.pumpWidget(createWidgetUnderTest());
@@ -250,7 +263,8 @@ void main() {
         expect(find.byIcon(Icons.bluetooth_connected_outlined), findsOneWidget);
       });
 
-      testWidgets('should show error icon when connection fails', (tester) async {
+      testWidgets('should show error icon when connection fails',
+          (tester) async {
         // Arrange
         when(() => mockHomeBloc.state).thenReturn(
           const HomeState(
@@ -274,7 +288,8 @@ void main() {
         );
 
         when(() => mockHomeBloc.stream).thenAnswer((_) => const Stream.empty());
-        when(() => mockInformation18Bloc.stream).thenAnswer((_) => const Stream.empty());
+        when(() => mockInformation18Bloc.stream)
+            .thenAnswer((_) => const Stream.empty());
 
         // Act
         await tester.pumpWidget(createWidgetUnderTest());
@@ -284,7 +299,9 @@ void main() {
         expect(find.byIcon(Icons.nearby_error), findsOneWidget);
       });
 
-      testWidgets('should show progress indicator when connection is in progress', (tester) async {
+      testWidgets(
+          'should show progress indicator when connection is in progress',
+          (tester) async {
         // Arrange
         when(() => mockHomeBloc.state).thenReturn(
           const HomeState(
@@ -308,7 +325,8 @@ void main() {
         );
 
         when(() => mockHomeBloc.stream).thenAnswer((_) => const Stream.empty());
-        when(() => mockInformation18Bloc.stream).thenAnswer((_) => const Stream.empty());
+        when(() => mockInformation18Bloc.stream)
+            .thenAnswer((_) => const Stream.empty());
 
         // Act
         await tester.pumpWidget(createWidgetUnderTest());
@@ -344,7 +362,8 @@ void main() {
         );
 
         when(() => mockHomeBloc.stream).thenAnswer((_) => const Stream.empty());
-        when(() => mockInformation18Bloc.stream).thenAnswer((_) => const Stream.empty());
+        when(() => mockInformation18Bloc.stream)
+            .thenAnswer((_) => const Stream.empty());
 
         // Act
         await tester.pumpWidget(createWidgetUnderTest());
@@ -362,7 +381,8 @@ void main() {
         expect(find.text('About Us'), findsOneWidget);
       });
 
-      testWidgets('should show basic mode option when in bench mode', (tester) async {
+      testWidgets('should show basic mode option when in bench mode',
+          (tester) async {
         // Arrange
         when(() => mockHomeBloc.state).thenReturn(
           const HomeState(
@@ -386,7 +406,8 @@ void main() {
         );
 
         when(() => mockHomeBloc.stream).thenAnswer((_) => const Stream.empty());
-        when(() => mockInformation18Bloc.stream).thenAnswer((_) => const Stream.empty());
+        when(() => mockInformation18Bloc.stream)
+            .thenAnswer((_) => const Stream.empty());
 
         // Act
         await tester.pumpWidget(createWidgetUnderTest());
@@ -424,7 +445,8 @@ void main() {
         );
 
         when(() => mockHomeBloc.stream).thenAnswer((_) => const Stream.empty());
-        when(() => mockInformation18Bloc.stream).thenAnswer((_) => const Stream.empty());
+        when(() => mockInformation18Bloc.stream)
+            .thenAnswer((_) => const Stream.empty());
 
         // Act
         await tester.pumpWidget(createWidgetUnderTest());
@@ -437,7 +459,8 @@ void main() {
     });
 
     group('Load Preset Button Tests', () {
-      testWidgets('should enable load preset button when configs are available', (tester) async {
+      testWidgets('should enable load preset button when configs are available',
+          (tester) async {
         // Arrange
         when(() => mockHomeBloc.state).thenReturn(
           const HomeState(
@@ -478,7 +501,8 @@ void main() {
         );
 
         when(() => mockHomeBloc.stream).thenAnswer((_) => const Stream.empty());
-        when(() => mockInformation18Bloc.stream).thenAnswer((_) => const Stream.empty());
+        when(() => mockInformation18Bloc.stream)
+            .thenAnswer((_) => const Stream.empty());
 
         // Act
         await tester.pumpWidget(createWidgetUnderTest());
@@ -492,7 +516,8 @@ void main() {
         expect(elevatedButton.onPressed, isNotNull);
       });
 
-      testWidgets('should disable load preset button when no configs available', (tester) async {
+      testWidgets('should disable load preset button when no configs available',
+          (tester) async {
         // Arrange
         when(() => mockHomeBloc.state).thenReturn(
           const HomeState(
@@ -516,7 +541,8 @@ void main() {
         );
 
         when(() => mockHomeBloc.stream).thenAnswer((_) => const Stream.empty());
-        when(() => mockInformation18Bloc.stream).thenAnswer((_) => const Stream.empty());
+        when(() => mockInformation18Bloc.stream)
+            .thenAnswer((_) => const Stream.empty());
 
         // Act
         await tester.pumpWidget(createWidgetUnderTest());
@@ -556,7 +582,8 @@ void main() {
         );
 
         when(() => mockHomeBloc.stream).thenAnswer((_) => const Stream.empty());
-        when(() => mockInformation18Bloc.stream).thenAnswer((_) => const Stream.empty());
+        when(() => mockInformation18Bloc.stream)
+            .thenAnswer((_) => const Stream.empty());
 
         // Act
         await tester.pumpWidget(createWidgetUnderTest());

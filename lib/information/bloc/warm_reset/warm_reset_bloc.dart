@@ -53,7 +53,6 @@ class WarmResetBloc extends Bloc<WarmResetEvent, WarmResetState> {
       }
     }, onError: (error) {
       print('onError: $error');
-      // add(ErrorReceived(errorMessage: error));
     });
   }
 
@@ -66,9 +65,6 @@ class WarmResetBloc extends Bloc<WarmResetEvent, WarmResetState> {
       submissionStatus: SubmissionStatus.submissionInProgress,
       message: _appLocalizations.dialogTitleDeviceRebooting,
     ));
-
-    // //  將 android system back button 設為不可點擊
-    // SystemBackButtonProperty.isEnabled = false;
 
     _listenUpdateReport();
     _enterBootloaderTimer =

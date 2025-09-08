@@ -85,41 +85,6 @@ class _Setting18FormState extends State<Setting18Form>
   }
 }
 
-// class Setting18Form extends StatelessWidget {
-//   const Setting18Form({
-//     super.key,
-//     required this.pageController,
-//   });
-
-//   final PageController pageController;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text(AppLocalizations.of(context)!.setting),
-//         centerTitle: true,
-//         leading: const _DeviceStatus(),
-//         actions: const [
-//           _DeviceRefresh(),
-//         ],
-//       ),
-//       body: const Setting18TabBar(),
-//       bottomNavigationBar: HomeBottomNavigationBar18(
-//         pageController: pageController,
-//         selectedIndex: 0,
-//         onTap: (int index) {
-//           NoticeFlag.leftDevicePage = true;
-//           pageController.jumpToPage(
-//             index,
-//           );
-//         },
-//       ),
-//       // floatingActionButton: const _Setting18FloatingActionButton(),
-//     );
-//   }
-// }
-
 class _DeviceStatus extends StatelessWidget {
   const _DeviceStatus();
 
@@ -194,43 +159,3 @@ class _DeviceRefresh extends StatelessWidget {
     );
   }
 }
-
-// class _ViewLayout extends StatelessWidget {
-//   const _ViewLayout();
-
-//   // final TabController tabController;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocBuilder<HomeBloc, HomeState>(
-//       builder: (context, state) {
-//         if (state.loadingStatus.isRequestInProgress) {
-//           return Stack(
-//             alignment: Alignment.center,
-//             children: [
-//               const Setting18TabBarPage(
-//                   // tabController: tabController,
-//                   ),
-//               Container(
-//                 decoration: const BoxDecoration(
-//                   color: Color.fromARGB(70, 158, 158, 158),
-//                 ),
-//                 child: const Center(
-//                   child: SizedBox(
-//                     width: CustomStyle.diameter,
-//                     height: CustomStyle.diameter,
-//                     child: CircularProgressIndicator(),
-//                   ),
-//                 ),
-//               ),
-//             ],
-//           );
-//         } else {
-//           return const Setting18TabBarPage(
-//               // tabController: tabController,
-//               );
-//         }
-//       },
-//     );
-//   }
-// }

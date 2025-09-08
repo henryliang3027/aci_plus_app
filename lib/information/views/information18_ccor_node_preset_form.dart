@@ -4,7 +4,6 @@ import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/information/bloc/information18_ccor_node_preset/information18_ccor_node_preset_bloc.dart';
-import 'package:aci_plus_app/repositories/node_config.dart';
 import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
 import 'package:aci_plus_app/setting/model/setting_widgets.dart';
 import 'package:aci_plus_app/setting/views/custom_setting_dialog.dart';
@@ -13,25 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class Information18CCorNodePresetForm extends StatefulWidget {
-  const Information18CCorNodePresetForm({
-    super.key,
-  });
-
-  @override
-  State<Information18CCorNodePresetForm> createState() =>
-      _Information18CCorNodePresetFormState();
-}
-
-class _Information18CCorNodePresetFormState
-    extends State<Information18CCorNodePresetForm> {
-  late final TextEditingController nameTextEditingController;
-
-  @override
-  void initState() {
-    nameTextEditingController = TextEditingController();
-    super.initState();
-  }
+class Information18CCorNodePresetForm extends StatelessWidget {
+  const Information18CCorNodePresetForm({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -109,19 +91,11 @@ class _Information18CCorNodePresetFormState
             Navigator.of(context).pop();
           });
         }
-
-        if (state.isInitialize) {
-          NodeConfig nodeConfig = state.nodeConfig;
-
-          nameTextEditingController.text = nodeConfig.name;
-        }
       },
       child: Scaffold(
         appBar: AppBar(
           leading: Container(),
-          title: _PartName(
-            nameTextEditingController: nameTextEditingController,
-          ),
+          title: const _PartName(),
           centerTitle: true,
         ),
         body: const SingleChildScrollView(
@@ -143,11 +117,7 @@ class _Information18CCorNodePresetFormState
 }
 
 class _PartName extends StatelessWidget {
-  const _PartName({
-    required this.nameTextEditingController,
-  });
-
-  final TextEditingController nameTextEditingController;
+  const _PartName();
 
   @override
   Widget build(BuildContext context) {
@@ -157,82 +127,6 @@ class _PartName extends StatelessWidget {
         return Text(
           state.nodeConfig.name,
         );
-        // return Theme(
-        //   data: ThemeData(
-        //     textSelectionTheme: TextSelectionThemeData(
-        //       cursorColor: Theme.of(context).colorScheme.onPrimary,
-        //       selectionColor: const Color(0x80ffffff),
-        //     ),
-        //   ),
-        //   child: Padding(
-        //     padding: const EdgeInsets.symmetric(
-        //       horizontal: 0.0,
-        //     ),
-        //     child: Stack(
-        //       alignment: AlignmentDirectional.center,
-        //       children: [
-        //         // Positioned(
-        //         //   right: 14.0,
-        //         //   child: Icon(
-        //         //     Icons.edit,
-        //         //     color: Theme.of(context).colorScheme.onPrimary,
-        //         //   ),
-        //         // ),
-        //         TextField(
-        //           controller: nameTextEditingController,
-        //           key: const Key('Information18PresetForm_nameInput_textField'),
-        //           style: TextStyle(
-        //             fontSize: CustomStyle.sizeXL,
-        //             color: Theme.of(context).colorScheme.onPrimary,
-        //           ),
-        //           textInputAction: TextInputAction.done,
-        //           enabled: false,
-        //           onChanged: null,
-        //           textAlign: TextAlign.center,
-        //           maxLength: 10,
-        //           decoration: InputDecoration(
-        //             focusedBorder: OutlineInputBorder(
-        //               borderSide: BorderSide(
-        //                 width: 2.0,
-        //                 color: Theme.of(context).colorScheme.onPrimary,
-        //               ),
-        //               borderRadius:
-        //                   const BorderRadius.all(Radius.circular(4.0)),
-        //             ),
-        //             enabledBorder: OutlineInputBorder(
-        //               borderSide: BorderSide(
-        //                 color: Theme.of(context).colorScheme.primary,
-        //               ),
-        //               borderRadius:
-        //                   const BorderRadius.all(Radius.circular(4.0)),
-        //             ),
-        //             disabledBorder: const OutlineInputBorder(
-        //               borderSide: BorderSide(
-        //                 color: Colors.transparent,
-        //               ),
-        //               borderRadius: BorderRadius.all(Radius.circular(4.0)),
-        //             ),
-
-        //             border: const OutlineInputBorder(
-        //               borderRadius: BorderRadius.all(Radius.circular(4.0)),
-        //             ),
-        //             // contentPadding:
-        //             //     const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
-        //             isDense: true,
-        //             filled: true,
-        //             fillColor: Theme.of(context).colorScheme.primary,
-        //             counterText: '',
-        //             errorMaxLines: 2,
-        //             errorStyle: const TextStyle(
-        //               fontSize: CustomStyle.sizeS,
-        //             ),
-        //             // errorText: editMode1 ? errorText1 : null,
-        //           ),
-        //         ),
-        //       ],
-        //     ),
-        //   ),
-        // );
       },
     );
   }

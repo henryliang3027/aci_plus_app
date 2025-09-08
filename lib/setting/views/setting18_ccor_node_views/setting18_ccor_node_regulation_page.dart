@@ -15,7 +15,7 @@ class Setting18CCorNodeRegulationPage extends StatelessWidget {
         amp18CCorNodeRepository:
             RepositoryProvider.of<Amp18CCorNodeRepository>(context),
       ),
-      child: Setting18CCorNodeRegulationView(),
+      child: const Setting18CCorNodeRegulationView(),
     );
   }
 }

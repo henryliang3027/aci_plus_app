@@ -1,5 +1,5 @@
 import 'package:aci_plus_app/repositories/aci_device_repository.dart';
-import 'package:aci_plus_app/repositories/ble_peripheral.dart';
+import 'package:aci_plus_app/repositories/peripheral.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

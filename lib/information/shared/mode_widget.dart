@@ -1,5 +1,5 @@
 import 'package:aci_plus_app/core/utils.dart';
-import 'package:aci_plus_app/information/shared/mode_Input_page.dart';
+import 'package:aci_plus_app/information/shared/mode_input_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

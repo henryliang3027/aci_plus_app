@@ -2,7 +2,7 @@ import 'package:aci_plus_app/core/command.dart';
 import 'package:aci_plus_app/core/crc16_calculate.dart';
 import 'package:aci_plus_app/repositories/connection_client.dart';
 import 'package:aci_plus_app/repositories/connection_client_factory.dart';
-import 'package:aci_plus_app/repositories/ble_peripheral.dart';
+import 'package:aci_plus_app/repositories/peripheral.dart';
 import 'package:aci_plus_app/repositories/usb_client.dart';
 import 'package:ftdi_serial/serial_device.dart';
 
@@ -21,14 +21,6 @@ class ACIDeviceRepository {
 
     return client is USBClient ? ConnectionType.usb : ConnectionType.ble;
   }
-
-  // Future<bool> requestUSBPermission() async {
-  //   if (checkConnectionType() == ConnectionType.usb) {
-  //     return await (_connectionClient as USBClient).requestUsbPermission();
-  //   } else {
-  //     return false;
-  //   }
-  // }
 
   // 取得 usb device
   Future<SerialDevice> getUsbDevice() async {

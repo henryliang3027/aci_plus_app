@@ -154,37 +154,3 @@ class _DeviceRefresh extends StatelessWidget {
     );
   }
 }
-
-// class _ViewLayout extends StatelessWidget {
-//   const _ViewLayout();
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocBuilder<HomeBloc, HomeState>(
-//       builder: (context, state) {
-//         if (state.loadingStatus.isRequestInProgress) {
-//           return Stack(
-//             alignment: Alignment.center,
-//             children: [
-//               const Setting18CCorNodeTabBar(),
-//               Container(
-//                 decoration: const BoxDecoration(
-//                   color: Color.fromARGB(70, 158, 158, 158),
-//                 ),
-//                 child: const Center(
-//                   child: SizedBox(
-//                     width: CustomStyle.diameter,
-//                     height: CustomStyle.diameter,
-//                     child: CircularProgressIndicator(),
-//                   ),
-//                 ),
-//               ),
-//             ],
-//           );
-//         } else {
-//           return const Setting18CCorNodeTabBar();
-//         }
-//       },
-//     );
-//   }
-// }

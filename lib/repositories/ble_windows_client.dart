@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:aci_plus_app/repositories/connection_client.dart';
-import 'package:aci_plus_app/repositories/ble_peripheral.dart';
+import 'package:aci_plus_app/repositories/peripheral.dart';
 import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:flutter/foundation.dart';
 import 'package:universal_ble/universal_ble.dart';

@@ -1,6 +1,5 @@
 import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/data_key.dart';
-import 'package:aci_plus_app/repositories/aci_device_repository.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_repository.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/repositories/unit_repository.dart';
@@ -15,12 +14,10 @@ class AlarmDescriptionBloc
   AlarmDescriptionBloc({
     required this.severityIndexList,
     required this.aciDeviceType,
-    required ACIDeviceRepository aciDeviceRepository,
     required Amp18Repository amp18Repository,
     required Amp18CCorNodeRepository amp18CCorNodeRepository,
     required UnitRepository unitRepository,
-  })  : _aciDeviceRepository = aciDeviceRepository,
-        _amp18Repository = amp18Repository,
+  })  : _amp18Repository = amp18Repository,
         _amp18CCorNodeRepository = amp18CCorNodeRepository,
         _unitRepository = unitRepository,
         super(const AlarmDescriptionState()) {
@@ -38,7 +35,6 @@ class AlarmDescriptionBloc
 
   final List<int> severityIndexList;
   final ACIDeviceType aciDeviceType;
-  final ACIDeviceRepository _aciDeviceRepository;
   final Amp18Repository _amp18Repository;
   final Amp18CCorNodeRepository _amp18CCorNodeRepository;
   final UnitRepository _unitRepository;
@@ -51,42 +47,6 @@ class AlarmDescriptionBloc
 
     Map<DataKey, String> characteristicDataCache =
         _amp18CCorNodeRepository.characteristicDataCache;
-
-    String temperatureAlarmSeverity =
-        characteristicDataCache[DataKey.temperatureAlarmSeverity] ?? '';
-
-    String voltageAlarmSeverity =
-        characteristicDataCache[DataKey.voltageAlarmSeverity] ?? '';
-
-    String rfOutputPower1AlarmSeverity =
-        characteristicDataCache[DataKey.rfOutputPower1AlarmSeverity] ?? '';
-
-    String rfOutputPower3AlarmSeverity =
-        characteristicDataCache[DataKey.rfOutputPower3AlarmSeverity] ?? '';
-
-    String rfOutputPower4AlarmSeverity =
-        characteristicDataCache[DataKey.rfOutputPower4AlarmSeverity] ?? '';
-
-    String rfOutputPower6AlarmSeverity =
-        characteristicDataCache[DataKey.rfOutputPower6AlarmSeverity] ?? '';
-
-    String temperatureAlarmState =
-        characteristicDataCache[DataKey.temperatureAlarmState] ?? '1';
-
-    String voltageAlarmState =
-        characteristicDataCache[DataKey.voltageAlarmState] ?? '1';
-
-    String rfOutputPower1AlarmState =
-        characteristicDataCache[DataKey.rfOutputPower1AlarmState] ?? '';
-
-    String rfOutputPower3AlarmState =
-        characteristicDataCache[DataKey.rfOutputPower3AlarmState] ?? '';
-
-    String rfOutputPower4AlarmState =
-        characteristicDataCache[DataKey.rfOutputPower4AlarmState] ?? '';
-
-    String rfOutputPower6AlarmState =
-        characteristicDataCache[DataKey.rfOutputPower6AlarmState] ?? '';
 
     String currentTemperatureC =
         characteristicDataCache[DataKey.currentTemperatureC] ?? '';
@@ -129,12 +89,6 @@ class AlarmDescriptionBloc
       ));
     }
 
-    // if (dataKey == DataKey.temperatureAlarmSeverity) {
-    //   severityIndexList = [severityIndexList[0]];
-    // } else if (dataKey == DataKey.voltageAlarmSeverity) {
-    //   severityIndexList = [severityIndexList[1]];
-    // } else {}
-
     emit(state.copyWith(
       aciDeviceType: aciDeviceType,
       temperatureUnit: temperatureUnit,
@@ -150,46 +104,6 @@ class AlarmDescriptionBloc
 
     Map<DataKey, String> characteristicDataCache =
         _amp18Repository.characteristicDataCache;
-
-    String temperatureAlarmSeverity =
-        characteristicDataCache[DataKey.temperatureAlarmSeverity] ?? '';
-
-    String voltageAlarmSeverity =
-        characteristicDataCache[DataKey.voltageAlarmSeverity] ?? '';
-
-    String voltageRippleAlarmSeverity =
-        characteristicDataCache[DataKey.voltageRippleAlarmSeverity] ?? '';
-
-    String rfOutputPowerAlarmSeverity =
-        characteristicDataCache[DataKey.outputPowerAlarmSeverity] ?? '';
-
-    String rfOutputPilotLowFrequencyAlarmSeverity = characteristicDataCache[
-            DataKey.rfOutputPilotLowFrequencyAlarmSeverity] ??
-        '';
-
-    String rfOutputPilotHighFrequencyAlarmSeverity = characteristicDataCache[
-            DataKey.rfOutputPilotHighFrequencyAlarmSeverity] ??
-        '';
-
-    String temperatureAlarmState =
-        characteristicDataCache[DataKey.temperatureAlarmState] ?? '1';
-
-    String voltageAlarmState =
-        characteristicDataCache[DataKey.voltageAlarmState] ?? '1';
-
-    String voltageRippleAlarmState =
-        characteristicDataCache[DataKey.voltageRippleAlarmState] ?? '1';
-
-    String rfOutputPowerAlarmState =
-        characteristicDataCache[DataKey.rfOutputPowerAlarmState] ?? '1';
-
-    String rfOutputPilotLowFrequencyAlarmState =
-        characteristicDataCache[DataKey.rfOutputPilotLowFrequencyAlarmState] ??
-            '1';
-
-    String rfOutputPilotHighFrequencyAlarmState =
-        characteristicDataCache[DataKey.rfOutputPilotHighFrequencyAlarmState] ??
-            '1';
 
     String currentTemperatureC =
         characteristicDataCache[DataKey.currentTemperatureC] ?? '';
@@ -231,12 +145,6 @@ class AlarmDescriptionBloc
         value: severityValueList[severityIndexList[i]],
       ));
     }
-
-    // if (dataKey == DataKey.temperatureAlarmSeverity) {
-    //   severityIndexList = [severityIndexList[0]];
-    // } else if (dataKey == DataKey.voltageAlarmSeverity) {
-    //   severityIndexList = [severityIndexList[1]];
-    // } else {}
 
     emit(state.copyWith(
       aciDeviceType: aciDeviceType,

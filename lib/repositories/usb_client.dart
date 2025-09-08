@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/repositories/connection_client.dart';
-import 'package:aci_plus_app/repositories/ble_peripheral.dart';
+import 'package:aci_plus_app/repositories/peripheral.dart';
 import 'package:ftdi_serial/ftdi_serial.dart';
 import 'package:ftdi_serial/serial_device.dart';
 

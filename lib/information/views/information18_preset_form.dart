@@ -14,35 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class Information18PresetForm extends StatefulWidget {
-  const Information18PresetForm({
-    super.key,
-  });
-
-  @override
-  State<Information18PresetForm> createState() =>
-      _Information18PresetFormState();
-}
-
-class _Information18PresetFormState extends State<Information18PresetForm> {
-  late final TextEditingController nameTextEditingController;
-  late final TextEditingController
-      firstChannelLoadingFrequencyTextEditingController;
-  late final TextEditingController
-      firstChannelLoadingLevelTextEditingController;
-  late final TextEditingController
-      lastChannelLoadingFrequencyTextEditingController;
-  late final TextEditingController lastChannelLoadingLevelTextEditingController;
-
-  @override
-  void initState() {
-    nameTextEditingController = TextEditingController();
-    firstChannelLoadingFrequencyTextEditingController = TextEditingController();
-    firstChannelLoadingLevelTextEditingController = TextEditingController();
-    lastChannelLoadingFrequencyTextEditingController = TextEditingController();
-    lastChannelLoadingLevelTextEditingController = TextEditingController();
-    super.initState();
-  }
+class Information18PresetForm extends StatelessWidget {
+  const Information18PresetForm({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -137,27 +110,11 @@ class _Information18PresetFormState extends State<Information18PresetForm> {
             Navigator.of(context).pop();
           });
         }
-
-        if (state.isInitialize) {
-          Config config = state.config;
-
-          nameTextEditingController.text = config.name;
-          firstChannelLoadingFrequencyTextEditingController.text =
-              config.firstChannelLoadingFrequency;
-          firstChannelLoadingLevelTextEditingController.text =
-              config.firstChannelLoadingLevel;
-          lastChannelLoadingFrequencyTextEditingController.text =
-              config.lastChannelLoadingFrequency;
-          lastChannelLoadingLevelTextEditingController.text =
-              config.lastChannelLoadingLevel;
-        }
       },
       child: Scaffold(
         appBar: AppBar(
           leading: Container(),
-          title: _PartName(
-            nameTextEditingController: nameTextEditingController,
-          ),
+          title: const _PartName(),
           centerTitle: true,
         ),
         body: const SingleChildScrollView(
@@ -170,10 +127,6 @@ class _Information18PresetFormState extends State<Information18PresetForm> {
               _StopFrequency(),
               _StopLevel(),
               _FwdAGCMode(),
-
-              // 20240516 不顯示設定項目, 之後不具備 ALC 功能
-              // _AutoLevelControl(),
-
               SizedBox(
                 height: 200.0,
               ),
@@ -187,11 +140,7 @@ class _Information18PresetFormState extends State<Information18PresetForm> {
 }
 
 class _PartName extends StatelessWidget {
-  const _PartName({
-    required this.nameTextEditingController,
-  });
-
-  final TextEditingController nameTextEditingController;
+  const _PartName();
 
   @override
   Widget build(BuildContext context) {
@@ -200,82 +149,6 @@ class _PartName extends StatelessWidget {
         return Text(
           state.config.name,
         );
-        // return Theme(
-        //   data: ThemeData(
-        //     textSelectionTheme: TextSelectionThemeData(
-        //       cursorColor: Theme.of(context).colorScheme.onPrimary,
-        //       selectionColor: const Color(0x80ffffff),
-        //     ),
-        //   ),
-        //   child: Padding(
-        //     padding: const EdgeInsets.symmetric(
-        //       horizontal: 0.0,
-        //     ),
-        //     child: Stack(
-        //       alignment: AlignmentDirectional.center,
-        //       children: [
-        //         // Positioned(
-        //         //   right: 14.0,
-        //         //   child: Icon(
-        //         //     Icons.edit,
-        //         //     color: Theme.of(context).colorScheme.onPrimary,
-        //         //   ),
-        //         // ),
-        //         TextField(
-        //           controller: nameTextEditingController,
-        //           key: const Key('Information18PresetForm_nameInput_textField'),
-        //           style: TextStyle(
-        //             fontSize: CustomStyle.sizeXL,
-        //             color: Theme.of(context).colorScheme.onPrimary,
-        //           ),
-        //           textInputAction: TextInputAction.done,
-        //           enabled: false,
-        //           onChanged: null,
-        //           textAlign: TextAlign.center,
-        //           maxLength: 10,
-        //           decoration: InputDecoration(
-        //             focusedBorder: OutlineInputBorder(
-        //               borderSide: BorderSide(
-        //                 width: 2.0,
-        //                 color: Theme.of(context).colorScheme.onPrimary,
-        //               ),
-        //               borderRadius:
-        //                   const BorderRadius.all(Radius.circular(4.0)),
-        //             ),
-        //             enabledBorder: OutlineInputBorder(
-        //               borderSide: BorderSide(
-        //                 color: Theme.of(context).colorScheme.primary,
-        //               ),
-        //               borderRadius:
-        //                   const BorderRadius.all(Radius.circular(4.0)),
-        //             ),
-        //             disabledBorder: const OutlineInputBorder(
-        //               borderSide: BorderSide(
-        //                 color: Colors.transparent,
-        //               ),
-        //               borderRadius: BorderRadius.all(Radius.circular(4.0)),
-        //             ),
-
-        //             border: const OutlineInputBorder(
-        //               borderRadius: BorderRadius.all(Radius.circular(4.0)),
-        //             ),
-        //             // contentPadding:
-        //             //     const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
-        //             isDense: true,
-        //             filled: true,
-        //             fillColor: Theme.of(context).colorScheme.primary,
-        //             counterText: '',
-        //             errorMaxLines: 2,
-        //             errorStyle: const TextStyle(
-        //               fontSize: CustomStyle.sizeS,
-        //             ),
-        //             // errorText: editMode1 ? errorText1 : null,
-        //           ),
-        //         ),
-        //       ],
-        //     ),
-        //   ),
-        // );
       },
     );
   }
@@ -522,23 +395,6 @@ class _FwdAGCMode extends StatelessWidget {
         return buildCard(
           context: context,
           title: AppLocalizations.of(context)!.agcMode,
-          content: AppLocalizations.of(context)!.on,
-        );
-      },
-    );
-  }
-}
-
-class _AutoLevelControl extends StatelessWidget {
-  const _AutoLevelControl();
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<Information18PresetBloc, Information18PresetState>(
-      builder: (context, state) {
-        return buildCard(
-          context: context,
-          title: AppLocalizations.of(context)!.alcMode,
           content: AppLocalizations.of(context)!.on,
         );
       },

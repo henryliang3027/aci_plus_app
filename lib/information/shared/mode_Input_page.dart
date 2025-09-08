@@ -1,6 +1,6 @@
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/information/bloc/mode_input/mode_input_bloc.dart';
-import 'package:aci_plus_app/information/shared/mode_Input_form.dart';
+import 'package:aci_plus_app/information/shared/mode_input_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
