@@ -4,13 +4,6 @@ abstract class ChartEvent extends Equatable {
   const ChartEvent();
 }
 
-// class EventRequested extends ChartEvent {
-//   const EventRequested();
-
-//   @override
-//   List<Object?> get props => [];
-// }
-
 class DataExported extends ChartEvent {
   const DataExported();
 

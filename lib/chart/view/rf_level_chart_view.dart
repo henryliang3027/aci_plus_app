@@ -44,7 +44,6 @@ class RFLevelChartView extends StatelessWidget {
             );
           },
         ),
-        // floatingActionButton: const _SetupWizardFloatingActionButton(),
       ),
     );
   }
@@ -175,24 +174,6 @@ class _RFLevelChartView extends StatelessWidget {
     );
   }
 }
-
-// class _SetupWizardFloatingActionButton extends StatelessWidget {
-//   const _SetupWizardFloatingActionButton();
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocBuilder<HomeBloc, HomeState>(
-//       buildWhen: (previous, current) =>
-//           previous.loadingStatus != current.loadingStatus,
-//       builder: (context, state) {
-//         bool enabled = state.loadingStatus.isRequestSuccess;
-//         return getRFLevelChartSetupWizard(
-//           context: context,
-//         );
-//       },
-//     );
-//   }
-// }
 
 List<LineSeries> getChartDataOfOutputRFLevel({
   required List<List<ValuePair>> dateValueCollectionOfLog,

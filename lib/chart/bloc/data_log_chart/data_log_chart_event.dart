@@ -17,17 +17,3 @@ class MoreLogRequested extends DataLogChartEvent {
   @override
   List<Object?> get props => [];
 }
-
-// class LogRequested extends DataLogChartEvent {
-//   const LogRequested();
-
-//   @override
-//   List<Object?> get props => [];
-// }
-
-// class Event1P8GRequested extends DataLogChartEvent {
-//   const Event1P8GRequested();
-
-//   @override
-//   List<Object?> get props => [];
-// }

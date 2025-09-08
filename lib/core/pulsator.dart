@@ -1,4 +1,3 @@
-import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:flutter/material.dart';
 
 class Pulsator extends StatefulWidget {

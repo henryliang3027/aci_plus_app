@@ -11,7 +11,6 @@ import 'package:aci_plus_app/advanced/view/setting18_config_tab_bar.dart';
 import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
-import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/config.dart';
 import 'package:aci_plus_app/setting/views/custom_setting_dialog.dart';
 import 'package:flutter/material.dart';

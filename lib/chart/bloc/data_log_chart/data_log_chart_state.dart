@@ -3,7 +3,6 @@ part of 'data_log_chart_bloc.dart';
 class DataLogChartState extends Equatable {
   const DataLogChartState({
     this.moreLogRequestStatus = FormStatus.none,
-    // this.eventRequestStatus = FormStatus.none,
     this.formStatus = FormStatus.none,
     this.chunkIndex = 0,
     this.hasNextChunk = false,
@@ -16,7 +15,6 @@ class DataLogChartState extends Equatable {
   });
 
   final FormStatus moreLogRequestStatus;
-  // final FormStatus eventRequestStatus;
   final FormStatus formStatus;
   final int chunkIndex;
   final bool hasNextChunk;
@@ -29,7 +27,6 @@ class DataLogChartState extends Equatable {
 
   DataLogChartState copyWith({
     FormStatus? moreLogRequestStatus,
-    // FormStatus? eventRequestStatus,
     FormStatus? formStatus,
     int? chunkIndex,
     bool? hasNextChunk,
@@ -42,7 +39,6 @@ class DataLogChartState extends Equatable {
   }) {
     return DataLogChartState(
       moreLogRequestStatus: moreLogRequestStatus ?? this.moreLogRequestStatus,
-      // eventRequestStatus: eventRequestStatus ?? this.eventRequestStatus,
       formStatus: formStatus ?? this.formStatus,
       chunkIndex: chunkIndex ?? this.chunkIndex,
       hasNextChunk: hasNextChunk ?? this.hasNextChunk,
@@ -59,7 +55,6 @@ class DataLogChartState extends Equatable {
   @override
   List<Object> get props => [
         moreLogRequestStatus,
-        // eventRequestStatus,
         formStatus,
         chunkIndex,
         hasNextChunk,

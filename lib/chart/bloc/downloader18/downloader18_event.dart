@@ -13,10 +13,3 @@ class DownloadStarted extends Downloader18Event {
   @override
   List<Object> get props => [];
 }
-
-// class StatusUpdated extends Downloader18Event {
-//   const StatusUpdated();
-
-//   @override
-//   List<Object> get props => [];
-// }

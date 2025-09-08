@@ -1,5 +1,4 @@
 import 'package:aci_plus_app/advanced/bloc/setting18_firmware_update/setting18_firmware_update_bloc.dart';
-
 import 'package:aci_plus_app/advanced/view/setting18_firmware_update_form.dart';
 import 'package:aci_plus_app/repositories/aci_device_repository.dart';
 import 'package:aci_plus_app/repositories/code_repository.dart';
