@@ -9,7 +9,9 @@ import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class BLEClient extends ConnectionClient {
-  BLEClient() : _ble = FlutterReactiveBle(), super();
+  BLEClient()
+      : _ble = FlutterReactiveBle(),
+        super();
 
   FlutterReactiveBle? _ble;
   final _scanTimeout = 15; // sec
@@ -42,13 +44,13 @@ class BLEClient extends ConnectionClient {
   @override
   Stream<String> get updateReport async* {
     _updateReportStreamController = StreamController<String>();
-    Stream<String> streamWithTimeout = _updateReportStreamController.stream
-        .timeout(
-          const Duration(seconds: 20),
-          onTimeout: (sink) {
-            sink.addError('Timeout occurred');
-          },
-        );
+    Stream<String> streamWithTimeout =
+        _updateReportStreamController.stream.timeout(
+      const Duration(seconds: 20),
+      onTimeout: (sink) {
+        sink.addError('Timeout occurred');
+      },
+    );
 
     yield* streamWithTimeout;
   }
@@ -88,44 +90,43 @@ class BLEClient extends ConnectionClient {
     if (isPermissionGranted) {
       startScanTimer();
 
-      _discoveredDeviceStreamSubscription = _ble!
-          .scanForDevices(withServices: [])
-          .listen(
-            (device) {
-              if (device.name.startsWith(_aciPrefix)) {
-                if (!_scanReportStreamController.isClosed) {
-                  // scanTimer.cancel();
-                  print('Device: ${device.name}, ${device.rssi}');
+      _discoveredDeviceStreamSubscription =
+          _ble!.scanForDevices(withServices: []).listen(
+        (device) {
+          if (device.name.startsWith(_aciPrefix)) {
+            if (!_scanReportStreamController.isClosed) {
+              // scanTimer.cancel();
+              print('Device: ${device.name}, ${device.rssi}');
 
-                  // _peripheral = Peripheral(
-                  //   id: device.id,
-                  //   name: device.name,
-                  //   rssi: device.rssi,
-                  // );
+              // _peripheral = Peripheral(
+              //   id: device.id,
+              //   name: device.name,
+              //   rssi: device.rssi,
+              // );
 
-                  _scanReportStreamController.add(
-                    ScanReport(
-                      scanStatus: ScanStatus.scanning,
-                      peripheral: Peripheral(
-                        id: device.id,
-                        name: device.name,
-                        rssi: device.rssi,
-                      ),
-                    ),
-                  );
-                }
-              }
-            },
-            onError: (error) {
-              print('Scan Error $error');
               _scanReportStreamController.add(
-                const ScanReport(
-                  scanStatus: ScanStatus.failure,
-                  peripheral: null,
+                ScanReport(
+                  scanStatus: ScanStatus.scanning,
+                  peripheral: Peripheral(
+                    id: device.id,
+                    name: device.name,
+                    rssi: device.rssi,
+                  ),
                 ),
               );
-            },
+            }
+          }
+        },
+        onError: (error) {
+          print('Scan Error $error');
+          _scanReportStreamController.add(
+            const ScanReport(
+              scanStatus: ScanStatus.failure,
+              peripheral: null,
+            ),
           );
+        },
+      );
     } else {
       print('bluetooth disable');
       _scanReportStreamController.add(
@@ -142,117 +143,116 @@ class BLEClient extends ConnectionClient {
     startConnectionTimer();
 
     _connectionReportStreamController = StreamController<ConnectionReport>();
-    _connectionStreamSubscription = _ble!
-        .connectToDevice(id: _peripheral!.id)
-        .listen(
-          (connectionStateUpdate) async {
-            print('current connection state: $connectionStateUpdate');
-            switch (connectionStateUpdate.connectionState) {
-              case DeviceConnectionState.connecting:
-                break;
-              case DeviceConnectionState.connected:
-                cancelConnectionTimer();
+    _connectionStreamSubscription =
+        _ble!.connectToDevice(id: _peripheral!.id).listen(
+      (connectionStateUpdate) async {
+        print('current connection state: $connectionStateUpdate');
+        switch (connectionStateUpdate.connectionState) {
+          case DeviceConnectionState.connecting:
+            break;
+          case DeviceConnectionState.connected:
+            cancelConnectionTimer();
 
-                // _characteristicDataStreamController =
-                //     StreamController<Map<DataKey, String>>();
+            // _characteristicDataStreamController =
+            //     StreamController<Map<DataKey, String>>();
 
-                _qualifiedCharacteristic = QualifiedCharacteristic(
-                  serviceId: Uuid.parse(_serviceId),
-                  characteristicId: Uuid.parse(_characteristicId),
-                  deviceId: _peripheral!.id,
+            _qualifiedCharacteristic = QualifiedCharacteristic(
+              serviceId: Uuid.parse(_serviceId),
+              characteristicId: Uuid.parse(_characteristicId),
+              deviceId: _peripheral!.id,
+            );
+
+            _characteristicStreamSubscription = _ble!
+                .subscribeToCharacteristic(_qualifiedCharacteristic)
+                .listen(
+              (data) async {
+                // print('index: $_currentCommandIndex, length:${data.length}');
+
+                List<dynamic> finalResult = combineRawData(
+                  commandIndex: _currentCommandIndex,
+                  rawData: data,
                 );
 
-                _characteristicStreamSubscription = _ble!
-                    .subscribeToCharacteristic(_qualifiedCharacteristic)
-                    .listen(
-                      (data) async {
-                        // print('index: $_currentCommandIndex, length:${data.length}');
-
-                        List<dynamic> finalResult = combineRawData(
-                          commandIndex: _currentCommandIndex,
-                          rawData: data,
-                        );
-
-                        if (_currentCommandIndex >= 1000) {
-                          List<int> finalRawData = finalResult[1];
-                          String message = String.fromCharCodes(finalRawData);
-                          _updateReportStreamController.add(message);
-                        } else {
-                          if (finalResult[0]) {
-                            cancelCharacteristicDataTimer(
-                              name: 'cmd $_currentCommandIndex',
-                            );
-                            List<int> finalRawData = finalResult[1];
-
-                            bool isValidCRC = checkCRC(finalRawData);
-                            if (isValidCRC) {
-                              if (!_completer!.isCompleted) {
-                                _completer!.complete(finalRawData);
-                              }
-                            } else {
-                              if (!_completer!.isCompleted) {
-                                _completer!.completeError(
-                                  CharacteristicError.invalidData,
-                                );
-                              }
-                            }
-                          }
-                        }
-                      },
-                      onError: (error) {
-                        _connectionReportStreamController.add(
-                          const ConnectionReport(
-                            connectStatus: ConnectStatus.disconnected,
-                            errorMessage: 'Device connection failed',
-                          ),
-                        );
-                        print('lisetn to the characteristic failed');
-                      },
+                if (_currentCommandIndex >= 1000) {
+                  List<int> finalRawData = finalResult[1];
+                  String message = String.fromCharCodes(finalRawData);
+                  _updateReportStreamController.add(message);
+                } else {
+                  if (finalResult[0]) {
+                    cancelCharacteristicDataTimer(
+                      name: 'cmd $_currentCommandIndex',
                     );
+                    List<int> finalRawData = finalResult[1];
 
-                _connectionReportStreamController.add(
-                  const ConnectionReport(
-                    connectStatus: ConnectStatus.connected,
-                  ),
-                );
-
-                break;
-              case DeviceConnectionState.disconnecting:
-                // _connectionReportStreamController.add(const ConnectionReport(
-                //   connectionState: DeviceConnectionState.disconnected,
-                //   errorMessage: 'disconnecting',
-                // ));
-                // break;
-                break;
-              case DeviceConnectionState.disconnected:
-                // cancelConnectionTimer();
-                // cancelCharacteristicDataTimer(name: 'connection closed');
-                // cancelCompleterOnDisconnected();
-
+                    bool isValidCRC = checkCRC(finalRawData);
+                    if (isValidCRC) {
+                      if (!_completer!.isCompleted) {
+                        _completer!.complete(finalRawData);
+                      }
+                    } else {
+                      if (!_completer!.isCompleted) {
+                        _completer!.completeError(
+                          CharacteristicError.invalidData,
+                        );
+                      }
+                    }
+                  }
+                }
+              },
+              onError: (error) {
                 _connectionReportStreamController.add(
                   const ConnectionReport(
                     connectStatus: ConnectStatus.disconnected,
                     errorMessage: 'Device connection failed',
                   ),
                 );
+                print('lisetn to the characteristic failed');
+              },
+            );
 
-                await closeConnectionStream();
+            _connectionReportStreamController.add(
+              const ConnectionReport(
+                connectStatus: ConnectStatus.connected,
+              ),
+            );
 
-                break;
-            }
-          },
-          onError: (error) {
+            break;
+          case DeviceConnectionState.disconnecting:
+            // _connectionReportStreamController.add(const ConnectionReport(
+            //   connectionState: DeviceConnectionState.disconnected,
+            //   errorMessage: 'disconnecting',
+            // ));
+            // break;
+            break;
+          case DeviceConnectionState.disconnected:
             // cancelConnectionTimer();
             // cancelCharacteristicDataTimer(name: 'connection closed');
             // cancelCompleterOnDisconnected();
+
             _connectionReportStreamController.add(
-              ConnectionReport(
+              const ConnectionReport(
                 connectStatus: ConnectStatus.disconnected,
-                errorMessage: error.toString(),
+                errorMessage: 'Device connection failed',
               ),
             );
-          },
+
+            await closeConnectionStream();
+
+            break;
+        }
+      },
+      onError: (error) {
+        // cancelConnectionTimer();
+        // cancelCharacteristicDataTimer(name: 'connection closed');
+        // cancelCompleterOnDisconnected();
+        _connectionReportStreamController.add(
+          ConnectionReport(
+            connectStatus: ConnectStatus.disconnected,
+            errorMessage: error.toString(),
+          ),
         );
+      },
+    );
   }
 
   @override
@@ -336,7 +336,7 @@ class BLEClient extends ConnectionClient {
     final negotiatedMtu = await _ble!.requestMtu(deviceId: deviceId, mtu: mtu);
     print('negotiatedMtu: $negotiatedMtu');
 
-    // 設定 mtu = 247
+    // 設定 mtu
     List<dynamic> result = await _requestBasicInformationRawData(value);
 
     if (result[0]) {
@@ -378,7 +378,7 @@ class BLEClient extends ConnectionClient {
       try {
         if (_aciDeviceType == ACIDeviceType.undefined ||
             _aciDeviceType == ACIDeviceType.dsim1G1P2G) {
-          // DSIM 的 藍牙 dongle 是 ＨＭ-10 藍牙模組, 沒有 ACK 機制
+          // DSIM 的 藍牙 dongle 是 HM-10 藍牙模組, 沒有 ACK 機制
           await _ble!.writeCharacteristicWithoutResponse(
             _qualifiedCharacteristic,
             value: value,
@@ -558,13 +558,12 @@ class BLEClient extends ConnectionClient {
 
   Future<bool> _requestPermission() async {
     if (Platform.isAndroid) {
-      Map<Permission, PermissionStatus> statuses =
-          await [
-            Permission.bluetoothConnect,
-            Permission.bluetoothScan,
-            Permission.bluetoothAdvertise,
-            Permission.location,
-          ].request();
+      Map<Permission, PermissionStatus> statuses = await [
+        Permission.bluetoothConnect,
+        Permission.bluetoothScan,
+        Permission.bluetoothAdvertise,
+        Permission.location,
+      ].request();
 
       // 所有權限都允許, 才return true
       if (statuses.values.contains(PermissionStatus.denied)) {

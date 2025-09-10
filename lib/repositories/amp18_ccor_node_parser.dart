@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:aci_plus_app/core/command18_c_core_node.dart';
+import 'package:aci_plus_app/core/command18_ccore_node.dart';
 import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/crc16_calculate.dart';
 import 'package:aci_plus_app/core/utils.dart';
